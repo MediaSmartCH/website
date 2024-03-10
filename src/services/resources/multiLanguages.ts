@@ -29,7 +29,7 @@ export const dictionary: any = {
       title1: "MediaSmart",
       title2: "Revivez, Partagez, Souvenez-vous !",
       description:
-        "Rehaussez votre marque avec MediaSmart : Videos captivantes, Histoires mémorables.",
+        "Rehaussez votre marque avec MediaSmart : Vidéos captivantes, Histoires mémorables.",
       contactButton: "Contactez-nous",
     },
   },
@@ -159,7 +159,7 @@ export const dictionary: any = {
   },
   booking: {
     en: {
-      title: "Interested in Booking a Free 30-Minute Consultation?",
+      title: "Interested in Booking a Free 30-Minutes Consultation?",
       description:
         "Embark on your creative journey with MediaSmart through a complimentary, 30-minute consultation. Choose a convenient location for you – be it your home, a public space, or even a virtual meeting – and select a time that aligns with our schedule. Simply provide your preferred meeting details and contact information, and we'll set up the appointment. This session is your opportunity to discuss your ideas with us and discover how we can collaborate to turn your vision into compelling visual narratives.",
       bookingBtn: "Book your 30-Min Consultation",
