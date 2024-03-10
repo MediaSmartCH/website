@@ -159,13 +159,13 @@ export const dictionary: any = {
   },
   booking: {
     en: {
-      title: "Interested in Booking a Free 30-Minutes Consultation?",
+      title: "Interested in Booking a Free 30-Minute Consultation?",
       description:
         "Embark on your creative journey with MediaSmart through a complimentary, 30-minute consultation. Choose a convenient location for you – be it your home, a public space, or even a virtual meeting – and select a time that aligns with our schedule. Simply provide your preferred meeting details and contact information, and we'll set up the appointment. This session is your opportunity to discuss your ideas with us and discover how we can collaborate to turn your vision into compelling visual narratives.",
       bookingBtn: "Book your 30-Min Consultation",
     },
     fr: {
-      title: "Intéressé par une Consultation Gratuite de 30 Minutes ?",
+      title: "Intéressé par une Consultation Gratuite de 30 minutes ?",
       description:
         "Lancez-vous dans votre aventure créative avec MediaSmart grâce à une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – que ce soit chez vous, dans un espace public, ou même en ligne – et sélectionnez un horaire qui correspond à notre disponibilité. Fournissez simplement les détails de la réunion souhaitée et vos coordonnées, et nous organiserons le rendez-vous. Cette session est votre chance de discuter de vos idées avec nous et de découvrir comment nous pouvons collaborer pour transformer votre vision en récits visuels captivants.",
       bookingBtn: "Réservez votre Consultation de 30 Min",

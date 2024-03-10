@@ -17,7 +17,7 @@ const About = () => {
       className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] pt-[30px] md:pt-[40px] lg:pt-[60px] xl:pt-[80px] 2xl:pt-[90px] mx-auto"
     >
       <div className="flex flex-col lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px]">
-        <div className="w-full lg:w-[50%]">
+        <div className="w-full lg:w-[80%]">
           <div className="mx-auto md:w-[90%] lg:w-[85%] 2xl:w-[65%]">
             <p
               className={`${

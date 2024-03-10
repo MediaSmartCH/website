@@ -16,7 +16,7 @@ const Booking = () => {
   return (
     <div className="md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px]">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] pt-[52px] lg:pt-[70px] 2xl:pt-[80px] mx-auto">
-        <div
+        <div id="booking"
           className="px-[20px] md:px-[40px] lg:px-0 flex flex-col items-center text-center booking-bg rounded-[20px] 2xl:rounded-[20px]  pt-[27px] pb-[32px] lg:pt-[42px] lg:pb-[28px]"
           data-aos="fade-right"
           data-aos-duration="700"
