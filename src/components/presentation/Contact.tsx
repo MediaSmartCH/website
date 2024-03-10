@@ -118,7 +118,7 @@ const Contact = () => {
               <div className="flex items-center gap-x-[18px] my-[15px] lg:my-[31px]">
                 <img src={address} alt="address" className="" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
-                  <a href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9" className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`} target="_blank">Route Principale 3, 1903 Collonges</a>
+                  <a href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9" className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`} target="_blank">Vaud - Valais - Genève - Fribourg - Neuchâtel</a>
                 </p>
               </div>
               <div className="flex items-center gap-x-[18px]">
