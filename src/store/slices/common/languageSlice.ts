@@ -5,7 +5,8 @@ const systemLanguage = navigator.language || (navigator as any).userLanguage;
 const languageSlice = createSlice({
   name: "language",
   initialState: {
-    currentLanguage: systemLanguage.startsWith('fr') ? 'fr' : 'en',
+    currentLanguage: /^fr\b/.test(systemLanguage) ? 'fr' : 'en',
+    // currentLanguage: systemLanguage.startsWith('fr') ? 'fr' : 'en',
     // currentLanguage: "fr",
   },
   reducers: {

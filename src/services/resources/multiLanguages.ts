@@ -29,7 +29,7 @@ export const dictionary: any = {
       title1: "MediaSmart",
       title2: "Revivez, Partagez, Souvenez-vous !",
       description:
-        "Rehaussez votre marque avec MediaSmart : Videos captivantes, Histoires mémorables.",
+        "Rehaussez votre marque avec MediaSmart : Vidéos captivantes, Histoires mémorables.",
       contactButton: "Contactez-nous",
     },
   },
