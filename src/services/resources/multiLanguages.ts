@@ -182,7 +182,7 @@ export const dictionary: any = {
       tile2: {
         faqTitle: "Can I use MediaSmart for a small event?",
         faqDescription:
-          "Yes, that's our specialty. Our post-event editing utilizes advanced methods to turn your raw footage into a sleek final product, perfectly capturing the essence of your event.",
+          "Yes, we are happy to work with events of all sizes, from intimate to large. We customize our services to meet your specific needs, regardless of your event's scale.",
       },
       tile3: {
         faqTitle: "How does equipment rental work with MediaSmart?",
@@ -192,11 +192,11 @@ export const dictionary: any = {
       tile4: {
         faqTitle: "Does MediaSmart offer post-event video editing?",
         faqDescription:
-          "Yes, we do. Our post-event editing service includes cutting-edge techniques to turn your raw footage into a polished final product that encapsulates the essence of your event.",
+          "Yes, that's our specialty. Our post-event editing utilizes advanced methods to turn your raw footage into a sleek final product, perfectly capturing the essence of your event",
       },
       tile5: {
         faqTitle:
-          "Does MediaSmart offer photography services for my event?",
+          "Does MediaSmart offer photo services for my event?",
         faqDescription:
           "Certainly. Our photography services include event coverage, portrait sessions, and custom photo shoots to capture the memorable moments of your occasion.",
       },
@@ -217,7 +217,7 @@ export const dictionary: any = {
         faqTitle:
           "Puis-je utiliser MediaSmart pour un petit événement ?",
         faqDescription:
-          "Oui, c'est notre spécialité. Notre montage post-événement utilise des méthodes avancées pour convertir vos prises brutes en un rendu final élégant, capturant parfaitement l'âme de votre événement.",
+          "Oui, nous sommes heureux de travailler avec des événements de toutes tailles, des plus intimes aux plus grands. Nous personnalisons nos services pour répondre à vos besoins spécifiques, quelle que soit la taille de votre événement.",
       },
       tile3: {
         faqTitle:
@@ -229,11 +229,11 @@ export const dictionary: any = {
         faqTitle:
           "MediaSmart propose-t-il un montage vidéo post-événement?",
         faqDescription:
-          "Oui, nous le faisons. Notre service de montage post-événement comprend des techniques de pointe pour transformer vos images brutes en un produit final poli qui encapsule l'essence de votre événement.",
+          "Oui, c'est notre spécialité. Notre montage post-événement utilise des méthodes avancées pour convertir vos prises brutes en un rendu final élégant, capturant parfaitement l'âme de votre événement.",
       },
       tile5: {
         faqTitle:
-          "MediaSmart propose-t-il des prestations photographiques pour mon événement ?",
+          "MediaSmart offre-t-il des services de photo pour mon événement ?",
         faqDescription:
           "Certainement. Nos services de photographie comprennent la couverture d'événements, des séances de portraits et des séances photo personnalisées pour capturer les moments mémorables de votre occasion.",
       },
@@ -248,12 +248,12 @@ export const dictionary: any = {
   contact: {
     en: {
       title: "Get in touch with us",
-      name: "Name*",
-      email: "Email*",
+      name: "Name *",
+      email: "Email *",
       mobile: "Mobile Number",
-      message: "How can we help?*",
+      message: "How can we help? *",
       checkboxText:
-        "I agree to be contacted by MediaSmart regarding my inquiry.",
+        "I agree to be contacted by MediaSmart regarding my inquiry. *",
       contactBtn1: "Submit Now",
       errorText: "Please agree to the terms.",
       invalidEmailError: "Please enter a valid email address.",
@@ -262,16 +262,16 @@ export const dictionary: any = {
       requiredNameError: "Name is required.",
       requiredMobileError: "Mobile number is required.",
       requiredMessageError: "This field is required.",
-      required: "*Required",
+      required: "* Required",
     },
     fr: {
       title: "Contactez-nous",
-      name: "Nom*",
-      email: "Email*",
+      name: "Nom *",
+      email: "Email *",
       mobile: "Numéro de Mobile",
-      message: "Comment pouvons-nous vous aider ?*",
+      message: "Comment pouvons-nous vous aider ? *",
       checkboxText:
-        "J'accepte d'être contacté par MediaSmart concernant ma demande.",
+        "J'accepte d'être contacté par MediaSmart concernant ma demande. *",
       contactBtn1: "Envoyer Maintenant",
       errorText: "Veuillez accepter les termes.",
       invalidEmailError: "Veuillez entrer une adresse e-mail valide.",
@@ -280,7 +280,7 @@ export const dictionary: any = {
       requiredNameError: "Le nom est requis.",
       requiredMobileError: "Le numéro de téléphone est requis.",
       requiredMessageError: "Ce champ est requis.",
-      required: "*Obligatoire",
+      required: "* Obligatoire",
     },
   },
   footerHomepage: {
