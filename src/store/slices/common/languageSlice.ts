@@ -1,17 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getCookie, setCookie } from "./cookieUtils";
 
 const systemLanguage = navigator.language || (navigator as any).userLanguage;
+const initialLanguage = getCookie('language') || (/^fr\b/.test(systemLanguage) ? 'fr' : 'en');
 
 const languageSlice = createSlice({
   name: "language",
   initialState: {
-    currentLanguage: /^fr\b/.test(systemLanguage) ? 'fr' : 'en',
-    // currentLanguage: systemLanguage.startsWith('fr') ? 'fr' : 'en',
-    // currentLanguage: "fr",
+    currentLanguage: initialLanguage,
   },
   reducers: {
     setLanguage: (state, action) => {
       state.currentLanguage = action.payload;
+      setCookie('language', action.payload, 365);
     },
   },
 });

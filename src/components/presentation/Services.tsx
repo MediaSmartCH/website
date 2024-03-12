@@ -66,7 +66,7 @@ const Services = () => {
                       themeReducer === "light"
                         ? "text-[#14172D]"
                         : "text-[#F6F6F6]"
-                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[1] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                     data-aos="fade-down"
                     data-aos-duration="1000"
                   >
@@ -109,7 +109,7 @@ const Services = () => {
                       themeReducer === "light"
                         ? "text-[#14172D]"
                         : "text-[#F6F6F6]"
-                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[1] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {dictionary["services"][languageReducer]["title2"]}
                   </p>
@@ -166,7 +166,7 @@ const Services = () => {
                       themeReducer === "light"
                         ? "text-[#14172D]"
                         : "text-[#F6F6F6]"
-                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[1] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {dictionary["services"][languageReducer]["title3"]}
                   </p>
@@ -201,7 +201,7 @@ const Services = () => {
                       themeReducer === "light"
                         ? "text-[#14172D]"
                         : "text-[#F6F6F6]"
-                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[1] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {dictionary["services"][languageReducer]["title4"]}
                   </p>
@@ -254,7 +254,7 @@ const Services = () => {
                       themeReducer === "light"
                         ? "text-[#14172D]"
                         : "text-[#F6F6F6]"
-                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[1] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {dictionary["services"][languageReducer]["title5"]}
                   </p>
