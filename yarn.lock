@@ -2367,7 +2367,6 @@
     jest-matcher-utils "^27.0.0"
     pretty-format "^27.0.0"
 
-<<<<<<< HEAD
 "@types/json-schema@*", "@types/json-schema@^7.0.4", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
   version "7.0.15"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
@@ -2395,8 +2394,6 @@
   dependencies:
     "@types/node" "*"
 
-=======
->>>>>>> 708beedf0ddd33b7adfd7897a53f13424d06bcb1
 "@types/node@*":
   version "20.8.2"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.8.2.tgz"
