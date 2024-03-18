@@ -61,7 +61,8 @@ const Hero = () => {
           </div>
         </div>
         <div
-          className=""
+          className="w-[95%] md:w-[70%] lg:w-[50%] xl:w-[50%] h-full mx-auto mt-[23px] lg:-mt-[55px]"
+          // className=""
           style={{ zIndex: 50 }}
           data-aos="zoom-in"
           data-aos-easing="ease-in-sine"
@@ -71,7 +72,7 @@ const Hero = () => {
             options={header}
             // height={400}
             // width={400}
-            width="60%"
+            // width="60%"
             // className="w-[95%] md:w-[70%] lg:w-[50%] xl:w-[50%] h-full mx-auto mt-[23px] lg:-mt-[55px]"
           />
           {/* <img
