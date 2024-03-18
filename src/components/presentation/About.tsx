@@ -57,7 +57,8 @@ const About = () => {
           </div>
         </div>
         <div
-          className="w-full lg:w-[50%] flex justify-center items-center"
+          // className="w-full lg:w-[50%] flex justify-center items-center"
+          className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
           data-aos="fade-left"
           data-aos-easing="ease-in-sine"
           data-aos-duration="1300"

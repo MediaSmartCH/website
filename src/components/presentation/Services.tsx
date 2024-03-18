@@ -111,7 +111,8 @@ const Services = () => {
           <div className="flex flex-col gap-y-[35px] lg:gap-y-[60px] 2xl:gap-y-[80px]">
             <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[30px] lg:gap-y-[50px] px-[20px] lg:px-0">
               <div
-                className="w-full lg:w-[50%] flex justify-center items-center"
+                // className="w-full lg:w-[50%] flex justify-center items-center"
+                className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
                 data-aos="fade-right"
                 data-aos-easing="ease-in-sine"
                 data-aos-duration="1000"
@@ -119,7 +120,7 @@ const Services = () => {
                 <Lottie
                   options={liveVideoDirection}
                   // height={400}
-                  width="80%"
+                  // width="80%"
                   // width={400}
                 />
                 {/* <img
@@ -201,14 +202,15 @@ const Services = () => {
                 </div>
               </div>
               <div
-                className="w-full lg:w-[50%] flex justify-center items-center"
+                // className="w-full lg:w-[50%] flex justify-center items-center"
+                className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
                 data-aos="zoom-out"
                 data-aos-duration="1000"
               >
                 <Lottie
                   options={eventRetransmission}
                   // height={400}
-                  width="80%"
+                  // width="80%"
                   // width={400}
                 />
                 {/* <img
@@ -220,14 +222,15 @@ const Services = () => {
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[30px] lg:gap-y-[50px] px-[20px] lg:px-0">
               <div
-                className="w-full lg:w-[50%] flex justify-center items-center"
+                // className="w-full lg:w-[50%] flex justify-center items-center"
+                className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
                 data-aos="fade-down"
                 data-aos-duration="1000"
               >
                 <Lottie
                   options={videoProduction}
                   // height={400}
-                  width="80%"
+                  // width="80%"
                   // width={400}
                 />
                 {/* <img
@@ -305,14 +308,15 @@ const Services = () => {
                 </div>
               </div>
               <div
-                className="w-full lg:w-[50%] flex justify-center items-center"
+                // className="w-full lg:w-[50%] flex justify-center items-center"
+                className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
                 data-aos="fade-right"
                 data-aos-duration="1000"
               >
                 <Lottie
                   options={equipmentRental}
                   // height={400}
-                  width="80%"
+                  // width="80%"
                   // width={400}
                 />
                 {/* <img
@@ -327,11 +331,14 @@ const Services = () => {
               data-aos="fade-up"
               data-aos-duration="1000"
             >
-              <div className="w-full lg:w-[50%] flex justify-center items-center">
+              <div
+                // className="w-full lg:w-[50%] flex justify-center items-center"
+                className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
+              >
                 <Lottie
                   options={photography}
                   // height={400}
-                  width="80%"
+                  // width="80%"
                   // width={400}
                 />
                 {/* <img
