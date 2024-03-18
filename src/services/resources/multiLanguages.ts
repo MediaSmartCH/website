@@ -124,7 +124,8 @@ export const dictionary: any = {
       author6title: "CEO, Company Name",
       testimonial6:
         "Scopic has been a reliable partner for us. They have a talented development team and we have been pleased with their work. They were very responsive and met deadlines.",
-     review: "Tell us your experience"
+      review: "Tell us your experience",
+      noTestimonial: "No testimonials yet, be the first to leave a review on Google?"
     },
     fr: {
       title: "Que disent nos clients ?",
@@ -154,7 +155,8 @@ export const dictionary: any = {
       author6title: "PDG, Nom de l'entreprise",
       testimonial6:
         "Scopic a été un partenaire fiable pour nous. Ils ont une équipe de développement talentueuse et nous avons été satisfaits de leur travail. Ils ont été très réactifs et ont respecté les délais.",
-      review: "Partagez votre expérience"
+      review: "Partagez votre expérience",
+      noTestimonial: "Aucun témoignage pour l'instant, soyez le premier à laisser un avis sur Google ?"
     },
   },
   booking: {
