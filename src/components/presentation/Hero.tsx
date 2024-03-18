@@ -1,8 +1,14 @@
 import React from "react";
+import Lottie from "react-lottie";
+
 import { useAppSelector } from "services/hooks/hooks";
 import { dictionary } from "services/resources/multiLanguages";
-import hero from "../../assets/images/hero.png";
-import heroDark from "../../assets/images/hero-dark.png";
+
+import headerLight from "../../assets/images/lotties/headerLight.json";
+import headerDark from "../../assets/images/lotties/headerDark.json";
+
+// import hero from "../../assets/images/hero.png";
+// import heroDark from "../../assets/images/hero-dark.png";
 
 const Hero = () => {
   const languageReducer = useAppSelector(
@@ -10,6 +16,15 @@ const Hero = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const header = {
+    loop: true,
+    autoplay: true,
+    animationData: themeReducer === "light" ? headerLight : headerDark,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet",
+    },
+  };
 
   return (
     <div className="hero-bg mt-[73px] md:mt-[130px] lg:mt-[100px]" id="home">
@@ -52,11 +67,18 @@ const Hero = () => {
           data-aos-easing="ease-in-sine"
           data-aos-duration="1000"
         >
-          <img
+          <Lottie
+            options={header}
+            // height={400}
+            // width={400}
+            width="60%"
+            // className="w-[95%] md:w-[70%] lg:w-[50%] xl:w-[50%] h-full mx-auto mt-[23px] lg:-mt-[55px]"
+          />
+          {/* <img
             src={themeReducer === "light" ? hero : heroDark}
             alt="hero"
             className="w-[95%] md:w-[70%] lg:w-[50%] xl:w-[50%] h-full mx-auto mt-[23px] lg:-mt-[55px]"
-          />
+          /> */}
         </div>
       </div>
     </div>

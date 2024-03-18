@@ -1,16 +1,34 @@
 import React from "react";
+import Lottie from 'react-lottie';
+
+// Importation of lottie files
+// import aboutUsLight from '../../assets/images/lotties/aboutUsLight.json';
+// import aboutUsDark from '../../assets/images/lotties/aboutUsDark.json';
+import liveVideoDirectionLight from '../../assets/images/lotties/liveVideoDirectionLight.json';
+import liveVideoDirectionDark from '../../assets/images/lotties/liveVideoDirectionDark.json';
+import eventRetransmissionLight from '../../assets/images/lotties/eventRetransmissionLight.json';
+import eventRetransmissionDark from '../../assets/images/lotties/eventRetransmissionDark.json';
+import videoProductionLight from '../../assets/images/lotties/videoEditingLight.json';
+import videoProductionDark from '../../assets/images/lotties/videoEditingDark.json';
+import equipmentRentalLight from '../../assets/images/lotties/equipmentRentalLight.json';
+import equipmentRentalDark from '../../assets/images/lotties/equipmentRentalDark.json';
+import photographyLight from '../../assets/images/lotties/photographyLight.json';
+import photographyDark from '../../assets/images/lotties/photographyDark.json';
+
+// Hooks
 import { useAppSelector } from "services/hooks/hooks";
 import { dictionary } from "services/resources/multiLanguages";
-import services1 from "../../assets/images/services1.png";
-import services2 from "../../assets/images/services2.png";
-import services3 from "../../assets/images/services3.png";
-import services4 from "../../assets/images/services4.png";
-import services5 from "../../assets/images/services5.png";
-import services1d from "../../assets/images/service1d.png";
-import services2d from "../../assets/images/service2d.png";
-import services3d from "../../assets/images/service3d.png";
-import services4d from "../../assets/images/service4d.png";
-import services5d from "../../assets/images/service5d.png";
+
+// import services1 from "../../assets/images/services1.png";
+// import services2 from "../../assets/images/services2.png";
+// import services3 from "../../assets/images/services3.png";
+// import services4 from "../../assets/images/services4.png";
+// import services5 from "../../assets/images/services5.png";
+// import services1d from "../../assets/images/service1d.png";
+// import services2d from "../../assets/images/service2d.png";
+// import services3d from "../../assets/images/service3d.png";
+// import services4d from "../../assets/images/service4d.png";
+// import services5d from "../../assets/images/service5d.png";
 
 const Services = () => {
   const languageReducer = useAppSelector(
@@ -18,6 +36,51 @@ const Services = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const liveVideoDirection = {
+    loop: true,
+    autoplay: true,
+    animationData: themeReducer === "light" ? liveVideoDirectionLight : liveVideoDirectionDark,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet"
+    }
+  };
+
+  const eventRetransmission = {
+    loop: true,
+    autoplay: true,
+    animationData: themeReducer === "light" ? eventRetransmissionLight : eventRetransmissionDark,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet"
+    }
+  };
+
+  const videoProduction = {
+    loop: true,
+    autoplay: true,
+    animationData: themeReducer === "light" ? videoProductionLight : videoProductionDark,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet"
+    }
+  };
+
+  const equipmentRental = {
+    loop: true,
+    autoplay: true,
+    animationData: themeReducer === "light" ? equipmentRentalLight : equipmentRentalDark,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet"
+    }
+  };
+
+  const photography = {
+    loop: true,
+    autoplay: true,
+    animationData: themeReducer === "light" ? photographyLight : photographyDark,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet"
+    }
+  };
 
   return (
     <div id="services" className="mt-[50px] lg:mt-[90px] 2xl:mt-[100px]">
@@ -53,11 +116,17 @@ const Services = () => {
                 data-aos-easing="ease-in-sine"
                 data-aos-duration="1000"
               >
-                <img
+                <Lottie
+                  options={liveVideoDirection}
+                  // height={400}
+                  width="80%"
+                  // width={400}
+                />
+                {/* <img
                   src={themeReducer === "light" ? services1 : services1d}
                   alt="live"
                   className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
-                />
+                /> */}
               </div>
               <div className="w-full lg:w-[50%]">
                 <div className="mx-auto  md:w-[90%] lg:w-[85%] 2xl:w-[65%]">
@@ -136,11 +205,17 @@ const Services = () => {
                 data-aos="zoom-out"
                 data-aos-duration="1000"
               >
-                <img
+                <Lottie
+                  options={eventRetransmission}
+                  // height={400}
+                  width="80%"
+                  // width={400}
+                />
+                {/* <img
                   src={themeReducer === "light" ? services2 : services2d}
                   alt="event"
                   className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
-                />
+                /> */}
               </div>
             </div>
             <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[30px] lg:gap-y-[50px] px-[20px] lg:px-0">
@@ -149,11 +224,17 @@ const Services = () => {
                 data-aos="fade-down"
                 data-aos-duration="1000"
               >
-                <img
+                <Lottie
+                  options={videoProduction}
+                  // height={400}
+                  width="80%"
+                  // width={400}
+                />
+                {/* <img
                   src={themeReducer === "light" ? services3 : services3d}
                   alt="video"
                   className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
-                />
+                /> */}
               </div>
               <div className="w-full lg:w-[50%]">
                 <div
@@ -228,11 +309,17 @@ const Services = () => {
                 data-aos="fade-right"
                 data-aos-duration="1000"
               >
-                <img
+                <Lottie
+                  options={equipmentRental}
+                  // height={400}
+                  width="80%"
+                  // width={400}
+                />
+                {/* <img
                   src={themeReducer === "light" ? services4 : services4d}
                   alt="Equipment"
                   className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
-                />
+                /> */}
               </div>
             </div>
             <div
@@ -241,11 +328,17 @@ const Services = () => {
               data-aos-duration="1000"
             >
               <div className="w-full lg:w-[50%] flex justify-center items-center">
-                <img
+                <Lottie
+                  options={photography}
+                  // height={400}
+                  width="80%"
+                  // width={400}
+                />
+                {/* <img
                   src={themeReducer === "light" ? services5 : services5d}
                   alt="photography"
                   className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
-                />
+                /> */}
               </div>
               <div className="w-full lg:w-[50%]">
                 <div className="mx-auto  md:w-[90%] lg:w-[85%] 2xl:w-[65%]">
