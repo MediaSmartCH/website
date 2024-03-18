@@ -1,8 +1,14 @@
 import React from "react";
+import Lottie from "react-lottie";
 import { useAppSelector } from "services/hooks/hooks";
 import { dictionary } from "services/resources/multiLanguages";
-import about from "../../assets/images/About.png";
-import aboutDark from "../../assets/images/About-dark.png";
+
+// Importing Lottie Files
+import aboutUsLight from '../../assets/images/lotties/aboutUsLight.json';
+import aboutUsDark from '../../assets/images/lotties/aboutUsDark.json';
+
+// import about from "../../assets/images/About.png";
+// import aboutDark from "../../assets/images/About-dark.png";
 
 const About = () => {
   const languageReducer = useAppSelector(
@@ -10,6 +16,15 @@ const About = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+ 
+  const aboutUs = {
+    loop: true,
+    autoplay: true,
+    animationData: themeReducer === "light" ? aboutUsLight : aboutUsDark,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet"
+    }
+  };
 
   return (
     <div
@@ -47,11 +62,16 @@ const About = () => {
           data-aos-easing="ease-in-sine"
           data-aos-duration="1300"
         >
-          <img
+          <Lottie
+            options={aboutUs}
+            // className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
+            width="80%"
+          />
+          {/* <img
             src={themeReducer === "light" ? about : aboutDark}
             alt="about"
             className="w-[90%] md:w-[70%] lg:w-[80%] xl:w-[70%]"
-          />
+          /> */}
         </div>
       </div>
     </div>
