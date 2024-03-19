@@ -11,8 +11,8 @@ import Services from "components/presentation/Services";
 import Booking from "components/presentation/Booking";
 import Testimonials from "components/presentation/Testimonials";
 import Contact from "components/presentation/Contact";
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/react"
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Homepage = () => {
   React.useEffect(() => {
@@ -24,7 +24,7 @@ const Homepage = () => {
   }, []);
   return (
     <div>
-      <Analytics mode={'production'} />
+      <Analytics />
       <SpeedInsights />
       {/* <div className="hero-bg"> */}
       <Navbar />
