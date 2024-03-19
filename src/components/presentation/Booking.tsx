@@ -25,8 +25,8 @@ const Booking = () => {
             className={`${
               themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
             } w-full lg:w-[75%] 2xl:w-[50%] mb-[15px] 2xl:mb-[20px] leading-[36px] lg:leading-[52px] xl:leading-[72px] font-redDisplay font-bold text-[28px] md:text-[36px] lg:text-[42px] xl:text-[54px] 2xl:text-[60px] `}
-            data-aos="fade-left"
-            data-aos-duration="900"
+            // data-aos="fade-left"
+            // data-aos-duration="900"
           >
             {dictionary["booking"][languageReducer]["title"]}
           </p>
@@ -41,8 +41,8 @@ const Booking = () => {
             className={`${
               themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
             } w-full lg:w-[75%] 2xl:w-[50%] my-[15px] lg:my-[20px] leading-[20px] lg:leading-[32px] font-redDisplay font-light text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px] `}
-            data-aos="fade-left"
-            data-aos-duration="1200"
+            // data-aos="fade-left"
+            // data-aos-duration="1200"
           >
             {dictionary["booking"][languageReducer]["description"]}
           </p>
