@@ -13,8 +13,8 @@ const TestimonialCard = ({ id, src, rating, name, company, message }: any) => {
       <div className="flex justify-between items-start gap-x-[10px]">
         <div
           className="flex items-center gap-x-[8px] lg:gap-x-[14px]"
-          data-aos="fade-right"
-          data-aos-duration="2000"
+          // data-aos="fade-right"
+          // data-aos-duration="2000"
         >
           <img
             src={src}
@@ -50,8 +50,8 @@ const TestimonialCard = ({ id, src, rating, name, company, message }: any) => {
         className={`${
           themeReducer === "light" ? "text-[#1E1E1E]" : "text-[#E5E5E5]"
         } mt-[12px] lg:mt-[30px] font-mulish font-light  text-[14px] lg:text-[15px] 2xl:text-[16px] leading-[22px] `}
-        data-aos="fade-up"
-        data-aos-duration="2000"
+        // data-aos="fade-up"
+        // data-aos-duration="2000"
       >
         {message}
       </p>

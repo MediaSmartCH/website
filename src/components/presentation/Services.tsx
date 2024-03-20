@@ -89,17 +89,17 @@ const Services = () => {
           className={`${
             themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
           } rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] pt-[37px] lg:pt-[50px] 2xl:pt-[60px] pb-[37px] lg:pb-[60px] 2xl:pb-[80px] `}
-          data-aos="zoom-in"
-          data-aos-easing="ease-in-sine"
-          data-aos-duration="700"
+          // data-aos="zoom-in"
+          // data-aos-easing="ease-in-sine"
+          // data-aos-duration="700"
         >
           <p
             className={`${
               themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
             } w-full mx-auto text-center mb-[10px] lg:mb-[26px] 2xl:mb-[36px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[36px] xl:text-[40px] 2xl:text-[48px]`}
-            data-aos="fade-down"
-            data-aos-easing="ease-in-sine"
-            data-aos-duration="1000"
+            // data-aos="fade-down"
+            // data-aos-easing="ease-in-sine"
+            // data-aos-duration="1000"
           >
             <span className="mr-3 gradient-text">
               {dictionary["services"][languageReducer]["mainTitle1"]}
@@ -137,8 +137,8 @@ const Services = () => {
                         ? "text-[#14172D]"
                         : "text-[#F6F6F6]"
                     } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
-                    data-aos="fade-down"
-                    data-aos-duration="1000"
+                    // data-aos="fade-down"
+                    // data-aos-duration="1000"
                   >
                     {dictionary["services"][languageReducer]["title1"]}
                   </p>
@@ -148,15 +148,15 @@ const Services = () => {
                         ? "text-[#413C58]"
                         : "text-[#E5E5E5]"
                     } w-full text-left lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
-                    data-aos="fade-up"
-                    data-aos-duration="1000"
+                    // data-aos="fade-up"
+                    // data-aos-duration="1000"
                   >
                     {dictionary["services"][languageReducer]["description1"]}
                   </p>
                   <div
                     className="flex justify-center lg:justify-start"
-                    data-aos="zoom-in"
-                    data-aos-duration="1000"
+                    // data-aos="zoom-in"
+                    // data-aos-duration="1000"
                   >
                     <a href="#contact">
                       <button className="custom-btn2 middle-out w-[200px] h-[37px] lg:w-auto mt-[11px] lg:mt-[20px] hero-contact-btn px-[15px] py-[8px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]">
@@ -171,8 +171,8 @@ const Services = () => {
               <div className="w-full lg:w-[50%]">
                 <div
                   className="mx-auto  md:w-[90%] lg:w-[85%] 2xl:w-[65%]"
-                  data-aos="zoom-in"
-                  data-aos-duration="1000"
+                  // data-aos="zoom-in"
+                  // data-aos-duration="1000"
                 >
                   <p
                     className={`${
