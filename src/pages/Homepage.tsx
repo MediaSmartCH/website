@@ -32,7 +32,7 @@ const Homepage = () => {
       {/* <Partner /> */}
       <About />
       <Services />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Faq />
       <Booking />
       <Contact />
