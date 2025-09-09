@@ -16,7 +16,7 @@ export const CONSTRUCTION_CONFIG = {
   enableEmailCollection: true,
   
   // Email de contact d'urgence
-  emergencyContact: "contact@mediasmart.fr"
+  emergencyContact: "hello@mediasmart.ch"
 };
 
 // Types pour TypeScript
