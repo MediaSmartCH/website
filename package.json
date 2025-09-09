@@ -25,6 +25,7 @@
     "js-cookie": "^3.0.5",
     "levenary": "^1.1.1",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.543.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-calendly": "^4.3.0",

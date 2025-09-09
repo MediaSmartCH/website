@@ -275,7 +275,7 @@ export const dictionary: any = {
   hero: {
     en: {
       title1: "MediaSmart",
-      title2: "Video & IT, powering your projects",
+      title2: "Powering your projects",
       description:
         "From professional video production to tailored IT support, MediaSmart combines creativity and technical expertise to bring your ideas to life.",
       service1Button: "Explore IT Services",
@@ -283,9 +283,9 @@ export const dictionary: any = {
     },
     fr: {
       title1: "MediaSmart",
-      title2: "Vidéo & informatique, au service de vos projets",
+      title2: "est l’endroit où deux mondes se rencontrent",
       description:
-        "De la réalisation vidéo professionnelle à l’assistance informatique sur mesure, MediaSmart combine créativité et expertise technique pour propulser vos idées.",
+        "Que ce soit en production vidéo ou en solutions informatiques, MediaSmart vous accompagne avec expertise et flexibilité. Choisissez un service ou combinez-les selon vos besoins.",
       service1Button: "Explorer les services informatiques",
       service2Button: "Explorer les services vidéo",
     },
@@ -415,9 +415,9 @@ export const dictionary: any = {
       ]
     },
     fr: {
-      title: "Aperçu informatique",
+      title: "Aperçu vidéo",
       description:
-        "Un service informatique agile, adapté à vos besoins:",
+        "Des prestations vidéo professionnelles, disponibles à la carte ou en accompagnement complet.",
       exploreButton: "En savoir plus sur les services vidéo",
 
       cards: [
