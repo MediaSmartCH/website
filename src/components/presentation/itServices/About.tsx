@@ -13,9 +13,16 @@ const About = () => {
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
-
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
+  // const dotAnimComponent = useMemo(() => (
+  //   <DotAnim
+  //     anim="it.about"
+  //     style={{ width: "100%", height: "auto" }}
+  //     crisp
+  //     protect
+  //   />
+  // ), []);
   // const aboutUs = {
   //   loop: true,
   //   autoplay: true,
