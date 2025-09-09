@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom
 import PreLoader from "components/preLoader/PreLoader";
 import Layout from "components/Layout";
 
+import ConstructionWrapper from "components/ConstructionWrapper";
+
 const Homepage = lazy(() => import("../pages/Homepage"));
 const VideoServicesPage = lazy(() => import("../pages/VideoServicesPage"));
 const ITServicesPage = lazy(() => import("../pages/ITServicesPage"));
@@ -18,16 +20,18 @@ const LayoutWrapper = () => (
 
 const Config = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LayoutWrapper />}>
-          <Route index element={<Homepage />} />
-          <Route path="it-services" element={<ITServicesPage />} />
-          <Route path="video-services" element={<VideoServicesPage />} />
-          <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <ConstructionWrapper>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LayoutWrapper />}>
+            <Route index element={<Homepage />} />
+            <Route path="it-services" element={<ITServicesPage />} />
+            <Route path="video-services" element={<VideoServicesPage />} />
+            <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </ConstructionWrapper>
     // <Router>
     //   <Suspense fallback={<PreLoader />}>
     //     <Routes>

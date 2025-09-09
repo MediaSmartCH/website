@@ -52,7 +52,6 @@ const Hero = () => {
             <span className="mr-3 gradient-text">
               {dictionary["hero"][languageReducer]["title1"]}
             </span>
-            <span> - </span>
             {dictionary["hero"][languageReducer]["title2"]}
           </p>
           <p

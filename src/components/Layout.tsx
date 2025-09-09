@@ -1,4 +1,3 @@
-// Layout.tsx - Version intelligente
 import React from "react";
 import AOS from "aos";
 import { useAppSelector } from "services/hooks/hooks";
