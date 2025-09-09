@@ -1,5 +1,6 @@
 import React from "react";
-import styles from "../../assets/styles/spinner.module.css";
+
+import styles from "assets/styles/spinner.module.css";
 
 const SpinnerGrow = () => {
   return (

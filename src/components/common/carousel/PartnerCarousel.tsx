@@ -3,17 +3,18 @@ import Slider from "react-slick";
 import { useAppSelector } from "services/hooks/hooks";
 import "./slick.css";
 import "./slick-theme.css";
-import airbnb from "../../../assets/images/Airbnb.png";
-import google from "../../../assets/images/Google.png";
-import microsoft from "../../../assets/images/Microsoft.png";
-import oyo from "../../../assets/images/OYO.png";
-import fedex from "../../../assets/images/FedEx.png";
-import amazon from "../../../assets/images/Amazon.png";
-import amazonDark from "../../../assets/images/AmazonDark.png";
-import ola from "../../../assets/images/OLA.png";
-import olaDark from "../../../assets/images/OLADark.png";
-import walmart from "../../../assets/images/Walmart.png";
-import walmartDark from "../../../assets/images/WalmartDark.png";
+
+import airbnb from "assets/images/Airbnb.png";
+import google from "assets/images/Google.png";
+import microsoft from "assets/images/Microsoft.png";
+import oyo from "assets/images/OYO.png";
+import fedex from "assets/images/FedEx.png";
+import amazon from "assets/images/Amazon.png";
+import amazonDark from "assets/images/AmazonDark.png";
+import ola from "assets/images/OLA.png";
+import olaDark from "assets/images/OLADark.png";
+import walmart from "assets/images/Walmart.png";
+import walmartDark from "assets/images/WalmartDark.png";
 
 const PartnerSlider = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
