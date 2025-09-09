@@ -62,14 +62,14 @@ const Footer = () => {
                 {dictionary["footerHomepage"][languageReducer]["navItem4"]}
               </Link>
             </li>
-            <li className="" data-aos="fade-down" data-aos-duration="1300">
+            {/* <li className="" data-aos="fade-down" data-aos-duration="1300">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to="/#testimonials"
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem5"]}
               </Link>
-            </li>
+            </li> */}
             <li className="" data-aos="fade-down" data-aos-duration="1400">
               <Link
                 to="/privacy-policy"
