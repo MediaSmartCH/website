@@ -321,7 +321,7 @@ const Navbar = () => {
                   </Link>
                 </div>
               </li>
-              <li
+              {/* <li
                 className=""
                 data-aos="fade-down"
                 data-aos-easing="ease-in-sine"
@@ -339,7 +339,7 @@ const Navbar = () => {
                     {dictionary["navbarHomepage"][languageReducer]["navItem5"]}
                   </Link>
                 </div>
-              </li>
+              </li> */}
             </ul>
             <div
               className="flex justify-center items-center gap-x-[26px] xl:gap-x-[30px] 2xl:gap-x-[36px]"
