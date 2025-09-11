@@ -18,7 +18,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         });
     }, []);
 
-    // Seulement gérer les animations AOS lors du changement de thème
     React.useEffect(() => {
         const elements = document.querySelectorAll('.header-aos');
         elements.forEach(el => {

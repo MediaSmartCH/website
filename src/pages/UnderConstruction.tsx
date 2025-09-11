@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PopupButton } from "react-calendly";
-import { useAppSelector } from "services/hooks/hooks";
+// import { useAppSelector } from "services/hooks/hooks";
 import { Calendar } from "lucide-react";
 import DotAnim from "components/common/DotAnim";
 import emailjs from "@emailjs/browser";
@@ -12,7 +12,7 @@ import arrow from "assets/icons/rightArrow.svg";
 
 const UnderConstruction: React.FC = () => {
   const rootElement = document.getElementById("root");
-  const themeReducer = "light";
+  // const themeReducer = "light";
   
   // États pour la gestion du formulaire
   const [email, setEmail] = useState("");

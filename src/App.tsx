@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { HelmetProvider } from "react-helmet-async";
 
 import Config from "config/Config";
 import { useAppSelector } from "../src/services/hooks/hooks";
@@ -12,15 +13,14 @@ function App() {
 
   return (
     <div className={`${themeReducer === "light" ? "App" : "AppDark"} `}>
-      {/* Vercel analytics */}
-      <Analytics />
-      <SpeedInsights />
+      <HelmetProvider>
+        <Analytics />
+        <SpeedInsights />
 
-      {/* ✅ GDPR Cookie Banner */}
-      <CookieConsent />
+        <CookieConsent />
 
-      {/* App Config */}
-      <Config />
+        <Config />
+      </HelmetProvider>
     </div>
   );
 }

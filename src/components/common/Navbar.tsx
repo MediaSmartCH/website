@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
 import { PopupButton } from "react-calendly";
 
@@ -17,11 +17,16 @@ import dropdownDark from "assets/icons/dropdownDark.svg";
 import light from "assets/images/light.png";
 import dark from "assets/images/dark.png";
 
+import { useLangLink } from "services/router/langPath"; 
+
 import "components/preLoader/preLoader.css"
 
 // import { debounce } from 'lodash';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { pathname, search, hash } = useLocation();
+  const { L, Lhash } = useLangLink();
 
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [isThemeChanging, setIsThemeChanging] = React.useState(false);
@@ -36,7 +41,8 @@ const Navbar = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const handleLanguageChange = (languageCode: string) => {
-    dispatch(setLanguage(languageCode));
+    const stripped = pathname.replace(/^\/(fr|en)/, "");
+    navigate(`/${languageCode}${stripped}${search || ""}${hash || ""}`, { replace: true });
   };
 
   // const debouncedThemeChange = useCallback(
@@ -129,7 +135,7 @@ const Navbar = () => {
     <Menu className="w-full header-dropdown">
       <Menu.Item key="home">
         <Link
-          to="/#home"
+          to={Lhash("/#home")}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -138,7 +144,7 @@ const Navbar = () => {
       </Menu.Item>
       <Menu.Item key="it-services">
         <Link
-          to="/it-services"
+          to={L("/it-services")}
           onClick={() => window.scrollTo(0, 0)}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
@@ -148,7 +154,7 @@ const Navbar = () => {
       </Menu.Item>
       <Menu.Item key="video-services">
         <Link
-          to="/video-services"
+          to={L("/video-services")}
           onClick={() => window.scrollTo(0, 0)}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
@@ -158,7 +164,7 @@ const Navbar = () => {
       </Menu.Item>
       <Menu.Item key="about">
         <Link
-          to="/#about"
+          to={Lhash("/#about")}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -167,7 +173,7 @@ const Navbar = () => {
       </Menu.Item>
       <Menu.Item key="testimonials">
         <Link
-          to="/#testimonials"
+          to={Lhash("/#testimonials")}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -201,8 +207,8 @@ const Navbar = () => {
             }`}
         >
           <div className={`text-center p-8 rounded-lg border shadow-2xl ${themeReducer === 'light'
-              ? 'bg-white border-gray-200'
-              : 'bg-gray-800 border-gray-700'
+            ? 'bg-white border-gray-200'
+            : 'bg-gray-800 border-gray-700'
             }`}>
             {/* Votre loader orbit personnalisé */}
             <div className="flex justify-center mb-6">
@@ -231,7 +237,7 @@ const Navbar = () => {
         <div className="w-full homepage-container mx-auto px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px]">
           {/* laptop */}
           <nav className="shift hidden lg:block lg:flex lg:items-center lg:justify-between h-[100px]">
-            <Link to="/"
+            <Link to={L("/")}
               className="header-aos"
               data-aos="fade-down"
               data-aos-easing="ease-in-sine"
@@ -251,7 +257,7 @@ const Navbar = () => {
                 data-aos-duration="900"
               >
                 <Link
-                  to="/"
+                  to={L("/")}
                   onClick={() => window.scrollTo(0, 0)}
                   className={
                     themeReducer === "light"
@@ -270,7 +276,7 @@ const Navbar = () => {
               >
                 <div className="btn-test from-bottom">
                   <Link
-                    to="/it-services"
+                    to={L("/it-services")}
                     onClick={() => window.scrollTo(0, 0)}
                     className={
                       themeReducer === "light"
@@ -290,7 +296,7 @@ const Navbar = () => {
               >
                 <div className="btn-test from-bottom">
                   <Link
-                    to="/video-services"
+                    to={L("/video-services")}
                     onClick={() => window.scrollTo(0, 0)}
                     className={
                       themeReducer === "light"
@@ -310,7 +316,7 @@ const Navbar = () => {
               >
                 <div className="btn-test from-bottom">
                   <Link
-                    to="/#about"
+                    to={Lhash("/#about")}
                     className={
                       themeReducer === "light"
                         ? "text-[#14172D] hover:text-[#fff]"
@@ -329,7 +335,7 @@ const Navbar = () => {
               >
                 <div className="btn-test from-bottom">
                   <Link
-                    to="/#testimonials"
+                    to={Lhash("/#testimonials")}
                     className={
                       themeReducer === "light"
                         ? "text-[#14172D] hover:text-[#fff]"
@@ -418,7 +424,7 @@ const Navbar = () => {
           </nav>
           {/* mobile */}
           <div className="block lg:hidden flex items-center justify-between h-[72px]">
-            <Link to="/" className="header-aos">
+            <Link to={L("/")} className="header-aos">
               <img
                 src={themeReducer === "light" ? logo : logoDark}
                 alt="logo"

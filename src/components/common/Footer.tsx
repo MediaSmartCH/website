@@ -5,12 +5,14 @@ import { useAppSelector } from "services/hooks/hooks";
 import { dictionary } from "services/resources/multiLanguages";
 import logo from "assets/images/logo-footer.png";
 import linkedin from "assets/icons/linkedin.svg";
-import twitter from "assets/icons/twitter.svg";
+// import twitter from "assets/icons/twitter.svg";
 import insta from "assets/icons/insta.svg";
 import telegram from "assets/icons/telegram.svg";
-import fb from "assets/icons/fb.svg";
+// import fb from "assets/icons/fb.svg";
+import { useLangLink } from "services/router/langPath"; 
 
 const Footer = () => {
+  const { L, Lhash } = useLangLink();
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -30,7 +32,7 @@ const Footer = () => {
             <li className="" data-aos="fade-down" data-aos-duration="700">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to="/"
+                to={L("/")}
                 onClick={() => window.scrollTo(0, 0)}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem1"]}
@@ -39,7 +41,7 @@ const Footer = () => {
             <li className="" data-aos="fade-down" data-aos-duration="900">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to="/it-services"
+                to={L("/it-services")}
                 onClick={() => window.scrollTo(0, 0)}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem2"]}
@@ -48,7 +50,7 @@ const Footer = () => {
             <li className="" data-aos="fade-down" data-aos-duration="1000">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to="/video-services"
+                to={L("/video-services")}
                 onClick={() => window.scrollTo(0, 0)}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem3"]}
@@ -57,7 +59,7 @@ const Footer = () => {
             <li className="" data-aos="fade-down" data-aos-duration="1200">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to="/#about"
+                to={Lhash("/#about")}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem4"]}
               </Link>
@@ -65,14 +67,14 @@ const Footer = () => {
             {/* <li className="" data-aos="fade-down" data-aos-duration="1300">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to="/#testimonials"
+                to="{Lhash(/#testimonials")}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem5"]}
               </Link>
             </li> */}
             <li className="" data-aos="fade-down" data-aos-duration="1400">
               <Link
-                to="/privacy-policy"
+                to={L("/privacy-policy")}
                 className="text-[#fff] hover:text-[#5f75f5]"
                 onClick={() => window.scrollTo(0, 0)}
               >

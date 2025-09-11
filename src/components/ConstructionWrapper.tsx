@@ -7,12 +7,9 @@ interface ConstructionWrapperProps {
 }
 
 const ConstructionWrapper: React.FC<ConstructionWrapperProps> = ({ children }) => {
-  // Vérifier si le mode construction est activé
   if (CONSTRUCTION_CONFIG.isUnderConstruction) {
     return <UnderConstruction />;
   }
-
-  // Sinon, afficher le site normal
   return <>{children}</>;
 };
 
