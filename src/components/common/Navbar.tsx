@@ -135,7 +135,7 @@ const Navbar = () => {
     <Menu className="w-full header-dropdown">
       <Menu.Item key="home">
         <Link
-          to={Lhash("/#home")}
+          to={Lhash("#home")}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -145,7 +145,6 @@ const Navbar = () => {
       <Menu.Item key="it-services">
         <Link
           to={L("/it-services")}
-          onClick={() => window.scrollTo(0, 0)}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -155,7 +154,6 @@ const Navbar = () => {
       <Menu.Item key="video-services">
         <Link
           to={L("/video-services")}
-          onClick={() => window.scrollTo(0, 0)}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -164,7 +162,7 @@ const Navbar = () => {
       </Menu.Item>
       <Menu.Item key="about">
         <Link
-          to={Lhash("/#about")}
+          to={Lhash("#about")}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -173,7 +171,7 @@ const Navbar = () => {
       </Menu.Item>
       <Menu.Item key="testimonials">
         <Link
-          to={Lhash("/#testimonials")}
+          to={Lhash("#testimonials")}
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
@@ -258,7 +256,6 @@ const Navbar = () => {
               >
                 <Link
                   to={L("/")}
-                  onClick={() => window.scrollTo(0, 0)}
                   className={
                     themeReducer === "light"
                       ? "text-[#14172D] hover:text-[#fff]"
@@ -277,7 +274,6 @@ const Navbar = () => {
                 <div className="btn-test from-bottom">
                   <Link
                     to={L("/it-services")}
-                    onClick={() => window.scrollTo(0, 0)}
                     className={
                       themeReducer === "light"
                         ? "text-[#14172D] hover:text-[#fff]"
@@ -297,7 +293,6 @@ const Navbar = () => {
                 <div className="btn-test from-bottom">
                   <Link
                     to={L("/video-services")}
-                    onClick={() => window.scrollTo(0, 0)}
                     className={
                       themeReducer === "light"
                         ? "text-[#14172D] hover:text-[#fff]"
@@ -316,7 +311,7 @@ const Navbar = () => {
               >
                 <div className="btn-test from-bottom">
                   <Link
-                    to={Lhash("/#about")}
+                    to={Lhash("#about")}
                     className={
                       themeReducer === "light"
                         ? "text-[#14172D] hover:text-[#fff]"
@@ -335,7 +330,7 @@ const Navbar = () => {
               >
                 <div className="btn-test from-bottom">
                   <Link
-                    to={Lhash("/#testimonials")}
+                    to={Lhash("#testimonials")}
                     className={
                       themeReducer === "light"
                         ? "text-[#14172D] hover:text-[#fff]"

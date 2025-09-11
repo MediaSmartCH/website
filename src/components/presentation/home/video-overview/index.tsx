@@ -123,7 +123,7 @@ export default function VideoOverview() {
         ))}
       </div>
       <div className="flex justify-center w-full">
-        <Link to="video-services" onMouseEnter={preloadVideoServices} onClick={() => window.scrollTo(0, 0)}>
+        <Link to="video-services" onMouseEnter={preloadVideoServices}>
           <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
             <span className="custom-btn-inner">
               {dictionary["videoOverview"][languageReducer]["exploreButton"]}

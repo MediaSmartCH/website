@@ -1,37 +1,30 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-/**
- * Scrolls smoothly to the element referenced by the current URL hash
- * after route changes and after the page content has rendered.
- */
-export function useScrollToHash() {
-  const location = useLocation();
+export default function useScrollToHash(offset = -25) {
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (!location.hash) return;
+    if (!hash) return;
 
-    // Try multiple times in case the target is rendered asynchronously
-    let attemptsRemaining = 10;
+    let attempts = 50;
+    let cancelled = false;
 
-    const tryScroll = () => {
-      const id = location.hash.replace(/^#/, "");
-      const target = document.getElementById(id);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+    const tick = () => {
+      if (cancelled) return;
+      const id = hash.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        const header = document.querySelector("header") as HTMLElement | null;
+        const headerH = header?.offsetHeight ?? 0;
+        const top = el.getBoundingClientRect().top + window.pageYOffset - headerH - offset;
+        window.scrollTo({ top, left: 0, behavior: "smooth" });
         return;
       }
-      if (attemptsRemaining > 0) {
-        attemptsRemaining -= 1;
-        requestAnimationFrame(tryScroll);
-      }
+      if (attempts-- > 0) requestAnimationFrame(tick);
     };
 
-    // Delay slightly to allow layout and images to settle
-    const timeout = setTimeout(() => requestAnimationFrame(tryScroll), 0);
-    return () => clearTimeout(timeout);
-  }, [location.pathname, location.hash]);
+    const t = setTimeout(() => requestAnimationFrame(tick), 50);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [pathname, hash, offset]);
 }
-
-export default useScrollToHash;
-

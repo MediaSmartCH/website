@@ -296,7 +296,7 @@ export const dictionary: any = {
       mainTitle2: "MediaSmart",
       description: `
       MediaSmart is where two worlds meet:
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li><strong>Video production</strong>, to elevate your events, messages, and brand image.</li>
         <li><strong>IT solutions</strong>, to ensure your tools are reliable, secure, and high-performing.</li>
       </ul>
@@ -308,7 +308,7 @@ export const dictionary: any = {
       mainTitle2: "MediaSmart",
       description: `
       MediaSmart est l'endroit où deux mondes se rencontrent :
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li><strong>Production vidéo</strong>, pour sublimer vos événements, messages et image de marque.</li>
         <li><strong>Solutions informatiques</strong>, pour garantir des outils fiables, sécurisés et performants.</li>
       </ul>
@@ -501,7 +501,7 @@ export const dictionary: any = {
       description1: `
       Your website is often the <b> first impression </b> your clients have of you. We design modern, fast, and secure websites, optimized for all devices (desktop, tablet, mobile).
       <br />
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Simple showcase sites to present your activity. </li>
       <li> Advanced sites with forms, blogs, or e-commerce features. </li>
       <li> SEO optimization to help you rank on Google. </li>
@@ -514,7 +514,7 @@ export const dictionary: any = {
       <br />
       We offer <b> proactive maintenance </b>, including:
       <br />
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Regular updates (system and software). </li>
       <li> Cleaning and system optimization. </li>
       <li> Preventive problem detection. </li>
@@ -527,7 +527,7 @@ export const dictionary: any = {
       Slow systems waste time and money.
       <br />
       We identify bottlenecks and apply concrete solutions:
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Hardware and software configuration improvements. </li>
       <li> Faster startup and application performance. </li>
       <li> Removal of unnecessary files and background processes. </li> 
@@ -539,7 +539,7 @@ export const dictionary: any = {
       Cyber threats are not just for large corporations.
       <br />
       We help protect your data and equipment with a complete approach:
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Antivirus installation and configuration. </li>
       <li> Firewall setup and network security. </li>
       <li> Security audits to spot vulnerabilities. </li> 
@@ -557,7 +557,7 @@ export const dictionary: any = {
       description6: `
       We know IT problems can be disruptive. That’s why we provide <b> responsive and accessible support </b>:
       <br />
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Fast troubleshooting, on-site or remotely. </li>
       <li> Clear answers without unnecessary jargon. </li>
       <li> Personalized training (one-on-one or group) to help you get the most out of your tools (Windows, macOS, Office 365, cybersecurity, etc.). </li> 
@@ -572,14 +572,14 @@ export const dictionary: any = {
       service1PortfolioText: "Notre portfolio",
       service1PortfolioButton: "Voir plus de portfolio",
 
-      portfolioModalHeading: "Notre portefeuille",
+      portfolioModalHeading: "Notre portfolio",
       portfolioModalDescription: "Transformer les idées en expériences Web interactives, visuellement époustouflantes et conviviales qui laissent un impact durable.",
 
       title1: "Création & refonte de sites web",
       description1: `
       Votre site internet est souvent le <b> premier contact </b> entre votre organisation et vos clients. Nous concevons des sites modernes, rapides et sécurisés, adaptés à tous les supports (ordinateur, tablette, mobile).
       <br />
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Sites vitrines pour présenter votre activité. </li>
       <li> Sites plus avancés avec intégration de formulaires, blogs ou boutique en ligne. </li>
       <li> Optimisation du référencement naturel (SEO) pour être trouvé sur Google. </li>
@@ -592,7 +592,7 @@ export const dictionary: any = {
       <br />
       Nous proposons un service de <b> maintenance proactive, </b>, incluant :
       <br />
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Mises à jour régulières (système et logiciels). </li>
       <li> Nettoyage et optimisation des paramètres. </li>
       <li> Détection préventive des problèmes. </li>
@@ -605,7 +605,7 @@ export const dictionary: any = {
       Un poste de travail ou un serveur lent, c’est du temps perdu et de la productivité en moins.
       <br />
       Nous analysons vos systèmes pour identifier les ralentissements, 
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Amélioration de la configuration matérielle et logicielle. </li>
       <li> Optimisation du démarrage et des applications. </li>
       <li> Suppression des fichiers inutiles et processus parasites. </li> 
@@ -617,7 +617,7 @@ export const dictionary: any = {
         Les cyberattaques et tentatives de piratage ne concernent pas que les grandes entreprises.
       <br />
       Nous vous aidons à protéger vos données et vos équipements grâce à une approche complète :
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Installation et configuration d’antivirus performants. </li>
       <li> Mise en place de pare-feu et sécurisation du réseau. </li>
       <li> Audit de sécurité pour identifier vos points faibles. </li> 
@@ -635,7 +635,7 @@ export const dictionary: any = {
       description6: `
       Nous savons qu’un problème informatique peut vite devenir bloquant. C’est pourquoi nous proposons un <b> support réactif et accessible </b>:
       <br />
-      <ul>
+      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
       <li> Dépannage rapide à distance ou sur site. </li>
       <li> Réponses claires, sans jargon inutile. </li>
       <li> Formation personnalisée (individuelle ou en groupe) pour mieux utiliser vos outils (Windows, macOS, Office 365, cybersécurité, etc.). </li> 

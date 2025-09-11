@@ -33,7 +33,6 @@ const Footer = () => {
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/")}
-                onClick={() => window.scrollTo(0, 0)}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem1"]}
               </Link>
@@ -42,7 +41,6 @@ const Footer = () => {
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/it-services")}
-                onClick={() => window.scrollTo(0, 0)}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem2"]}
               </Link>
@@ -51,7 +49,6 @@ const Footer = () => {
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/video-services")}
-                onClick={() => window.scrollTo(0, 0)}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem3"]}
               </Link>
@@ -59,7 +56,7 @@ const Footer = () => {
             <li className="" data-aos="fade-down" data-aos-duration="1200">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to={Lhash("/#about")}
+                to={Lhash("#about")}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem4"]}
               </Link>
@@ -67,7 +64,7 @@ const Footer = () => {
             {/* <li className="" data-aos="fade-down" data-aos-duration="1300">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to="{Lhash(/#testimonials")}
+                to="{Lhash(#testimonials")}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem5"]}
               </Link>
@@ -76,7 +73,6 @@ const Footer = () => {
               <Link
                 to={L("/privacy-policy")}
                 className="text-[#fff] hover:text-[#5f75f5]"
-                onClick={() => window.scrollTo(0, 0)}
               >
                 {dictionary["footerHomepage"][languageReducer]["navItem6"]}
               </Link>
