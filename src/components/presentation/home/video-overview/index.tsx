@@ -34,7 +34,7 @@ export default function VideoOverview() {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const preloadVideoServices = () => {
-    import("../../../../pages/VideoServicesPage");
+    import("../../../../pages/VideoServices");
   };
 
   // const overview1Lottie = {

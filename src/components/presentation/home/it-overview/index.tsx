@@ -91,7 +91,7 @@ export default function ITOverview() {
   // };
 
   const preloadITServices = () => {
-    import("../../../../pages/ITServicesPage");
+    import("../../../../pages/ITServices");
   };
 
   // Define Lottie options for each card

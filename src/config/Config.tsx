@@ -6,10 +6,11 @@ import ConstructionWrapper from "components/ConstructionWrapper";
 import LangLayout from "config/LangLayout";
 import ErrorBoundary from "components/dev/ErrorBoundary";
 
-const Homepage = lazy(() => import("../pages/Homepage"));
-const VideoServicesPage = lazy(() => import("../pages/VideoServicesPage"));
-const ITServicesPage = lazy(() => import("../pages/ITServicesPage"));
-const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicyPage"));
+const Homepage = lazy(() => import("../pages/Home"));
+const VideoServicesPage = lazy(() => import("../pages/VideoServices"));
+const ITServicesPage = lazy(() => import("../pages/ITServices"));
+const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicy"));
+const Error404Page = lazy(() => import("../pages/Error404"));
 
 const LayoutWrapper = () => (
   <Layout>
@@ -19,6 +20,14 @@ const LayoutWrapper = () => (
       </Suspense>
     </ErrorBoundary>
   </Layout>
+);
+
+const Error404Wrapper = () => (
+  <ErrorBoundary>
+    <Suspense fallback={<PreLoader />}>
+      <Error404Page />
+    </Suspense>
+  </ErrorBoundary>
 );
 
 const Config = () => {
@@ -34,11 +43,15 @@ const Config = () => {
               <Route path="it-services" element={<ITServicesPage />} />
               <Route path="video-services" element={<VideoServicesPage />} />
               <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+              {/* Page 404 avec layout - s'adapte automatiquement à la langue */}
+              <Route path="404" element={<Error404Wrapper />} />
+              {/* Redirection vers /lang/404 pour les routes inexistantes */}
+              <Route path="*" element={<Navigate to="../404" replace />} />
             </Route>
           </Route>
 
-          {/* 404 */}
-          <Route path="*" element={<Navigate to="/fr" replace />} />
+          {/* 404 global pour les URLs sans langue valide - géré par LangLayout */}
+          <Route path="*" element={<Navigate to="/fr/404" replace />} />
         </Routes>
       </Router>
     </ConstructionWrapper>

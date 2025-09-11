@@ -16,11 +16,11 @@ const Hero = () => {
   const { L } = useLangLink();
 
   const preloadITServices = () => {
-    import("../../../pages/ITServicesPage");
+    import("../../../pages/ITServices");
   };
 
   const preloadVideoServices = () => {
-    import("../../../pages/VideoServicesPage");
+    import("../../../pages/VideoServices");
   };
 
   const languageReducer = useAppSelector(
@@ -72,14 +72,28 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
           >
             <Link to={L("/it-services")} onMouseEnter={preloadITServices}>
-              <button className="hero-btn custom-btn w-full md:min-w-[150px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2">
+              <button
+                className="
+                  hero-btn custom-btn
+                  w-[280px] h-[48px]
+                  flex items-center justify-center text-center
+                  rounded-[5px] text-white font-helvetica font-light
+                  text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
+              >
                 <span className="custom-btn-inner">
                   {dictionary["hero"][languageReducer]["service1Button"]}
                 </span>
               </button>
             </Link>
             <Link to={L("/video-services")} onMouseEnter={preloadVideoServices}>
-              <button className="hero-btn custom-btn w-full md:min-w-[150px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2">
+              <button
+                className="
+                  hero-btn custom-btn
+                  w-[280px] h-[48px]
+                  flex items-center justify-center text-center
+                  rounded-[5px] text-white font-helvetica font-light
+                  text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
+              >
                 <span className="custom-btn-inner">
                   {dictionary["hero"][languageReducer]["service2Button"]}
                 </span>
