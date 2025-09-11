@@ -1,4 +1,3 @@
-// DotAnim.tsx - version corrigée
 import React, { memo, useMemo, useEffect, useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import "@dotlottie/player-component";

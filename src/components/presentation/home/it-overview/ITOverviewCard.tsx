@@ -2,14 +2,14 @@
 import DotAnim from "components/common/DotAnim";
 import { LottieKey } from "config/lotties";
 
-interface LottieOptions {
-    loop: boolean;
-    autoplay: boolean;
-    animationData: any;
-    rendererSettings: {
-        preserveAspectRatio: string;
-    };
-}
+// interface LottieOptions {
+//     loop: boolean;
+//     autoplay: boolean;
+//     animationData: any;
+//     rendererSettings: {
+//         preserveAspectRatio: string;
+//     };
+// }
 
 interface OverviewCardProps {
     themeReducer: string;

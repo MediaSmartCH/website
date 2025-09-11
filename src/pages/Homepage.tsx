@@ -10,13 +10,13 @@ import Hero from "components/presentation/home/Hero";
 import ITOverview from "components/presentation/home/it-overview";
 import About from "components/presentation/home/About";
 import VideoOverview from "components/presentation/home/video-overview";
-import Testimonials from "components/common/testimonials";
+// import Testimonials from "components/common/testimonials";
 import Faq from "components/presentation/videoServices/Faq";
-import Booking from "components/common/Booking";
+// import Booking from "components/common/Booking";
 import Contact from "components/common/Contact";
 // import Footer from "components/common/Footer";
 
-import bg from "assets/images/faq-bg.png";
+// import bg from "assets/images/faq-bg.png";
 import useScrollToHash from "services/hooks/useScrolltoHash";
 // import Layout from "antd/es/layout/layout";
 

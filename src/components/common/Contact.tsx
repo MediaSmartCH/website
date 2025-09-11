@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox } from "antd";
-import type { CheckboxProps } from "antd";
+// import type { CheckboxProps } from "antd";
 import emailjs from "@emailjs/browser";
 
 import { useAppSelector } from "services/hooks/hooks";
@@ -18,9 +18,9 @@ import contactMessage from "assets/icons/contactMessage.svg";
 import arrow from "assets/icons/rightArrow.svg";
 
 const Contact = () => {
-  const onChange: CheckboxProps["onChange"] = (e) => {
-    console.log(e.target.checked);
-  };
+  // const onChange: CheckboxProps["onChange"] = (e) => {
+  //   console.log(e.target.checked);
+  // };
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
