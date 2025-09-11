@@ -128,8 +128,14 @@ const Services = () => {
                 {dictionary["itServices"][languageReducer]["title1"]}
               </p>
               <p
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                  } w-full mt-5 it-service-description text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  max-w-[700px] mx-auto px-4
+                  mt-6
+                `}
                 dangerouslySetInnerHTML={{
                   __html: dictionary["itServices"][languageReducer]["description1"],
                 }}
@@ -225,12 +231,18 @@ const Services = () => {
               {dictionary["itServices"][languageReducer]["title2"]}
             </p>
             <p
-              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                } w-full mt-5 it-service-description text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
-              dangerouslySetInnerHTML={{
-                __html: dictionary["itServices"][languageReducer]["description2"],
-              }}
-            />
+                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  max-w-[700px] mx-auto px-4
+                  mt-6
+                `}
+                dangerouslySetInnerHTML={{
+                  __html: dictionary["itServices"][languageReducer]["description2"],
+                }}
+              />
           </div>
         </div>
 
@@ -248,8 +260,14 @@ const Services = () => {
                 {dictionary["itServices"][languageReducer]["title3"]}
               </p>
               <p
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                  } w-full mt-5 it-service-description text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  max-w-[700px] mx-auto px-4
+                  mt-6
+                `}
                 dangerouslySetInnerHTML={{
                   __html: dictionary["itServices"][languageReducer]["description3"],
                 }}
@@ -296,12 +314,18 @@ const Services = () => {
               {dictionary["itServices"][languageReducer]["title4"]}
             </p>
             <p
-              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                } w-full mt-5 it-service-description text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
-              dangerouslySetInnerHTML={{
-                __html: dictionary["itServices"][languageReducer]["description4"],
-              }}
-            />
+                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  max-w-[700px] mx-auto px-4
+                  mt-6
+                `}
+                dangerouslySetInnerHTML={{
+                  __html: dictionary["itServices"][languageReducer]["description4"],
+                }}
+              />
           </div>
         </div>
 
@@ -319,8 +343,14 @@ const Services = () => {
                 {dictionary["itServices"][languageReducer]["title5"]}
               </p>
               <p
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                  } w-full mt-5 it-service-description text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  max-w-[700px] mx-auto px-4
+                  mt-6
+                `}
                 dangerouslySetInnerHTML={{
                   __html: dictionary["itServices"][languageReducer]["description5"],
                 }}
@@ -367,12 +397,18 @@ const Services = () => {
               {dictionary["itServices"][languageReducer]["title6"]}
             </p>
             <p
-              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                } w-full mt-5 it-service-description text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
-              dangerouslySetInnerHTML={{
-                __html: dictionary["itServices"][languageReducer]["description6"],
-              }}
-            />
+                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  max-w-[700px] mx-auto px-4
+                  mt-6
+                `}
+                dangerouslySetInnerHTML={{
+                  __html: dictionary["itServices"][languageReducer]["description6"],
+                }}
+              />
           </div>
         </div>
       </div>

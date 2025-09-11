@@ -129,10 +129,18 @@ const Contact = () => {
                   <a href="tel:+41796578612" className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}>+41 79 657 86 12</a>
                 </p>
               </div>
-              <div className="flex items-center gap-x-[13px] mt-[25px] lg:mt-[45px]">
+              <div className="
+                flex flex-wrap 
+                justify-center lg:justify-start
+                gap-x-[13px] gap-y-[12px]
+                mt-[25px] lg:mt-[45px]
+              ">
                 <a
-                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-                    } h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px] border-2 border-[#677DFF33] hover:border-[#5f75f5] transition delay-150 duration-300 ease-in-out rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[10px] font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px] `}
+                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
+                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
+                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
+                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
                   href="https://www.instagram.com/MediaSmartCH"
                   target="_blank"
                   rel="noreferrer"
@@ -143,8 +151,11 @@ const Contact = () => {
                   <span>Instagram</span>
                 </a>
                 <a
-                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-                    } h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px] border-2 border-[#677DFF33] hover:border-[#5f75f5] transition delay-150 duration-300 ease-in-out rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px] font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px] `}
+                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
+                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
+                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
+                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
                   href="https://www.linkedin.com/company/MediaSmartCH"
                   target="_blank"
                   rel="noreferrer"
@@ -155,9 +166,12 @@ const Contact = () => {
                   <span>Linkedin</span>
                 </a>
                 <a
-                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-                    } h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px] border-2 border-[#677DFF33] hover:border-[#5f75f5] transition delay-150 duration-300 ease-in-out rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px] font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px] `}
-                  href="https://www.linkedin.com/company/MediaSmartCH"
+                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
+                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
+                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
+                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
+                  href="https://t.me/MediaSmartCH"
                   target="_blank"
                   rel="noreferrer"
                 >

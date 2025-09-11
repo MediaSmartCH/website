@@ -27,7 +27,7 @@ const About = () => {
   // };
 
   return (
-    <div id="about" className="pt-[80px]">
+    <div id="about" className="scroll-mt-[120px]">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] py-[40px] mx-auto">
         <div
           className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"

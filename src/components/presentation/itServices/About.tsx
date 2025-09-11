@@ -68,11 +68,10 @@ const About = () => {
           />
           <p
             className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-              } w-full it-service-about-description text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+              } w-full it-service-about-description text-justify lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
             dangerouslySetInnerHTML={{
               __html: dictionary["itServicesAbout"][languageReducer]["description"],
             }}
-
           />
         </div>
       </div>

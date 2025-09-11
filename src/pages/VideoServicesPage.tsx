@@ -3,7 +3,7 @@ import AOS from "aos";
 
 import { useAppSelector } from "services/hooks/hooks";
 
-import useScrollToHash from "services/hooks/useScrolltoHash";
+// import useScrollToHash from "services/hooks/useScrolltoHash";
 
 // import Layout from "../components/Layout";
 // import Navbar from "components/common/Navbar";
@@ -20,7 +20,7 @@ import Contact from "components/common/Contact";
 import bg from "assets/images/faq-bg.png";
 
 export default function VideoServicesPage() {
-  useScrollToHash();
+  // useScrollToHash();
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
   const [hasAnimated, setHasAnimated] = React.useState(false);
