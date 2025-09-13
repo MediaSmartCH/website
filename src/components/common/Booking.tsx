@@ -52,16 +52,9 @@ const Booking = () => {
             data-aos-duration="1500"
             data-aos-easing="ease-in-sine"
           >
-            {/* <button
-              className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-              data-aos="fade-up"
-              data-aos-duration="1300"
-            >
-              {dictionary["booking"][languageReducer]["bookingBtn"]}
-            </button> */}
             <PopupButton
               className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-              url="https://calendly.com/mediasmartch/30min"
+              url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
               rootElement={rootElement as HTMLElement}
               text={
                 dictionary["booking"][languageReducer]["bookingBtn"]

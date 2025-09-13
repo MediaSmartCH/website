@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
 
     // Get current date and format it based on language
     useEffect(() => {
-        const currentDate = new Date();
+        const currentDate = new Date('2025-09-13')
         const options: Intl.DateTimeFormatOptions = { 
             weekday: 'long', 
             year: 'numeric', 

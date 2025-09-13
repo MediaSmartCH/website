@@ -402,7 +402,7 @@ const Navbar = () => {
               </button>
               <PopupButton
                 className="custom-btn2 middle-out px-[15px] xl:px-[18px] lg:h-[40px] xl:h-[44px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-                url="https://calendly.com/mediasmartch/30min"
+                url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
                 rootElement={rootElement as HTMLElement}
                 text={
                   dictionary["navbarHomepage"][languageReducer]["navbarButton"]
