@@ -34,7 +34,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/")}
               >
-                {dictionary["footerHomepage"][languageReducer]["navItem1"]}
+                {dictionary["footer"][languageReducer]["navItem1"]}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="900">
@@ -42,7 +42,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/it-services")}
               >
-                {dictionary["footerHomepage"][languageReducer]["navItem2"]}
+                {dictionary["footer"][languageReducer]["navItem2"]}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="1000">
@@ -50,7 +50,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/video-services")}
               >
-                {dictionary["footerHomepage"][languageReducer]["navItem3"]}
+                {dictionary["footer"][languageReducer]["navItem3"]}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="1200">
@@ -58,7 +58,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={Lhash("#about")}
               >
-                {dictionary["footerHomepage"][languageReducer]["navItem4"]}
+                {dictionary["footer"][languageReducer]["navItem4"]}
               </Link>
             </li>
             {/* <li className="" data-aos="fade-down" data-aos-duration="1300">
@@ -66,7 +66,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to="{Lhash(#testimonials")}
               >
-                {dictionary["footerHomepage"][languageReducer]["navItem5"]}
+                {dictionary["footer"][languageReducer]["navItem5"]}
               </Link>
             </li> */}
             <li className="" data-aos="fade-down" data-aos-duration="1400">
@@ -74,7 +74,7 @@ const Footer = () => {
                 to={L("/privacy-policy")}
                 className="text-[#fff] hover:text-[#5f75f5]"
               >
-                {dictionary["footerHomepage"][languageReducer]["navItem6"]}
+                {dictionary["footer"][languageReducer]["navItem6"]}
               </Link>
             </li>
           </ul>

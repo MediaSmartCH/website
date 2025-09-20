@@ -46,16 +46,16 @@ const About = () => {
                     : "text-[#F6F6F6]"
                     } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                 >
-                  {dictionary["about"][languageReducer]["mainTitle1"]}
+                  {dictionary["home"][languageReducer]["aboutTitle"]}
                   <span className="gradient-text">
-                    {dictionary["about"][languageReducer]["mainTitle2"]}
+                    {dictionary["home"][languageReducer]["aboutSubtitle"]}
                   </span>
 
                 </p>
                 <div
                   className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"} about-description w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
                   dangerouslySetInnerHTML={{
-                    __html: dictionary["about"][languageReducer]["description"],
+                    __html: dictionary["home"][languageReducer]["aboutDescription"],
                   }}
                 />
               </div>

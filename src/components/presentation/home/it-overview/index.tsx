@@ -114,17 +114,17 @@ export default function ITOverview() {
         className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
           } w-full text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
       >
-        {dictionary["itOverview"][languageReducer]["title"]}
+        {dictionary["home"][languageReducer]["ITOverviewTitle"]}
       </p>
       <p
         className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
           } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
       >
-        {dictionary["itOverview"][languageReducer]["description"]}
+        {dictionary["home"][languageReducer]["ITOverviewDescription"]}
       </p>
       {/* cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] lg:gap-[20px] xl:gap-[30px] 2xl:gap-[40px] my-[40px] md:my-[50px]">
-        {dictionary["itOverview"][languageReducer]["cards"].map((card: any, index: number) => (
+        {dictionary["home"][languageReducer]["ITOverviewCards"].map((card: any, index: number) => (
           <ITOverviewCard
             key={index}
             themeReducer={themeReducer}
@@ -139,7 +139,7 @@ export default function ITOverview() {
         <Link to="it-services" onMouseEnter={preloadITServices}>
           <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
             <span className="custom-btn-inner">
-              {dictionary["itOverview"][languageReducer]["exploreButton"]}
+              {dictionary["home"][languageReducer]["ITOverviewExploreBtn"]}
             </span>
           </button>
         </Link>

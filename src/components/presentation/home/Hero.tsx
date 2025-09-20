@@ -53,9 +53,9 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
           >
             <span className="mr-3 gradient-text">
-              {dictionary["hero"][languageReducer]["title1"]}
+              {dictionary["home"][languageReducer]["heroTitle"]}
             </span>
-            {dictionary["hero"][languageReducer]["title2"]}
+            {dictionary["home"][languageReducer]["heroSubtitle"]}
           </p>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"
@@ -64,7 +64,7 @@ const Hero = () => {
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"
           >
-            {dictionary["hero"][languageReducer]["description"]}
+            {dictionary["home"][languageReducer]["heroDescription"]}
           </p>
           <div className="w-full justify-center flex items-center gap-3 md:gap-5 flex-wrap px-[20px]"
             data-aos="fade-up"
@@ -81,7 +81,7 @@ const Hero = () => {
                   text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
               >
                 <span className="custom-btn-inner">
-                  {dictionary["hero"][languageReducer]["service1Button"]}
+                  {dictionary["home"][languageReducer]["itBtn"]}
                 </span>
               </button>
             </Link>
@@ -95,7 +95,7 @@ const Hero = () => {
                   text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
               >
                 <span className="custom-btn-inner">
-                  {dictionary["hero"][languageReducer]["service2Button"]}
+                  {dictionary["home"][languageReducer]["videoBtn"]}
                 </span>
               </button>
             </Link>

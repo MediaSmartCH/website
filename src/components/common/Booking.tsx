@@ -28,7 +28,7 @@ const Booking = () => {
             data-aos-easing="ease-in-sine"
 
           >
-            {dictionary["booking"][languageReducer]["title"]}
+            {dictionary["home"][languageReducer]["bookingTitle"]}
           </p>
           <img
             src={bookLine}
@@ -45,7 +45,7 @@ const Booking = () => {
             data-aos-duration="1300"
             data-aos-easing="ease-in-sine"
           >
-            {dictionary["booking"][languageReducer]["description"]}
+            {dictionary["home"][languageReducer]["bookingDescription"]}
           </p>
           <div
             data-aos="zoom-out"
@@ -57,7 +57,7 @@ const Booking = () => {
               url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
               rootElement={rootElement as HTMLElement}
               text={
-                dictionary["booking"][languageReducer]["bookingBtn"]
+                dictionary["home"][languageReducer]["bookingBtn"]
               }
               pageSettings={{
                 backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
