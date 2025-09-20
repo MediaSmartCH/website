@@ -139,7 +139,7 @@ const Navbar = () => {
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
-          {dictionary["navbarHomepage"][languageReducer]["navItem1"]}
+          {dictionary["navbar"][languageReducer]["navItem1"]}
         </Link>
       </Menu.Item>
       <Menu.Item key="it-services">
@@ -148,7 +148,7 @@ const Navbar = () => {
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
-          {dictionary["navbarHomepage"][languageReducer]["navItem2"]}
+          {dictionary["navbar"][languageReducer]["navItem2"]}
         </Link>
       </Menu.Item>
       <Menu.Item key="video-services">
@@ -157,7 +157,7 @@ const Navbar = () => {
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
-          {dictionary["navbarHomepage"][languageReducer]["navItem3"]}
+          {dictionary["navbar"][languageReducer]["navItem3"]}
         </Link>
       </Menu.Item>
       <Menu.Item key="about">
@@ -166,7 +166,7 @@ const Navbar = () => {
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
-          {dictionary["navbarHomepage"][languageReducer]["navItem4"]}
+          {dictionary["navbar"][languageReducer]["navItem4"]}
         </Link>
       </Menu.Item>
       <Menu.Item key="testimonials">
@@ -175,7 +175,7 @@ const Navbar = () => {
           className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
             } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
         >
-          {dictionary["navbarHomepage"][languageReducer]["navItem5"]}
+          {dictionary["navbar"][languageReducer]["navItem5"]}
         </Link>
       </Menu.Item>
       <Menu.Item key="booking">
@@ -183,7 +183,7 @@ const Navbar = () => {
           className="navbar-btn px-[16px] h-[35px] rounded-[5px] text-[#fff] font-helvetica font-medium text-[16px]"
           url="https://calendly.com/mediasmartch/30min"
           rootElement={rootElement as HTMLElement}
-          text={dictionary["navbarHomepage"][languageReducer]["navbarButton"]}
+          text={dictionary["navbar"][languageReducer]["navbarButton"]}
           pageSettings={{
             backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
             hideEventTypeDetails: false,
@@ -262,7 +262,7 @@ const Navbar = () => {
                       : "text-[#FFFFFF] hover:text-[#fff]"
                   }
                 >
-                  {dictionary["navbarHomepage"][languageReducer]["navItem1"]}
+                  {dictionary["navbar"][languageReducer]["navItem1"]}
                 </Link>
               </li>
               <li
@@ -280,7 +280,7 @@ const Navbar = () => {
                         : "text-[#FFFFFF] hover:text-[#fff]"
                     }
                   >
-                    {dictionary["navbarHomepage"][languageReducer]["navItem2"]}
+                    {dictionary["navbar"][languageReducer]["navItem2"]}
                   </Link>
                 </div>
               </li>
@@ -299,7 +299,7 @@ const Navbar = () => {
                         : "text-[#FFFFFF] hover:text-[#fff]"
                     }
                   >
-                    {dictionary["navbarHomepage"][languageReducer]["navItem3"]}
+                    {dictionary["navbar"][languageReducer]["navItem3"]}
                   </Link>
                 </div>
               </li>
@@ -318,7 +318,7 @@ const Navbar = () => {
                         : "text-[#FFFFFF] hover:text-[#fff]"
                     }
                   >
-                    {dictionary["navbarHomepage"][languageReducer]["navItem4"]}
+                    {dictionary["navbar"][languageReducer]["navItem4"]}
                   </Link>
                 </div>
               </li>
@@ -337,7 +337,7 @@ const Navbar = () => {
                         : "text-[#FFFFFF] hover:text-[#fff]"
                     }
                   >
-                    {dictionary["navbarHomepage"][languageReducer]["navItem5"]}
+                    {dictionary["navbar"][languageReducer]["navItem5"]}
                   </Link>
                 </div>
               </li> */}
@@ -405,7 +405,7 @@ const Navbar = () => {
                 url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
                 rootElement={rootElement as HTMLElement}
                 text={
-                  dictionary["navbarHomepage"][languageReducer]["navbarButton"]
+                  dictionary["navbar"][languageReducer]["navbarButton"]
                 }
                 pageSettings={{
                   backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
