@@ -3,7 +3,7 @@ import React from "react";
 import DotAnim from "components/common/DotAnim";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 
 // import headerLight from "assets/images/lotties/headerLight.json";
 // import headerDark from "assets/images/lotties/headerDark.json";
@@ -43,9 +43,9 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
           >
             <span className="pr-3 md:pr-0 gradient-text">
-              {dictionary["videoServicesHero"][languageReducer]["title1"]}
+              {dictionary["video"][languageReducer]["videoTitle"]}
             </span>
-            {dictionary["videoServicesHero"][languageReducer]["title2"]}
+            {dictionary["video"][languageReducer]["videoSubitle"]}
           </p>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"}
@@ -57,7 +57,7 @@ const Hero = () => {
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"
           >
-            {dictionary["videoServicesHero"][languageReducer]["description"]}
+            {dictionary["video"][languageReducer]["videoDescription"]}
           </p>
           <div className="w-full justify-center flex px-[20px]"
             data-aos="fade-up"
@@ -67,7 +67,7 @@ const Hero = () => {
             <a href="#contact">
               <button className="hero-btn custom-btn w-full md:min-w-[150px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2">
                 <span className="custom-btn-inner">
-                  {dictionary["videoServicesHero"][languageReducer]["contactButton"]}
+                  {dictionary["video"][languageReducer]["videoContactBtn"]}
                 </span>
               </button>
             </a>

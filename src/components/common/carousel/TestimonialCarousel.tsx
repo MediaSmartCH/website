@@ -80,9 +80,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={1}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author1"]}
-            company={dictionary["testimonial"][languageReducer]["author1title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial1"]}
+            name={dictionary["home"][languageReducer]["author1"]}
+            company={dictionary["home"][languageReducer]["author1title"]}
+            message={dictionary["home"][languageReducer]["testimonial1"]}
           />
         </div>
         <div
@@ -94,9 +94,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={2}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author2"]}
-            company={dictionary["testimonial"][languageReducer]["author2title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial2"]}
+            name={dictionary["home"][languageReducer]["author2"]}
+            company={dictionary["home"][languageReducer]["author2title"]}
+            message={dictionary["home"][languageReducer]["testimonial2"]}
           />
         </div>
         <div
@@ -108,9 +108,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={1}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author3"]}
-            company={dictionary["testimonial"][languageReducer]["author3title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial3"]}
+            name={dictionary["home"][languageReducer]["author3"]}
+            company={dictionary["home"][languageReducer]["author3title"]}
+            message={dictionary["home"][languageReducer]["testimonial3"]}
           />
         </div>
         <div
@@ -122,9 +122,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={2}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author4"]}
-            company={dictionary["testimonial"][languageReducer]["author4title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial4"]}
+            name={dictionary["home"][languageReducer]["author4"]}
+            company={dictionary["home"][languageReducer]["author4title"]}
+            message={dictionary["home"][languageReducer]["testimonial4"]}
           />
         </div>
         <div
@@ -136,9 +136,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={1}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author5"]}
-            company={dictionary["testimonial"][languageReducer]["author5title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial5"]}
+            name={dictionary["home"][languageReducer]["author5"]}
+            company={dictionary["home"][languageReducer]["author5title"]}
+            message={dictionary["home"][languageReducer]["testimonial5"]}
           />
         </div>
         <div
@@ -150,9 +150,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={2}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author6"]}
-            company={dictionary["testimonial"][languageReducer]["author6title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial6"]}
+            name={dictionary["home"][languageReducer]["author6"]}
+            company={dictionary["home"][languageReducer]["author6title"]}
+            message={dictionary["home"][languageReducer]["testimonial6"]}
           />
         </div>
       </Slider>

@@ -2,7 +2,7 @@ import React from "react";
 import { PopupButton } from "react-calendly";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 import bookLine from "assets/icons/bookLine.svg";
 
 const Booking = () => {

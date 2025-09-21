@@ -4,7 +4,7 @@ import DotAnim from "components/common/DotAnim";
 
 // Hooks
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 
 // Importation of lottie files
 // import aboutLight from 'assets/images/lotties/aboutLight.json';

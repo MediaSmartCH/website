@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 import PartnerSlider from "../../common/carousel/PartnerCarousel";
 
 

@@ -1,4 +1,4 @@
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 
 export const getTranslation = (
   section: string,
