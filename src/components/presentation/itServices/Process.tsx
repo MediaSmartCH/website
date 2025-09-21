@@ -2,7 +2,7 @@
 import DotAnim from "components/common/DotAnim";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 
 // Importation of lottie files
 // import processLight from 'assets/images/lotties/itProcessLight.json';
@@ -36,14 +36,14 @@ export default function Process() {
                         className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
                             } w-full it-service-process-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
                         dangerouslySetInnerHTML={{
-                            __html: dictionary["itServicesProcess"][languageReducer]["title"],
+                            __html: dictionary["it"][languageReducer]["itServicesProcessTitle"],
                         }}
                     />
                     <p
                         className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
                             } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
                     >
-                        {dictionary["itServicesProcess"][languageReducer]["description"]}
+                        {dictionary["it"][languageReducer]["itServicesProcessDescription"]}
                     </p>
                 </div>
 
@@ -75,7 +75,7 @@ export default function Process() {
                                 />
                             </svg>
                         </div>
-                        {dictionary["itServicesProcess"][languageReducer]["processData"].map((process: any, index: number) => {
+                        {dictionary["it"][languageReducer]["processData"].map((process: any, index: number) => {
                             return (
                                 <div key={index} className={`flex items-start space-x-8 ${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
                                     }`}

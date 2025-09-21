@@ -5,7 +5,7 @@ import { Mail } from "lucide-react";
 import { PopupButton } from "react-calendly";
 import DotAnim from "components/common/DotAnim";
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 
 const Error404Page: React.FC = () => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import { Menu, Dropdown } from "antd";
 import { PopupButton } from "react-calendly";
 
 import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 import { setLanguage } from "store/slices/common/languageSlice";
 import { setTheme } from "store/slices/common/themeSlice";
 import logo from "assets/images/logo-header.png";

@@ -8,7 +8,7 @@ import { setTheme } from "store/slices/common/themeSlice";
 import flag1 from "assets/images/flag1.png";
 import flag2 from "assets/images/french.png";
 
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 
 // import { Link, useInRouterContext, useLocation, type Location as RouterLocation } from "react-router-dom";
 import { Link, useInRouterContext } from "react-router-dom";

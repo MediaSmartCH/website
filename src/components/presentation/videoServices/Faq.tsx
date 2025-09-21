@@ -2,7 +2,7 @@ import React from "react";
 import { Collapse } from "antd";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/resources/multiLanguages";
+import { dictionary } from "services/locales";
 
 import "assets/styles/faqCss.css";
 import bg from "assets/images/faq-bg.png";
@@ -34,7 +34,7 @@ const Faq = () => {
               themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
             } w-full text-center font-helvetica font-bold text-[28px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mt-[40px] md:mt-[50px] lg:mt-[60px] 2xl:mt-[70px] mb-[100px] md:mb-[50px] lg:mb-[30px] xl:mb-[36px] 2xl:mb-[46px] `}
           >
-            {dictionary["faq"][languageReducer]["title"]}
+            {dictionary["home"][languageReducer]["faqTitle"]}
           </p>
           <div className="w-full"
            data-aos="fade-up"
@@ -121,7 +121,7 @@ const Faq = () => {
                 >
                   <Panel
                     header={
-                      dictionary["faq"][languageReducer]["tile1"]["faqTitle"]
+                      dictionary["home"][languageReducer]["tile1"]["faqQuestion"]
                     }
                     className={`${
                       themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
@@ -138,8 +138,8 @@ const Faq = () => {
                         } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
                         {
-                          dictionary["faq"][languageReducer]["tile1"][
-                            "faqDescription"
+                          dictionary["home"][languageReducer]["tile1"][
+                            "faqAnswer"
                           ]
                         }
                       </div>
@@ -147,7 +147,7 @@ const Faq = () => {
                   </Panel>
                   <Panel
                     header={
-                      dictionary["faq"][languageReducer]["tile2"]["faqTitle"]
+                      dictionary["home"][languageReducer]["tile2"]["faqQuestion"]
                     }
                     key="2"
                     className={`${
@@ -164,8 +164,8 @@ const Faq = () => {
                         } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
                         {
-                          dictionary["faq"][languageReducer]["tile2"][
-                            "faqDescription"
+                          dictionary["home"][languageReducer]["tile2"][
+                            "faqAnswer"
                           ]
                         }
                       </div>
@@ -173,7 +173,7 @@ const Faq = () => {
                   </Panel>
                   <Panel
                     header={
-                      dictionary["faq"][languageReducer]["tile3"]["faqTitle"]
+                      dictionary["home"][languageReducer]["tile3"]["faqQuestion"]
                     }
                     key="3"
                     className={`${
@@ -190,8 +190,8 @@ const Faq = () => {
                         } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
                         {
-                          dictionary["faq"][languageReducer]["tile3"][
-                            "faqDescription"
+                          dictionary["home"][languageReducer]["tile3"][
+                            "faqAnswer"
                           ]
                         }
                       </div>
@@ -199,7 +199,7 @@ const Faq = () => {
                   </Panel>
                   <Panel
                     header={
-                      dictionary["faq"][languageReducer]["tile4"]["faqTitle"]
+                      dictionary["home"][languageReducer]["tile4"]["faqQuestion"]
                     }
                     key="4"
                     className={`${
@@ -216,8 +216,8 @@ const Faq = () => {
                         } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
                         {
-                          dictionary["faq"][languageReducer]["tile4"][
-                            "faqDescription"
+                          dictionary["home"][languageReducer]["tile4"][
+                            "faqAnswer"
                           ]
                         }
                       </div>
@@ -225,7 +225,7 @@ const Faq = () => {
                   </Panel>
                   <Panel
                     header={
-                      dictionary["faq"][languageReducer]["tile5"]["faqTitle"]
+                      dictionary["home"][languageReducer]["tile5"]["faqQuestion"]
                     }
                     key="5"
                     className={`${
@@ -242,8 +242,8 @@ const Faq = () => {
                         } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
                         {
-                          dictionary["faq"][languageReducer]["tile5"][
-                            "faqDescription"
+                          dictionary["home"][languageReducer]["tile5"][
+                            "faqAnswer"
                           ]
                         }
                       </div>
@@ -251,7 +251,7 @@ const Faq = () => {
                   </Panel>
                   <Panel
                     header={
-                      dictionary["faq"][languageReducer]["tile6"]["faqTitle"]
+                      dictionary["home"][languageReducer]["tile6"]["faqQuestion"]
                     }
                     key="6"
                     className={`${
@@ -268,8 +268,8 @@ const Faq = () => {
                         } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
                         {
-                          dictionary["faq"][languageReducer]["tile6"][
-                            "faqDescription"
+                          dictionary["home"][languageReducer]["tile6"][
+                            "faqAnswer"
                           ]
                         }
                       </div>
