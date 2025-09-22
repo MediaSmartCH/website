@@ -23,8 +23,12 @@ import contactPhone from "assets/icons/contactPhone.svg";
 import contactMessage from "assets/icons/contactMessage.svg";
 import arrow from "assets/icons/rightArrow.svg";
 
+import { Link } from "react-router-dom";
+import { useLangLink } from "services/router/langPath";
+
 const Contact = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const { L } = useLangLink();
 
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
@@ -240,38 +244,33 @@ const Contact = () => {
 
             {/* Formulaire */}
             <form
-              // ref={(form) => {
-              //   if (form) {
-              //     const phoneInput = form.querySelector('input[name="phone"]') as HTMLInputElement;
-              //     if (phoneInput && phoneValue && !dialOnly && !isValidPhoneNumber(phoneValue)) {
-              //       phoneInput.setCustomValidity(t.text("home.contactInvalidMobileError"));
-              //     }
-              //   }
-              // }}
+              noValidate
               className="w-full lg:w-[50%]"
               data-aos="fade-up"
               data-aos-duration="1200"
               onSubmit={async (e) => {
                 e.preventDefault();
-                console.log('📝 Form submit triggered');
 
                 // Validations basiques
                 if (!isChecked) {
-                  console.log('❌ Checkbox non cochée');
                   setError(t.text("home.contactErrorText"));
                   return;
                 }
 
                 if (!isValidEmailStrict(contact.email)) {
-                  console.log('❌ Email invalide:', contact.email);
                   setEmailValid(false);
+
+                  const emailInput = document.querySelector('input[name="email"]') as HTMLInputElement;
+                  if (emailInput) {
+                    emailInput.setCustomValidity(t.text("home.contactInvalidEmailError"));
+                    emailInput.reportValidity();
+                  }
                   return;
                 }
 
                 const hasPhoneNumber = phoneValue && getLocalDigits(phoneValue).length > 0;
 
                 if (hasPhoneNumber && !isValidPhoneNumber(phoneValue)) {
-                  console.log('❌ Téléphone invalide:', phoneValue);
                   setPhoneValid(false);
 
                   const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
@@ -282,30 +281,17 @@ const Contact = () => {
                   return;
                 }
 
-                console.log('✅ Validations passées, début traitement...');
                 setLoading(true);
 
                 try {
                   const isLocalHost = window.location.hostname === 'localhost' ||
                     window.location.hostname === '127.0.0.1';
 
-                  console.log('🔍 Environnement:', {
-                    hostname: window.location.hostname,
-                    isLocalHost,
-                    executeRecaptchaExists: !!executeRecaptcha,
-                    isDev: process.env.NODE_ENV
-                  });
-
                   if (!isLocalHost) {
                     if (!executeRecaptcha) {
-                      console.warn('⚠️ executeRecaptcha non disponible, bypass forcé');
                     } else {
-                      console.log('🔐 Lancement ReCAPTCHA...');
                       const token = await executeRecaptcha('contact_form');
-                      console.log('🎟️ Token reçu:', token.substring(0, 20) + '...');
-
                       const verification = await verifyRecaptchaToken(token);
-                      console.log('📊 Vérification:', verification);
 
                       if (!verification.success) {
                         console.error('❌ ReCAPTCHA échec:', verification);
@@ -313,23 +299,18 @@ const Contact = () => {
                         setLoading(false);
                         return;
                       }
-                      console.log('✅ ReCAPTCHA validé avec score:', verification.score);
                     }
                   } else {
                     console.log('🏠 Mode local : ReCAPTCHA bypassed');
                   }
 
                   const payload = { ...contact, phone: phoneValue };
-                  console.log('📧 Envoi email avec payload:', payload);
-
                   const result = await emailjs.send(
                     "REMOVED_EMAILJS_SERVICE_ID",
                     "REMOVED_EMAILJS_TEMPLATE_ID",
                     payload,
                     "REMOVED_EMAILJS_PUBLIC_KEY"
                   );
-
-                  console.log('✅ Email envoyé, résultat:', result);
 
                   setLoading(false);
                   setDone(true);
@@ -341,12 +322,10 @@ const Contact = () => {
                   handleClick();
 
                 } catch (error) {
-                  console.error('💥 ERREUR CRITIQUE:', error);
                   if (error instanceof Error) {
                     console.error('Message:', error.message);
                     console.error('Stack:', error.stack);
                   }
-                  setError('Une erreur est survenue : ' + (error instanceof Error ? error.message : 'Erreur inconnue'));
                   setLoading(false);
                 }
               }}
@@ -558,11 +537,15 @@ const Contact = () => {
               {/* Consent */}
               <div className="contact-checkbox">
                 <Checkbox onChange={onCheckboxChange} checked={isChecked}>
-                  <p
-                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
-                      } font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}
-                  >
-                    {t.text("home.contactCheckboxTxt")}
+                  <p className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"} font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}>
+                    {t.text("home.contactCheckboxTxt")}{" "}
+                    <Link
+                      to={L("/privacy-policy")}
+                      className="underline hover:opacity-75 transition"
+                    >
+                      {t.text("home.contactCheckboxPrivacyLink")}
+                    </Link>
+                    . {t.text("home.contactCheckboxSuffix")}
                   </p>
                 </Checkbox>
               </div>
@@ -584,9 +567,9 @@ const Contact = () => {
                   className="custom-btn rounded-[80px] text-white px-[50px] lg:px-[54px] py-[11px] lg:py-[16px]"
                 >
                   {done ? (
-                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">Done</span>
+                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">{t.text("home.contactDone")}</span>
                   ) : loading ? (
-                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">Loading...</span>
+                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">{t.text("home.contactLoading")}</span>
                   ) : (
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">
                       {t.text("home.contactBtn")}

@@ -163,8 +163,9 @@ const home = {
     contactEmail: "Email *",
     contactMobile: "Numéro de Mobile",
     contactMsg: "Comment pouvons-nous vous aider ? *",
-    contactCheckboxTxt:
-        "J'accepte d'être contacté par MediaSmart concernant ma demande. *",
+    contactCheckboxTxt: "Je consens à l'utilisation de mes coordonnées par MediaSmart pour traiter cette demande conformément à la",
+    contactCheckboxPrivacyLink: "Politique de confidentialité",
+    contactCheckboxSuffix: "*",
     contactBtn: "Envoyer Maintenant",
     contactErrorText: "Veuillez accepter les termes.",
     contactInvalidEmailError: "Veuillez entrer une adresse e-mail valide.",
