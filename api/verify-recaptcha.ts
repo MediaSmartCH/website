@@ -1,13 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-interface RecaptchaVerifyResponse {
-  success: boolean;
-  score?: number;
-  challenge_ts?: string;
-  hostname?: string;
-  'error-codes'?: string[];
-}
-
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
@@ -31,7 +23,7 @@ export default async function handler(
       { method: 'POST' }
     );
 
-    const data: RecaptchaVerifyResponse = await response.json();
+    const data = await response.json();
 
     if (data.success && (data.score ?? 0) >= 0.5) {
       return res.status(200).json({ 
