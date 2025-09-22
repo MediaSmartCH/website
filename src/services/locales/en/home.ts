@@ -170,5 +170,7 @@ const home = {
     contactRequiredMobileError: "Mobile number is required.",
     contactRequiredMsgError: "This field is required.",
     contactRequired: "* Required",
+    contactDone: "Done",
+    contactLoading: "Loading..."
 };
 export default home;

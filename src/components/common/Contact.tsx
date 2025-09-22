@@ -1,11 +1,16 @@
 import React from "react";
 import { Checkbox } from "antd";
-// import type { CheckboxProps } from "antd";
 import emailjs from "@emailjs/browser";
+import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
+import "react-international-phone/style.css";
+import { isValidPhoneNumber } from "libphonenumber-js";
+
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { verifyRecaptchaToken } from "services/api/recaptcha";
 
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
+
 import email from "assets/icons/email.svg";
 import address from "assets/icons/address.svg";
 import phone from "assets/icons/phone.svg";
@@ -19,86 +24,111 @@ import contactMessage from "assets/icons/contactMessage.svg";
 import arrow from "assets/icons/rightArrow.svg";
 
 const Contact = () => {
-  // const onChange: CheckboxProps["onChange"] = (e) => {
-  //   console.log(e.target.checked);
-  // };
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
-
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-
   const t = useTranslations(languageReducer);
 
   const [loading, setLoading] = React.useState(false);
   const [done, setDone] = React.useState(false);
-  const [contact, setContact] = React.useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-  const handleInvalid = (e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>) => {
-    console.log('Invalid event triggered');
-    e.preventDefault();
-    const target = e.currentTarget;
-
-    if (target.name === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (target.value === '') {
-        target.setCustomValidity(t.text("home.contactRequiredEmailError"));
-      } else if (!emailRegex.test(target.value)) {
-        target.setCustomValidity(t.text("home.contactInvalidEmailError"));
-      } else {
-        target.setCustomValidity('');
-      }
-    }
-
-    if (target.name === 'name') {
-      if (target.value === '') {
-        target.setCustomValidity(t.text("home.contactRequiredNameError"));
-      } else {
-        target.setCustomValidity('');
-      }
-    }
-
-    if (target.name === 'phone') {
-      const phoneRegex = /^(\+\d{6,}|\d{4})$/;
-      if (target.value === '') {
-        target.setCustomValidity(t.text("home.contactRequiredMobileError"));
-      } else if (!phoneRegex.test(target.value)) {
-        target.setCustomValidity(t.text("home.contactInvalidMobileError"));
-      } else {
-        target.setCustomValidity('');
-      }
-    }
-
-    if (target.name === 'message') {
-      if (target.value === '') {
-        target.setCustomValidity(t.text("home.contactRequiredMsgError"));
-      } else {
-        target.setCustomValidity('');
-      }
-    }
-
-    target.reportValidity(); // This will force the browser to report the custom validity message
-  };
-
-
-  const handleChange = (e: any) => {
-    setContact({ ...contact, [e.target.name]: e.target.value });
-  };
-  const handleClick = () => {
-    // setDone(false);
-    setTimeout(() => {
-      setDone(false);
-    }, 3000);
-  };
   const [isChecked, setIsChecked] = React.useState(false);
   const [error, setError] = React.useState("");
 
+  // ---- Form state
+  const [contact, setContact] = React.useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  // ---- Phone (E.164)
+  const [phoneValue, setPhoneValue] = React.useState(""); // ex: +41796341212
+  const [phoneValid, setPhoneValid] = React.useState(true);
+  // const dialOnly = /^\+\d{1,4}\s*$/.test(phoneValue) || phoneValue === "";
+
+  // Renvoie uniquement les chiffres "locaux" (après l'indicatif)
+  const getLocalDigits = (phone: string) => {
+    const { country } = guessCountryByPartialPhoneNumber({ phone }); // <- objet, pas string
+    const dial = country?.dialCode || "";                            // <- dialCode via country
+    try {
+      return removeDialCode({ phone, dialCode: dial }).replace(/\D/g, "");
+    } catch {
+      return phone.replace(/^\+\d{1,4}\s*/, "").replace(/\D/g, "");
+    }
+  };
+
+  const localDigits = getLocalDigits(phoneValue);
+  const dialOnly = localDigits.length === 0;
+
+  // ---- Email validation
+  const [emailValid, setEmailValid] = React.useState(true);
+
+  // Regex “raisonnable” + garde-fous (TLD >=2, pas de '..', labels corrects)
+  const emailBase = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}$/i;
+  const isValidEmailStrict = (value: string) => {
+    if (!emailBase.test(value)) return false;
+    if (value.includes("..")) return false;
+    const [local, domain] = value.split("@");
+    if (!local || !domain) return false;
+    if (local.startsWith(".") || local.endsWith(".")) return false;
+    const labels = domain.split(".");
+    if (labels.some((l) => l.startsWith("-") || l.endsWith("-") || l.length === 0)) return false;
+    return true;
+  };
+
+  const handleInvalid = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.currentTarget as HTMLInputElement | HTMLTextAreaElement;
+
+    if (target.name === "email") {
+      if (!target.value) {
+        target.setCustomValidity(t.text("home.contactRequiredEmailError"));
+        setEmailValid(false);
+      } else if (!isValidEmailStrict(target.value)) {
+        target.setCustomValidity(t.text("home.contactInvalidEmailError"));
+        setEmailValid(false);
+      } else {
+        target.setCustomValidity("");
+        setEmailValid(true);
+      }
+    }
+
+    if (target.name === "message") {
+      if (!target.value) {
+        target.setCustomValidity(t.text("home.contactRequiredMsgError"));
+      } else {
+        target.setCustomValidity("");
+      }
+    }
+
+    target.reportValidity();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "email") {
+      setContact((c) => ({ ...c, email: value }));
+      setEmailValid(value === "" ? true : isValidEmailStrict(value));
+      return;
+    }
+
+    setContact((c) => ({ ...c, [name]: value }));
+  };
+
+  const handleClick = () => {
+    setTimeout(() => setDone(false), 3000);
+  };
+
   const onCheckboxChange = (e: any) => {
     setIsChecked(e.target.checked);
-    setError(""); // Reset error message when checkbox is checked
+    setError("");
   };
+
+  const isDev = process.env.NODE_ENV === 'development';
+
   return (
     <div id="contact" className={`${themeReducer === "light" ? "bg-[#F7F7FF]" : "bg-[#2B284C]"} `}>
       <div className="md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px] mt-[32px] lg:mt-[42px] 2xl:mt-[54px]">
@@ -107,31 +137,53 @@ const Contact = () => {
             className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"
               } w-full mx-auto text-center mb-[18px] lg:mb-[32px] 2xl:mb-[47px] leading-[36px] lg:leading-[46px] xl:leading-[72px] font-redDisplay font-bold text-[24px] md:text-[28px] lg:text-[32px] xl:text-[34px] 2xl:text-[36px] `}
           >
-            {/* {dictionary["home"][languageReducer]["contactTitle"]} */} {t.text("home.contactTitle")}
+            {t.text("home.contactTitle")}
           </p>
+
           <div
             className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
               } flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-y-[35px] `}
           >
+            {/* Bloc gauche */}
             <div className="w-full lg:w-[50%]" data-aos="fade-right" data-aos-duration="1000">
               <div className="flex items-center gap-x-[18px]">
-                <img src={email} alt="email" className="" />
-                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px] text-[#]">
-                  <a href="mailto:hello@mediasmart.ch" className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}>hello[at]mediasmart.ch</a>
+                <img src={email} alt="email" />
+                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
+                  <a
+                    href="mailto:hello@mediasmart.ch"
+                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                  >
+                    hello[at]mediasmart.ch
+                  </a>
                 </p>
               </div>
+
               <div className="flex items-center gap-x-[18px] my-[15px] lg:my-[31px]">
-                <img src={address} alt="address" className="" />
+                <img src={address} alt="address" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
-                  <a href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9" className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`} target="_blank">Valais – Vaud – Genève – Fribourg</a>
+                  <a
+                    href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9"
+                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Valais – Vaud – Genève – Fribourg
+                  </a>
                 </p>
               </div>
+
               <div className="flex items-center gap-x-[18px]">
-                <img src={phone} alt="phone" className="" />
+                <img src={phone} alt="phone" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
-                  <a href="tel:+41796578612" className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}>+41 79 657 86 12</a>
+                  <a
+                    href="tel:+41796578612"
+                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                  >
+                    +41 79 657 86 12
+                  </a>
                 </p>
               </div>
+
               <div className="
                 flex flex-wrap 
                 justify-center lg:justify-start
@@ -164,7 +216,7 @@ const Contact = () => {
                   rel="noreferrer"
                 >
                   <span>
-                    <img src={linkedin} alt="insta" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
+                    <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
                   </span>
                   <span>Linkedin</span>
                 </a>
@@ -185,91 +237,281 @@ const Contact = () => {
                 </a>
               </div>
             </div>
-            <form
+
+            {/* Formulaire */}
+            {/* <form
               className="w-full lg:w-[50%]"
               data-aos="fade-up"
               data-aos-duration="1200"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
+
                 if (!isChecked) {
                   setError(t.text("home.contactErrorText"));
                   return;
                 }
-                setLoading(true);
-                emailjs.send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", contact, "REMOVED_EMAILJS_PUBLIC_KEY").then(
-                  (response) => {
-                    setLoading(false);
-                    setDone(true);
-                    setContact({
-                      name: "",
-                      email: "",
-                      phone: "",
-                      message: "",
+
+                if (!isValidEmailStrict(contact.email)) {
+                  setEmailValid(false);
+                  return;
+                }
+
+                if (phoneValue && !isValidPhoneNumber(phoneValue)) {
+                  setPhoneValid(false);
+                  return;
+                }
+
+                // if (!executeRecaptcha) {
+                //   console.error('Execute recaptcha not yet available');
+                //   return;
+                // }
+
+                try {
+                  setLoading(true);
+
+                  // Génération du token ReCAPTCHA
+                  // const token = await executeRecaptcha('contact_form');
+
+                  // VÉRIFICATION avec votre backend (bypass en local)
+                  // const verification = await verifyRecaptchaToken(token);
+
+                  // if (!verification.success) {
+                  //   setError('Échec de la vérification de sécurité');
+                  //   setLoading(false);
+                  //   return;
+                  // }
+
+                  // Si OK, envoyer l'email (SANS le token dans le payload)
+                  const payload = {
+                    ...contact,
+                    phone: phoneValue,
+                  };
+
+                  emailjs
+                    .send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", payload, "REMOVED_EMAILJS_PUBLIC_KEY")
+                    .then(() => {
+                      setLoading(false);
+                      setDone(true);
+                      setContact({ name: "", email: "", message: "" });
+                      setPhoneValue("");
+                      setIsChecked(false);
+                      setEmailValid(true);
+                      setPhoneValid(true);
+                      handleClick();
+                    })
+                    .catch((err) => {
+                      console.log("FAILED...", err);
+                      setLoading(false);
                     });
-                    handleClick();
-                    setIsChecked(false)
-                  },
-                  (error) => {
-                    console.log("FAILED...", error);
+
+                } catch (error) {
+                  console.error('ReCAPTCHA error:', error);
+                  setLoading(false);
+                }
+              }}
+            // onSubmit={(e) => {
+            //   e.preventDefault();
+            //   if (!isChecked) {
+            //     setError(t.text("home.contactErrorText"));
+            //     return;
+            //   }
+
+            //   // Email obligatoire
+            //   if (!isValidEmailStrict(contact.email)) {
+            //     setEmailValid(false);
+            //     return;
+            //   }
+
+            //   // Téléphone optionnel, mais s'il est saisi il doit être valide
+            //   if (phoneValue && !isValidPhoneNumber(phoneValue)) {
+            //     setPhoneValid(false);
+            //     return;
+            //   }
+
+            //   setLoading(true);
+            //   const payload = {
+            //     ...contact,
+            //     phone: phoneValue, // E.164
+            //   };
+
+            //   emailjs
+            //     .send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", payload, "REMOVED_EMAILJS_PUBLIC_KEY")
+            //     .then(() => {
+            //       setLoading(false);
+            //       setDone(true);
+            //       setContact({ name: "", email: "", message: "" });
+            //       setPhoneValue("");
+            //       setIsChecked(false);
+            //       setEmailValid(true);
+            //       setPhoneValid(true);
+            //       handleClick();
+            //     })
+            //     .catch((err) => {
+            //       console.log("FAILED...", err);
+            //       setLoading(false);
+            //     });
+            // }}
+            > */}
+            <form
+              className="w-full lg:w-[50%]"
+              data-aos="fade-up"
+              data-aos-duration="1200"
+              onSubmit={async (e) => {
+                e.preventDefault();
+
+                if (!isChecked) {
+                  setError(t.text("home.contactErrorText"));
+                  return;
+                }
+
+                if (!isValidEmailStrict(contact.email)) {
+                  setEmailValid(false);
+                  return;
+                }
+
+                if (phoneValue && !isValidPhoneNumber(phoneValue)) {
+                  setPhoneValid(false);
+                  return;
+                }
+
+                setLoading(true);
+
+                try {
+                  // ReCAPTCHA UNIQUEMENT en production (pas localhost)
+                  if (!isDev && executeRecaptcha) {
+                    const token = await executeRecaptcha('contact_form');
+                    const verification = await verifyRecaptchaToken(token);
+
+                    if (!verification.success) {
+                      setError('Échec de la vérification de sécurité');
+                      setLoading(false);
+                      return;
+                    }
                   }
-                );
+
+                  // Envoi email
+                  const payload = { ...contact, phone: phoneValue };
+                  await emailjs.send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", payload, "REMOVED_EMAILJS_PUBLIC_KEY");
+
+                  setLoading(false);
+                  setDone(true);
+                  setContact({ name: "", email: "", message: "" });
+                  setPhoneValue("");
+                  setIsChecked(false);
+                  setEmailValid(true);
+                  setPhoneValid(true);
+                  handleClick();
+
+                } catch (error) {
+                  console.error('Error:', error);
+                  setLoading(false);
+                }
               }}
             >
+              {/* Nom */}
               <div
                 className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
                   } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
               >
-
                 <input
                   placeholder={t.text("home.contactName")}
                   className={`custom-contact-input ${themeReducer === "light"
                     ? "text-[#222222] placeholder:text-[#222222]"
-                    : "text-[#E5E5E5 placeholder:text-[#E5E5E5]"
+                    : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
                     } `}
                   type="text"
                   name="name"
                   onChange={handleChange}
-                  onInvalid={handleInvalid}
                   value={contact.name}
                   required
                 />
-                <img src={contactUser} alt="User" className="" />
+                <img src={contactUser} alt="User" />
               </div>
+
+              {/* Email */}
               <div
-                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-                  } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
+                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
+                ${emailValid ? "border-[#C8CAE4]" : "border-red-500"}`}
               >
                 <input
                   placeholder={t.text("home.contactEmail")}
-                  className={`custom-contact-input ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
-                    } `}
+                  className={`custom-contact-input ${emailValid ? "" : "text-red-500"
+                    } ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"}`}
                   type="email"
                   name="email"
                   onChange={handleChange}
                   onInvalid={handleInvalid}
+                  onBlur={(e) => setEmailValid(isValidEmailStrict(e.target.value))}
                   value={contact.email}
                   required
+                // Empêche la validation HTML trop permissive
+                // pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,24}"
                 />
-                <img src={contactEmail} alt="Email" className="" />
+                <img src={contactEmail} alt="Email" />
               </div>
+
+              {/* Téléphone : PhoneInput */}
               <div
-                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-                  } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
+                className={`font-poppins
+                  ${themeReducer === "light" ? "text-[#222222] rip-light" : "text-[#E5E5E5] rip-dark"}
+                  ${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  relative flex items-center border-2 rounded-[11px]
+                  px-[16px] lg:px-[18px] py-[12px] lg:py-[16px] mb-[16px]
+                  ${!dialOnly && !phoneValid ? "border-red-500 invalid-phone" : "border-[#C8CAE4]"}
+                `}
               >
-                <input
-                  placeholder={t.text("home.contactMobile")}
-                  className={`custom-contact-input ${themeReducer === "light"
-                    ? "text-[#222222] placeholder:text-[#222222]"
-                    : "text-[#E5E5E5 placeholder:text-[#E5E5E5]"
-                    } `}
-                  type="text"
-                  name="phone"
-                  onChange={handleChange}
-                  onInvalid={handleInvalid}
-                  value={contact.phone}
+                <PhoneInput
+                  defaultCountry="ch"
+                  value={phoneValue}
+                  onChange={(value) => {
+                    setPhoneValue(value);
+                    // indicatif seul = champ "vide" (optionnel)
+                    const local = getLocalDigits(value);
+                    const isDialOnly = local.length === 0;
+                    setPhoneValid(isDialOnly ? true : isValidPhoneNumber(value));
+                  }}
+                  // forceDialCode
+                  preferredCountries={["ch", "fr", "de", "it", "gb"]}
+                  inputProps={{
+                    name: "phone",
+                    placeholder: t.text("home.contactMobile"),
+                    "aria-label": t.text("home.contactMobile"),
+                  }}
+                  className="w-full"
+                  // réserve la place pour le libellé + l'icône à droite
+                  inputClassName="custom-contact-input bg-transparent outline-none w-full pr-[110px]"
+                  countrySelectorStyleProps={{
+                    buttonStyle: {
+                      borderRadius: '8px',
+                      transition: 'all 0.15s ease',
+                    },
+                    dropdownStyleProps: {
+                      style: {
+                        marginTop: '4px',
+                      }
+                    }
+                  }}
                 />
-                <img src={contactPhone} alt="Mobile" className="" />
+
+                {/* Zone droite : libellé inline (disparaît dès qu’on tape un chiffre local) + icône */}
+                < div className="pointer-events-none absolute inset-y-0 right-[16px] flex items-center gap-3" >
+                  {dialOnly && (
+                    <span
+                      className={`whitespace-nowrap leading-none
+                        ${themeReducer === "light" ? "text-[#6B6E80]" : "text-[#C8CADE]"}
+                        text-[14px] md:text-[15px] lg:text-[16px]
+                      `}
+                    >
+                      {t.text("home.contactMobile")}
+                    </span>
+                  )
+                  }
+                  < img src={contactPhone} alt="Phone" />
+                </div>
               </div>
+
+              {/* Message */}
               <div
                 className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
                   } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
@@ -278,7 +520,7 @@ const Contact = () => {
                   placeholder={t.text("home.contactMsg")}
                   className={`custom-contact-input ${themeReducer === "light"
                     ? "text-[#222222] placeholder:text-[#222222]"
-                    : "text-[#E5E5E5 placeholder:text-[#E5E5E5]"
+                    : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
                     } `}
                   rows={4}
                   style={{ resize: "none" }}
@@ -290,25 +532,30 @@ const Contact = () => {
                 />
                 <img src={contactMessage} alt="help" className="absolute right-[24px] top-[24px]" />
               </div>
+
+              {/* Consent */}
               <div className="contact-checkbox">
                 <Checkbox onChange={onCheckboxChange} checked={isChecked}>
                   <p
                     className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
                       } font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}
                   >
-                    {/* {dictionary["home"][languageReducer]["contactCheckboxTxt"]} */} {t.text("home.contactCheckboxTxt")}
+                    {t.text("home.contactCheckboxTxt")}
                   </p>
                 </Checkbox>
               </div>
+
               <div className="required-text mt-[16px] lg:mt-[22px]">
                 <p
                   className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
                     } font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] `}
                 >
-                  {/* {dictionary["home"][languageReducer]["contactRequired"]} */} {t.text("home.contactRequired")}
+                  {t.text("home.contactRequired")}
                 </p>
               </div>
+
               {error && <p className="text-red-500">{error}</p>}
+
               <div className="mt-[16px] lg:mt-[22px] flex justify-center lg:justify-start">
                 <button
                   type="submit"
@@ -320,9 +567,9 @@ const Contact = () => {
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">Loading...</span>
                   ) : (
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">
-                      {/* {dictionary["home"][languageReducer]["contactBtn"]} */} {t.text("home.contactBtn")}
+                      {t.text("home.contactBtn")}
                       <span>
-                        <img src={arrow} alt="arrow" className="" />
+                        <img src={arrow} alt="arrow" />
                       </span>
                     </span>
                   )}
@@ -331,11 +578,9 @@ const Contact = () => {
             </form>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
 export default Contact;
-
-

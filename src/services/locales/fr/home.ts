@@ -174,5 +174,7 @@ const home = {
     contactRequiredMobileError: "Le numéro de téléphone est requis.",
     contactRequiredMsgError: "Ce champ est requis.",
     contactRequired: "* Obligatoire",
+    contactDone: "Fait",
+    contactLoading: "Chargement..."
 };
 export default home;
