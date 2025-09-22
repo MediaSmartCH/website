@@ -103,7 +103,7 @@ const Contact = () => {
       }
     }
 
-    target.reportValidity();
+    // target.reportValidity();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -239,159 +239,97 @@ const Contact = () => {
             </div>
 
             {/* Formulaire */}
-            {/* <form
-              className="w-full lg:w-[50%]"
-              data-aos="fade-up"
-              data-aos-duration="1200"
-              onSubmit={async (e) => {
-                e.preventDefault();
-
-                if (!isChecked) {
-                  setError(t.text("home.contactErrorText"));
-                  return;
-                }
-
-                if (!isValidEmailStrict(contact.email)) {
-                  setEmailValid(false);
-                  return;
-                }
-
-                if (phoneValue && !isValidPhoneNumber(phoneValue)) {
-                  setPhoneValid(false);
-                  return;
-                }
-
-                // if (!executeRecaptcha) {
-                //   console.error('Execute recaptcha not yet available');
-                //   return;
-                // }
-
-                try {
-                  setLoading(true);
-
-                  // Génération du token ReCAPTCHA
-                  // const token = await executeRecaptcha('contact_form');
-
-                  // VÉRIFICATION avec votre backend (bypass en local)
-                  // const verification = await verifyRecaptchaToken(token);
-
-                  // if (!verification.success) {
-                  //   setError('Échec de la vérification de sécurité');
-                  //   setLoading(false);
-                  //   return;
-                  // }
-
-                  // Si OK, envoyer l'email (SANS le token dans le payload)
-                  const payload = {
-                    ...contact,
-                    phone: phoneValue,
-                  };
-
-                  emailjs
-                    .send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", payload, "REMOVED_EMAILJS_PUBLIC_KEY")
-                    .then(() => {
-                      setLoading(false);
-                      setDone(true);
-                      setContact({ name: "", email: "", message: "" });
-                      setPhoneValue("");
-                      setIsChecked(false);
-                      setEmailValid(true);
-                      setPhoneValid(true);
-                      handleClick();
-                    })
-                    .catch((err) => {
-                      console.log("FAILED...", err);
-                      setLoading(false);
-                    });
-
-                } catch (error) {
-                  console.error('ReCAPTCHA error:', error);
-                  setLoading(false);
-                }
-              }}
-            // onSubmit={(e) => {
-            //   e.preventDefault();
-            //   if (!isChecked) {
-            //     setError(t.text("home.contactErrorText"));
-            //     return;
-            //   }
-
-            //   // Email obligatoire
-            //   if (!isValidEmailStrict(contact.email)) {
-            //     setEmailValid(false);
-            //     return;
-            //   }
-
-            //   // Téléphone optionnel, mais s'il est saisi il doit être valide
-            //   if (phoneValue && !isValidPhoneNumber(phoneValue)) {
-            //     setPhoneValid(false);
-            //     return;
-            //   }
-
-            //   setLoading(true);
-            //   const payload = {
-            //     ...contact,
-            //     phone: phoneValue, // E.164
-            //   };
-
-            //   emailjs
-            //     .send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", payload, "REMOVED_EMAILJS_PUBLIC_KEY")
-            //     .then(() => {
-            //       setLoading(false);
-            //       setDone(true);
-            //       setContact({ name: "", email: "", message: "" });
-            //       setPhoneValue("");
-            //       setIsChecked(false);
-            //       setEmailValid(true);
-            //       setPhoneValid(true);
-            //       handleClick();
-            //     })
-            //     .catch((err) => {
-            //       console.log("FAILED...", err);
-            //       setLoading(false);
-            //     });
-            // }}
-            > */}
             <form
+              // ref={(form) => {
+              //   if (form) {
+              //     const phoneInput = form.querySelector('input[name="phone"]') as HTMLInputElement;
+              //     if (phoneInput && phoneValue && !dialOnly && !isValidPhoneNumber(phoneValue)) {
+              //       phoneInput.setCustomValidity(t.text("home.contactInvalidMobileError"));
+              //     }
+              //   }
+              // }}
               className="w-full lg:w-[50%]"
               data-aos="fade-up"
               data-aos-duration="1200"
               onSubmit={async (e) => {
                 e.preventDefault();
+                console.log('📝 Form submit triggered');
 
+                // Validations basiques
                 if (!isChecked) {
+                  console.log('❌ Checkbox non cochée');
                   setError(t.text("home.contactErrorText"));
                   return;
                 }
 
                 if (!isValidEmailStrict(contact.email)) {
+                  console.log('❌ Email invalide:', contact.email);
                   setEmailValid(false);
                   return;
                 }
 
-                if (phoneValue && !isValidPhoneNumber(phoneValue)) {
+                const hasPhoneNumber = phoneValue && getLocalDigits(phoneValue).length > 0;
+
+                if (hasPhoneNumber && !isValidPhoneNumber(phoneValue)) {
+                  console.log('❌ Téléphone invalide:', phoneValue);
                   setPhoneValid(false);
+
+                  const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
+                  if (phoneInput) {
+                    phoneInput.setCustomValidity(t.text("home.contactInvalidMobileError"));
+                    phoneInput.reportValidity();
+                  }
                   return;
                 }
 
+                console.log('✅ Validations passées, début traitement...');
                 setLoading(true);
 
                 try {
-                  // ReCAPTCHA UNIQUEMENT en production (pas localhost)
-                  if (!isDev && executeRecaptcha) {
-                    const token = await executeRecaptcha('contact_form');
-                    const verification = await verifyRecaptchaToken(token);
+                  const isLocalHost = window.location.hostname === 'localhost' ||
+                    window.location.hostname === '127.0.0.1';
 
-                    if (!verification.success) {
-                      setError('Échec de la vérification de sécurité');
-                      setLoading(false);
-                      return;
+                  console.log('🔍 Environnement:', {
+                    hostname: window.location.hostname,
+                    isLocalHost,
+                    executeRecaptchaExists: !!executeRecaptcha,
+                    isDev: process.env.NODE_ENV
+                  });
+
+                  if (!isLocalHost) {
+                    if (!executeRecaptcha) {
+                      console.warn('⚠️ executeRecaptcha non disponible, bypass forcé');
+                    } else {
+                      console.log('🔐 Lancement ReCAPTCHA...');
+                      const token = await executeRecaptcha('contact_form');
+                      console.log('🎟️ Token reçu:', token.substring(0, 20) + '...');
+
+                      const verification = await verifyRecaptchaToken(token);
+                      console.log('📊 Vérification:', verification);
+
+                      if (!verification.success) {
+                        console.error('❌ ReCAPTCHA échec:', verification);
+                        setError('Échec de la vérification de sécurité');
+                        setLoading(false);
+                        return;
+                      }
+                      console.log('✅ ReCAPTCHA validé avec score:', verification.score);
                     }
+                  } else {
+                    console.log('🏠 Mode local : ReCAPTCHA bypassed');
                   }
 
-                  // Envoi email
                   const payload = { ...contact, phone: phoneValue };
-                  await emailjs.send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", payload, "REMOVED_EMAILJS_PUBLIC_KEY");
+                  console.log('📧 Envoi email avec payload:', payload);
+
+                  const result = await emailjs.send(
+                    "REMOVED_EMAILJS_SERVICE_ID",
+                    "REMOVED_EMAILJS_TEMPLATE_ID",
+                    payload,
+                    "REMOVED_EMAILJS_PUBLIC_KEY"
+                  );
+
+                  console.log('✅ Email envoyé, résultat:', result);
 
                   setLoading(false);
                   setDone(true);
@@ -403,10 +341,90 @@ const Contact = () => {
                   handleClick();
 
                 } catch (error) {
-                  console.error('Error:', error);
+                  console.error('💥 ERREUR CRITIQUE:', error);
+                  if (error instanceof Error) {
+                    console.error('Message:', error.message);
+                    console.error('Stack:', error.stack);
+                  }
+                  setError('Une erreur est survenue : ' + (error instanceof Error ? error.message : 'Erreur inconnue'));
                   setLoading(false);
                 }
               }}
+            // onSubmit={async (e) => {
+            //   e.preventDefault();
+
+            //   if (!isChecked) {
+            //     setError(t.text("home.contactErrorText"));
+            //     return;
+            //   }
+
+            //   if (!isValidEmailStrict(contact.email)) {
+            //     setEmailValid(false);
+            //     return;
+            //   }
+
+            //   if (phoneValue && !isValidPhoneNumber(phoneValue)) {
+            //     setPhoneValid(false);
+            //     return;
+            //   }
+
+            //   setLoading(true);
+
+            //   try {
+            //     // Vérifier si on est réellement en local
+            //     const isLocalHost = window.location.hostname === 'localhost' ||
+            //       window.location.hostname === '127.0.0.1';
+
+            //     console.log('🔍 Debug:', {
+            //       hostname: window.location.hostname,
+            //       isLocalHost,
+            //       hasExecuteRecaptcha: !!executeRecaptcha,
+            //       NODE_ENV: process.env.NODE_ENV
+            //     });
+
+            //     // ReCAPTCHA uniquement si on n'est PAS en local ET que executeRecaptcha existe
+            //     if (!isLocalHost && executeRecaptcha) {
+            //       console.log('🔐 Exécution ReCAPTCHA...');
+            //       const token = await executeRecaptcha('contact_form');
+            //       const verification = await verifyRecaptchaToken(token);
+
+            //       if (!verification.success) {
+            //         setError('Échec de la vérification de sécurité');
+            //         setLoading(false);
+            //         return;
+            //       }
+            //       console.log('✅ ReCAPTCHA validé');
+            //     } else {
+            //       console.log('⚠️ ReCAPTCHA bypassed (local ou non disponible)');
+            //     }
+
+            //     // Envoi email
+            //     const payload = { ...contact, phone: phoneValue };
+            //     console.log('📧 Envoi email...');
+
+            //     await emailjs.send(
+            //       "REMOVED_EMAILJS_SERVICE_ID",
+            //       "REMOVED_EMAILJS_TEMPLATE_ID",
+            //       payload,
+            //       "REMOVED_EMAILJS_PUBLIC_KEY"
+            //     );
+
+            //     console.log('✅ Email envoyé');
+            //     setLoading(false);
+            //     setDone(true);
+            //     setContact({ name: "", email: "", message: "" });
+            //     setPhoneValue("");
+            //     setIsChecked(false);
+            //     setEmailValid(true);
+            //     setPhoneValid(true);
+            //     handleClick();
+
+            //   } catch (error) {
+            //     console.error('❌ Erreur:', error);
+            //     setError('Une erreur est survenue');
+            //     setLoading(false);
+            //   }
+            // }}
             >
               {/* Nom */}
               <div
@@ -467,6 +485,10 @@ const Contact = () => {
                   onChange={(value) => {
                     setPhoneValue(value);
                     // indicatif seul = champ "vide" (optionnel)
+                    const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
+                    if (phoneInput) {
+                      phoneInput.setCustomValidity("");
+                    }
                     const local = getLocalDigits(value);
                     const isDialOnly = local.length === 0;
                     setPhoneValid(isDialOnly ? true : isValidPhoneNumber(value));

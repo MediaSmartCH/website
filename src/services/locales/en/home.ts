@@ -164,7 +164,7 @@ const home = {
     contactBtn: "Submit Now",
     contactErrorText: "Please agree to the terms.",
     contactInvalidEmailError: "Please enter a valid Email address.",
-    contactInvalidPhoneError: "Please enter a valid mobile number.",
+    contactInvalidMobileError: "Please enter a valid mobile number.",
     contactRequiredEmailError: "Email is required.",
     contactRequiredNameError: "Name is required.",
     contactRequiredMobileError: "Mobile number is required.",
