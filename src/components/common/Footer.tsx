@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 import logo from "assets/images/logo-footer.png";
 import linkedin from "assets/icons/linkedin.svg";
 // import twitter from "assets/icons/twitter.svg";
@@ -16,6 +17,7 @@ const Footer = () => {
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
+  const t = useTranslations(languageReducer);
 
   return (
     <div className="bg-[#14172D] md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px]">
@@ -34,7 +36,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/")}
               >
-                {dictionary["footer"][languageReducer]["navItem1"]}
+                {/* {dictionary["footer"][languageReducer]["navItem1"]} */} {t.text("footer.navItem1")}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="900">
@@ -42,7 +44,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/it-services")}
               >
-                {dictionary["footer"][languageReducer]["navItem2"]}
+                {/* {dictionary["footer"][languageReducer]["navItem2"]} */} {t.text("footer.navItem2")}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="1000">
@@ -50,7 +52,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/video-services")}
               >
-                {dictionary["footer"][languageReducer]["navItem3"]}
+                {/* {dictionary["footer"][languageReducer]["navItem3"]} */} {t.text("footer.navItem3")}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="1200">
@@ -58,7 +60,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={Lhash("#about")}
               >
-                {dictionary["footer"][languageReducer]["navItem4"]}
+                {/* {dictionary["footer"][languageReducer]["navItem4"]} */} {t.text("footer.navItem4")}
               </Link>
             </li>
             {/* <li className="" data-aos="fade-down" data-aos-duration="1300">
@@ -66,7 +68,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to="{Lhash(#testimonials")}
               >
-                {dictionary["footer"][languageReducer]["navItem5"]}
+                {t.text("footer.navItem5")}
               </Link>
             </li> */}
             <li className="" data-aos="fade-down" data-aos-duration="1400">
@@ -74,7 +76,7 @@ const Footer = () => {
                 to={L("/privacy-policy")}
                 className="text-[#fff] hover:text-[#5f75f5]"
               >
-                {dictionary["footer"][languageReducer]["navItem6"]}
+                {/* {dictionary["footer"][languageReducer]["navItem6"]} */} {t.text("footer.navItem6")}
               </Link>
             </li>
           </ul>

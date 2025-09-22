@@ -2,7 +2,8 @@ import React from "react";
 import { PopupButton } from "react-calendly";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 import bookLine from "assets/icons/bookLine.svg";
 
 const Booking = () => {
@@ -11,6 +12,8 @@ const Booking = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const t = useTranslations(languageReducer);
 
   const rootElement = document.getElementById("root");
 
@@ -28,7 +31,7 @@ const Booking = () => {
             data-aos-easing="ease-in-sine"
 
           >
-            {dictionary["home"][languageReducer]["bookingTitle"]}
+            {/* {dictionary["home"][languageReducer]["bookingTitle"]} */} {t.text("home.bookingTitle")}
           </p>
           <img
             src={bookLine}
@@ -45,7 +48,7 @@ const Booking = () => {
             data-aos-duration="1300"
             data-aos-easing="ease-in-sine"
           >
-            {dictionary["home"][languageReducer]["bookingDescription"]}
+            {/* {dictionary["home"][languageReducer]["bookingDescription"]} */} {t.text("home.bookingDescription")}
           </p>
           <div
             data-aos="zoom-out"
@@ -56,9 +59,10 @@ const Booking = () => {
               className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
               url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
               rootElement={rootElement as HTMLElement}
-              text={
-                dictionary["home"][languageReducer]["bookingBtn"]
-              }
+              // text={
+              //   dictionary["home"][languageReducer]["bookingBtn"]
+              // }
+              text={t.text("home.bookingBtn")}
               pageSettings={{
                 backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
                 hideEventTypeDetails: false,

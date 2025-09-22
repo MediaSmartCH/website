@@ -4,7 +4,8 @@ import { Checkbox } from "antd";
 import emailjs from "@emailjs/browser";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 import email from "assets/icons/email.svg";
 import address from "assets/icons/address.svg";
 import phone from "assets/icons/phone.svg";
@@ -25,6 +26,8 @@ const Contact = () => {
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
+  const t = useTranslations(languageReducer);
+
   const [loading, setLoading] = React.useState(false);
   const [done, setDone] = React.useState(false);
   const [contact, setContact] = React.useState({
@@ -41,9 +44,9 @@ const Contact = () => {
     if (target.name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (target.value === '') {
-        target.setCustomValidity(dictionary["home"][languageReducer]["contactRequiredEmailError"]);
+        target.setCustomValidity(t.text("home.contactRequiredEmailError"));
       } else if (!emailRegex.test(target.value)) {
-        target.setCustomValidity(dictionary["home"][languageReducer]["contactInvalidEmailError"]);
+        target.setCustomValidity(t.text("home.contactInvalidEmailError"));
       } else {
         target.setCustomValidity('');
       }
@@ -51,18 +54,18 @@ const Contact = () => {
 
     if (target.name === 'name') {
       if (target.value === '') {
-        target.setCustomValidity(dictionary["home"][languageReducer]["contactRequiredNameError"]);
+        target.setCustomValidity(t.text("home.contactRequiredNameError"));
       } else {
         target.setCustomValidity('');
       }
     }
 
     if (target.name === 'phone') {
-      const phoneRegex = /^(\+\d{6,}|\d{4})$/; // Regex for the phone validation
+      const phoneRegex = /^(\+\d{6,}|\d{4})$/;
       if (target.value === '') {
-        target.setCustomValidity(dictionary["home"][languageReducer]["contactRequiredMobileError"]);
+        target.setCustomValidity(t.text("home.contactRequiredMobileError"));
       } else if (!phoneRegex.test(target.value)) {
-        target.setCustomValidity(dictionary["home"][languageReducer]["contactInvalidMobileError"]);
+        target.setCustomValidity(t.text("home.contactInvalidMobileError"));
       } else {
         target.setCustomValidity('');
       }
@@ -70,7 +73,7 @@ const Contact = () => {
 
     if (target.name === 'message') {
       if (target.value === '') {
-        target.setCustomValidity(dictionary["home"][languageReducer]["contactRequiredMsgError"]);
+        target.setCustomValidity(t.text("home.contactRequiredMsgError"));
       } else {
         target.setCustomValidity('');
       }
@@ -104,7 +107,7 @@ const Contact = () => {
             className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"
               } w-full mx-auto text-center mb-[18px] lg:mb-[32px] 2xl:mb-[47px] leading-[36px] lg:leading-[46px] xl:leading-[72px] font-redDisplay font-bold text-[24px] md:text-[28px] lg:text-[32px] xl:text-[34px] 2xl:text-[36px] `}
           >
-            {dictionary["home"][languageReducer]["contactTitle"]}
+            {/* {dictionary["home"][languageReducer]["contactTitle"]} */} {t.text("home.contactTitle")}
           </p>
           <div
             className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
@@ -189,7 +192,7 @@ const Contact = () => {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!isChecked) {
-                  setError(dictionary["home"][languageReducer]["contactErrorText"]);
+                  setError(t.text("home.contactErrorText"));
                   return;
                 }
                 setLoading(true);
@@ -218,7 +221,7 @@ const Contact = () => {
               >
 
                 <input
-                  placeholder={dictionary["home"][languageReducer]["contactName"]}
+                  placeholder={t.text("home.contactName")}
                   className={`custom-contact-input ${themeReducer === "light"
                     ? "text-[#222222] placeholder:text-[#222222]"
                     : "text-[#E5E5E5 placeholder:text-[#E5E5E5]"
@@ -237,7 +240,7 @@ const Contact = () => {
                   } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
               >
                 <input
-                  placeholder={dictionary["home"][languageReducer]["contactEmail"]}
+                  placeholder={t.text("home.contactEmail")}
                   className={`custom-contact-input ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
                     } `}
                   type="email"
@@ -254,7 +257,7 @@ const Contact = () => {
                   } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
               >
                 <input
-                  placeholder={dictionary["home"][languageReducer]["contactMobile"]}
+                  placeholder={t.text("home.contactMobile")}
                   className={`custom-contact-input ${themeReducer === "light"
                     ? "text-[#222222] placeholder:text-[#222222]"
                     : "text-[#E5E5E5 placeholder:text-[#E5E5E5]"
@@ -272,7 +275,7 @@ const Contact = () => {
                   } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
               >
                 <textarea
-                  placeholder={dictionary["home"][languageReducer]["contactMsg"]}
+                  placeholder={t.text("home.contactMsg")}
                   className={`custom-contact-input ${themeReducer === "light"
                     ? "text-[#222222] placeholder:text-[#222222]"
                     : "text-[#E5E5E5 placeholder:text-[#E5E5E5]"
@@ -293,7 +296,7 @@ const Contact = () => {
                     className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
                       } font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}
                   >
-                    {dictionary["home"][languageReducer]["contactCheckboxTxt"]}
+                    {/* {dictionary["home"][languageReducer]["contactCheckboxTxt"]} */} {t.text("home.contactCheckboxTxt")}
                   </p>
                 </Checkbox>
               </div>
@@ -302,7 +305,7 @@ const Contact = () => {
                   className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
                     } font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] `}
                 >
-                  {dictionary["home"][languageReducer]["contactRequired"]}
+                  {/* {dictionary["home"][languageReducer]["contactRequired"]} */} {t.text("home.contactRequired")}
                 </p>
               </div>
               {error && <p className="text-red-500">{error}</p>}
@@ -317,7 +320,7 @@ const Contact = () => {
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">Loading...</span>
                   ) : (
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">
-                      {dictionary["home"][languageReducer]["contactBtn"]}
+                      {/* {dictionary["home"][languageReducer]["contactBtn"]} */} {t.text("home.contactBtn")}
                       <span>
                         <img src={arrow} alt="arrow" className="" />
                       </span>

@@ -4,7 +4,8 @@ import DotAnim from "components/common/DotAnim";
 
 // Hooks
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 
 // Importation of lottie files
 // import services1 from 'assets/images/lotties/itWebsiteLight.json';
@@ -31,6 +32,8 @@ const Services = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const t = useTranslations(languageReducer);
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -102,14 +105,14 @@ const Services = () => {
             className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
               } w-full it-service-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
             dangerouslySetInnerHTML={{
-              __html: dictionary["it"][languageReducer]["itServicesTitle"],
+              __html: t.text("it.itServicesTitle"),
             }}
           />
           <p
             className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
               } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
           >
-            {dictionary["it"][languageReducer]["itServicesDescription"]}
+            {/* {dictionary["it"][languageReducer]["itServicesDescription"]} */} {t.text("it.itServicesDescription")}
           </p>
         </div>
 
@@ -125,7 +128,7 @@ const Services = () => {
                 className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
                   } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
               >
-                {dictionary["it"][languageReducer]["service1"]}
+                {/* {dictionary["it"][languageReducer]["service1"]} */} {t.text("it.service1")}
               </p>
               <p
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
@@ -137,7 +140,7 @@ const Services = () => {
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
-                  __html: dictionary["it"][languageReducer]["description1"],
+                  __html: t.text("it.description1"),
                 }}
               />
             </div>
@@ -162,7 +165,7 @@ const Services = () => {
               className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
                 } w-full font-redDisplay font-bold text-[18px] md:text-[20px] lg:text-[20px] xl:text-[22px] 2xl:text-[24px] `}
             >
-              {dictionary["it"][languageReducer]["portfolioTxt"]}
+              {/* {dictionary["it"][languageReducer]["portfolioTxt"]} */} {t.text("it.portfolioTxt")}
             </p>
             <div className="mt-[12px] grid grid-cols-2 lg:grid-cols-4 gap-3 justify-between">
               <div className="w-full flex justify-center items-center"
@@ -197,7 +200,7 @@ const Services = () => {
                     className="hero-btn custom-btn w-full min-w-[140px] md:min-w-[130px] h-[38px] lg:min-w-[150px] lg:h-[45px] xl:min-w-[170px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2"
                   >
                     <span className="custom-btn-inner">
-                      {dictionary["it"][languageReducer]["portfolioBtn"]}
+                      {/* {dictionary["it"][languageReducer]["portfolioBtn"]} */} {t.text("it.portfolioBtn")}
                     </span>
                   </button>
                 </div>
@@ -228,7 +231,7 @@ const Services = () => {
               className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
                 } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
             >
-              {dictionary["it"][languageReducer]["service2"]}
+              {/* {dictionary["it"][languageReducer]["service2"]} */} {t.text("it.service2")}
             </p>
             <p
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
@@ -240,7 +243,7 @@ const Services = () => {
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
-                  __html: dictionary["it"][languageReducer]["description2"],
+                  __html: t.text("it.description2"),
                 }}
               />
           </div>
@@ -257,7 +260,7 @@ const Services = () => {
                 className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
                   } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
               >
-                {dictionary["it"][languageReducer]["service3"]}
+                {/* {dictionary["it"][languageReducer]["service3"]} */} {t.text("it.service3")}
               </p>
               <p
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
@@ -269,7 +272,7 @@ const Services = () => {
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
-                  __html: dictionary["it"][languageReducer]["description3"],
+                  __html: t.text("it.description3"),
                 }}
               />
             </div>
@@ -311,7 +314,7 @@ const Services = () => {
               className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
                 } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
             >
-              {dictionary["it"][languageReducer]["service4"]}
+              {/* {dictionary["it"][languageReducer]["service4"]} */} {t.text("it.service4")}
             </p>
             <p
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
@@ -323,7 +326,7 @@ const Services = () => {
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
-                  __html: dictionary["it"][languageReducer]["description4"],
+                  __html: t.text("it.description4"),
                 }}
               />
           </div>
@@ -340,7 +343,7 @@ const Services = () => {
                 className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
                   } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
               >
-                {dictionary["it"][languageReducer]["service5"]}
+                {/* {dictionary["it"][languageReducer]["service5"]} */} {t.text("it.service5")}
               </p>
               <p
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
@@ -352,7 +355,7 @@ const Services = () => {
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
-                  __html: dictionary["it"][languageReducer]["description5"],
+                  __html: t.text("it.description5"),
                 }}
               />
             </div>
@@ -394,7 +397,7 @@ const Services = () => {
               className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
                 } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
             >
-              {dictionary["it"][languageReducer]["service6"]}
+              {/* {dictionary["it"][languageReducer]["service6"]} */} {t.text("it.service6")}
             </p>
             <p
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
@@ -406,7 +409,7 @@ const Services = () => {
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
-                  __html: dictionary["it"][languageReducer]["description6"],
+                  __html: t.text("it.description6"),
                 }}
               />
           </div>
@@ -449,13 +452,13 @@ const Services = () => {
             <div className={`p-8 h-full flex flex-col items-center justify-start ${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
               }`}>
               <h2 className={`mb-1 font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px]`}>
-                {dictionary["it"][languageReducer]["portfolioModalHeading"]}
+                {/* {dictionary["it"][languageReducer]["portfolioModalHeading"]} */} {t.text("it.portfolioModalHeading")}
               </h2>
               <p
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
                   } w-full text-center font-helvetica font-light text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] `}
               >
-                {dictionary["it"][languageReducer]["portfolioModalDescription"]}
+                {/* {dictionary["it"][languageReducer]["portfolioModalDescription"]} */} {t.text("it.portfolioModalDescription")}
               </p>
               <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-3 justify-between">
                 <div className="w-full flex justify-center items-center">

@@ -9,6 +9,7 @@ export default function PrivacyPolicy() {
     );
 
     const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
     const [formattedDate, setFormattedDate] = useState("");
 
     // Get current date and format it based on language

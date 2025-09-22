@@ -16,8 +16,12 @@ import olaDark from "assets/images/OLADark.png";
 import walmart from "assets/images/Walmart.png";
 import walmartDark from "assets/images/WalmartDark.png";
 
+// import { useTranslations } from "services/locales/safe";
+
 const PartnerSlider = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  // const t = useTranslations(languageReducer);
 
   const settings = {
     infinite: true,

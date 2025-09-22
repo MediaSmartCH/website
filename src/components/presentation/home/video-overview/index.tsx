@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 import VideoOverviewCard from "./VideoOverviewCard";
 import { LottieKey } from "config/lotties";
 
@@ -31,7 +32,12 @@ export default function VideoOverview() {
     (state) => state.language.currentLanguage
   );
 
+  type OverviewCard = { title: string; description: string };
+
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const t = useTranslations(languageReducer);
+  const cards = t.array<OverviewCard>("home.VideoOverviewCards");
 
   const preloadVideoServices = () => {
     import("../../../../pages/VideoServices");
@@ -92,7 +98,7 @@ export default function VideoOverview() {
   //     overview5Lottie
   //   ];
 
-    // return lottieOptions[index];
+  // return lottieOptions[index];
   // };
 
   return (
@@ -101,17 +107,17 @@ export default function VideoOverview() {
         className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
           } w-full text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
       >
-        {dictionary["home"][languageReducer]["VideoOverviewTitle"]}
+        {/* {dictionary["home"][languageReducer]["VideoOverviewTitle"]} */} {t.text("home.VideoOverviewTitle")}
       </p>
       <p
         className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
           } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
       >
-        {dictionary["home"][languageReducer]["VideoOverviewDescription"]}
+        {/* {dictionary["home"][languageReducer]["VideoOverviewDescription"]} */} {t.text("home.VideoOverviewDescription")}
       </p>
       {/* cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center gap-[30px] lg:gap-[20px] xl:gap-[30px] 2xl:gap-[40px] my-[40px] md:my-[50px]">
-        {dictionary["home"][languageReducer]["VideoOverviewCards"].map((card: any, index: number) => (
+        {/* {dictionary["home"][languageReducer]["VideoOverviewCards"].map((card: any, index: number) => (
           <VideoOverviewCard
             key={index}
             themeReducer={themeReducer}
@@ -120,13 +126,23 @@ export default function VideoOverview() {
             title={card.title}
             description={card.description}
           />
+        ))} */}
+
+        {cards.map((card, i) => (
+          <VideoOverviewCard
+            key={i}
+            title={card.title}
+            description={card.description}
+            themeReducer={themeReducer}
+            anim={OVERVIEW_ANIMS[i]}
+          />
         ))}
       </div>
       <div className="flex justify-center w-full">
         <Link to="video-services" onMouseEnter={preloadVideoServices}>
           <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
             <span className="custom-btn-inner">
-              {dictionary["home"][languageReducer]["VideoOverviewExploreBtn"]}
+              {/* {dictionary["home"][languageReducer]["VideoOverviewExploreBtn"]} */} {t.text("home.VideoOverviewExploreBtn")}
             </span>
           </button>
         </Link>

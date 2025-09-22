@@ -7,7 +7,7 @@
 // import { error404 } from "./error404"
 // import { cookies } from "./cookies";
 
-import type { Dictionary, Lang } from "./types";
+// import type { Dictionary, Lang } from "./types";
 import * as EN from "./en";
 import * as FR from "./fr";
 
