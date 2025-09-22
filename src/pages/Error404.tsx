@@ -5,7 +5,8 @@ import { Mail } from "lucide-react";
 import { PopupButton } from "react-calendly";
 import DotAnim from "components/common/DotAnim";
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 
 const Error404Page: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const Error404Page: React.FC = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const t = useTranslations(languageReducer);
 
   // const handleGoHome = () => {
   //   navigate(`/${currentLang}`);
@@ -72,12 +75,14 @@ const Error404Page: React.FC = () => {
             <h2 className={`font-redDisplay font-bold text-3xl sm:text-4xl md:text-5xl ${
               themeReducer === "light" ? "text-gray-800" : "text-white"
             } mb-6`}>
-              {dictionary["error404"][languageReducer]["title"]}
+              {/* {dictionary["error404"][languageReducer]["title"]} */}
+              {t.text("error404.title")}
             </h2>
             <p className={`font-poppins text-lg sm:text-xl ${
               themeReducer === "light" ? "text-gray-600" : "text-gray-300"
             } max-w-2xl mx-auto leading-relaxed`}>
-              {dictionary["error404"][languageReducer]["description"]}
+              {/* {dictionary["error404"][languageReducer]["description"]} */}
+              {t.text("error404.description")}
             </p>
           </div>
 
@@ -88,7 +93,8 @@ const Error404Page: React.FC = () => {
             <h3 className={`font-redDisplay font-bold text-2xl ${
               themeReducer === "light" ? "text-gray-800" : "text-white"
             } mb-8`}>
-              {dictionary["error404"][languageReducer]["servicesTitle"]}
+              {/* {dictionary["error404"][languageReducer]["servicesTitle"]} */}
+              {t.text("error404.servicesTitle")}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
               
@@ -112,12 +118,14 @@ const Error404Page: React.FC = () => {
                 <h4 className={`font-redDisplay font-bold text-xl ${
                   themeReducer === "light" ? "text-gray-800" : "text-white"
                 } mb-3`}>
-                  {dictionary["error404"][languageReducer]["itServicesTitle"]}
+                  {/* {dictionary["error404"][languageReducer]["itServicesTitle"]} */}
+                  {t.text("error404.itServicesTitle")}
                 </h4>
                 <p className={`font-poppins text-base ${
                   themeReducer === "light" ? "text-gray-600" : "text-gray-300"
                 }`}>
-                  {dictionary["error404"][languageReducer]["itServicesDescription"]}
+                  {/* {dictionary["error404"][languageReducer]["itServicesDescription"]} */}
+                  {t.text("error404.itServicesDescription")}
                 </p>
               </button>
 
@@ -141,12 +149,14 @@ const Error404Page: React.FC = () => {
                 <h4 className={`font-redDisplay font-bold text-xl ${
                   themeReducer === "light" ? "text-gray-800" : "text-white"
                 } mb-3`}>
-                  {dictionary["error404"][languageReducer]["videoServicesTitle"]}
+                  {/* {dictionary["error404"][languageReducer]["videoServicesTitle"]} */}
+                  {t.text("error404.videoServicesTitle")}
                 </h4>
                 <p className={`font-poppins text-base ${
                   themeReducer === "light" ? "text-gray-600" : "text-gray-300"
                 }`}>
-                  {dictionary["error404"][languageReducer]["videoServicesDescription"]}
+                  {/* {dictionary["error404"][languageReducer]["videoServicesDescription"]} */}
+                  {t.text("error404.videoServicesDescription")}
                 </p>
               </button>
             </div>
@@ -209,12 +219,12 @@ const Error404Page: React.FC = () => {
             <h3 className={`font-redDisplay font-bold text-2xl ${
               themeReducer === "light" ? "text-gray-800" : "text-white"
             } mb-6`}>
-              {dictionary["error404"][languageReducer]["contactTitle"]}
+              {/* {dictionary["error404"][languageReducer]["contactTitle"]} */} {t.text("error404.contactTitle")}
             </h3>
             <p className={`font-poppins ${
               themeReducer === "light" ? "text-gray-600" : "text-gray-300"
             } mb-8`}>
-              {dictionary["error404"][languageReducer]["contactDescription"]}
+              {/* {dictionary["error404"][languageReducer]["contactDescription"]} */} {t.text("error404.contactDescription")}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -222,7 +232,8 @@ const Error404Page: React.FC = () => {
                 className="custom-btn rounded-[80px] text-white px-8 py-3 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2"
                 url="https://calendly.com/mediasmartch/30min"
                 rootElement={rootElement as HTMLElement}
-                text={dictionary["error404"][languageReducer]["bookingButton"]}
+                // text={dictionary["error404"][languageReducer]["bookingButton"]}
+                text={t.text("error404.bookingButton")}
                 pageSettings={{
                   backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",
                   hideEventTypeDetails: false,
@@ -241,7 +252,7 @@ const Error404Page: React.FC = () => {
                 } px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2`}
               >
                 <Mail className="w-5 h-5" />
-                {dictionary["error404"][languageReducer]["emailButton"]}
+                {/* {dictionary["error404"][languageReducer]["emailButton"]} */} {t.text("error404.emailButton")}
               </button>
             </div>
           </div>
@@ -251,12 +262,12 @@ const Error404Page: React.FC = () => {
             <blockquote className={`font-poppins text-lg ${
               themeReducer === "light" ? "text-gray-600" : "text-gray-300"
             } italic mb-4 max-w-2xl mx-auto`}>
-              "{dictionary["error404"][languageReducer]["quote"]}"
+              "{/* {dictionary["error404"][languageReducer]["quote"]} */} {t.text("error404.quote")}"
             </blockquote>
             <p className={`${
               themeReducer === "light" ? "text-purple-600" : "text-purple-400"
             } font-semibold`}>
-              {dictionary["error404"][languageReducer]["quoteAuthor"]}
+              {/* {dictionary["error404"][languageReducer]["quoteAuthor"]} */} {t.text("error404.quoteAuthor")}
             </p>
           </div>
         </div>

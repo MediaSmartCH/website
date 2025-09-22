@@ -2,7 +2,8 @@ import React from "react";
 import { Collapse } from "antd";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 
 import "assets/styles/faqCss.css";
 import bg from "assets/images/faq-bg.png";
@@ -17,6 +18,9 @@ const Faq = () => {
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
+  const t = useTranslations(languageReducer);
+  type FaqTile = { faqQuestion: string; faqAnswer: string };
+
 
   return (
     <div
@@ -30,23 +34,22 @@ const Faq = () => {
       <div className="w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
         <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl::px-[60px]  flex flex-col items-start">
           <p
-            className={`${
-              themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-            } w-full text-center font-helvetica font-bold text-[28px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mt-[40px] md:mt-[50px] lg:mt-[60px] 2xl:mt-[70px] mb-[100px] md:mb-[50px] lg:mb-[30px] xl:mb-[36px] 2xl:mb-[46px] `}
+            className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
+              } w-full text-center font-helvetica font-bold text-[28px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mt-[40px] md:mt-[50px] lg:mt-[60px] 2xl:mt-[70px] mb-[100px] md:mb-[50px] lg:mb-[30px] xl:mb-[36px] 2xl:mb-[46px] `}
           >
-            {dictionary["home"][languageReducer]["faqTitle"]}
+            {/* {dictionary["home"][languageReducer]["faqTitle"]} */}
+            {t.text("home.faqTitle")}
           </p>
           <div className="w-full"
-           data-aos="fade-up"
-           data-aos-duration="1200"
-           data-aos-easing="ease-in-sine"
+            data-aos="fade-up"
+            data-aos-duration="1200"
+            data-aos-easing="ease-in-sine"
           >
             <div>
               <div>
                 <Collapse
-                  className={`min-w-full ${
-                    themeReducer === "light" ? "light" : "dark"
-                  }`}
+                  className={`min-w-full ${themeReducer === "light" ? "light" : "dark"
+                    }`}
                   ghost
                   accordion
                   defaultActiveKey={["1"]}
@@ -117,161 +120,161 @@ const Faq = () => {
                       </div>
                     )
                   }
-                  //   key={"1"}
+                //   key={"1"}
                 >
                   <Panel
-                    header={
-                      dictionary["home"][languageReducer]["tile1"]["faqQuestion"]
-                    }
-                    className={`${
-                      themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-                    } mb-[13px] lg:mb-[17px] rounded-[10px] `}
+                    header={t.object<FaqTile>("home.tile1").faqQuestion}
+                    // header={
+                    //   dictionary["home"][languageReducer]["tile1"]["faqQuestion"]
+                    // }
+                    className={`${themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
+                      } mb-[13px] lg:mb-[17px] rounded-[10px] `}
                     style={{ borderRadius: "10px" }}
                     key="1"
                   >
                     <div className="flex flex-row items-start">
                       <div
-                        className={`${
-                          themeReducer === "light"
-                            ? "text-[#413C58]"
-                            : "text-[#E5E5E5]"
-                        } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
+                        className={`${themeReducer === "light"
+                          ? "text-[#413C58]"
+                          : "text-[#E5E5E5]"
+                          } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
-                        {
+                        {t.object<FaqTile>("home.tile1").faqAnswer}
+                        {/* {{
                           dictionary["home"][languageReducer]["tile1"][
-                            "faqAnswer"
+                          "faqAnswer"
                           ]
-                        }
+                        } */}
                       </div>
                     </div>
                   </Panel>
                   <Panel
-                    header={
-                      dictionary["home"][languageReducer]["tile2"]["faqQuestion"]
-                    }
+                    header={t.object<FaqTile>("home.tile2").faqQuestion}
+                    // header={
+                    //   dictionary["home"][languageReducer]["tile2"]["faqQuestion"]
+                    // }
                     key="2"
-                    className={`${
-                      themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-                    } mb-[13px] lg:mb-[17px] rounded-[10px] `}
+                    className={`${themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
+                      } mb-[13px] lg:mb-[17px] rounded-[10px] `}
                     style={{ borderRadius: "10px" }}
                   >
                     <div className="flex flex-row items-start">
                       <div
-                        className={`${
-                          themeReducer === "light"
-                            ? "text-[#413C58]"
-                            : "text-[#E5E5E5]"
-                        } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
+                        className={`${themeReducer === "light"
+                          ? "text-[#413C58]"
+                          : "text-[#E5E5E5]"
+                          } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
-                        {
+                        {t.object<FaqTile>("home.tile2").faqAnswer}
+                        {/* {{
                           dictionary["home"][languageReducer]["tile2"][
-                            "faqAnswer"
+                          "faqAnswer"
                           ]
-                        }
+                        } */}
                       </div>
                     </div>
                   </Panel>
                   <Panel
-                    header={
-                      dictionary["home"][languageReducer]["tile3"]["faqQuestion"]
-                    }
+                    header={t.object<FaqTile>("home.tile3").faqQuestion}
+                    // header={
+                    //   dictionary["home"][languageReducer]["tile3"]["faqQuestion"]
+                    // }
                     key="3"
-                    className={`${
-                      themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-                    } ] mb-[13px] lg:mb-[17px] rounded-[10px] `}
+                    className={`${themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
+                      } ] mb-[13px] lg:mb-[17px] rounded-[10px] `}
                     style={{ borderRadius: "10px" }}
                   >
                     <div className="flex flex-row items-start">
                       <div
-                        className={`${
-                          themeReducer === "light"
-                            ? "text-[#413C58]"
-                            : "text-[#E5E5E5]"
-                        } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
+                        className={`${themeReducer === "light"
+                          ? "text-[#413C58]"
+                          : "text-[#E5E5E5]"
+                          } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
-                        {
+                        {t.object<FaqTile>("home.tile3").faqAnswer}
+                        {/* {{
                           dictionary["home"][languageReducer]["tile3"][
-                            "faqAnswer"
+                          "faqAnswer"
                           ]
-                        }
+                        } */}
                       </div>
                     </div>
                   </Panel>
                   <Panel
-                    header={
-                      dictionary["home"][languageReducer]["tile4"]["faqQuestion"]
-                    }
+                    header={t.object<FaqTile>("home.tile4").faqQuestion}
+                    // header={
+                    //   dictionary["home"][languageReducer]["tile4"]["faqQuestion"]
+                    // }
                     key="4"
-                    className={`${
-                      themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-                    } mb-[13px] lg:mb-[17px] rounded-[10px] `}
+                    className={`${themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
+                      } mb-[13px] lg:mb-[17px] rounded-[10px] `}
                     style={{ borderRadius: "10px" }}
                   >
                     <div className="flex flex-row items-start">
                       <div
-                        className={`${
-                          themeReducer === "light"
-                            ? "text-[#413C58]"
-                            : "text-[#E5E5E5]"
-                        } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
+                        className={`${themeReducer === "light"
+                          ? "text-[#413C58]"
+                          : "text-[#E5E5E5]"
+                          } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
-                        {
+                        {t.object<FaqTile>("home.tile4").faqAnswer}
+                        {/* {{
                           dictionary["home"][languageReducer]["tile4"][
-                            "faqAnswer"
+                          "faqAnswer"
                           ]
-                        }
+                        } */}
                       </div>
                     </div>
                   </Panel>
                   <Panel
-                    header={
-                      dictionary["home"][languageReducer]["tile5"]["faqQuestion"]
-                    }
+                    header={t.object<FaqTile>("home.tile5").faqQuestion}
+                    // header={
+                    //   dictionary["home"][languageReducer]["tile5"]["faqQuestion"]
+                    // }
                     key="5"
-                    className={`${
-                      themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-                    }  mb-[13px] lg:mb-[17px] rounded-[10px] `}
+                    className={`${themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
+                      }  mb-[13px] lg:mb-[17px] rounded-[10px] `}
                     style={{ borderRadius: "10px" }}
                   >
                     <div className="flex flex-row items-start">
                       <div
-                        className={`${
-                          themeReducer === "light"
-                            ? "text-[#413C58]"
-                            : "text-[#E5E5E5]"
-                        } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
+                        className={`${themeReducer === "light"
+                          ? "text-[#413C58]"
+                          : "text-[#E5E5E5]"
+                          } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
-                        {
+                        {t.object<FaqTile>("home.tile5").faqAnswer}
+                        {/* {{
                           dictionary["home"][languageReducer]["tile5"][
-                            "faqAnswer"
+                          "faqAnswer"
                           ]
-                        }
+                        } */}
                       </div>
                     </div>
                   </Panel>
                   <Panel
-                    header={
-                      dictionary["home"][languageReducer]["tile6"]["faqQuestion"]
-                    }
+                    header={t.object<FaqTile>("home.tile6").faqQuestion}
+                    // header={
+                    //   dictionary["home"][languageReducer]["tile6"]["faqQuestion"]
+                    // }
                     key="6"
-                    className={`${
-                      themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-                    } mb-[13px] lg:mb-[17px] rounded-[10px] `}
+                    className={`${themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
+                      } mb-[13px] lg:mb-[17px] rounded-[10px] `}
                     style={{ borderRadius: "10px" }}
                   >
                     <div className="flex flex-row items-start">
                       <div
-                        className={`${
-                          themeReducer === "light"
-                            ? "text-[#413C58]"
-                            : "text-[#E5E5E5]"
-                        } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
+                        className={`${themeReducer === "light"
+                          ? "text-[#413C58]"
+                          : "text-[#E5E5E5]"
+                          } pt-[0px] pb-[15px] lg:pt-[0px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light `}
                       >
-                        {
+                        {t.object<FaqTile>("home.tile6").faqAnswer}
+                        {/* {{
                           dictionary["home"][languageReducer]["tile6"][
-                            "faqAnswer"
+                          "faqAnswer"
                           ]
-                        }
+                        } */}
                       </div>
                     </div>
                   </Panel>

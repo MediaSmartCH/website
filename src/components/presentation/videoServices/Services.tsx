@@ -4,7 +4,8 @@ import DotAnim from "components/common/DotAnim";
 
 // Hooks
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 
 // Importation of lottie files
 // import liveVideoDirectionLight from 'assets/images/lotties/liveVideoDirectionLight.json';
@@ -24,6 +25,8 @@ const Services = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const t = useTranslations(languageReducer);
 
   // const liveVideoDirection = {
   //   loop: true,
@@ -82,10 +85,10 @@ const Services = () => {
               } w-full mx-auto text-center font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] 2xl:text-[48px]`}
           >
             <span className="mr-3 gradient-text">
-              {dictionary["video"][languageReducer]["videoServicesMainTitle1"]}
+              {/* {dictionary["video"][languageReducer]["videoServicesMainTitle1"]} */} {t.text("video.videoServicesMainTitle1")}
             </span>
             <span className="Capitalize">
-              {dictionary["video"][languageReducer]["videoServicesMainTitle2"]}
+              {/* {dictionary["video"][languageReducer]["videoServicesMainTitle2"]} */} {t.text("video.videoServicesMainTitle2")}
             </span>
           </p>
           <div className="mt-[20px] lg:mt-[30px] 2xl:mt-[36px] flex flex-col gap-y-[50px] lg:gap-y-[60px] 2xl:gap-y-[80px] px-[30px] md:px-[50px] xl:px-[100px]">
@@ -119,7 +122,7 @@ const Services = () => {
                       : "text-[#F6F6F6]"
                       } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesTitle1"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesTitle1"]} */} {t.text("video.videoServicesTitle1")}
                   </p>
                   <p
                     className={`${themeReducer === "light"
@@ -127,14 +130,14 @@ const Services = () => {
                       : "text-[#E5E5E5]"
                       } w-full text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesDescription1"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesDescription1"]} */} {t.text("video.videoServicesDescription1")}
                   </p>
                   <div
                     className="flex justify-center lg:justify-start"
                   >
                     <a href="#contact">
                       <button className="custom-btn2 middle-out w-[200px] h-[37px] lg:w-auto mt-[11px] lg:mt-[20px] hero-contact-btn px-[15px] py-[8px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]">
-                        {dictionary["video"][languageReducer]["videoServicesContactBtn"]}
+                        {/* {dictionary["video"][languageReducer]["videoServicesContactBtn"]} */} {t.text("video.videoServicesContactBtn")}
                       </button>
                     </a>
                   </div>
@@ -155,7 +158,7 @@ const Services = () => {
                       : "text-[#F6F6F6]"
                       } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesTitle2"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesTitle2"]} */} {t.text("video.videoServicesTitle2")}
                   </p>
                   <p
                     className={`${themeReducer === "light"
@@ -163,12 +166,12 @@ const Services = () => {
                       : "text-[#E5E5E5]"
                       } w-full text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesDescription2"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesDescription2"]} */} {t.text("video.videoServicesDescription2")}
                   </p>
                   <div className="flex justify-center lg:justify-start">
                     <a href="#contact">
                       <button className="custom-btn2 middle-out w-[200px] h-[37px] lg:w-auto mt-[11px] lg:mt-[20px] hero-contact-btn px-[15px] py-[8px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]">
-                        {dictionary["video"][languageReducer]["videoServicesContactBtn"]}
+                        {/* {dictionary["video"][languageReducer]["videoServicesContactBtn"]} */} {t.text("video.videoServicesContactBtn")}
                       </button>
                     </a>
                   </div>
@@ -223,7 +226,7 @@ const Services = () => {
                       : "text-[#F6F6F6]"
                       } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesTitle3"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesTitle3"]} */} {t.text("video.videoServicesTitle3")}
                   </p>
                   <p
                     className={`${themeReducer === "light"
@@ -231,12 +234,12 @@ const Services = () => {
                       : "text-[#E5E5E5]"
                       } w-full text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesDescription3"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesDescription3"]} */} {t.text("video.videoServicesDescription3")}
                   </p>
                   <div className="flex justify-center lg:justify-start">
                     <a href="#contact">
                       <button className="custom-btn2 middle-out w-[200px] h-[37px] lg:w-auto mt-[11px] lg:mt-[20px] hero-contact-btn px-[15px] py-[8px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]">
-                        {dictionary["video"][languageReducer]["videoServicesContactBtn"]}
+                        {/* {dictionary["video"][languageReducer]["videoServicesContactBtn"]} */} {t.text("video.videoServicesContactBtn")}
                       </button>
                     </a>
                   </div>
@@ -255,7 +258,7 @@ const Services = () => {
                       : "text-[#F6F6F6]"
                       } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesTitle4"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesTitle4"]} */} {t.text("video.videoServicesTitle4")}
                   </p>
                   <p
                     className={`${themeReducer === "light"
@@ -263,12 +266,12 @@ const Services = () => {
                       : "text-[#E5E5E5]"
                       } w-full text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesDescription4"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesDescription4"]} */} {t.text("video.videoServicesDescription4")}
                   </p>
                   <div className="flex justify-center lg:justify-start">
                     <a href="#contact">
                       <button className="custom-btn2 middle-out w-[200px] h-[37px] lg:w-auto mt-[11px] lg:mt-[20px] hero-contact-btn px-[15px] py-[8px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]">
-                        {dictionary["video"][languageReducer]["videoServicesContactBtn"]}
+                        {/* {dictionary["video"][languageReducer]["videoServicesContactBtn"]} */} {t.text("video.videoServicesContactBtn")}
                       </button>
                     </a>
                   </div>
@@ -323,7 +326,7 @@ const Services = () => {
                       : "text-[#F6F6F6]"
                       } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesTitle5"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesTitle5"]} */} {t.text("video.videoServicesTitle5")}
                   </p>
                   <p
                     className={`${themeReducer === "light"
@@ -331,12 +334,12 @@ const Services = () => {
                       : "text-[#E5E5E5]"
                       } w-full text-center lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
-                    {dictionary["video"][languageReducer]["videoServicesDescription5"]}
+                    {/* {dictionary["video"][languageReducer]["videoServicesDescription5"]} */} {t.text("video.videoServicesDescription5")}
                   </p>
                   <div className="flex justify-center lg:justify-start">
                     <a href="#contact">
                       <button className="custom-btn2 middle-out w-[200px] h-[37px] lg:w-auto mt-[11px] lg:mt-[20px] hero-contact-btn px-[15px] py-[8px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]">
-                        {dictionary["video"][languageReducer]["videoServicesContactBtn"]}
+                        {/* {dictionary["video"][languageReducer]["videoServicesContactBtn"]} */} {t.text("video.videoServicesContactBtn")}
                       </button>
                     </a>
                   </div>

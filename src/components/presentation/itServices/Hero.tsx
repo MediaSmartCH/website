@@ -4,7 +4,8 @@ import React from "react";
 import DotAnim from "components/common/DotAnim";
 
 import { useAppSelector } from "services/hooks/hooks";
-import { dictionary } from "services/locales";
+// import { dictionary } from "services/locales";
+import { useTranslations } from "services/locales/safe";
 
 // import heroLight from "assets/images/lotties/itHeroLight.json";
 // import heroDark from "assets/images/lotties/itHeroDark.json";
@@ -20,6 +21,8 @@ const Hero = () => {
   );
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
+  const t = useTranslations(languageReducer);
 
   // const heroLottie = {
   //   loop: true,
@@ -44,7 +47,7 @@ const Hero = () => {
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full lg:w-[70%] 2xl:w-[60%] it-service-hero-gradient mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] leading-[40px] lg:leading-[50px] xl:leading-[70px]`}
             dangerouslySetInnerHTML={{
-              __html: dictionary["it"][languageReducer]["itServicesHeroTitle"],
+              __html: t.text("it.itServicesHeroTitle"),
             }}
             data-aos="fade-up"
             data-aos-duration="900"
@@ -58,7 +61,7 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
 
           >
-            {dictionary["it"][languageReducer]["itServicesHeroDescription"]}
+            {/* {dictionary["it"][languageReducer]["itServicesHeroDescription"]} */} {t.text("it.itServicesHeroDescription")}
           </p>
           <div className="w-full justify-center flex px-[20px]"
             data-aos="fade-up"
@@ -68,7 +71,7 @@ const Hero = () => {
             <a href="#contact">
               <button className="hero-btn custom-btn w-full md:min-w-[150px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2">
                 <span className="custom-btn-inner">
-                  {dictionary["it"][languageReducer]["itServicesHeroContactBtn"]}
+                  {/* {dictionary["it"][languageReducer]["itServicesHeroContactBtn"]} */} {t.text("it.itServicesHeroContactBtn")}
                 </span>
               </button>
             </a>

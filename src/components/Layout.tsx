@@ -9,6 +9,7 @@ interface LayoutProps { children: React.ReactNode; }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+
   const { pathname } = useLocation();
   const firstRenderRef = React.useRef(true);
 
