@@ -10,16 +10,23 @@ import bookLine from "assets/icons/bookLine.svg";
 import contactEmail from "assets/icons/contactEmail.svg";
 import arrow from "assets/icons/rightArrow.svg";
 
+import { CONSTRUCTION_CONFIG } from 'config/constructionConfig';
+
 const UnderConstruction: React.FC = () => {
   const rootElement = document.getElementById("root");
   // const themeReducer = "light";
-  
+
   // États pour la gestion du formulaire
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false); // Prévention double soumission
+
+  // Utiliser la valeur de configuration
+  const progressPercentage = CONSTRUCTION_CONFIG.progressPercentage;
+
+  // ... reste du code ...
 
   // Gestion du changement d'email avec validation simple
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,12 +37,12 @@ const UnderConstruction: React.FC = () => {
   // Gestion de la soumission avec protection contre les doubles envois
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Empêcher les soumissions multiples
     if (isSubmitting || loading) {
       return;
     }
-    
+
     if (!email.trim()) {
       setError("Veuillez saisir une adresse email");
       return;
@@ -63,15 +70,15 @@ const UnderConstruction: React.FC = () => {
 
       // Utiliser le même template que votre formulaire de contact
       await emailjs.send("REMOVED_EMAILJS_SERVICE_ID", "REMOVED_EMAILJS_TEMPLATE_ID", templateParams, "REMOVED_EMAILJS_PUBLIC_KEY");
-      
+
       setDone(true);
       setEmail("");
-      
+
       // Reset après 3 secondes
       setTimeout(() => {
         setDone(false);
       }, 3000);
-      
+
     } catch (error) {
       console.log("FAILED...", error);
       setError("Erreur lors de l'envoi. Veuillez réessayer.");
@@ -84,7 +91,7 @@ const UnderConstruction: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 relative overflow-hidden flex items-center justify-center px-6 sm:px-8 md:px-4 py-8">
       <div className="hero-bg absolute inset-0 z-0"></div>
-      
+
       <div className="max-w-4xl mx-auto text-center w-full relative z-10">
         {/* Logo avec plus d'espacement */}
         <div className="mb-12 sm:mb-16 flex flex-col items-center">
@@ -159,12 +166,15 @@ const UnderConstruction: React.FC = () => {
         <div className="mb-10 sm:mb-12 px-4">
           <div className="flex items-center justify-between mb-4">
             <span className="font-poppins font-medium text-base sm:text-lg text-gray-700">Progression</span>
-            <span className="font-redDisplay font-bold text-base sm:text-lg text-purple-600">85%</span>
+            <span className="font-redDisplay font-bold text-base sm:text-lg text-purple-600">{progressPercentage}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3 sm:h-4 overflow-hidden">
             <div
               className="h-3 sm:h-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-2000 ease-out"
-              style={{ width: '85%', animation: 'progressBar 3s ease-out' }}
+              style={{
+                width: `${progressPercentage}%`,
+                animation: 'progressBar 3s ease-out'
+              }}
             ></div>
           </div>
         </div>
@@ -178,7 +188,7 @@ const UnderConstruction: React.FC = () => {
           <p className="font-poppins font-normal text-base sm:text-lg text-gray-600 mb-4 sm:mb-6">
             Lancement prévu pour bientôt. Inscrivez-vous pour être notifié !
           </p>
-          
+
           <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
               <div className="bg-white relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] flex-1">
@@ -193,8 +203,8 @@ const UnderConstruction: React.FC = () => {
                 />
                 <img src={contactEmail} alt="Email" className="ml-2" />
               </div>
-              
-              <button 
+
+              <button
                 type="submit"
                 disabled={loading || isSubmitting || done}
                 className="custom-btn rounded-[80px] text-white px-[50px] lg:px-[54px] py-[11px] lg:py-[16px] whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
@@ -215,7 +225,7 @@ const UnderConstruction: React.FC = () => {
                 )}
               </button>
             </div>
-            
+
             {/* Message d'erreur */}
             {error && (
               <p className="text-red-500 font-poppins font-light text-sm text-center">
