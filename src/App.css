@@ -554,3 +554,216 @@ nav.shift ul li a:hover:after {
     font-family: "Helvetica", sans-serif !important;
   }
 }
+
+/* ======= PHONE INPUT - FULL THEME OVERRIDE ======= */
+
+/* === THÈME CLAIR === */
+.rip-light .react-international-phone-country-selector {
+  background-color: transparent !important;
+  border: none !important;
+  color: #222222 !important;
+  font: inherit !important;
+}
+
+.rip-light .react-international-phone-input {
+  background-color: transparent !important;
+  border: none !important;
+  color: #222222 !important;
+  font: inherit !important;
+  line-height: inherit !important;
+}
+
+.rip-light .react-international-phone-input::placeholder {
+  color: #6B6E80 !important;
+  opacity: 1;
+}
+
+/* Dropdown thème clair */
+.rip-light .react-international-phone-country-selector-dropdown {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border: 1px solid #C8CAE4 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+  font: inherit !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.rip-light .react-international-phone-country-selector-dropdown__list-item {
+  background-color: transparent !important;
+  color: #222222 !important;
+  font: inherit !important;
+  padding: 12px 16px !important;
+}
+
+.rip-light .react-international-phone-country-selector-dropdown__list-item:hover {
+  background-color: #F7F7FF !important;
+}
+
+.rip-light .react-international-phone-country-selector-dropdown__list-item--selected {
+  background-color: #F0F2FF !important;
+}
+
+/* === THÈME SOMBRE === */
+.rip-dark .react-international-phone-country-selector {
+  background-color: transparent !important;
+  border: none !important;
+  color: #E5E5E5 !important;
+  font: inherit !important;
+}
+
+.rip-dark .react-international-phone-input {
+  background-color: transparent !important;
+  border: none !important;
+  color: #E5E5E5 !important;
+  font: inherit !important;
+  line-height: inherit !important;
+}
+
+.rip-dark .react-international-phone-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.rip-dark .react-international-phone-input::placeholder {
+  color: #C8CADE !important;
+  opacity: 1;
+}
+
+/* Validation invalide */
+.invalid-phone .react-international-phone-input {
+  color: #ef4444 !important;
+}
+
+.invalid-phone .react-international-phone-input::placeholder {
+  color: #ef4444 !important;
+  opacity: 0.7;
+}
+
+/* Dropdown thème sombre - FIX PRINCIPAL */
+.rip-dark .react-international-phone-country-selector-dropdown {
+  background-color: #2b284c !important;
+  color: #E5E5E5 !important;
+  border: 1px solid #4a4478 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+  font: inherit !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Items du dropdown */
+.rip-dark .react-international-phone-country-selector-dropdown__list-item {
+  background-color: #2b284c !important; /* Force le fond sombre */
+  color: #E5E5E5 !important;
+  font: inherit !important;
+  padding: 12px 16px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__list-item:hover {
+  background-color: #3a3561 !important;
+}
+
+/* Item sélectionné - FIX DU HEADER BLANC */
+.rip-dark .react-international-phone-country-selector-dropdown__list-item--selected,
+.rip-dark .react-international-phone-country-selector-dropdown__list-item--focused,
+.rip-dark .react-international-phone-country-selector-dropdown__list-item--highlighted {
+  background-color: #3a3561 !important; /* Couleur cohérente */
+  color: #E5E5E5 !important;
+}
+
+/* Barre de recherche */
+.rip-dark .react-international-phone-country-selector-dropdown__search-container {
+  background: #2b284c !important;
+  border-bottom: 1px solid #4a4478 !important;
+  padding: 12px !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__search-input {
+  background: #1b1730 !important;
+  color: #E5E5E5 !important;
+  border: 1px solid #4a4478 !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font: inherit !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__search-input::placeholder {
+  color: #8B8DA8 !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__search-input:focus {
+  outline: none !important;
+  border-color: #677DFF !important;
+  box-shadow: 0 0 0 2px rgba(103, 125, 255, 0.2) !important;
+}
+
+/* Scrollbar personnalisée */
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-track {
+  background: #1b1730;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb {
+  background: #4a4478;
+  border-radius: 8px;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb:hover {
+  background: #5a5488;
+}
+
+/* Indicateur de pays préférés (séparateur) */
+.rip-dark .react-international-phone-country-selector-dropdown__preferred-divider {
+  border-top: 1px solid #4a4478 !important;
+  margin: 4px 0 !important;
+}
+
+/* Fix pour le bouton dropdown */
+.rip-dark .react-international-phone-country-selector-button {
+  background-color: transparent !important;
+  border: none !important;
+  color: #E5E5E5 !important;
+}
+
+.rip-dark .react-international-phone-country-selector-button:hover {
+  background-color: rgba(103, 125, 255, 0.1) !important;
+}
+
+.rip-light .react-international-phone-country-selector-button {
+  background-color: transparent !important;
+  border: none !important;
+  color: #222222 !important;
+}
+
+.rip-light .react-international-phone-country-selector-button:hover {
+  background-color: rgba(103, 125, 255, 0.05) !important;
+}
+
+/* Fix scroll à l'intérieur du dropdown */
+.rip-dark .react-international-phone-country-selector-dropdown,
+.rip-light .react-international-phone-country-selector-dropdown {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important; /* Empêche le scroll de se propager */
+}
+
+/* Container de la liste */
+.rip-dark .react-international-phone-country-selector-dropdown__list,
+.rip-light .react-international-phone-country-selector-dropdown__list {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  max-height: 280px !important; /* Laisse de la place pour la recherche */
+}
+
+/* Empêche le body de scroller quand le dropdown est ouvert */
+.react-international-phone-country-selector-dropdown {
+  touch-action: pan-y !important; /* Pour mobile */
+}
+
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
