@@ -1,61 +1,56 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Cookie, Shield, BarChart3, Target, Settings, Zap, Sun, Moon, Globe } from "lucide-react";
+import {
+  X,
+  Cookie,
+  Shield,
+  BarChart3,
+  Target,
+  Settings,
+  Zap,
+  Sun,
+  Moon,
+  Globe
+} from "lucide-react";
 import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
 import { setLanguage } from "store/slices/common/languageSlice";
 import { setTheme } from "store/slices/common/themeSlice";
 import flag1 from "assets/images/flag1.png";
 import flag2 from "assets/images/french.png";
-
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
-
-// import { Link, useInRouterContext, useLocation, type Location as RouterLocation } from "react-router-dom";
 import { Link, useInRouterContext } from "react-router-dom";
-
+import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
 
 const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
-  // const { L } = useLangLink();
-  const pathname = (typeof window !== "undefined" && window.location)
-    ? window.location.pathname
-    : "";
 
-  // Chemin initial
+  // chemin courant
   const initialPath =
-    typeof window !== "undefined" && window.location ? window.location.pathname : "";
+    typeof window !== "undefined" && window.location
+      ? window.location.pathname
+      : "";
+  const [currentPath, setCurrentPath] = useState(
+    typeof window !== "undefined" && window.location ? window.location.pathname : ""
+  );
 
-  // État réactif du chemin courant
-  const [currentPath, setCurrentPath] = useState(initialPath);
-
-  // Écoute des changements d'URL (pushState/replaceState/popstate/hashchange)
+  // écoute des changements d'URL
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     const update = () => setCurrentPath(window.location.pathname);
-
-    // On bind pour figer le this = window.history
     const origPush = window.history.pushState.bind(window.history);
     const origReplace = window.history.replaceState.bind(window.history);
-
-    // Surcharges typées et sans 'this' implicite, ni 'history' global
-    window.history.pushState = ((data: any, unused: string, url?: string | URL | null) => {
-      origPush(data, unused, url as any);
+    window.history.pushState = ((d, u, url) => {
+      origPush(d, u, url as any);
       update();
     }) as History["pushState"];
-
-    window.history.replaceState = ((data: any, unused: string, url?: string | URL | null) => {
-      origReplace(data, unused, url as any);
+    window.history.replaceState = ((d, u, url) => {
+      origReplace(d, u, url as any);
       update();
     }) as History["replaceState"];
-
     window.addEventListener("popstate", update);
     window.addEventListener("hashchange", update);
-
-    // Init
     update();
-
     return () => {
       window.history.pushState = origPush as History["pushState"];
       window.history.replaceState = origReplace as History["replaceState"];
@@ -68,13 +63,15 @@ const ModernCookieBanner = () => {
     (state) => state.language.currentLanguage
   );
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-
   const t = useTranslations(languageReducer);
+  const dispatch = useAppDispatch();
 
-  // const shouldHide = pathname.includes("privacy-policy");
-  const shouldHide = currentPath.includes("privacy-policy");
+  const isConstruction = !!CONSTRUCTION_CONFIG?.isUnderConstruction;
+  const onPrivacy = currentPath.includes("privacy-policy");
+  const shouldHide = isConstruction || onPrivacy;
   const privacyPath = `/${languageReducer}/privacy-policy`;
 
+  // états
   const [openedManually, setOpenedManually] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const actuallyVisible = isVisible && (!shouldHide || openedManually);
@@ -83,116 +80,66 @@ const ModernCookieBanner = () => {
   const [showSettingsButton, setShowSettingsButton] = useState(false);
   const [isThemeChanging, setIsThemeChanging] = useState(false);
 
-  // Redux hooks
-  const dispatch = useAppDispatch();
-
-
-  // const inRouter = useInRouterContext();
-  // const routerLocation: RouterLocation | null = inRouter ? useLocation() : null;
-  // const location = inRouter ? useLocation() : null;
-
-  // chemin actuel
-  // const pathname =
-  //   (inRouter && routerLocation?.pathname)
-  //     ? routerLocation.pathname
-  //     : (typeof window !== "undefined" ? window.location.pathname : "/");
-
-  // const privacyPath = `/${languageReducer}/privacy-policy`;
-
-  // si on est sur privacy-policy, ne rien rendre
-  // if (pathname?.includes(privacyPath)) {
-  //   return null;
-  // }
-
-  // États individuels pour chaque service
+  // états cookies
   const [googleAnalytics, setGoogleAnalytics] = useState(false);
   const [calendlyFunctionality, setCalendlyFunctionality] = useState(false);
   const [calendlyPerformance, setCalendlyPerformance] = useState(false);
   const [calendlyAdvertising, setCalendlyAdvertising] = useState(false);
-
   const [themePreference, setThemePreference] = useState(false);
   const [languagePreference, setLanguagePreference] = useState(false);
 
-  // États calculés pour les catégories
   const analyticsEnabled = googleAnalytics;
-  const functionalityEnabled = calendlyFunctionality || themePreference || languagePreference;
-  const performanceEnabled = calendlyPerformance || googleAnalytics;
   const advertisingEnabled = calendlyAdvertising;
 
-  // Gestion du changement de langue - Version sans useNavigate
+  // changement de langue
   const handleLanguageChange = (languageCode: string) => {
-    // Mettre à jour Redux
     dispatch(setLanguage(languageCode));
-
-    // Gestion manuelle de l'URL sans useNavigate
     try {
       const currentPath = window.location.pathname;
       const currentSearch = window.location.search;
       const currentHash = window.location.hash;
-
-      // Supprimer le préfixe de langue existant
       const stripped = currentPath.replace(/^\/(fr|en)/, "");
-
-      // Construire la nouvelle URL
       const newUrl = `/${languageCode}${stripped}${currentSearch}${currentHash}`;
-
-      // Utiliser l'API History directement
-      window.history.replaceState(null, '', newUrl);
-
-      // Optionnel : déclencher un événement pour que d'autres composants sachent que l'URL a changé
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.history.replaceState(null, "", newUrl);
+      window.dispatchEvent(new PopStateEvent("popstate"));
     } catch (error) {
-      console.warn('Erreur lors du changement de langue:', error);
-      // En cas d'erreur, on met juste à jour Redux
+      console.warn("Erreur lors du changement de langue:", error);
       dispatch(setLanguage(languageCode));
     }
   };
 
-  // Gestion du changement de thème
+  // thème
   const handleThemeChange = () => {
     if (isThemeChanging) return;
-
     setIsThemeChanging(true);
     const newTheme = themeReducer === "light" ? "dark" : "light";
     dispatch(setTheme(newTheme));
-
-    setTimeout(() => {
-      setIsThemeChanging(false);
-    }, 300);
+    setTimeout(() => setIsThemeChanging(false), 300);
   };
 
-  // États des toggles de catégories
-  const getAnalyticsToggleState = () => {
-    if (googleAnalytics) return 'active';
-    return 'inactive';
-  };
-
+  // toggles cat.
   const getFunctionalityToggleState = () => {
     const services = [calendlyFunctionality, themePreference, languagePreference];
     const activeCount = services.filter(Boolean).length;
-
-    if (activeCount === 0) return 'inactive';
-    if (activeCount === services.length) return 'active';
-    return 'partial';
+    if (activeCount === 0) return "inactive";
+    if (activeCount === services.length) return "active";
+    return "partial";
   };
-
   const getPerformanceToggleState = () => {
     const services = [googleAnalytics, calendlyPerformance];
     const activeCount = services.filter(Boolean).length;
-    if (activeCount === 0) return 'inactive';
-    if (activeCount === services.length) return 'active';
-    return 'partial';
+    if (activeCount === 0) return "inactive";
+    if (activeCount === services.length) return "active";
+    return "partial";
   };
-
   const getAdvertisingToggleState = () => {
-    if (calendlyAdvertising) return 'active';
-    return 'inactive';
+    if (calendlyAdvertising) return "active";
+    return "inactive";
   };
 
-  // Vérification du consentement au chargement
+  // consentement
   useEffect(() => {
-    const savedConsent = localStorage.getItem('cookie_consent');
-
+    const savedConsent = localStorage.getItem("cookie_consent");
     if (savedConsent) {
       try {
         const consent = JSON.parse(savedConsent);
@@ -205,27 +152,36 @@ const ModernCookieBanner = () => {
         setIsVisible(false);
         setShowSettingsButton(true);
       } catch (error) {
-        console.error('Erreur lors du chargement des préférences cookies:', error);
-        setIsVisible(true);
+        console.error("Erreur lors du chargement des préférences cookies:", error);
+        if (shouldHide) {
+          setIsVisible(false);
+          setShowSettingsButton(true);
+        } else {
+          setIsVisible(true);
+        }
       }
     } else {
-      setIsVisible(true);
+      if (shouldHide) {
+        setIsVisible(false);
+        setShowSettingsButton(true);
+      } else {
+        setIsVisible(true);
+      }
     }
-  }, []);
+  }, [currentPath, shouldHide]);
 
-  // Bloquer le scroll de la page en arrière-plan
+  // blocage scroll
   useEffect(() => {
     if (actuallyVisible) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
-
     return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [actuallyVisible]);
 
@@ -300,10 +256,10 @@ const ModernCookieBanner = () => {
   };
 
   // Gestion des clics sur les toggles de catégorie
-  const handleAnalyticsToggle = () => {
-    const newState = !analyticsEnabled;
-    setGoogleAnalytics(newState);
-  };
+  // const handleAnalyticsToggle = () => {
+  //   const newState = !analyticsEnabled;
+  //   setGoogleAnalytics(newState);
+  // };
 
   const handleFunctionalityToggle = () => {
     const currentState = getFunctionalityToggleState();
@@ -410,11 +366,11 @@ const ModernCookieBanner = () => {
             </div>
             <h3 className={`font-medium text-xl mb-2 ${themeReducer === 'light' ? 'text-gray-800' : 'text-white'
               }`}>
-              {/* {currentLanguage === 'fr' ? 'Changement de thème' : 'Changing theme'} */ }
+              {/* {currentLanguage === 'fr' ? 'Changement de thème' : 'Changing theme'} */}
             </h3>
             <p className={`text-sm ${themeReducer === 'light' ? 'text-gray-600' : 'text-gray-300'
               }`}>
-              {/* {currentLanguage === 'fr' ? 'Veuillez patienter...' : 'Please wait...'} */ }
+              {/* {currentLanguage === 'fr' ? 'Veuillez patienter...' : 'Please wait...'} */}
             </p>
           </div>
         </div>
@@ -451,7 +407,7 @@ const ModernCookieBanner = () => {
                       <div>
                         <h3 className={`text-xl sm:text-2xl font-bold ${themeClasses.text}`}>
                           {/* {dictionary["cookies"][languageReducer]["title"]} */} {t.text("cookies.title")}
-                          {/* {currentTexts.title} */ }
+                          {/* {currentTexts.title} */}
                         </h3>
                         <p className={`text-sm sm:text-base ${themeClasses.textMuted}`}>
                           {/* {dictionary["cookies"][languageReducer]["subtitle"]} */} {t.text("cookies.subtitle")}

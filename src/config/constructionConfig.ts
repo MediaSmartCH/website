@@ -1,7 +1,7 @@
 // Configuration pour la page en construction
 export const CONSTRUCTION_CONFIG = {
   // Mettre à true pour activer la page en construction
-  isUnderConstruction: false,
+  isUnderConstruction: true,
   
   // Message personnalisé (optionnel)
   customMessage: "Nous préparons une expérience exceptionnelle...",

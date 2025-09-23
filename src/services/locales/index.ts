@@ -6,7 +6,6 @@
 // import { video } from "./video"
 // import { error404 } from "./error404"
 // import { cookies } from "./cookies";
-
 // import type { Dictionary, Lang } from "./types";
 import * as EN from "./en";
 import * as FR from "./fr";
@@ -46,6 +45,11 @@ export const cookies = {
   fr: FR.cookies,
 };
 
+export const UnderConstruction = {
+  en: EN.underconstruction,
+  fr: FR.underconstruction,
+}
+
 export const dictionary: any = {
   navbar,
   footer,
@@ -54,6 +58,7 @@ export const dictionary: any = {
   video,
   error404,
   cookies,
+  UnderConstruction,
 };
 
 export const t = <T = string>(
