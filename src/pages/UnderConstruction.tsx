@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { PopupButton } from "react-calendly";
 import { Calendar } from "lucide-react";
-import DotAnim from "components/common/DotAnim";
+// import DotAnim from "components/common/DotAnim";
 import emailjs from "@emailjs/browser";
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -26,6 +26,7 @@ import { useTranslations } from "services/locales/safe";
 
 
 const UnderConstruction: React.FC = () => {
+  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const { executeRecaptcha } = useGoogleReCaptcha();
   const dispatch = useAppDispatch();
 
@@ -161,11 +162,10 @@ const UnderConstruction: React.FC = () => {
   return (
     <div
       id="under-construction"
-      className={`${
-        themeReducer === "light"
-          ? "bg-[#F7F7FF]"
-          : "bg-[#2B284C]"
-      } min-h-screen relative overflow-hidden flex items-center justify-center px-6 sm:px-8 md:px-4 py-8`}
+      className={`${themeReducer === "light"
+        ? "bg-[#F7F7FF]"
+        : "bg-[#2B284C]"
+        } min-h-screen relative overflow-hidden flex items-center justify-center px-6 sm:px-8 md:px-4 py-8`}
     >
       <div className="hero-bg absolute inset-0 z-0"></div>
 
@@ -174,11 +174,10 @@ const UnderConstruction: React.FC = () => {
         {/* Bouton changement de langue */}
         <button
           onClick={toggleLanguage}
-          className={`${
-            themeReducer === "light" 
-              ? "bg-white/80 hover:bg-white border-gray-200" 
-              : "bg-[#685A9C]/80 hover:bg-[#685A9C] border-purple-600/30"
-          } backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md`}
+          className={`${themeReducer === "light"
+            ? "bg-white/80 hover:bg-white border-gray-200"
+            : "bg-[#685A9C]/80 hover:bg-[#685A9C] border-purple-600/30"
+            } backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md`}
           title={t.text("cookies.ariaToggleLanguage")}
           aria-label={t.text("cookies.ariaToggleLanguage")}
         >
@@ -187,9 +186,8 @@ const UnderConstruction: React.FC = () => {
             alt={languageReducer === "en" ? "English" : "Français"}
             className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full"
           />
-          <span className={`${
-            themeReducer === "light" ? "text-gray-700" : "text-[#E5E5E5]"
-          } font-helvetica font-light text-xs sm:text-sm uppercase`}>
+          <span className={`${themeReducer === "light" ? "text-gray-700" : "text-[#E5E5E5]"
+            } font-helvetica font-light text-xs sm:text-sm uppercase`}>
             {languageReducer}
           </span>
         </button>
@@ -197,11 +195,10 @@ const UnderConstruction: React.FC = () => {
         {/* Bouton changement de thème */}
         <button
           onClick={handleThemeChange}
-          className={`${
-            themeReducer === "light" 
-              ? "bg-white/80 hover:bg-white border-gray-200" 
-              : "bg-[#685A9C]/80 hover:bg-[#685A9C] border-purple-600/30"
-          } backdrop-blur-sm p-1.5 sm:p-2 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md`}
+          className={`${themeReducer === "light"
+            ? "bg-white/80 hover:bg-white border-gray-200"
+            : "bg-[#685A9C]/80 hover:bg-[#685A9C] border-purple-600/30"
+            } backdrop-blur-sm p-1.5 sm:p-2 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md`}
           title={themeReducer === "light" ? "Mode sombre" : "Mode clair"}
           aria-label={themeReducer === "light" ? "Activer le mode sombre" : "Activer le mode clair"}
         >
@@ -228,16 +225,14 @@ const UnderConstruction: React.FC = () => {
         </div>
 
         {/* Main title */}
-        <h2 className={`${
-          themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
-        } font-redDisplay font-bold text-3xl sm:text-4xl md:text-6xl mb-6 sm:mb-8 px-2`}>
+        <h2 className={`${themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
+          } font-redDisplay font-bold text-3xl sm:text-4xl md:text-6xl mb-6 sm:mb-8 px-2`}>
           {t.text("UnderConstruction.title")}
         </h2>
 
         {/* Subtitle */}
-        <p className={`${
-          themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
-        } font-poppins font-normal text-lg sm:text-xl md:text-2xl mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4`}>
+        <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
+          } font-poppins font-normal text-lg sm:text-xl md:text-2xl mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4`}>
           {t.text("UnderConstruction.subtitle")}{" "}
           <span className="font-semibold text-purple-600">
             {t.text("UnderConstruction.connectingWorlds")}
@@ -248,63 +243,81 @@ const UnderConstruction: React.FC = () => {
         {/* Main Lottie animation */}
         <div className="relative mb-16 sm:mb-20">
           <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 mx-auto">
-            <DotAnim
-              anim="it.services.maintenance"
-              style={{ width: "100%", height: "100%" }}
-              crisp
-              protect
-            />
+            <Suspense
+              fallback={
+                <div className="h-[220px] flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                </div>
+              }
+            >
+              <DotAnim
+                anim="it.services.maintenance"
+                style={{ width: "100%", height: "100%" }}
+                crisp
+                protect
+              />
+            </Suspense>
           </div>
         </div>
 
         {/* Services cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-3xl mx-auto px-4">
-          <div className={`${
-            themeReducer === "light" 
-              ? "bg-white/90 border-purple-100" 
-              : "bg-[#685A9C]/90 border-purple-600/30"
-          } backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-xl border hover:shadow-2xl transition-all duration-300 hover:scale-105`}>
+          <div className={`${themeReducer === "light"
+            ? "bg-white/90 border-purple-100"
+            : "bg-[#685A9C]/90 border-purple-600/30"
+            } backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-xl border hover:shadow-2xl transition-all duration-300 hover:scale-105`}>
             <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-6">
-              <DotAnim
-                anim="it.services.website"
-                style={{ width: "100%", height: "100%" }}
-                crisp
-                protect
-              />
+              <Suspense
+                fallback={
+                  <div className="h-[220px] flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                  </div>
+                }
+              >
+                <DotAnim
+                  anim="it.services.website"
+                  style={{ width: "100%", height: "100%" }}
+                  crisp
+                  protect
+                />
+              </Suspense>
             </div>
-            <h3 className={`${
-              themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
-            } font-redDisplay font-bold text-lg sm:text-xl mb-3`}>
+            <h3 className={`${themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
+              } font-redDisplay font-bold text-lg sm:text-xl mb-3`}>
               {t.text("UnderConstruction.itSolutionsTitle")}
             </h3>
-            <p className={`${
-              themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
-            } font-poppins font-normal text-sm sm:text-base`}>
+            <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
+              } font-poppins font-normal text-sm sm:text-base`}>
               {t.text("UnderConstruction.itSolutionsDescription")}
             </p>
           </div>
 
-          <div className={`${
-            themeReducer === "light" 
-              ? "bg-white/90 border-blue-100" 
-              : "bg-[#685A9C]/90 border-blue-600/30"
-          } backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-xl border hover:shadow-2xl transition-all duration-300 hover:scale-105`}>
+          <div className={`${themeReducer === "light"
+            ? "bg-white/90 border-blue-100"
+            : "bg-[#685A9C]/90 border-blue-600/30"
+            } backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-xl border hover:shadow-2xl transition-all duration-300 hover:scale-105`}>
             <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-6">
-              <DotAnim
-                anim="video.production"
-                style={{ width: "100%", height: "100%" }}
-                crisp
-                protect
-              />
+              <Suspense
+                fallback={
+                  <div className="h-[220px] flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                  </div>
+                }
+              >
+                <DotAnim
+                  anim="video.production"
+                  style={{ width: "100%", height: "100%" }}
+                  crisp
+                  protect
+                />
+              </Suspense>
             </div>
-            <h3 className={`${
-              themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
-            } font-redDisplay font-bold text-lg sm:text-xl mb-3`}>
+            <h3 className={`${themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
+              } font-redDisplay font-bold text-lg sm:text-xl mb-3`}>
               {t.text("UnderConstruction.videoServicesTitle")}
             </h3>
-            <p className={`${
-              themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
-            } font-poppins font-normal text-sm sm:text-base`}>
+            <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
+              } font-poppins font-normal text-sm sm:text-base`}>
               {t.text("UnderConstruction.videoServicesDescription")}
             </p>
           </div>
@@ -313,18 +326,16 @@ const UnderConstruction: React.FC = () => {
         {/* Progress bar */}
         <div className="mb-10 sm:mb-12 px-4">
           <div className="flex items-center justify-between mb-4">
-            <span className={`${
-              themeReducer === "light" ? "text-gray-700" : "text-[#E5E5E5]"
-            } font-poppins font-medium text-base sm:text-lg`}>
+            <span className={`${themeReducer === "light" ? "text-gray-700" : "text-[#E5E5E5]"
+              } font-poppins font-medium text-base sm:text-lg`}>
               {t.text("UnderConstruction.progressLabel")}
             </span>
             <span className="font-redDisplay font-bold text-base sm:text-lg text-purple-600">
               {progressPercentage}%
             </span>
           </div>
-          <div className={`${
-            themeReducer === "light" ? "bg-gray-200" : "bg-gray-700"
-          } w-full rounded-full h-3 sm:h-4 overflow-hidden`}>
+          <div className={`${themeReducer === "light" ? "bg-gray-200" : "bg-gray-700"
+            } w-full rounded-full h-3 sm:h-4 overflow-hidden`}>
             <div
               className="h-3 sm:h-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-2000 ease-out"
               style={{
@@ -336,35 +347,30 @@ const UnderConstruction: React.FC = () => {
         </div>
 
         {/* Subscription form */}
-        <div className={`${
-          themeReducer === "light" 
-            ? "bg-white/90 border-gray-100" 
-            : "bg-[#685A9C]/90 border-gray-700"
-        } backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-xl border mb-10 sm:mb-12 mx-4`}>
-          <h3 className={`${
-            themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
-          } font-redDisplay font-bold text-lg sm:text-xl mb-4 sm:mb-6 flex items-center justify-center gap-3`}>
+        <div className={`${themeReducer === "light"
+          ? "bg-white/90 border-gray-100"
+          : "bg-[#685A9C]/90 border-gray-700"
+          } backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-xl border mb-10 sm:mb-12 mx-4`}>
+          <h3 className={`${themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
+            } font-redDisplay font-bold text-lg sm:text-xl mb-4 sm:mb-6 flex items-center justify-center gap-3`}>
             <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
             {t.text("UnderConstruction.stayInformed")}
           </h3>
-          <p className={`${
-            themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
-          } font-poppins font-normal text-base sm:text-lg mb-4 sm:mb-6`}>
+          <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
+            } font-poppins font-normal text-base sm:text-lg mb-4 sm:mb-6`}>
             {t.text("UnderConstruction.launchNotice")}
           </p>
 
           <form noValidate onSubmit={handleSubmit} className="max-w-lg mx-auto">
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
-              <div className={`${
-                themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-              } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] flex-1`}>
+              <div className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
+                } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] flex-1`}>
                 <input
                   placeholder={t.text("UnderConstruction.emailPlaceholder")}
-                  className={`custom-contact-input ${
-                    themeReducer === "light" 
-                      ? "text-[#222222] placeholder:text-[#222222]" 
-                      : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
-                  } w-full`}
+                  className={`custom-contact-input ${themeReducer === "light"
+                    ? "text-[#222222] placeholder:text-[#222222]"
+                    : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
+                    } w-full`}
                   type="email"
                   name="email"
                   onChange={handleEmailChange}
@@ -411,9 +417,8 @@ const UnderConstruction: React.FC = () => {
 
         {/* Emergency contact */}
         <div className="text-center px-4">
-          <p className={`${
-            themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
-          } font-poppins font-normal text-base sm:text-lg mb-4`}>
+          <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
+            } font-poppins font-normal text-base sm:text-lg mb-4`}>
             {t.text("UnderConstruction.needHelp")}
           </p>
           <div className="inline-flex items-center gap-2 sm:gap-3">

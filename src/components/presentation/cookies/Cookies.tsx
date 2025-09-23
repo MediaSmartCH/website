@@ -26,10 +26,10 @@ const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
 
   // chemin courant
-  const initialPath =
-    typeof window !== "undefined" && window.location
-      ? window.location.pathname
-      : "";
+  // const initialPath =
+  //   typeof window !== "undefined" && window.location
+  //     ? window.location.pathname
+  //     : "";
   const [currentPath, setCurrentPath] = useState(
     typeof window !== "undefined" && window.location ? window.location.pathname : ""
   );
@@ -88,7 +88,7 @@ const ModernCookieBanner = () => {
   const [themePreference, setThemePreference] = useState(false);
   const [languagePreference, setLanguagePreference] = useState(false);
 
-  const analyticsEnabled = googleAnalytics;
+  // const analyticsEnabled = googleAnalytics;
   const advertisingEnabled = calendlyAdvertising;
 
   // changement de langue

@@ -77,7 +77,7 @@ function DotAnim(props: DotAnimProps) {
       
       return () => clearTimeout(timer);
     }
-  }, [theme]); // Retirer stableTheme des dépendances comme suggéré par ESLint
+  }, [theme, stableTheme]); // Retirer stableTheme des dépendances comme suggéré par ESLint
 
   const src = selectSrc(stableTheme, pair);
 

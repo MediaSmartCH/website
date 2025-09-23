@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
 import { PopupButton } from "react-calendly";
 
@@ -123,7 +123,7 @@ const Navbar = () => {
     };
   }, []);
 
-  {/* Lang toggle (desktop) */ }
+  /* Lang toggle (desktop) */
   <button
     onClick={toggleLanguage}
     className="flex items-center gap-x-[6px] cursor-pointer font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
@@ -447,6 +447,7 @@ const Navbar = () => {
                     width="20px"
                     height="20px"
                     className="rounded-full"
+                    alt="Logo lightmode"
                   />
                 ) : (
                   <img
@@ -454,6 +455,7 @@ const Navbar = () => {
                     width="20px"
                     height="20px"
                     className="rounded-full"
+                    alt="Logo darkmode"
                   />
                 )}
               </button>
@@ -542,6 +544,7 @@ const Navbar = () => {
                     width="20px"
                     height="20px"
                     className="rounded-full"
+                    alt="Logo lightmode"
                   />
                 ) : (
                   <img
@@ -549,6 +552,7 @@ const Navbar = () => {
                     width="20px"
                     height="20px"
                     className="rounded-full"
+                    alt="Logo darkmode"
                   />
                 )}
               </button>

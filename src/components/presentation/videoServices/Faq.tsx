@@ -30,6 +30,7 @@ const Faq = () => {
       <img
         src={bg}
         className="absolute left-0 top-[100px] md:top-[-20px] lg:top-[-50px] xl:top-[-50px] 2xl:top-[-70px]"
+        alt="background"
       />
       <div className="w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
         <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl::px-[60px]  flex flex-col items-start">

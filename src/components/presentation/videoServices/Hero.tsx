@@ -1,6 +1,6 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 // import Lottie from "react-lottie";
-import DotAnim from "components/common/DotAnim";
+// import DotAnim from "components/common/DotAnim";
 
 import { useAppSelector } from "services/hooks/hooks";
 // import { dictionary } from "services/locales";
@@ -10,6 +10,7 @@ import { useTranslations } from "services/locales/safe";
 // import headerDark from "assets/images/lotties/headerDark.json";
 
 const Hero = () => {
+  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -86,12 +87,20 @@ const Hero = () => {
           {/* <Lottie
             options={header}
           /> */}
-          <DotAnim
-            anim="video.header"
-            style={{ width: "100%", height: "auto" }}
-            crisp
-            protect
-          />
+          <Suspense
+            fallback={
+              <div className="h-[220px] flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+              </div>
+            }
+          >
+            <DotAnim
+              anim="video.header"
+              style={{ width: "100%", height: "auto" }}
+              crisp
+              protect
+            />
+          </Suspense>
         </div>
       </div>
     </div>

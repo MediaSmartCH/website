@@ -1,5 +1,6 @@
 // import Lottie from "react-lottie";
-import DotAnim from "components/common/DotAnim";
+// import DotAnim from "components/common/DotAnim";
+import { lazy, Suspense } from "react";
 import { LottieKey } from "config/lotties";
 
 // interface LottieOptions {
@@ -20,6 +21,7 @@ interface OverviewCardProps {
 }
 
 export default function VideoOverviewCard({ themeReducer, anim, title, description }: OverviewCardProps) {
+    const DotAnim = lazy(() => import('components/common/DotAnim'));
     return (
         <div
             className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
@@ -28,12 +30,20 @@ export default function VideoOverviewCard({ themeReducer, anim, title, descripti
             <div className="relative w-full aspect-[4/3] lg:aspect-[16/11] xl:aspect-[5/4]">
                 <div className="absolute inset-0 flex items-center justify-center">
                     {/* <Lottie options={lottieOptions} /> */}
-                    <DotAnim
-                        anim={anim}
-                        className="h-full w-auto max-w-[85%]"
-                        crisp
-                        protect
-                    />
+                    <Suspense
+                        fallback={
+                            <div className="h-[220px] flex items-center justify-center">
+                                <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                            </div>
+                        }
+                    >
+                        <DotAnim
+                            anim={anim}
+                            className="h-full w-auto max-w-[85%]"
+                            crisp
+                            protect
+                        />
+                    </Suspense>
                 </div>
             </div>
             <div className={`mt-4 ${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"}`}>

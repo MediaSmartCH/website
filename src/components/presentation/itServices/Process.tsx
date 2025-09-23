@@ -1,5 +1,6 @@
 // import Lottie from "react-lottie";
-import DotAnim from "components/common/DotAnim";
+// import DotAnim from "components/common/DotAnim";
+import { lazy, Suspense } from "react";
 
 import { useAppSelector } from "services/hooks/hooks";
 // import { dictionary } from "services/locales";
@@ -10,6 +11,7 @@ import { useTranslations } from "services/locales/safe";
 // import processDark from 'assets/images/lotties/itProcessDark.json';
 
 export default function Process() {
+    const DotAnim = lazy(() => import('components/common/DotAnim'));
     const languageReducer = useAppSelector(
         (state) => state.language.currentLanguage
     );
@@ -55,12 +57,20 @@ export default function Process() {
                     <div className="w-full lg:w-[50%] flex items-center justify-center">
                         <div className="w-[80%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] aspect-[3/5]">
                             {/* <Lottie options={processLottie} /> */}
-                            <DotAnim
-                                anim="it.process"
-                                style={{ width: "100%", height: "auto" }}
-                                crisp
-                                protect
-                            />
+                            <Suspense
+                                fallback={
+                                    <div className="h-[220px] flex items-center justify-center">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                                    </div>
+                                }
+                            >
+                                <DotAnim
+                                    anim="it.process"
+                                    style={{ width: "100%", height: "auto" }}
+                                    crisp
+                                    protect
+                                />
+                            </Suspense>
                         </div>
                     </div>
                     <div className="w-full lg:w-[50%] relative">
@@ -79,7 +89,7 @@ export default function Process() {
                             </svg>
                         </div>
                         {t.array<ProcessItem>("it.processData").map((step, i) => {
-                        // {dictionary["it"][languageReducer]["processData"].map((process: any, index: number) => {
+                            // {dictionary["it"][languageReducer]["processData"].map((process: any, index: number) => {
                             return (
                                 <div key={i} className={`flex items-start space-x-8 ${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
                                     }`}

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 // import Lottie from 'react-lottie';
-import DotAnim from "components/common/DotAnim";
+// import DotAnim from "components/common/DotAnim";
 
 // Hooks
 import { useAppSelector } from "services/hooks/hooks";
@@ -20,6 +20,7 @@ import { useTranslations } from "services/locales/safe";
 // import photographyDark from 'assets/images/lotties/photographyDark.json';
 
 const Services = () => {
+  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -106,12 +107,20 @@ const Services = () => {
                   {/* <Lottie
                     options={liveVideoDirection}
                   /> */}
-                  <DotAnim
-                    anim="video.live"
-                    style={{ width: "100%", height: "auto" }}
-                    crisp
-                    protect
-                  />
+                  <Suspense
+                    fallback={
+                      <div className="h-[220px] flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                      </div>
+                    }
+                  >
+                    <DotAnim
+                      anim="video.live"
+                      style={{ width: "100%", height: "auto" }}
+                      crisp
+                      protect
+                    />
+                  </Suspense>
                 </div>
               </div>
               <div className="w-full lg:w-[50%]">
@@ -187,12 +196,20 @@ const Services = () => {
                   {/* <Lottie
                     options={eventRetransmission}
                   /> */}
-                  <DotAnim
-                    anim="video.retransmission"
-                    style={{ width: "100%", height: "auto" }}
-                    crisp
-                    protect
-                  />
+                  <Suspense
+                    fallback={
+                      <div className="h-[220px] flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                      </div>
+                    }
+                  >
+                    <DotAnim
+                      anim="video.retransmission"
+                      style={{ width: "100%", height: "auto" }}
+                      crisp
+                      protect
+                    />
+                  </Suspense>
                 </div>
               </div>
             </div>
@@ -208,12 +225,20 @@ const Services = () => {
                   {/* <Lottie
                     options={videoProduction}
                   /> */}
-                  <DotAnim
-                    anim="video.production"
-                    style={{ width: "100%", height: "auto" }}
-                    crisp
-                    protect
-                  />
+                  <Suspense
+                    fallback={
+                      <div className="h-[220px] flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                      </div>
+                    }
+                  >
+                    <DotAnim
+                      anim="video.production"
+                      style={{ width: "100%", height: "auto" }}
+                      crisp
+                      protect
+                    />
+                  </Suspense>
                 </div>
               </div>
               <div className="w-full lg:w-[50%]">
@@ -288,12 +313,20 @@ const Services = () => {
                     options={equipmentRental}
                     width="80%"
                   /> */}
-                  <DotAnim
-                    anim="video.rental"
-                    style={{ width: "100%", height: "auto" }}
-                    crisp
-                    protect
-                  />
+                  <Suspense
+                    fallback={
+                      <div className="h-[220px] flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                      </div>
+                    }
+                  >
+                    <DotAnim
+                      anim="video.rental"
+                      style={{ width: "100%", height: "auto" }}
+                      crisp
+                      protect
+                    />
+                  </Suspense>
                 </div>
               </div>
             </div>
@@ -310,12 +343,20 @@ const Services = () => {
                     options={photography}
                     width="80%"
                   /> */}
-                  <DotAnim
-                    anim="video.photography"
-                    style={{ width: "100%", height: "auto" }}
-                    crisp
-                    protect
-                  />
+                  <Suspense
+                    fallback={
+                      <div className="h-[220px] flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                      </div>
+                    }
+                  >
+                    <DotAnim
+                      anim="video.photography"
+                      style={{ width: "100%", height: "auto" }}
+                      crisp
+                      protect
+                    />
+                  </Suspense>
                 </div>
               </div>
               <div className="w-full lg:w-[50%]">
