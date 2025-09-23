@@ -25,8 +25,8 @@ import "components/preLoader/preLoader.css"
 // import { debounce } from 'lodash';
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const { pathname, search, hash } = useLocation();
+  // const navigate = useNavigate();
+  // const { pathname, search, hash } = useLocation();
   const { L, Lhash } = useLangLink();
 
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
