@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox } from "antd";
-import emailjs from "@emailjs/browser";
+// import emailjs from "@emailjs/browser";
 import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
@@ -131,7 +131,7 @@ const Contact = () => {
     setError("");
   };
 
-  const isDev = process.env.NODE_ENV === 'development';
+  // const isDev = process.env.NODE_ENV === 'development';
 
   return (
     <div id="contact" className={`${themeReducer === "light" ? "bg-[#F7F7FF]" : "bg-[#2B284C]"} `}>
@@ -304,13 +304,13 @@ const Contact = () => {
                     console.log('🏠 Mode local : ReCAPTCHA bypassed');
                   }
 
-                  const payload = { ...contact, phone: phoneValue };
-                  const result = await emailjs.send(
-                    "REMOVED_EMAILJS_SERVICE_ID",
-                    "REMOVED_EMAILJS_TEMPLATE_ID",
-                    payload,
-                    "REMOVED_EMAILJS_PUBLIC_KEY"
-                  );
+                  // const payload = { ...contact, phone: phoneValue };
+                  // const result = await emailjs.send(
+                  //   "REMOVED_EMAILJS_SERVICE_ID",
+                  //   "REMOVED_EMAILJS_TEMPLATE_ID",
+                  //   payload,
+                  //   "REMOVED_EMAILJS_PUBLIC_KEY"
+                  // );
 
                   setLoading(false);
                   setDone(true);

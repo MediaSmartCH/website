@@ -3,7 +3,7 @@ import { dictionary } from "./index"; // ton dico existant
 type Lang = string;                   // ou ton union 'en' | 'fr'
 const DEFAULT_LANG: Lang = "en";      // adapte si besoin
 
-type Json = string | number | boolean | null | Json[] | { [k: string]: Json };
+// type Json = string | number | boolean | null | Json[] | { [k: string]: Json };
 
 function getIn(obj: any, path: string): any {
   // path: "home.ITOverviewCards" ou "home.tile1.faqQuestion"

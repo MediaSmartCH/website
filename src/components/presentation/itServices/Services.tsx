@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 // import Lottie from 'react-lottie';
-import DotAnim from "components/common/DotAnim";
+// import DotAnim from "components/common/DotAnim";
 
 // Hooks
 import { useAppSelector } from "services/hooks/hooks";
@@ -27,6 +27,7 @@ import portfolio3 from "assets/images/it-services-portfolio3.png";
 import portfolio4 from "assets/images/it-services-portfolio4.png";
 
 const Services = () => {
+  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -150,12 +151,20 @@ const Services = () => {
               data-aos-duration="1200">
               <div className="w-full">
                 {/* <Lottie options={services1Lottie} /> */}
-                <DotAnim
-                  anim="it.services.website"
-                  style={{ width: "100%", height: "auto" }}
-                  crisp
-                  protect
-                />
+                <Suspense
+                  fallback={
+                    <div className="h-[220px] flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                    </div>
+                  }
+                >
+                  <DotAnim
+                    anim="it.services.website"
+                    style={{ width: "100%", height: "auto" }}
+                    crisp
+                    protect
+                  />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -218,12 +227,20 @@ const Services = () => {
             data-aos-duration="1200">
             <div className="w-full">
               {/* <Lottie options={services2Lottie} /> */}
-              <DotAnim
-                anim="it.services.maintenance"
-                style={{ width: "100%", height: "auto" }}
-                crisp
-                protect
-              />
+              <Suspense
+                fallback={
+                  <div className="h-[220px] flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                  </div>
+                }
+              >
+                <DotAnim
+                  anim="it.services.maintenance"
+                  style={{ width: "100%", height: "auto" }}
+                  crisp
+                  protect
+                />
+              </Suspense>
             </div>
           </div>
           <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
@@ -234,7 +251,7 @@ const Services = () => {
               {/* {dictionary["it"][languageReducer]["service2"]} */} {t.text("it.service2")}
             </p>
             <p
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -242,10 +259,10 @@ const Services = () => {
                   max-w-[700px] mx-auto px-4
                   mt-6
                 `}
-                dangerouslySetInnerHTML={{
-                  __html: t.text("it.description2"),
-                }}
-              />
+              dangerouslySetInnerHTML={{
+                __html: t.text("it.description2"),
+              }}
+            />
           </div>
         </div>
 
@@ -282,12 +299,20 @@ const Services = () => {
               data-aos-duration="1200">
               <div className="w-full">
                 {/* <Lottie options={services3Lottie} /> */}
-                <DotAnim
-                  anim="it.services.optimization"
-                  style={{ width: "100%", height: "auto" }}
-                  crisp
-                  protect
-                />
+                <Suspense
+                  fallback={
+                    <div className="h-[220px] flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                    </div>
+                  }
+                >
+                  <DotAnim
+                    anim="it.services.optimization"
+                    style={{ width: "100%", height: "auto" }}
+                    crisp
+                    protect
+                  />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -301,12 +326,20 @@ const Services = () => {
             data-aos-duration="1200">
             <div className="w-full">
               {/* <Lottie options={services4Lottie} /> */}
-              <DotAnim
-                anim="it.services.security"
-                style={{ width: "100%", height: "auto" }}
-                crisp
-                protect
-              />
+              <Suspense
+                fallback={
+                  <div className="h-[220px] flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                  </div>
+                }
+              >
+                <DotAnim
+                  anim="it.services.security"
+                  style={{ width: "100%", height: "auto" }}
+                  crisp
+                  protect
+                />
+              </Suspense>
             </div>
           </div>
           <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
@@ -317,7 +350,7 @@ const Services = () => {
               {/* {dictionary["it"][languageReducer]["service4"]} */} {t.text("it.service4")}
             </p>
             <p
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -325,10 +358,10 @@ const Services = () => {
                   max-w-[700px] mx-auto px-4
                   mt-6
                 `}
-                dangerouslySetInnerHTML={{
-                  __html: t.text("it.description4"),
-                }}
-              />
+              dangerouslySetInnerHTML={{
+                __html: t.text("it.description4"),
+              }}
+            />
           </div>
         </div>
 
@@ -365,12 +398,20 @@ const Services = () => {
               data-aos-duration="1200">
               <div className="w-full">
                 {/* <Lottie options={services5Lottie} /> */}
-                <DotAnim
-                  anim="it.services.backup"
-                  style={{ width: "100%", height: "auto" }}
-                  crisp
-                  protect
-                />
+                <Suspense
+                  fallback={
+                    <div className="h-[220px] flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                    </div>
+                  }
+                >
+                  <DotAnim
+                    anim="it.services.backup"
+                    style={{ width: "100%", height: "auto" }}
+                    crisp
+                    protect
+                  />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -384,12 +425,20 @@ const Services = () => {
             data-aos-duration="1200">
             <div className="w-full">
               {/* <Lottie options={services6Lottie} /> */}
-              <DotAnim
-                anim="it.services.support"
-                style={{ width: "100%", height: "auto" }}
-                crisp
-                protect
-              />
+              <Suspense
+                fallback={
+                  <div className="h-[220px] flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                  </div>
+                }
+              >
+                <DotAnim
+                  anim="it.services.support"
+                  style={{ width: "100%", height: "auto" }}
+                  crisp
+                  protect
+                />
+              </Suspense>
             </div>
           </div>
           <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
@@ -400,7 +449,7 @@ const Services = () => {
               {/* {dictionary["it"][languageReducer]["service6"]} */} {t.text("it.service6")}
             </p>
             <p
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -408,10 +457,10 @@ const Services = () => {
                   max-w-[700px] mx-auto px-4
                   mt-6
                 `}
-                dangerouslySetInnerHTML={{
-                  __html: t.text("it.description6"),
-                }}
-              />
+              dangerouslySetInnerHTML={{
+                __html: t.text("it.description6"),
+              }}
+            />
           </div>
         </div>
       </div>
