@@ -1,5 +1,11 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+  Outlet,
+  type RouteObject,
+} from "react-router-dom";
 import PreLoader from "components/preLoader/PreLoader";
 import Layout from "components/Layout";
 import ConstructionWrapper from "components/ConstructionWrapper";
@@ -12,7 +18,15 @@ const ITServicesPage = lazy(() => import("../pages/ITServices"));
 const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicy"));
 const Error404Page = lazy(() => import("../pages/Error404"));
 
-const LayoutWrapper = () => (
+/** Petit wrapper réutilisable : Suspense + ErrorBoundary */
+const Wrap = (node: React.ReactNode) => (
+  <ErrorBoundary>
+    <Suspense fallback={<PreLoader />}>{node}</Suspense>
+  </ErrorBoundary>
+);
+
+/** Layout qui encadre les pages (Navbar/Footer) + Outlet */
+const LayoutWrapper: React.FC = () => (
   <Layout>
     <ErrorBoundary>
       <Suspense fallback={<PreLoader />}>
@@ -22,40 +36,42 @@ const LayoutWrapper = () => (
   </Layout>
 );
 
-const Error404Wrapper = () => (
-  <ErrorBoundary>
-    <Suspense fallback={<PreLoader />}>
-      <Error404Page />
-    </Suspense>
-  </ErrorBoundary>
+const routes: RouteObject[] = [
+  { path: "/", element: <Navigate to="/fr" replace /> },
+
+  {
+    path: "/:lang/*",
+    element: <LangLayout />,
+    children: [
+      {
+        element: <LayoutWrapper />,
+        children: [
+          { index: true, element: Wrap(<Homepage />) },
+          { path: "it-services", element: Wrap(<ITServicesPage />) },
+          { path: "video-services", element: Wrap(<VideoServicesPage />) },
+          { path: "privacy-policy", element: Wrap(<PrivacyPolicyPage />) },
+          { path: "404", element: Wrap(<Error404Page />) },
+          { path: "*", element: <Navigate to="../404" replace /> },
+        ],
+      },
+    ],
+  },
+
+  // 404 global pour les URLs sans langue valide
+  { path: "*", element: <Navigate to="/fr/404" replace /> },
+];
+
+const router = createBrowserRouter(routes, {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  },
+});
+
+const Config: React.FC = () => (
+  <ConstructionWrapper>
+    <RouterProvider router={router} />
+  </ConstructionWrapper>
 );
-
-const Config = () => {
-  return (
-    <ConstructionWrapper>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Navigate to="/fr" replace />} />
-
-          <Route path="/:lang/*" element={<LangLayout />}>
-            <Route element={<LayoutWrapper />}>
-              <Route index element={<Homepage />} />
-              <Route path="it-services" element={<ITServicesPage />} />
-              <Route path="video-services" element={<VideoServicesPage />} />
-              <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
-              {/* Page 404 avec layout - s'adapte automatiquement à la langue */}
-              <Route path="404" element={<Error404Wrapper />} />
-              {/* Redirection vers /lang/404 pour les routes inexistantes */}
-              <Route path="*" element={<Navigate to="../404" replace />} />
-            </Route>
-          </Route>
-
-          {/* 404 global pour les URLs sans langue valide - géré par LangLayout */}
-          <Route path="*" element={<Navigate to="/fr/404" replace />} />
-        </Routes>
-      </Router>
-    </ConstructionWrapper>
-  );
-};
 
 export default Config;

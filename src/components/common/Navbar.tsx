@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, Dropdown } from "antd";
+import { Dropdown } from "antd";
 import { PopupButton } from "react-calendly";
 
 import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
@@ -124,23 +124,23 @@ const Navbar = () => {
   }, []);
 
   /* Lang toggle (desktop) */
-  <button
-    onClick={toggleLanguage}
-    className="flex items-center gap-x-[6px] cursor-pointer font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-    title={t.text("cookies.ariaToggleLanguage")}
-    aria-label={t.text("cookies.ariaToggleLanguage")}
-  >
-    <div role="img" aria-label="Selected Flag">
-      <img
-        src={languageReducer === "en" ? flag1 : flag2}
-        alt={languageReducer === "en" ? "English" : "Français"}
-        className="w-[16px] h-[16px] rounded-full"
-      />
-    </div>
-    <span className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#FFFFFF]"} uppercase`}>
-      {languageReducer}
-    </span>
-  </button>
+  // <button
+  //   onClick={toggleLanguage}
+  //   className="flex items-center gap-x-[6px] cursor-pointer font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
+  //   title={t.text("cookies.ariaToggleLanguage")}
+  //   aria-label={t.text("cookies.ariaToggleLanguage")}
+  // >
+  //   <div role="img" aria-label="Selected Flag">
+  //     <img
+  //       src={languageReducer === "en" ? flag1 : flag2}
+  //       alt={languageReducer === "en" ? "English" : "Français"}
+  //       className="w-[16px] h-[16px] rounded-full"
+  //     />
+  //   </div>
+  //   <span className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#FFFFFF]"} uppercase`}>
+  //     {languageReducer}
+  //   </span>
+  // </button>
 
   // const menu = (
   //   <Menu className="w-[80px]">
@@ -167,59 +167,123 @@ const Navbar = () => {
   //   </Menu>
   // );
 
-  const menuOptions = (
-    <Menu className="w-full header-dropdown">
-      <Menu.Item key="home">
+  // const menuOptions = (
+  //   <Menu className="w-full header-dropdown">
+  //     <Menu.Item key="home">
+  //       <Link
+  //         to={Lhash("#home")}
+  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
+  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+  //       >
+  //         {/* {dictionary["navbar"][languageReducer]["navItem1"]} */} {t.text("navbar.navItem1")}
+  //       </Link>
+  //     </Menu.Item>
+  //     <Menu.Item key="it-services">
+  //       <Link
+  //         to={L("/it-services")}
+  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
+  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+  //       >
+  //         {/* {dictionary["navbar"][languageReducer]["navItem2"]} */} {t.text("navbar.navItem2")}
+  //       </Link>
+  //     </Menu.Item>
+  //     <Menu.Item key="video-services">
+  //       <Link
+  //         to={L("/video-services")}
+  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
+  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+  //       >
+  //         {/* {dictionary["navbar"][languageReducer]["navItem3"]} */} {t.text("navbar.navItem3")}
+  //       </Link>
+  //     </Menu.Item>
+  //     <Menu.Item key="about">
+  //       <Link
+  //         to={Lhash("#about")}
+  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
+  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+  //       >
+  //         {/* {dictionary["navbar"][languageReducer]["navItem4"]} */} {t.text("navbar.navItem4")}
+  //       </Link>
+  //     </Menu.Item>
+  //     <Menu.Item key="testimonials">
+  //       <Link
+  //         to={Lhash("#testimonials")}
+  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
+  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+  //       >
+  //         {/* {dictionary["navbar"][languageReducer]["navItem5"]} */} {t.text("navbar.navItem5")}
+  //       </Link>
+  //     </Menu.Item>
+  //     <Menu.Item key="booking">
+  //       <PopupButton
+  //         className="navbar-btn px-[16px] h-[35px] rounded-[5px] text-[#fff] font-helvetica font-medium text-[16px]"
+  //         url="https://calendly.com/mediasmartch/30min"
+  //         rootElement={rootElement as HTMLElement}
+  //         // text={/* {dictionary["navbar"][languageReducer]["navbarButton"]} */} 
+  //         text={t.text("navbar.navbarButton")}
+  //         pageSettings={{
+  //           backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
+  //           hideEventTypeDetails: false,
+  //           hideLandingPageDetails: false,
+  //           primaryColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
+  //           textColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
+  //         }}
+  //       />
+  //     </Menu.Item>
+  //   </Menu>
+  // );
+  const menuItems = [
+    {
+      key: 'home',
+      label: (
         <Link
           to={Lhash("#home")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-            } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
         >
-          {/* {dictionary["navbar"][languageReducer]["navItem1"]} */} {t.text("navbar.navItem1")}
+          {t.text("navbar.navItem1")}
         </Link>
-      </Menu.Item>
-      <Menu.Item key="it-services">
+      ),
+    },
+    {
+      key: 'it-services',
+      label: (
         <Link
           to={L("/it-services")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-            } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
         >
-          {/* {dictionary["navbar"][languageReducer]["navItem2"]} */} {t.text("navbar.navItem2")}
+          {t.text("navbar.navItem2")}
         </Link>
-      </Menu.Item>
-      <Menu.Item key="video-services">
+      ),
+    },
+    {
+      key: 'video-services',
+      label: (
         <Link
           to={L("/video-services")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-            } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
         >
-          {/* {dictionary["navbar"][languageReducer]["navItem3"]} */} {t.text("navbar.navItem3")}
+          {t.text("navbar.navItem3")}
         </Link>
-      </Menu.Item>
-      <Menu.Item key="about">
+      ),
+    },
+    {
+      key: 'about',
+      label: (
         <Link
           to={Lhash("#about")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-            } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
         >
-          {/* {dictionary["navbar"][languageReducer]["navItem4"]} */} {t.text("navbar.navItem4")}
+          {t.text("navbar.navItem4")}
         </Link>
-      </Menu.Item>
-      <Menu.Item key="testimonials">
-        <Link
-          to={Lhash("#testimonials")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-            } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
-        >
-          {/* {dictionary["navbar"][languageReducer]["navItem5"]} */} {t.text("navbar.navItem5")}
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="booking">
+      ),
+    },
+    {
+      key: 'booking',
+      label: (
         <PopupButton
           className="navbar-btn px-[16px] h-[35px] rounded-[5px] text-[#fff] font-helvetica font-medium text-[16px]"
           url="https://calendly.com/mediasmartch/30min"
           rootElement={rootElement as HTMLElement}
-          // text={/* {dictionary["navbar"][languageReducer]["navbarButton"]} */} 
           text={t.text("navbar.navbarButton")}
           pageSettings={{
             backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
@@ -229,9 +293,10 @@ const Navbar = () => {
             textColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
           }}
         />
-      </Menu.Item>
-    </Menu>
-  );
+      ),
+    },
+  ];
+
 
   return (
     <>
@@ -565,7 +630,8 @@ const Navbar = () => {
                 />
               </Dropdown> */}
                 <Dropdown
-                  overlay={menuOptions}
+                  // overlay={menuOptions}
+                  menu={{ items: menuItems }}
                   trigger={["click"]}
                   open={mobileMenuOpen}
                   onOpenChange={setMobileMenuOpen}

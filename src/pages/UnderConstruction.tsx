@@ -132,7 +132,7 @@ const UnderConstruction: React.FC = () => {
           return;
         }
       } else {
-        console.log("🏠 Localhost : ReCAPTCHA bypassed");
+        // console.log("🏠 Localhost : ReCAPTCHA bypassed");
       }
 
       await emailjs.send(
@@ -151,7 +151,7 @@ const UnderConstruction: React.FC = () => {
       setEmail("");
       setTimeout(() => setDone(false), 3000);
     } catch (err) {
-      console.log("FAILED...", err);
+      // console.log("FAILED...", err);
       setError(t.text("UnderConstruction.sendErrorGeneric"));
     } finally {
       setLoading(false);

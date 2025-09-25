@@ -4,16 +4,16 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-  console.log('=== API CALLED ===');
-  console.log('Method:', req.method);
-  console.log('Has SECRET_KEY:', !!process.env.RECAPTCHA_SECRET_KEY);
+  // console.log('=== API CALLED ===');
+  // console.log('Method:', req.method);
+  // console.log('Has SECRET_KEY:', !!process.env.RECAPTCHA_SECRET_KEY);
   
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
   const { token } = req.body;
-  console.log('Token received:', !!token);
+  // console.log('Token received:', !!token);
 
   if (!token) {
     return res.status(400).json({ 
@@ -38,7 +38,7 @@ export default async function handler(
     );
 
     const data = await response.json();
-    console.log('ReCAPTCHA response:', data);
+    // console.log('ReCAPTCHA response:', data);
 
     if (data.success && (data.score ?? 0) >= 0.5) {
       return res.status(200).json({ 

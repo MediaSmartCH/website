@@ -1,8 +1,8 @@
 import React from "react";
 import Slider from "react-slick";
 import { useAppSelector } from "services/hooks/hooks";
-import "./slick.css";
-import "./slick-theme.css";
+// import "./slick.css";
+// import "./slick-theme.css";
 
 import airbnb from "assets/images/Airbnb.png";
 import google from "assets/images/Google.png";
