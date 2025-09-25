@@ -9,14 +9,25 @@ interface LayoutProps { children: React.ReactNode; }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-
   const { pathname } = useLocation();
   const firstRenderRef = React.useRef(true);
 
+  // ⚠️ Init AOS après que TOUT soit chargé pour éviter le reflow (FOUC)
   React.useEffect(() => {
-    AOS.init({ once: true, offset: 50 });
+    const onLoad = () => {
+      AOS.init({
+        once: true,
+        offset: 50,
+        startEvent: "load",
+        disableMutationObserver: true,
+      });
+    };
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad, { once: true });
+    return () => window.removeEventListener("load", onLoad);
   }, []);
 
+  // Forcer l’en-tête à rester visible après changement de thème
   React.useEffect(() => {
     const elements = document.querySelectorAll(".header-aos");
     elements.forEach((el) => {
@@ -25,6 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     });
   }, [themeReducer]);
 
+  // Scroll top sur changement de route (hors ancres)
   React.useEffect(() => {
     if (firstRenderRef.current) { firstRenderRef.current = false; return; }
     if (window.location.hash) return;

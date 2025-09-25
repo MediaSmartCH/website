@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import "./slick.css";
-import "./slick-theme.css";
+// import "./slick.css";
+// import "./slick-theme.css";
 
 import TicketCard from "../testimonials/TestimonialCard";
 import TestimonialCard from "../testimonials/TestimonialCard";

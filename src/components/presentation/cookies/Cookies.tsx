@@ -16,6 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
 import { setLanguage } from "store/slices/common/languageSlice";
 import { setTheme } from "store/slices/common/themeSlice";
+import { getSafeConsentData, saveConsentData } from "store/slices/common/cookieUtils";
 import flag1 from "assets/images/flag1.png";
 import flag2 from "assets/images/french.png";
 import { useTranslations } from "services/locales/safe";
@@ -26,10 +27,6 @@ const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
 
   // chemin courant
-  // const initialPath =
-  //   typeof window !== "undefined" && window.location
-  //     ? window.location.pathname
-  //     : "";
   const [currentPath, setCurrentPath] = useState(
     typeof window !== "undefined" && window.location ? window.location.pathname : ""
   );
@@ -88,7 +85,6 @@ const ModernCookieBanner = () => {
   const [themePreference, setThemePreference] = useState(false);
   const [languagePreference, setLanguagePreference] = useState(false);
 
-  // const analyticsEnabled = googleAnalytics;
   const advertisingEnabled = calendlyAdvertising;
 
   // changement de langue
@@ -137,30 +133,22 @@ const ModernCookieBanner = () => {
     return "inactive";
   };
 
-  // consentement
+  // consentement - VERSION CORRIGÉE ET SÉCURISÉE
   useEffect(() => {
-    const savedConsent = localStorage.getItem("cookie_consent");
-    if (savedConsent) {
-      try {
-        const consent = JSON.parse(savedConsent);
-        setGoogleAnalytics(consent.googleAnalytics || false);
-        setCalendlyFunctionality(consent.calendlyFunctionality || false);
-        setCalendlyPerformance(consent.calendlyPerformance || false);
-        setCalendlyAdvertising(consent.calendlyAdvertising || false);
-        setThemePreference(consent.themePreference || false);
-        setLanguagePreference(consent.languagePreference || false);
-        setIsVisible(false);
-        setShowSettingsButton(true);
-      } catch (error) {
-        console.error("Erreur lors du chargement des préférences cookies:", error);
-        if (shouldHide) {
-          setIsVisible(false);
-          setShowSettingsButton(true);
-        } else {
-          setIsVisible(true);
-        }
-      }
+    const consent = getSafeConsentData();
+    
+    if (consent) {
+      // Application sécurisée des valeurs avec Boolean() pour éviter les undefined
+      setGoogleAnalytics(Boolean(consent.googleAnalytics));
+      setCalendlyFunctionality(Boolean(consent.calendlyFunctionality));
+      setCalendlyPerformance(Boolean(consent.calendlyPerformance));
+      setCalendlyAdvertising(Boolean(consent.calendlyAdvertising));
+      setThemePreference(Boolean(consent.themePreference));
+      setLanguagePreference(Boolean(consent.languagePreference));
+      setIsVisible(false);
+      setShowSettingsButton(true);
     } else {
+      // Comportement par défaut quand aucune donnée de consentement n'existe
       if (shouldHide) {
         setIsVisible(false);
         setShowSettingsButton(true);
@@ -209,15 +197,17 @@ const ModernCookieBanner = () => {
     setCalendlyAdvertising(true);
     setThemePreference(true);
     setLanguagePreference(true);
-    localStorage.setItem('cookie_consent', JSON.stringify({
+    
+    // Sauvegarde sécurisée
+    saveConsentData({
       googleAnalytics: true,
       calendlyFunctionality: true,
       calendlyPerformance: true,
       calendlyAdvertising: true,
       themePreference: true,
-      languagePreference: true,
-      timestamp: new Date().toISOString()
-    }));
+      languagePreference: true
+    });
+    
     handleClose();
   };
 
@@ -229,41 +219,36 @@ const ModernCookieBanner = () => {
     setThemePreference(false);
     setLanguagePreference(false);
 
-    localStorage.setItem('cookie_consent', JSON.stringify({
+    // Sauvegarde sécurisée
+    saveConsentData({
       googleAnalytics: false,
       calendlyFunctionality: false,
       calendlyPerformance: false,
       calendlyAdvertising: false,
       themePreference: false,
-      languagePreference: false,
-      timestamp: new Date().toISOString()
-    }));
+      languagePreference: false
+    });
+    
     handleClose();
   };
 
-
   const handleSavePreferences = () => {
-    localStorage.setItem('cookie_consent', JSON.stringify({
+    // Sauvegarde sécurisée des préférences actuelles
+    saveConsentData({
       googleAnalytics,
       calendlyFunctionality,
       calendlyPerformance,
       calendlyAdvertising,
       themePreference,
-      languagePreference,
-      timestamp: new Date().toISOString()
-    }));
+      languagePreference
+    });
+    
     handleClose();
   };
 
   // Gestion des clics sur les toggles de catégorie
-  // const handleAnalyticsToggle = () => {
-  //   const newState = !analyticsEnabled;
-  //   setGoogleAnalytics(newState);
-  // };
-
   const handleFunctionalityToggle = () => {
     const currentState = getFunctionalityToggleState();
-    // ta fonction perso qui renvoie 'inactive' | 'partial' | 'active' par ex.
 
     if (currentState === 'inactive' || currentState === 'partial') {
       // Activer
@@ -366,11 +351,9 @@ const ModernCookieBanner = () => {
             </div>
             <h3 className={`font-medium text-xl mb-2 ${themeReducer === 'light' ? 'text-gray-800' : 'text-white'
               }`}>
-              {/* {currentLanguage === 'fr' ? 'Changement de thème' : 'Changing theme'} */}
             </h3>
             <p className={`text-sm ${themeReducer === 'light' ? 'text-gray-600' : 'text-gray-300'
               }`}>
-              {/* {currentLanguage === 'fr' ? 'Veuillez patienter...' : 'Please wait...'} */}
             </p>
           </div>
         </div>
@@ -395,9 +378,6 @@ const ModernCookieBanner = () => {
               {!showCustomize ? (
                 <div className="p-6 md:p-8">
                   {/* Header avec contrôles intégrés */}
-
-                  {/* Contrôles thème/langue */}
-                  {/* Header principal responsive */}
                   <div className="flex flex-col lg:flex-row flex-wrap lg:items-start lg:justify-between gap-1 sm:gap-2 lg:gap-3 mb-4 px-3 lg:px-6">
                     {/* Bloc titre */}
                     <div className="order-2 lg:order-1 flex items-center gap-3">
@@ -406,11 +386,10 @@ const ModernCookieBanner = () => {
                       </div>
                       <div>
                         <h3 className={`text-xl sm:text-2xl font-bold ${themeClasses.text}`}>
-                          {/* {dictionary["cookies"][languageReducer]["title"]} */} {t.text("cookies.title")}
-                          {/* {currentTexts.title} */}
+                          {t.text("cookies.title")}
                         </h3>
                         <p className={`text-sm sm:text-base ${themeClasses.textMuted}`}>
-                          {/* {dictionary["cookies"][languageReducer]["subtitle"]} */} {t.text("cookies.subtitle")}
+                          {t.text("cookies.subtitle")}
                         </p>
                       </div>
                     </div>
@@ -469,15 +448,15 @@ const ModernCookieBanner = () => {
                   {/* Content */}
                   <div className="mb-6">
                     <p className={`${themeClasses.textSecondary} leading-relaxed`}>
-                      {/* {dictionary["cookies"][languageReducer]["description"]} */} {t.text("cookies.description")}
+                      {t.text("cookies.description")}
                     </p>
                     {inRouter ? (
                       <Link to={privacyPath} className="block mt-2 text-sm underline text-purple-600 hover:text-purple-800">
-                        {/* {dictionary["cookies"][languageReducer]["privacyLinkText"]} */} {t.text("cookies.privacyLinkText")}
+                        {t.text("cookies.privacyLinkText")}
                       </Link>
                     ) : (
                       <a href={privacyPath} className="block mt-2 text-sm underline text-purple-600 hover:text-purple-800">
-                        {/* {dictionary["cookies"][languageReducer]["privacyLinkText"]} */} {t.text("cookies.privacyLinkText")}
+                        {t.text("cookies.privacyLinkText")}
                       </a>
                     )}
                   </div>
@@ -487,29 +466,29 @@ const ModernCookieBanner = () => {
                     <div className="flex items-center gap-2 p-2 rounded-xl bg-green-50 border border-green-200">
                       <Shield className="w-3 h-3 text-green-600" />
                       <div>
-                        <p className="font-medium text-green-900 text-xs">{/* {dictionary["cookies"][languageReducer]["necessary"]} */} {t.text("cookies.necessary")}</p>
-                        <p className="text-xs text-green-700">{/* {dictionary["cookies"][languageReducer]["alwaysActive"]} */} {t.text("cookies.alwaysActive")}</p>
+                        <p className="font-medium text-green-900 text-xs">{t.text("cookies.necessary")}</p>
+                        <p className="text-xs text-green-700">{t.text("cookies.alwaysActive")}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-2 rounded-xl bg-purple-50 border border-purple-200">
                       <Zap className="w-3 h-3 text-purple-600" />
                       <div>
-                        <p className="font-medium text-purple-900 text-xs">{/* {dictionary["cookies"][languageReducer]["functionality"]} */} {t.text("cookies.functionality")}</p>
-                        <p className="text-xs text-purple-700">{/* {dictionary["cookies"][languageReducer]["yourChoice"]} */} {t.text("cookies.yourChoice")}</p>
+                        <p className="font-medium text-purple-900 text-xs">{t.text("cookies.functionality")}</p>
+                        <p className="text-xs text-purple-700">{t.text("cookies.yourChoice")}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-2 rounded-xl bg-blue-50 border border-blue-200">
                       <BarChart3 className="w-3 h-3 text-blue-600" />
                       <div>
-                        <p className="font-medium text-blue-900 text-xs">{/* {dictionary["cookies"][languageReducer]["performance"]} */} {t.text("cookies.performance")}</p>
-                        <p className="text-xs text-blue-700">{/* {dictionary["cookies"][languageReducer]["yourChoice"]} */} {t.text("cookies.yourChoice")}</p>
+                        <p className="font-medium text-blue-900 text-xs">{t.text("cookies.performance")}</p>
+                        <p className="text-xs text-blue-700">{t.text("cookies.yourChoice")}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-2 rounded-xl bg-orange-50 border border-orange-200">
                       <Target className="w-3 h-3 text-orange-600" />
                       <div>
-                        <p className="font-medium text-orange-900 text-xs">{/* {dictionary["cookies"][languageReducer]["advertising"]} */} {t.text("cookies.advertising")}</p>
-                        <p className="text-xs text-orange-700">{/* {dictionary["cookies"][languageReducer]["yourChoice"]} */} {t.text("cookies.yourChoice")}</p>
+                        <p className="font-medium text-orange-900 text-xs">{t.text("cookies.advertising")}</p>
+                        <p className="text-xs text-orange-700">{t.text("cookies.yourChoice")}</p>
                       </div>
                     </div>
                   </div>
@@ -520,20 +499,20 @@ const ModernCookieBanner = () => {
                       onClick={handleAcceptAll}
                       className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 md:px-6 py-3 rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      {/* {dictionary["cookies"][languageReducer]["acceptAll"]} */} {t.text("cookies.acceptAll")}
+                      {t.text("cookies.acceptAll")}
                     </button>
                     <button
                       onClick={handleRejectAll}
                       className={`flex-1 px-4 md:px-6 py-3 rounded-xl font-medium transition-colors ${themeClasses.buttonSecondary}`}
                     >
-                      {/* {dictionary["cookies"][languageReducer]["refuse"]} */} {t.text("cookies.refuse")}
+                      {t.text("cookies.refuse")}
                     </button>
                     <button
                       onClick={() => setShowCustomize(true)}
                       className={`flex-1 flex items-center justify-center gap-2 ${themeClasses.bgSecondary} border-2 ${themeClasses.borderSecondary} ${themeClasses.text} px-4 md:px-6 py-3 rounded-xl font-medium hover:${themeClasses.border} ${themeClasses.hover} transition-colors`}
                     >
                       <Settings className="w-4 h-4" />
-                      {/* {dictionary["cookies"][languageReducer]["customize"]} */} {t.text("cookies.customize")}
+                      {t.text("cookies.customize")}
                     </button>
                   </div>
                 </div>
@@ -546,13 +525,13 @@ const ModernCookieBanner = () => {
                       <h3
                         className={`order-2 sm:order-1 text-lg sm:text-xl font-bold ${themeClasses.text}`}
                       >
-                        {/* {dictionary["cookies"][languageReducer]["detailedPrefs"]} */} {t.text("cookies.detailedPrefs")}
+                        {t.text("cookies.detailedPrefs")}
                       </h3>
 
                       {/* Bloc contrôles */}
                       <div className="order-1 sm:order-2 flex items-center gap-2 sm:gap-3 self-end sm:self-auto">
                         {/* Bouton langue */}
-                        <button
+                         <button
                           onClick={() => handleLanguageChange(languageReducer === 'fr' ? 'en' : 'fr')}
                           className={`flex items-center gap-1 px-2 py-1 rounded-lg ${themeClasses.bg} ${themeClasses.hover} transition-colors`}
                           title={t.text("cookies.ariaToggleLanguage")}

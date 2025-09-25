@@ -45,4 +45,20 @@ module.exports = {
             return config;
         },
     },
+
+    devServer: (devServerConfig) => {
+        // Remplace l’ancienne API "before/after" par setupMiddlewares (même si tu n’as rien à y faire)
+        devServerConfig.setupMiddlewares = (middlewares, devServer) => {
+            // Exemple: tu pourrais ajouter ici un middleware si besoin
+            // devServer.app.use((req, res, next) => next());
+            return middlewares;
+        };
+
+        // Optionnel: allège la console
+        devServerConfig.client = devServerConfig.client || {};
+        devServerConfig.client.overlay = { warnings: false, errors: true };
+        devServerConfig.client.logging = "error";
+
+        return devServerConfig;
+    },
 };

@@ -108,8 +108,7 @@ header {
 }
 
 :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown .ant-dropdown-menu,
-:where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu
-  .ant-dropdown-menu {
+:where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu .ant-dropdown-menu {
   border-radius: 5px;
   font-family: Helvetica, sans-serif;
 }
@@ -118,14 +117,17 @@ nav ul {
   list-style: none;
   text-align: center;
 }
+
 nav ul li {
   display: inline-block;
 }
+
 nav ul li a {
   display: block;
   padding: 7px 15px;
   text-decoration: none;
 }
+
 nav ul li a,
 nav ul li a:after,
 nav ul li a:before {
@@ -155,6 +157,7 @@ nav.shift ul li a:after {
   z-index: -1;
   border-radius: 10px;
 }
+
 nav.shift ul li a:hover:after {
   opacity: 1;
   visibility: visible;
@@ -195,12 +198,15 @@ nav.shift ul li a:hover:after {
   0% {
     transform: translateX(-1000px);
   }
+
   50% {
     transform: translateX(200px);
   }
+
   75% {
     transform: translateX(-50px);
   }
+
   100% {
     transform: translateX(0);
   }
@@ -214,12 +220,15 @@ nav.shift ul li a:hover:after {
   0% {
     transform: translateX(1000px);
   }
+
   50% {
     transform: translateX(-200px);
   }
+
   75% {
     transform: translateX(50px);
   }
+
   100% {
     transform: translateX(0);
   }
@@ -263,11 +272,9 @@ nav.shift ul li a:hover:after {
 /* booking */
 
 .booking-bg {
-  background: linear-gradient(
-    72.47deg,
-    rgba(35, 0, 191, 0.06) -44.32%,
-    rgba(218, 148, 255, 0.06) 144.14%
-  );
+  background: linear-gradient(72.47deg,
+      rgba(35, 0, 191, 0.06) -44.32%,
+      rgba(218, 148, 255, 0.06) 144.14%);
 }
 
 .custom-btn2 {
@@ -317,42 +324,26 @@ nav.shift ul li a:hover:after {
 
 /* contact */
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(
-    .ant-checkbox-wrapper-disabled
-  ):hover
-  .ant-checkbox-checked:not(.ant-checkbox-disabled)
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
   background-color: #b514fd;
   width: 20px;
   height: 20px;
 }
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox .ant-checkbox-inner {
   border: 1px solid #d9d9d9;
   width: 20px;
   height: 20px;
 }
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(
-    .ant-checkbox-wrapper-disabled
-  ):hover
-  .ant-checkbox-inner,
-:where(.css-dev-only-do-not-override-amq5gd).ant-checkbox:not(
-    .ant-checkbox-disabled
-  ):hover
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner,
+:where(.css-dev-only-do-not-override-amq5gd).ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
   border-color: #b514fd;
   width: 20px;
   height: 20px;
 }
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-checked
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-checked .ant-checkbox-inner {
   background-color: #b514fd;
   width: 20px;
   height: 20px;
@@ -362,7 +353,7 @@ nav.shift ul li a:hover:after {
 
 .about-description ul {
   list-style-type: disc;
-  padding-left: 1.5rem; 
+  padding-left: 1.5rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -410,7 +401,7 @@ nav.shift ul li a:hover:after {
 
 .it-service-description ul {
   list-style-type: disc;
-  padding-left: 1.5rem; 
+  padding-left: 1.5rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -431,11 +422,11 @@ nav.shift ul li a:hover:after {
 
 .process-bg-dark {
   background: linear-gradient(0deg, #14172D, #14172D),
-  linear-gradient(180deg, rgba(11, 9, 10, 0.1) 12.23%, rgba(255, 255, 255, 0.1) 177.27%);
+    linear-gradient(180deg, rgba(11, 9, 10, 0.1) 12.23%, rgba(255, 255, 255, 0.1) 177.27%);
   border: 2px solid #FFFFFF1A
 }
 
-.ant-collapse>.ant-collapse-item >.ant-collapse-header .ant-collapse-header-text { 
+.ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
   font-size: 24px !important;
   font-family: "Helvetica", sans-serif !important;
 }
@@ -450,9 +441,11 @@ nav.shift ul li a:hover:after {
   .custom-contact-input::placeholder {
     font-size: 15px;
   }
+
   .testimonail-card-vh {
     min-height: 220px;
   }
+
   nav ul li a {
     display: block;
     padding: 7px 10px;
@@ -468,7 +461,7 @@ nav.shift ul li a:hover:after {
   .custom-contact-input::placeholder {
     font-size: 15px;
   }
-  
+
   .testimonail-card-vh {
     min-height: 220px;
   }
@@ -495,7 +488,7 @@ nav.shift ul li a:hover:after {
     list-style-type: none;
   }
 
-  .ant-collapse>.ant-collapse-item >.ant-collapse-header .ant-collapse-header-text { 
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
     font-size: 20px !important;
     font-family: "Helvetica", sans-serif !important;
   }
@@ -518,7 +511,7 @@ nav.shift ul li a:hover:after {
     list-style-type: none;
   }
 
-  .ant-collapse>.ant-collapse-item >.ant-collapse-header .ant-collapse-header-text { 
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
     font-size: 18px !important;
     font-family: "Helvetica", sans-serif !important;
   }
@@ -549,7 +542,7 @@ nav.shift ul li a:hover:after {
     list-style-type: none;
   }
 
-  .ant-collapse>.ant-collapse-item >.ant-collapse-header .ant-collapse-header-text { 
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
     font-size: 16px !important;
     font-family: "Helvetica", sans-serif !important;
   }
@@ -583,7 +576,7 @@ nav.shift ul li a:hover:after {
   background-color: #ffffff !important;
   color: #222222 !important;
   border: 1px solid #C8CAE4 !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
   font: inherit !important;
   border-radius: 8px !important;
   overflow: hidden !important;
@@ -645,7 +638,7 @@ nav.shift ul li a:hover:after {
   background-color: #2b284c !important;
   color: #E5E5E5 !important;
   border: 1px solid #4a4478 !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
   font: inherit !important;
   border-radius: 8px !important;
   overflow: hidden !important;
@@ -653,7 +646,8 @@ nav.shift ul li a:hover:after {
 
 /* Items du dropdown */
 .rip-dark .react-international-phone-country-selector-dropdown__list-item {
-  background-color: #2b284c !important; /* Force le fond sombre */
+  background-color: #2b284c !important;
+  /* Force le fond sombre */
   color: #E5E5E5 !important;
   font: inherit !important;
   padding: 12px 16px !important;
@@ -668,7 +662,8 @@ nav.shift ul li a:hover:after {
 .rip-dark .react-international-phone-country-selector-dropdown__list-item--selected,
 .rip-dark .react-international-phone-country-selector-dropdown__list-item--focused,
 .rip-dark .react-international-phone-country-selector-dropdown__list-item--highlighted {
-  background-color: #3a3561 !important; /* Couleur cohérente */
+  background-color: #3a3561 !important;
+  /* Couleur cohérente */
   color: #E5E5E5 !important;
 }
 
@@ -748,7 +743,8 @@ nav.shift ul li a:hover:after {
 .rip-light .react-international-phone-country-selector-dropdown {
   max-height: 300px !important;
   overflow-y: auto !important;
-  overscroll-behavior: contain !important; /* Empêche le scroll de se propager */
+  overscroll-behavior: contain !important;
+  /* Empêche le scroll de se propager */
 }
 
 /* Container de la liste */
@@ -756,14 +752,32 @@ nav.shift ul li a:hover:after {
 .rip-light .react-international-phone-country-selector-dropdown__list {
   overflow-y: auto !important;
   overscroll-behavior: contain !important;
-  max-height: 280px !important; /* Laisse de la place pour la recherche */
+  max-height: 280px !important;
+  /* Laisse de la place pour la recherche */
 }
 
 /* Empêche le body de scroller quand le dropdown est ouvert */
 .react-international-phone-country-selector-dropdown {
-  touch-action: pan-y !important; /* Pour mobile */
+  touch-action: pan-y !important;
+  /* Pour mobile */
 }
 
 .grecaptcha-badge {
   visibility: hidden !important;
+}
+/* Ajoutez ceci à la fin de votre fichier CSS */
+
+/* Scrollbar cachée pour le modal */
+.calendly-overlay .max-h-\[90vh\] {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.calendly-overlay .max-h-\[90vh\]::-webkit-scrollbar {
+  display: none;
+}
+
+/* Amélioration du flou existant */
+.calendly-overlay .calendly-close-overlay {
+  backdrop-filter: blur(8px);
 }

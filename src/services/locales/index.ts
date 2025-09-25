@@ -50,6 +50,11 @@ export const UnderConstruction = {
   fr: FR.underconstruction,
 }
 
+export const booking = {
+  en: EN.booking,
+  fr: FR.booking,
+}
+
 export const dictionary: any = {
   navbar,
   footer,
@@ -59,6 +64,7 @@ export const dictionary: any = {
   error404,
   cookies,
   UnderConstruction,
+  booking,
 };
 
 export const t = <T = string>(

@@ -7,7 +7,7 @@ interface RecaptchaResponse {
 export const verifyRecaptchaToken = async (token: string): Promise<RecaptchaResponse> => {
   // Bypass en développement local
   if (window.location.hostname === 'localhost') {
-    console.log('🔧 Mode développement local : ReCAPTCHA bypassed');
+    // console.log('🔧 Mode développement local : ReCAPTCHA bypassed');
     return { success: true, score: 1.0 };
   }
 

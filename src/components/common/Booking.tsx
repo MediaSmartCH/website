@@ -1,12 +1,13 @@
-import React from "react";
-import { PopupButton } from "react-calendly";
+import React, { useState, useEffect } from "react";
+import CustomBooking from "./CustomBooking";
 
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
 import bookLine from "assets/icons/bookLine.svg";
 
 const Booking = () => {
+  const [showBookingModal, setShowBookingModal] = useState(false);
+
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -15,23 +16,31 @@ const Booking = () => {
 
   const t = useTranslations(languageReducer);
 
-  const rootElement = document.getElementById("root");
+  // Bloquer le scroll quand le modal est ouvert
+  useEffect(() => {
+    if (showBookingModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showBookingModal]);
 
   return (
     <div className="md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px]">
       <div className="w-full">
-        <div
-          className="flex flex-col items-center text-center"
-        >
+        <div className="flex flex-col items-center text-center">
           <p
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full lg:w-[85%] 2xl:w-[75%] mb-[15px] 2xl:mb-[20px] leading-[36px] lg:leading-[52px] xl:leading-[72px] font-redDisplay font-bold text-[28px] md:text-[36px] lg:text-[42px] xl:text-[54px] 2xl:text-[60px] `}
             data-aos="zoom-out"
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"
-
           >
-            {/* {dictionary["home"][languageReducer]["bookingTitle"]} */} {t.text("home.bookingTitle")}
+            {t.text("home.bookingTitle")}
           </p>
           <img
             src={bookLine}
@@ -48,32 +57,51 @@ const Booking = () => {
             data-aos-duration="1300"
             data-aos-easing="ease-in-sine"
           >
-            {/* {dictionary["home"][languageReducer]["bookingDescription"]} */} {t.text("home.bookingDescription")}
+            {t.text("home.bookingDescription")}
           </p>
           <div
             data-aos="zoom-out"
             data-aos-duration="1500"
             data-aos-easing="ease-in-sine"
           >
-            <PopupButton
+            <button
+              onClick={() => setShowBookingModal(true)}
               className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-              url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
-              rootElement={rootElement as HTMLElement}
-              // text={
-              //   dictionary["home"][languageReducer]["bookingBtn"]
-              // }
-              text={t.text("home.bookingBtn")}
-              pageSettings={{
-                backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
-                hideEventTypeDetails: false,
-                hideLandingPageDetails: false,
-                primaryColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
-                textColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
-              }}
-            />
+            >
+              {t.text("home.bookingBtn")}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Modal pour CustomBooking */}
+      {showBookingModal && (
+        <div className="calendly-overlay fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
+          {/* Bouton fermer - déplacé ici pour être positionné par rapport à l'écran */}
+          <button
+            onClick={() => setShowBookingModal(false)}
+            className="fixed top-4 right-4 z-[10000] w-10 h-10 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 shadow-lg border border-gray-200 dark:border-gray-600 transition-all duration-200"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="stroke-current">
+              <path d="M1 1L13 13M13 1L1 13" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+
+          {/* Overlay avec classe existante */}
+          <div
+            className="calendly-close-overlay absolute inset-0 bg-black/40"
+            onClick={() => setShowBookingModal(false)}
+          />
+
+          {/* Modal Content */}
+          <div className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-hidden">
+            {/* Container avec scroll interne */}
+            <div className="max-h-[90vh] overflow-y-auto">
+              <CustomBooking themeReducer={themeReducer} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
