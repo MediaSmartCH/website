@@ -4,8 +4,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "light-white": "",
-        "lighter-white": "",
         "light-gray": "#EBEBEB",
       },
       fontFamily: {
@@ -19,7 +17,7 @@ module.exports = {
     },
   },
   plugins: [],
-  corePlugins: {
-    preflight: true, // active le reset Tailwind
-  }
+  // corePlugins: {
+  //   preflight: true, // active le reset Tailwind
+  // }
 };

@@ -1,7 +1,6 @@
 .App {
   margin: 0 auto;
   padding: 0;
-  scroll-behavior: smooth;
   background: #ffffff;
   overflow: hidden;
 }
@@ -9,13 +8,8 @@
 .AppDark {
   margin: 0 auto;
   padding: 0;
-  scroll-behavior: smooth;
   background: #14172d;
   overflow: hidden;
-}
-
-* {
-  scroll-behavior: smooth;
 }
 
 .homepage-container {
@@ -36,7 +30,6 @@
   width: 100%;
   border: none !important;
   font-size: 16px;
-  /* color: #000; */
   background: transparent !important;
 }
 
@@ -59,7 +52,6 @@
 }
 
 .custom-contact-input::placeholder {
-  /* color: #222222; */
   font-size: 16px;
   font-style: normal;
   line-height: normal;
@@ -94,7 +86,6 @@ header {
 
 .shrink {
   height: 80px;
-  /* background: #fff; */
   z-index: 999;
 }
 
@@ -164,13 +155,8 @@ nav.shift ul li a:hover:after {
   height: 100%;
 }
 
-.menu-text-light {
-  color: #14172d !important;
-}
-
-.menu-text-dark {
-  color: #f6f6f6 !important;
-}
+.menu-text-light { color: #14172d !important; }
+.menu-text-dark  { color: #f6f6f6 !important; }
 
 .calendly-overlay .calendly-close-overlay {
   backdrop-filter: blur(4px);
@@ -183,7 +169,6 @@ nav.shift ul li a:hover:after {
   background-repeat: no-repeat;
   background-position: 100% 100%;
   background-size: cover;
-  /* height: 80vh; */
 }
 
 .hero-btn {
@@ -195,21 +180,10 @@ nav.shift ul li a:hover:after {
 }
 
 @keyframes slideFromLeft {
-  0% {
-    transform: translateX(-1000px);
-  }
-
-  50% {
-    transform: translateX(200px);
-  }
-
-  75% {
-    transform: translateX(-50px);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(-1000px); }
+  50% { transform: translateX(200px); }
+  75% { transform: translateX(-50px); }
+  100% { transform: translateX(0); }
 }
 
 .hero-subtitle-animation {
@@ -217,21 +191,10 @@ nav.shift ul li a:hover:after {
 }
 
 @keyframes slideFromRight {
-  0% {
-    transform: translateX(1000px);
-  }
-
-  50% {
-    transform: translateX(-200px);
-  }
-
-  75% {
-    transform: translateX(50px);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(1000px); }
+  50% { transform: translateX(-200px); }
+  75% { transform: translateX(50px); }
+  100% { transform: translateX(0); }
 }
 
 .custom-btn {
@@ -259,9 +222,7 @@ nav.shift ul li a:hover:after {
   transition: all 0.6s;
 }
 
-.custom-btn:hover {
-  color: #fff;
-}
+.custom-btn:hover { color: #fff; }
 
 .custom-btn:hover:after {
   width: 100%;
@@ -310,17 +271,9 @@ nav.shift ul li a:hover:after {
   left: 0;
 }
 
-.testimonial1-bg {
-  border: 1px solid #f2f3f8;
-}
-
-.testimonial2-bg {
-  box-shadow: 0px 20px 60px -20px #16161629;
-}
-
-.testimonail-card-vh {
-  min-height: 250px;
-}
+.testimonial1-bg { border: 1px solid #f2f3f8; }
+.testimonial2-bg { box-shadow: 0px 20px 60px -20px #16161629; }
+.testimonail-card-vh { min-height: 250px; }
 
 /* contact */
 
@@ -358,36 +311,12 @@ nav.shift ul li a:hover:after {
   margin-bottom: 0.5rem;
 }
 
-.about-description li {
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
-}
+.about-description li { margin-bottom: 0.5rem; line-height: 1.6; }
+.about-description strong { font-weight: 600; }
 
-.about-description strong {
-  font-weight: 600;
-}
-
-.it-service-hero-gradient span {
-  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.it-service-about-title span {
-  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.it-service-process-title span {
-  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
+.it-service-hero-gradient span,
+.it-service-about-title span,
+.it-service-process-title span,
 .it-service-title span {
   background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
   background-clip: text;
@@ -395,9 +324,8 @@ nav.shift ul li a:hover:after {
   -webkit-text-fill-color: transparent;
 }
 
-.it-service-about-description b {
-  font-weight: 600;
-}
+.it-service-about-description b,
+.it-service-description b { font-weight: 600; }
 
 .it-service-description ul {
   list-style-type: disc;
@@ -406,14 +334,7 @@ nav.shift ul li a:hover:after {
   margin-bottom: 0.5rem;
 }
 
-.it-service-description li {
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
-}
-
-.it-service-description b {
-  font-weight: 600;
-}
+.it-service-description li { margin-bottom: 0.5rem; line-height: 1.6; }
 
 .process-bg-light {
   background: linear-gradient(0deg, #DCDCFD, #DCDCFD), linear-gradient(180deg, rgba(11, 9, 10, 0.1) 12.23%, rgba(255, 255, 255, 0.1) 177.27%);
@@ -434,60 +355,24 @@ nav.shift ul li a:hover:after {
 /* media queries */
 
 @media screen and (max-width: 1279px) and (min-width: 1024px) {
-  .custom-contact-input {
-    font-size: 15px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 15px;
-  }
-
-  .testimonail-card-vh {
-    min-height: 220px;
-  }
-
-  nav ul li a {
-    display: block;
-    padding: 7px 10px;
-    text-decoration: none;
-  }
+  .custom-contact-input { font-size: 15px; }
+  .custom-contact-input::placeholder { font-size: 15px; }
+  .testimonail-card-vh { min-height: 220px; }
+  nav ul li a { padding: 7px 10px; }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 900px) {
-  .custom-contact-input {
-    font-size: 15px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 15px;
-  }
-
-  .testimonail-card-vh {
-    min-height: 220px;
-  }
-
-  .about-description ul {
-    list-style-type: none;
-  }
+  .custom-contact-input { font-size: 15px; }
+  .custom-contact-input::placeholder { font-size: 15px; }
+  .testimonail-card-vh { min-height: 220px; }
+  .about-description ul { list-style-type: none; }
 }
 
 @media screen and (max-width: 899px) and (min-width: 768px) {
-  .testimonail-card-vh {
-    min-height: 220px;
-  }
-
-  .custom-contact-input {
-    font-size: 15px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 15px;
-  }
-
-  .about-description ul {
-    list-style-type: none;
-  }
-
+  .testimonail-card-vh { min-height: 220px; }
+  .custom-contact-input { font-size: 15px; }
+  .custom-contact-input::placeholder { font-size: 15px; }
+  .about-description ul { list-style-type: none; }
   .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
     font-size: 20px !important;
     font-family: "Helvetica", sans-serif !important;
@@ -495,22 +380,10 @@ nav.shift ul li a:hover:after {
 }
 
 @media screen and (max-width: 767px) and (min-width: 426px) {
-  .testimonail-card-vh {
-    min-height: 210px;
-  }
-
-  .custom-contact-input {
-    font-size: 14px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 14px;
-  }
-
-  .about-description ul {
-    list-style-type: none;
-  }
-
+  .testimonail-card-vh { min-height: 210px; }
+  .custom-contact-input { font-size: 14px; }
+  .custom-contact-input::placeholder { font-size: 14px; }
+  .about-description ul { list-style-type: none; }
   .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
     font-size: 18px !important;
     font-family: "Helvetica", sans-serif !important;
@@ -518,13 +391,8 @@ nav.shift ul li a:hover:after {
 }
 
 @media screen and (max-width: 425px) {
-  .custom-contact-input {
-    font-size: 14px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 14px;
-  }
+  .custom-contact-input { font-size: 14px; }
+  .custom-contact-input::placeholder { font-size: 14px; }
 
   header {
     width: 100%;
@@ -538,10 +406,7 @@ nav.shift ul li a:hover:after {
     position: fixed;
   }
 
-  .about-description ul {
-    list-style-type: none;
-  }
-
+  .about-description ul { list-style-type: none; }
   .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
     font-size: 16px !important;
     font-family: "Helvetica", sans-serif !important;
@@ -647,7 +512,6 @@ nav.shift ul li a:hover:after {
 /* Items du dropdown */
 .rip-dark .react-international-phone-country-selector-dropdown__list-item {
   background-color: #2b284c !important;
-  /* Force le fond sombre */
   color: #E5E5E5 !important;
   font: inherit !important;
   padding: 12px 16px !important;
@@ -658,12 +522,11 @@ nav.shift ul li a:hover:after {
   background-color: #3a3561 !important;
 }
 
-/* Item sélectionné - FIX DU HEADER BLANC */
+/* Item sélectionné */
 .rip-dark .react-international-phone-country-selector-dropdown__list-item--selected,
 .rip-dark .react-international-phone-country-selector-dropdown__list-item--focused,
 .rip-dark .react-international-phone-country-selector-dropdown__list-item--highlighted {
   background-color: #3a3561 !important;
-  /* Couleur cohérente */
   color: #E5E5E5 !important;
 }
 
@@ -697,19 +560,12 @@ nav.shift ul li a:hover:after {
 .rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar {
   width: 8px;
 }
-
-.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-track {
-  background: #1b1730;
-}
-
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-track { background: #1b1730; }
 .rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb {
   background: #4a4478;
   border-radius: 8px;
 }
-
-.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb:hover {
-  background: #5a5488;
-}
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb:hover { background: #5a5488; }
 
 /* Indicateur de pays préférés (séparateur) */
 .rip-dark .react-international-phone-country-selector-dropdown__preferred-divider {
@@ -717,67 +573,51 @@ nav.shift ul li a:hover:after {
   margin: 4px 0 !important;
 }
 
-/* Fix pour le bouton dropdown */
+/* Bouton dropdown */
 .rip-dark .react-international-phone-country-selector-button {
   background-color: transparent !important;
   border: none !important;
   color: #E5E5E5 !important;
 }
-
 .rip-dark .react-international-phone-country-selector-button:hover {
   background-color: rgba(103, 125, 255, 0.1) !important;
 }
-
 .rip-light .react-international-phone-country-selector-button {
   background-color: transparent !important;
   border: none !important;
   color: #222222 !important;
 }
-
 .rip-light .react-international-phone-country-selector-button:hover {
   background-color: rgba(103, 125, 255, 0.05) !important;
 }
 
-/* Fix scroll à l'intérieur du dropdown */
+/* Fix scroll interne du dropdown */
 .rip-dark .react-international-phone-country-selector-dropdown,
 .rip-light .react-international-phone-country-selector-dropdown {
   max-height: 300px !important;
   overflow-y: auto !important;
   overscroll-behavior: contain !important;
-  /* Empêche le scroll de se propager */
 }
 
-/* Container de la liste */
 .rip-dark .react-international-phone-country-selector-dropdown__list,
 .rip-light .react-international-phone-country-selector-dropdown__list {
   overflow-y: auto !important;
   overscroll-behavior: contain !important;
   max-height: 280px !important;
-  /* Laisse de la place pour la recherche */
 }
 
 /* Empêche le body de scroller quand le dropdown est ouvert */
 .react-international-phone-country-selector-dropdown {
   touch-action: pan-y !important;
-  /* Pour mobile */
 }
 
-.grecaptcha-badge {
-  visibility: hidden !important;
-}
-/* Ajoutez ceci à la fin de votre fichier CSS */
+/* reCAPTCHA v3 */
+.grecaptcha-badge { visibility: hidden !important; }
 
-/* Scrollbar cachée pour le modal */
+/* Calendly */
 .calendly-overlay .max-h-\[90vh\] {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-.calendly-overlay .max-h-\[90vh\]::-webkit-scrollbar {
-  display: none;
-}
-
-/* Amélioration du flou existant */
-.calendly-overlay .calendly-close-overlay {
-  backdrop-filter: blur(8px);
-}
+.calendly-overlay .max-h-\[90vh\]::-webkit-scrollbar { display: none; }
+.calendly-overlay .calendly-close-overlay { backdrop-filter: blur(8px); }

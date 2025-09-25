@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Make your custom sans stack the default for the whole app */
 @layer base {
-  html { font-family: theme('fontFamily.sans'); }
+  html { 
+    font-family: theme('fontFamily.sans'); 
+    scroll-behavior: smooth;
+  }
 }
