@@ -14,8 +14,8 @@ function App() {
   return (
     <div className={`${themeReducer === "light" ? "App" : "AppDark"} `}>
       <HelmetProvider>
-        {process.env.NODE_ENV === "production" && <Analytics />}
-        {process.env.NODE_ENV === "production" && <SpeedInsights />}
+        {import.meta.env.NODE_ENV === "production" && <Analytics />}
+        {import.meta.env.NODE_ENV === "production" && <SpeedInsights />}
         <CookieConsent />
         <Config />
       </HelmetProvider>

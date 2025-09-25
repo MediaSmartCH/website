@@ -131,7 +131,7 @@ const Contact = () => {
     setError("");
   };
 
-  // const isDev = process.env.NODE_ENV === 'development';
+  // const isDev = import.meta.env.NODE_ENV === 'development';
 
   return (
     <div id="contact" className={`${themeReducer === "light" ? "bg-[#F7F7FF]" : "bg-[#2B284C]"} `}>
@@ -358,7 +358,7 @@ const Contact = () => {
             //       hostname: window.location.hostname,
             //       isLocalHost,
             //       hasExecuteRecaptcha: !!executeRecaptcha,
-            //       NODE_ENV: process.env.NODE_ENV
+            //       NODE_ENV: import.meta.env.NODE_ENV
             //     });
 
             //     // ReCAPTCHA uniquement si on n'est PAS en local ET que executeRecaptcha existe

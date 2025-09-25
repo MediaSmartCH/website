@@ -34,12 +34,13 @@ export type SafeTranslator = {
   /** Objet typé */
   object: <T = Record<string, unknown>>(path: string, fallback?: T) => T;
   /** Tableau typé */
-  array:  <T = unknown>(path: string, fallback?: T[]) => T[];
+  array: <T = unknown>(path: string, fallback?: T[]) => T[];
 };
 
 export function makeTranslator(lang: Lang): SafeTranslator {
   const warn = (path: string, why: string) => {
-    if (process.env.NODE_ENV !== "production") {
+    // if (import.meta.env.NODE_ENV !== "production") {
+    if (import.meta.env.DEV) {
       // évite le spam mais utile en dev
       console.warn(`[i18n] ${why} at "${path}" (lang=${lang})`);
     }
