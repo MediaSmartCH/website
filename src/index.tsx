@@ -37,9 +37,9 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+// import "./index.css";
 import App from "./App";
-import "aos/dist/aos.css";
+// import "aos/dist/aos.css";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
@@ -48,6 +48,8 @@ import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import "antd/dist/reset.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import 'aos/dist/aos.css';
+import './index.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
