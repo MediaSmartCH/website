@@ -30,7 +30,7 @@ module.exports = {
                 }
             }
 
-            if (process.env.ANALYZE === 'true') {
+            if (import.meta.env.ANALYZE === 'true') {
                 config.plugins.push(
                     new BundleAnalyzerPlugin({
                         analyzerMode: 'static',         // génère un fichier HTML

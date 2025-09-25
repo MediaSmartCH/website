@@ -6,7 +6,7 @@ export default async function handler(
 ) {
   // console.log('=== API CALLED ===');
   // console.log('Method:', req.method);
-  // console.log('Has SECRET_KEY:', !!process.env.RECAPTCHA_SECRET_KEY);
+  // console.log('Has SECRET_KEY:', !!import.meta.env.RECAPTCHA_SECRET_KEY);
   
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
@@ -23,7 +23,7 @@ export default async function handler(
   }
 
   try {
-    const secret = process.env.RECAPTCHA_SECRET_KEY;
+    const secret = import.meta.env.RECAPTCHA_SECRET_KEY;
     if (!secret) {
       console.error('SECRET KEY IS MISSING!');
       return res.status(500).json({ 

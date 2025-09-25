@@ -14,6 +14,7 @@ module.exports = {
         redDisplay: "Red Hat Display",
         helvetica: "helvetica",
         mulish: "Mulish",
+        sans: ['Poppins', 'Montserrat', 'Red Hat Display', 'Mulish', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
     },
   },
