@@ -2,21 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base app */
-:root { --app-font: "Poppins", "Montserrat", "Mulish", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-
-html, body, #root {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: var(--app-font);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Titres si tu veux forcer Montserrat par ex. */
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Montserrat", var(--app-font);
+/* Make your custom sans stack the default for the whole app */
+@layer base {
+  html { font-family: theme('fontFamily.sans'); }
 }

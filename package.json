@@ -28,6 +28,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.543.0",
     "moment": "^2.29.4",
+    "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-calendly": "^4.3.0",
     "react-dom": "^18.2.0",
