@@ -1,0 +1,501 @@
+import React from "react";
+import { Checkbox } from "antd";
+import emailjs from "@emailjs/browser";
+import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
+import "react-international-phone/style.css";
+import { isValidPhoneNumber } from "libphonenumber-js";
+
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { verifyRecaptchaToken } from "services/api/recaptcha";
+
+import { useAppSelector } from "services/hooks/hooks";
+import { useTranslations } from "services/locales/safe";
+
+import email from "assets/icons/email.svg";
+import address from "assets/icons/address.svg";
+import phone from "assets/icons/phone.svg";
+import insta from "assets/icons/contactInsta.svg";
+import linkedin from "assets/icons/contactLinkedin.svg";
+import telegram from "assets/icons/telegram.svg";
+import contactUser from "assets/icons/contactUser.svg";
+import contactEmail from "assets/icons/contactEmail.svg";
+import contactPhone from "assets/icons/contactPhone.svg";
+import contactMessage from "assets/icons/contactMessage.svg";
+import arrow from "assets/icons/rightArrow.svg";
+
+import { Link } from "react-router-dom";
+import { useLangLink } from "services/router/langPath";
+
+const Contact = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const { L } = useLangLink();
+
+  const languageReducer = useAppSelector((state) => state.language.currentLanguage);
+  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const t = useTranslations(languageReducer);
+
+  const [loading, setLoading] = React.useState(false);
+  const [done, setDone] = React.useState(false);
+  const [isChecked, setIsChecked] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  const [contact, setContact] = React.useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [phoneValue, setPhoneValue] = React.useState("");
+  const [phoneValid, setPhoneValid] = React.useState(true);
+
+  const getLocalDigits = (phone: string) => {
+    const { country } = guessCountryByPartialPhoneNumber({ phone });
+    const dial = country?.dialCode || "";
+    try {
+      return removeDialCode({ phone, dialCode: dial }).replace(/\D/g, "");
+    } catch {
+      return phone.replace(/^\+\d{1,4}\s*/, "").replace(/\D/g, "");
+    }
+  };
+
+  const localDigits = getLocalDigits(phoneValue);
+  const dialOnly = localDigits.length === 0;
+
+  const [emailValid, setEmailValid] = React.useState(true);
+
+  const emailBase = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}$/i;
+  const isValidEmailStrict = (value: string) => {
+    if (!emailBase.test(value)) return false;
+    if (value.includes("..")) return false;
+    const [local, domain] = value.split("@");
+    if (!local || !domain) return false;
+    if (local.startsWith(".") || local.endsWith(".")) return false;
+    const labels = domain.split(".");
+    if (labels.some((l) => l.startsWith("-") || l.endsWith("-") || l.length === 0)) return false;
+    return true;
+  };
+
+  const handleInvalid = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.currentTarget as HTMLInputElement | HTMLTextAreaElement;
+
+    if (target.name === "email") {
+      if (!target.value) {
+        target.setCustomValidity(t.text("home.contactRequiredEmailError"));
+        setEmailValid(false);
+      } else if (!isValidEmailStrict(target.value)) {
+        target.setCustomValidity(t.text("home.contactInvalidEmailError"));
+        setEmailValid(false);
+      } else {
+        target.setCustomValidity("");
+        setEmailValid(true);
+      }
+    }
+
+    if (target.name === "message") {
+      if (!target.value) {
+        target.setCustomValidity(t.text("home.contactRequiredMsgError"));
+      } else {
+        target.setCustomValidity("");
+      }
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "email") {
+      setContact((c) => ({ ...c, email: value }));
+      setEmailValid(value === "" ? true : isValidEmailStrict(value));
+      return;
+    }
+
+    setContact((c) => ({ ...c, [name]: value }));
+  };
+
+  const handleClick = () => {
+    setTimeout(() => setDone(false), 3000);
+  };
+
+  const onCheckboxChange = (e: any) => {
+    setIsChecked(e.target.checked);
+    setError("");
+  };
+
+  return (
+    <div id="contact" className={`${themeReducer === "light" ? "bg-[#F7F7FF]" : "bg-[#2B284C]"} `}>
+      <div className="md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px] mt-[32px] lg:mt-[42px] 2xl:mt-[54px]">
+        <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto pt-[32px] pb-[45px] lg:pt-[62px] lg:pb-[75px] 2xl:pt-[87px] 2xl:pb-[103px]">
+          <p
+            className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"
+              } w-full mx-auto text-center mb-[18px] lg:mb-[32px] 2xl:mb-[47px] leading-[36px] lg:leading-[46px] xl:leading-[72px] font-redDisplay font-bold text-[24px] md:text-[28px] lg:text-[32px] xl:text-[34px] 2xl:text-[36px] `}
+          >
+            {t.text("home.contactTitle")}
+          </p>
+
+          <div
+            className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
+              } flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-y-[35px] `}
+          >
+            <div className="w-full lg:w-[50%]" data-aos="fade-right" data-aos-duration="1000">
+              <div className="flex items-center gap-x-[18px]">
+                <img src={email} alt="email" />
+                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
+                  <a
+                    href="mailto:hello@mediasmart.ch"
+                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                  >
+                    hello[at]mediasmart.ch
+                  </a>
+                </p>
+              </div>
+
+              <div className="flex items-center gap-x-[18px] my-[15px] lg:my-[31px]">
+                <img src={address} alt="address" />
+                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
+                  <a
+                    href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9"
+                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Valais – Vaud – Genève – Fribourg
+                  </a>
+                </p>
+              </div>
+
+              <div className="flex items-center gap-x-[18px]">
+                <img src={phone} alt="phone" />
+                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
+                  <a
+                    href="tel:+41796578612"
+                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                  >
+                    +41 79 657 86 12
+                  </a>
+                </p>
+              </div>
+
+              <div className="
+                flex flex-wrap 
+                justify-center lg:justify-start
+                gap-x-[13px] gap-y-[12px]
+                mt-[25px] lg:mt-[45px]
+              ">
+                <a
+                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
+                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
+                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
+                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
+                  href="https://www.instagram.com/MediaSmartCH"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>
+                    <img src={insta} alt="insta" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
+                  </span>
+                  <span>Instagram</span>
+                </a>
+                <a
+                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
+                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
+                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
+                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
+                  href="https://www.linkedin.com/company/MediaSmartCH"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>
+                    <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
+                  </span>
+                  <span>Linkedin</span>
+                </a>
+                <a
+                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
+                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
+                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
+                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
+                  href="https://t.me/MediaSmartCH"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>
+                    <img src={telegram} alt="telegram" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
+                  </span>
+                  <span>Telegram</span>
+                </a>
+              </div>
+            </div>
+
+            <form
+              noValidate
+              className="w-full lg:w-[50%]"
+              data-aos="fade-up"
+              data-aos-duration="1200"
+              onSubmit={async (e) => {
+                e.preventDefault();
+
+                if (!isChecked) {
+                  setError(t.text("home.contactErrorText"));
+                  return;
+                }
+
+                if (!isValidEmailStrict(contact.email)) {
+                  setEmailValid(false);
+
+                  const emailInput = document.querySelector('input[name="email"]') as HTMLInputElement;
+                  if (emailInput) {
+                    emailInput.setCustomValidity(t.text("home.contactInvalidEmailError"));
+                    emailInput.reportValidity();
+                  }
+                  return;
+                }
+
+                const hasPhoneNumber = phoneValue && getLocalDigits(phoneValue).length > 0;
+
+                if (hasPhoneNumber && !isValidPhoneNumber(phoneValue)) {
+                  setPhoneValid(false);
+
+                  const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
+                  if (phoneInput) {
+                    phoneInput.setCustomValidity(t.text("home.contactInvalidMobileError"));
+                    phoneInput.reportValidity();
+                  }
+                  return;
+                }
+
+                setLoading(true);
+
+                try {
+                  const isLocalHost = window.location.hostname === 'localhost' ||
+                    window.location.hostname === '127.0.0.1';
+
+                  if (!isLocalHost) {
+                    if (!executeRecaptcha) {
+                    } else {
+                      const token = await executeRecaptcha('contact_form');
+                      const verification = await verifyRecaptchaToken(token);
+
+                      if (!verification.success) {
+                        console.error('❌ ReCAPTCHA échec:', verification);
+                        setError('Échec de la vérification de sécurité');
+                        setLoading(false);
+                        return;
+                      }
+                    }
+                  } else {
+                    console.log('🏠 Mode local : ReCAPTCHA bypassed');
+                  }
+
+                  const EMAILJS_CONFIG = {
+                    serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                    templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+                    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+                  };
+
+                  const payload = { ...contact, phone: phoneValue };
+                  const result = await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    payload,
+                    EMAILJS_CONFIG.publicKey
+                  );
+
+                  if (result.status >= 200 && result.status < 300) {
+                    setLoading(false);
+                    setDone(true);
+                    setContact({ name: "", email: "", message: "" });
+                    setPhoneValue("");
+                    setIsChecked(false);
+                    setEmailValid(true);
+                    setPhoneValid(true);
+                    handleClick();
+                  } else {
+                    setLoading(false);
+                    setError(`Erreur lors de l'envoi (${result.status})`);
+                  }
+
+                } catch (error) {
+                  console.error('Erreur EmailJS:', error);
+                  setLoading(false);
+                  setError('Une erreur est survenue lors de l\'envoi du message, veuillez rééssayer plus tard.');
+                }
+              }}
+            >
+              <div
+                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
+                  } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
+              >
+                <input
+                  placeholder={t.text("home.contactName")}
+                  className={`custom-contact-input ${themeReducer === "light"
+                    ? "text-[#222222] placeholder:text-[#222222]"
+                    : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
+                    } `}
+                  type="text"
+                  name="name"
+                  onChange={handleChange}
+                  value={contact.name}
+                  required
+                />
+                <img src={contactUser} alt="User" />
+              </div>
+
+              <div
+                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
+                ${emailValid ? "border-[#C8CAE4]" : "border-red-500"}`}
+              >
+                <input
+                  placeholder={t.text("home.contactEmail")}
+                  className={`custom-contact-input ${emailValid ? "" : "text-red-500"
+                    } ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"}`}
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onInvalid={handleInvalid}
+                  onBlur={(e) => setEmailValid(isValidEmailStrict(e.target.value))}
+                  value={contact.email}
+                  required
+                />
+                <img src={contactEmail} alt="Email" />
+              </div>
+
+              <div
+                className={`font-poppins
+                  ${themeReducer === "light" ? "text-[#222222] rip-light" : "text-[#E5E5E5] rip-dark"}
+                  ${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  relative flex items-center border-2 rounded-[11px]
+                  px-[16px] lg:px-[18px] py-[12px] lg:py-[16px] mb-[16px]
+                  ${!dialOnly && !phoneValid ? "border-red-500 invalid-phone" : "border-[#C8CAE4]"}
+                `}
+              >
+                <PhoneInput
+                  defaultCountry="ch"
+                  value={phoneValue}
+                  onChange={(value) => {
+                    setPhoneValue(value);
+                    const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
+                    if (phoneInput) {
+                      phoneInput.setCustomValidity("");
+                    }
+                    const local = getLocalDigits(value);
+                    const isDialOnly = local.length === 0;
+                    setPhoneValid(isDialOnly ? true : isValidPhoneNumber(value));
+                  }}
+                  preferredCountries={["ch", "fr", "de", "it", "gb"]}
+                  inputProps={{
+                    name: "phone",
+                    placeholder: t.text("home.contactMobile"),
+                    "aria-label": t.text("home.contactMobile"),
+                  }}
+                  className="w-full"
+                  inputClassName="custom-contact-input bg-transparent outline-none w-full pr-[110px]"
+                  countrySelectorStyleProps={{
+                    buttonStyle: {
+                      borderRadius: '8px',
+                      transition: 'all 0.15s ease',
+                    },
+                    dropdownStyleProps: {
+                      style: {
+                        marginTop: '4px',
+                      }
+                    }
+                  }}
+                />
+
+                < div className="pointer-events-none absolute inset-y-0 right-[16px] flex items-center gap-3" >
+                  {dialOnly && (
+                    <span
+                      className={`whitespace-nowrap leading-none
+                        ${themeReducer === "light" ? "text-[#6B6E80]" : "text-[#C8CADE]"}
+                        text-[14px] md:text-[15px] lg:text-[16px]
+                      `}
+                    >
+                      {t.text("home.contactMobile")}
+                    </span>
+                  )
+                  }
+                  < img src={contactPhone} alt="Phone" />
+                </div>
+              </div>
+
+              <div
+                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
+                  } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
+              >
+                <textarea
+                  placeholder={t.text("home.contactMsg")}
+                  className={`custom-contact-input ${themeReducer === "light"
+                    ? "text-[#222222] placeholder:text-[#222222]"
+                    : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
+                    } `}
+                  rows={4}
+                  style={{ resize: "none" }}
+                  name="message"
+                  onChange={handleChange}
+                  onInvalid={handleInvalid}
+                  value={contact.message}
+                  required
+                />
+                <img src={contactMessage} alt="help" className="absolute right-[24px] top-[24px]" />
+              </div>
+
+              <div className="contact-checkbox">
+                <Checkbox onChange={onCheckboxChange} checked={isChecked}>
+                  <p className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"} font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}>
+                    {t.text("home.contactCheckboxTxt")}{" "}
+                    <Link
+                      to={L("/privacy-policy")}
+                      className="underline hover:opacity-75 transition"
+                    >
+                      {t.text("home.contactCheckboxPrivacyLink")}
+                    </Link>
+                    . {t.text("home.contactCheckboxSuffix")}
+                  </p>
+                </Checkbox>
+              </div>
+
+              <div className="required-text mt-[16px] lg:mt-[22px]">
+                <p
+                  className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
+                    } font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] `}
+                >
+                  {t.text("home.contactRequired")}
+                </p>
+              </div>
+
+              {error && <p className="text-red-500">{error}</p>}
+
+              <div className="mt-[16px] lg:mt-[22px] flex justify-center lg:justify-start">
+                <button
+                  type="submit"
+                  className="custom-btn rounded-[80px] text-white px-[50px] lg:px-[54px] py-[11px] lg:py-[16px]"
+                >
+                  {done ? (
+                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">{t.text("home.contactDone")}</span>
+                  ) : loading ? (
+                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">{t.text("home.contactLoading")}</span>
+                  ) : (
+                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">
+                      {t.text("home.contactBtn")}
+                      <span>
+                        <img src={arrow} alt="arrow" />
+                      </span>
+                    </span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div >
+    </div >
+  );
+};
+
+export default Contact;

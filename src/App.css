@@ -1,7 +1,6 @@
 .App {
   margin: 0 auto;
   padding: 0;
-  scroll-behavior: smooth;
   background: #ffffff;
   overflow: hidden;
 }
@@ -9,13 +8,8 @@
 .AppDark {
   margin: 0 auto;
   padding: 0;
-  scroll-behavior: smooth;
   background: #14172d;
   overflow: hidden;
-}
-
-* {
-  scroll-behavior: smooth;
 }
 
 .homepage-container {
@@ -36,7 +30,6 @@
   width: 100%;
   border: none !important;
   font-size: 16px;
-  /* color: #000; */
   background: transparent !important;
 }
 
@@ -59,10 +52,16 @@
 }
 
 .custom-contact-input::placeholder {
-  /* color: #222222; */
   font-size: 16px;
   font-style: normal;
   line-height: normal;
+}
+
+.center-child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* navbar */
@@ -87,7 +86,6 @@ header {
 
 .shrink {
   height: 80px;
-  /* background: #fff; */
   z-index: 999;
 }
 
@@ -100,9 +98,30 @@ header {
   padding-right: 10px !important;
 }
 
+.mobile-menu-dropdown {
+  z-index: 99999 !important;
+}
+
+.mobile-menu-dropdown .ant-dropdown-menu {
+  backdrop-filter: blur(40px) !important;
+  background: #c4c4c44d !important;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  z-index: 99999 !important;
+  position: relative !important;
+}
+
+.mobile-menu-dropdown .ant-dropdown-menu-item,
+.mobile-menu-dropdown a,
+.mobile-menu-dropdown button {
+  z-index: 99999 !important;
+  position: relative !important;
+}
+
 :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown .ant-dropdown-menu,
-:where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu
-  .ant-dropdown-menu {
+:where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu .ant-dropdown-menu {
   border-radius: 5px;
   font-family: Helvetica, sans-serif;
 }
@@ -111,14 +130,17 @@ nav ul {
   list-style: none;
   text-align: center;
 }
+
 nav ul li {
   display: inline-block;
 }
+
 nav ul li a {
   display: block;
   padding: 7px 15px;
   text-decoration: none;
 }
+
 nav ul li a,
 nav ul li a:after,
 nav ul li a:before {
@@ -148,19 +170,15 @@ nav.shift ul li a:after {
   z-index: -1;
   border-radius: 10px;
 }
+
 nav.shift ul li a:hover:after {
   opacity: 1;
   visibility: visible;
   height: 100%;
 }
 
-.menu-text-light {
-  color: #14172d !important;
-}
-
-.menu-text-dark {
-  color: #f6f6f6 !important;
-}
+.menu-text-light { color: #14172d !important; }
+.menu-text-dark  { color: #f6f6f6 !important; }
 
 .calendly-overlay .calendly-close-overlay {
   backdrop-filter: blur(4px);
@@ -173,7 +191,6 @@ nav.shift ul li a:hover:after {
   background-repeat: no-repeat;
   background-position: 100% 100%;
   background-size: cover;
-  /* height: 80vh; */
 }
 
 .hero-btn {
@@ -185,18 +202,10 @@ nav.shift ul li a:hover:after {
 }
 
 @keyframes slideFromLeft {
-  0% {
-    transform: translateX(-1000px);
-  }
-  50% {
-    transform: translateX(200px);
-  }
-  75% {
-    transform: translateX(-50px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(-1000px); }
+  50% { transform: translateX(200px); }
+  75% { transform: translateX(-50px); }
+  100% { transform: translateX(0); }
 }
 
 .hero-subtitle-animation {
@@ -204,18 +213,10 @@ nav.shift ul li a:hover:after {
 }
 
 @keyframes slideFromRight {
-  0% {
-    transform: translateX(1000px);
-  }
-  50% {
-    transform: translateX(-200px);
-  }
-  75% {
-    transform: translateX(50px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(1000px); }
+  50% { transform: translateX(-200px); }
+  75% { transform: translateX(50px); }
+  100% { transform: translateX(0); }
 }
 
 .custom-btn {
@@ -229,7 +230,7 @@ nav.shift ul li a:hover:after {
 
 .custom-btn .custom-btn-inner {
   position: relative;
-  z-index: 999;
+  z-index: 1;
 }
 
 .custom-btn:after {
@@ -243,9 +244,7 @@ nav.shift ul li a:hover:after {
   transition: all 0.6s;
 }
 
-.custom-btn:hover {
-  color: #fff;
-}
+.custom-btn:hover { color: #fff; }
 
 .custom-btn:hover:after {
   width: 100%;
@@ -256,11 +255,9 @@ nav.shift ul li a:hover:after {
 /* booking */
 
 .booking-bg {
-  background: linear-gradient(
-    72.47deg,
-    rgba(35, 0, 191, 0.06) -44.32%,
-    rgba(218, 148, 255, 0.06) 144.14%
-  );
+  background: linear-gradient(72.47deg,
+      rgba(35, 0, 191, 0.06) -44.32%,
+      rgba(218, 148, 255, 0.06) 144.14%);
 }
 
 .custom-btn2 {
@@ -296,130 +293,128 @@ nav.shift ul li a:hover:after {
   left: 0;
 }
 
-.testimonial1-bg {
-  border: 1px solid #f2f3f8;
-}
-
-.testimonial2-bg {
-  box-shadow: 0px 20px 60px -20px #16161629;
-}
-
-.testimonail-card-vh {
-  min-height: 250px;
-}
+.testimonial1-bg { border: 1px solid #f2f3f8; }
+.testimonial2-bg { box-shadow: 0px 20px 60px -20px #16161629; }
+.testimonail-card-vh { min-height: 250px; }
 
 /* contact */
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(
-    .ant-checkbox-wrapper-disabled
-  ):hover
-  .ant-checkbox-checked:not(.ant-checkbox-disabled)
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
   background-color: #b514fd;
   width: 20px;
   height: 20px;
 }
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox .ant-checkbox-inner {
   border: 1px solid #d9d9d9;
   width: 20px;
   height: 20px;
 }
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(
-    .ant-checkbox-wrapper-disabled
-  ):hover
-  .ant-checkbox-inner,
-:where(.css-dev-only-do-not-override-amq5gd).ant-checkbox:not(
-    .ant-checkbox-disabled
-  ):hover
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner,
+:where(.css-dev-only-do-not-override-amq5gd).ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
   border-color: #b514fd;
   width: 20px;
   height: 20px;
 }
 
-.contact-checkbox
-  :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-checked
-  .ant-checkbox-inner {
+.contact-checkbox :where(.css-dev-only-do-not-override-amq5gd).ant-checkbox-checked .ant-checkbox-inner {
   background-color: #b514fd;
   width: 20px;
   height: 20px;
 }
 
+/* about */
+
+.about-description ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-description li { margin-bottom: 0.5rem; line-height: 1.6; }
+.about-description strong { font-weight: 600; }
+
+.it-service-hero-gradient span,
+.it-service-about-title span,
+.it-service-process-title span,
+.it-service-title span {
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.it-service-about-description b,
+.it-service-description b { font-weight: 600; }
+
+.it-service-description ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.it-service-description li { margin-bottom: 0.5rem; line-height: 1.6; }
+
+.process-bg-light {
+  background: linear-gradient(0deg, #DCDCFD, #DCDCFD), linear-gradient(180deg, rgba(11, 9, 10, 0.1) 12.23%, rgba(255, 255, 255, 0.1) 177.27%);
+  border: 2px solid #FFFFFF1A
+}
+
+.process-bg-dark {
+  background: linear-gradient(0deg, #14172D, #14172D),
+    linear-gradient(180deg, rgba(11, 9, 10, 0.1) 12.23%, rgba(255, 255, 255, 0.1) 177.27%);
+  border: 2px solid #FFFFFF1A
+}
+
+.ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
+  font-size: 24px !important;
+  font-family: "Helvetica", sans-serif !important;
+}
+
 /* media queries */
 
 @media screen and (max-width: 1279px) and (min-width: 1024px) {
-  .custom-contact-input {
-    font-size: 15px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 15px;
-  }
-  .testimonail-card-vh {
-    min-height: 220px;
-  }
-  nav ul li a {
-    display: block;
-    padding: 7px 10px;
-    text-decoration: none;
-  }
+  .custom-contact-input { font-size: 15px; }
+  .custom-contact-input::placeholder { font-size: 15px; }
+  .testimonail-card-vh { min-height: 220px; }
+  nav ul li a { padding: 7px 10px; }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 900px) {
-  .custom-contact-input {
-    font-size: 15px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 15px;
-  }
-  .testimonail-card-vh {
-    min-height: 220px;
-  }
+  .custom-contact-input { font-size: 15px; }
+  .custom-contact-input::placeholder { font-size: 15px; }
+  .testimonail-card-vh { min-height: 220px; }
+  .about-description ul { list-style-type: none; }
 }
 
 @media screen and (max-width: 899px) and (min-width: 768px) {
-  .testimonail-card-vh {
-    min-height: 220px;
-  }
-
-  .custom-contact-input {
-    font-size: 15px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 15px;
+  .testimonail-card-vh { min-height: 220px; }
+  .custom-contact-input { font-size: 15px; }
+  .custom-contact-input::placeholder { font-size: 15px; }
+  .about-description ul { list-style-type: none; }
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
+    font-size: 20px !important;
+    font-family: "Helvetica", sans-serif !important;
   }
 }
 
 @media screen and (max-width: 767px) and (min-width: 426px) {
-  .testimonail-card-vh {
-    min-height: 210px;
-  }
-
-  .custom-contact-input {
-    font-size: 14px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 14px;
+  .testimonail-card-vh { min-height: 210px; }
+  .custom-contact-input { font-size: 14px; }
+  .custom-contact-input::placeholder { font-size: 14px; }
+  .about-description ul { list-style-type: none; }
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
+    font-size: 18px !important;
+    font-family: "Helvetica", sans-serif !important;
   }
 }
 
 @media screen and (max-width: 425px) {
-  .custom-contact-input {
-    font-size: 14px;
-  }
-
-  .custom-contact-input::placeholder {
-    font-size: 14px;
-  }
+  .custom-contact-input { font-size: 14px; }
+  .custom-contact-input::placeholder { font-size: 14px; }
 
   header {
     width: 100%;
@@ -432,4 +427,219 @@ nav.shift ul li a:hover:after {
     top: 0;
     position: fixed;
   }
+
+  .about-description ul { list-style-type: none; }
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header .ant-collapse-header-text {
+    font-size: 16px !important;
+    font-family: "Helvetica", sans-serif !important;
+  }
 }
+
+/* ======= PHONE INPUT - FULL THEME OVERRIDE ======= */
+
+/* === THÈME CLAIR === */
+.rip-light .react-international-phone-country-selector {
+  background-color: transparent !important;
+  border: none !important;
+  color: #222222 !important;
+  font: inherit !important;
+}
+
+.rip-light .react-international-phone-input {
+  background-color: transparent !important;
+  border: none !important;
+  color: #222222 !important;
+  font: inherit !important;
+  line-height: inherit !important;
+}
+
+.rip-light .react-international-phone-input::placeholder {
+  color: #6B6E80 !important;
+  opacity: 1;
+}
+
+/* Dropdown thème clair */
+.rip-light .react-international-phone-country-selector-dropdown {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border: 1px solid #C8CAE4 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  font: inherit !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.rip-light .react-international-phone-country-selector-dropdown__list-item {
+  background-color: transparent !important;
+  color: #222222 !important;
+  font: inherit !important;
+  padding: 12px 16px !important;
+}
+
+.rip-light .react-international-phone-country-selector-dropdown__list-item:hover {
+  background-color: #F7F7FF !important;
+}
+
+.rip-light .react-international-phone-country-selector-dropdown__list-item--selected {
+  background-color: #F0F2FF !important;
+}
+
+/* === THÈME SOMBRE === */
+.rip-dark .react-international-phone-country-selector {
+  background-color: transparent !important;
+  border: none !important;
+  color: #E5E5E5 !important;
+  font: inherit !important;
+}
+
+.rip-dark .react-international-phone-input {
+  background-color: transparent !important;
+  border: none !important;
+  color: #E5E5E5 !important;
+  font: inherit !important;
+  line-height: inherit !important;
+}
+
+.rip-dark .react-international-phone-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.rip-dark .react-international-phone-input::placeholder {
+  color: #C8CADE !important;
+  opacity: 1;
+}
+
+/* Validation invalide */
+.invalid-phone .react-international-phone-input {
+  color: #ef4444 !important;
+}
+
+.invalid-phone .react-international-phone-input::placeholder {
+  color: #ef4444 !important;
+  opacity: 0.7;
+}
+
+/* Dropdown thème sombre - FIX PRINCIPAL */
+.rip-dark .react-international-phone-country-selector-dropdown {
+  background-color: #2b284c !important;
+  color: #E5E5E5 !important;
+  border: 1px solid #4a4478 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  font: inherit !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Items du dropdown */
+.rip-dark .react-international-phone-country-selector-dropdown__list-item {
+  background-color: #2b284c !important;
+  color: #E5E5E5 !important;
+  font: inherit !important;
+  padding: 12px 16px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__list-item:hover {
+  background-color: #3a3561 !important;
+}
+
+/* Item sélectionné */
+.rip-dark .react-international-phone-country-selector-dropdown__list-item--selected,
+.rip-dark .react-international-phone-country-selector-dropdown__list-item--focused,
+.rip-dark .react-international-phone-country-selector-dropdown__list-item--highlighted {
+  background-color: #3a3561 !important;
+  color: #E5E5E5 !important;
+}
+
+/* Barre de recherche */
+.rip-dark .react-international-phone-country-selector-dropdown__search-container {
+  background: #2b284c !important;
+  border-bottom: 1px solid #4a4478 !important;
+  padding: 12px !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__search-input {
+  background: #1b1730 !important;
+  color: #E5E5E5 !important;
+  border: 1px solid #4a4478 !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font: inherit !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__search-input::placeholder {
+  color: #8B8DA8 !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__search-input:focus {
+  outline: none !important;
+  border-color: #677DFF !important;
+  box-shadow: 0 0 0 2px rgba(103, 125, 255, 0.2) !important;
+}
+
+/* Scrollbar personnalisée */
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar {
+  width: 8px;
+}
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-track { background: #1b1730; }
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb {
+  background: #4a4478;
+  border-radius: 8px;
+}
+.rip-dark .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb:hover { background: #5a5488; }
+
+/* Indicateur de pays préférés (séparateur) */
+.rip-dark .react-international-phone-country-selector-dropdown__preferred-divider {
+  border-top: 1px solid #4a4478 !important;
+  margin: 4px 0 !important;
+}
+
+/* Bouton dropdown */
+.rip-dark .react-international-phone-country-selector-button {
+  background-color: transparent !important;
+  border: none !important;
+  color: #E5E5E5 !important;
+}
+.rip-dark .react-international-phone-country-selector-button:hover {
+  background-color: rgba(103, 125, 255, 0.1) !important;
+}
+.rip-light .react-international-phone-country-selector-button {
+  background-color: transparent !important;
+  border: none !important;
+  color: #222222 !important;
+}
+.rip-light .react-international-phone-country-selector-button:hover {
+  background-color: rgba(103, 125, 255, 0.05) !important;
+}
+
+/* Fix scroll interne du dropdown */
+.rip-dark .react-international-phone-country-selector-dropdown,
+.rip-light .react-international-phone-country-selector-dropdown {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+.rip-dark .react-international-phone-country-selector-dropdown__list,
+.rip-light .react-international-phone-country-selector-dropdown__list {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  max-height: 280px !important;
+}
+
+/* Empêche le body de scroller quand le dropdown est ouvert */
+.react-international-phone-country-selector-dropdown {
+  touch-action: pan-y !important;
+}
+
+/* reCAPTCHA v3 */
+.grecaptcha-badge { visibility: hidden !important; }
+
+/* Calendly */
+.calendly-overlay .max-h-\[90vh\] {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.calendly-overlay .max-h-\[90vh\]::-webkit-scrollbar { display: none; }
+.calendly-overlay .calendly-close-overlay { backdrop-filter: blur(8px); }

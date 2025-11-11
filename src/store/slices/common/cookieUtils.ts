@@ -1,20 +1,72 @@
 export function setCookie(name: string, value: string, days: number) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  let expires = "";
+  if (Number.isFinite(days) && days > 0) {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = `${name}=${encodeURIComponent(value || "")}${expires}; path=/`;
 }
 
 export function getCookie(name: string): string | null {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  const nameEQ = name + "=";
+  const parts = document.cookie.split(";");
+
+  for (let i = 0; i < parts.length; i++) {
+    let c = parts[i];
+    while (c.charAt(0) === " ") c = c.substring(1);
+    if (c.indexOf(nameEQ) === 0) {
+      const raw = c.substring(nameEQ.length);
+      try {
+        return decodeURIComponent(raw);
+      } catch {
+        return raw;
+      }
     }
+  }
+  return null;
+}
+
+/** Parse JSON en sécurité avec fallback (ne jette jamais) */
+export function safeJSONParse<T>(jsonString: unknown, fallback: T): T {
+  if (typeof jsonString !== "string") return fallback;
+  const trimmed = jsonString.trim();
+  if (!trimmed) return fallback;
+
+  try {
+    const parsed = JSON.parse(trimmed);
+    const ok = parsed !== null && (typeof parsed === "object" || Array.isArray(parsed));
+    return ok ? (parsed as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+/** Récupère et parse les données de consentement depuis localStorage (auto-clean si corrompu) */
+export function getSafeConsentData(): Record<string, any> | null {
+  try {
+    const stored = localStorage.getItem("cookie_consent");
+    if (!stored) return null;
+    const data = safeJSONParse<Record<string, any>>(stored, null as any);
+    if (data && typeof data === "object") return data;
+    localStorage.removeItem("cookie_consent");
     return null;
+  } catch {
+    localStorage.removeItem("cookie_consent");
+    return null;
+  }
+}
+
+/** Sauvegarde sécurisée des données de consentement */
+export function saveConsentData(consentData: Record<string, any>) {
+  try {
+    const dataWithTimestamp = {
+      ...consentData,
+      timestamp: new Date().toISOString(),
+    };
+    localStorage.setItem("cookie_consent", JSON.stringify(dataWithTimestamp));
+    return true;
+  } catch {
+    return false;
+  }
 }

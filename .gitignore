@@ -44,6 +44,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+pnpm-lock.yaml
 
 ### macOS Patch ###
 # iCloud generated files
@@ -180,6 +181,14 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# build output
+build/
+
+# logs & reports
+*.log
+*.map
+bundle-*.json
+
 ### Node Patch ###
 # Serverless Webpack directories
 .webpack/
@@ -211,3 +220,4 @@ yarn.lock
 package-lock.json
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,node,macos,linux
+.vercel

@@ -1,12 +1,14 @@
 import React from "react";
 import Slider from "react-slick";
-import "./slick.css";
-import "./slick-theme.css";
-import TicketCard from "../TestimonialCard";
-import TestimonialCard from "../TestimonialCard";
-import testimonial1 from "../../../assets/images/testimonial1.png";
-import testimonial2 from "../../../assets/images/testimonial2.png";
-import rating1 from "../../../assets/icons/rating.svg";
+// import "./slick.css";
+// import "./slick-theme.css";
+
+import TicketCard from "../testimonials/TestimonialCard";
+import TestimonialCard from "../testimonials/TestimonialCard";
+import testimonial1 from "assets/images/testimonial1.png";
+import testimonial2 from "assets/images/testimonial2.png";
+import rating1 from "assets/icons/rating.svg";
+import { useTranslations } from "services/locales/safe";
 
 const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
   const settings = {
@@ -64,6 +66,8 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
     ],
   };
 
+  const t = useTranslations(languageReducer);
+
   return (
     <div>
       <Slider
@@ -79,9 +83,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={1}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author1"]}
-            company={dictionary["testimonial"][languageReducer]["author1title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial1"]}
+            name={t.text("home.author1")}
+            company={t.text("home.author1title")}
+            message={t.text("home.testimonial1")}
           />
         </div>
         <div
@@ -93,9 +97,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={2}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author2"]}
-            company={dictionary["testimonial"][languageReducer]["author2title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial2"]}
+            name={t.text("home.author2")}
+            company={t.text("home.author2title")}
+            message={t.text("home.testimonial2")}
           />
         </div>
         <div
@@ -107,9 +111,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={1}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author3"]}
-            company={dictionary["testimonial"][languageReducer]["author3title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial3"]}
+            name={t.text("home.author3")}
+            company={t.text("home.author3title")}
+            message={t.text("home.testimonial3")}
           />
         </div>
         <div
@@ -121,9 +125,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={2}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author4"]}
-            company={dictionary["testimonial"][languageReducer]["author4title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial4"]}
+            name={t.text("home.author4")}
+            company={t.text("home.author4title")}
+            message={t.text("home.testimonial4")}
           />
         </div>
         <div
@@ -135,9 +139,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={1}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author5"]}
-            company={dictionary["testimonial"][languageReducer]["author5title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial5"]}
+            name={t.text("home.author5")}
+            company={t.text("home.author5title")}
+            message={t.text("home.testimonial5")}
           />
         </div>
         <div
@@ -149,9 +153,9 @@ const TestimonialSlider = ({ dictionary, languageReducer }: any) => {
             id={2}
             src={testimonial2}
             rating={rating1}
-            name={dictionary["testimonial"][languageReducer]["author6"]}
-            company={dictionary["testimonial"][languageReducer]["author6title"]}
-            message={dictionary["testimonial"][languageReducer]["testimonial6"]}
+            name={t.text("home.author6")}
+            company={t.text("home.author6title")}
+            message={t.text("home.testimonial6")}
           />
         </div>
       </Slider>
