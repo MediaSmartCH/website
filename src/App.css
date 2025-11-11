@@ -98,6 +98,21 @@ header {
   padding-right: 10px !important;
 }
 
+.mobile-menu-dropdown {
+  z-index: 99999 !important;
+}
+
+.mobile-menu-dropdown .ant-dropdown-menu {
+  backdrop-filter: blur(40px) !important;
+  background: #c4c4c44d !important;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  z-index: 99999 !important;
+  position: relative !important;
+}
+
 :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown .ant-dropdown-menu,
 :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu .ant-dropdown-menu {
   border-radius: 5px;
@@ -208,7 +223,7 @@ nav.shift ul li a:hover:after {
 
 .custom-btn .custom-btn-inner {
   position: relative;
-  z-index: 999;
+  z-index: 1;
 }
 
 .custom-btn:after {

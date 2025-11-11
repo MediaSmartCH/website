@@ -439,7 +439,7 @@ const UnderConstruction: React.FC = () => {
               <PopupButton
                 rootElement={rootEl}
                 className="font-helvetica font-light text-base sm:text-lg text-purple-600 hover:text-purple-700 font-semibold transition-colors duration-200 underline decoration-purple-600 hover:decoration-purple-700"
-                url="https://calendly.com/mediasmartch/30min"
+                url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
                 text={t.text("UnderConstruction.bookAppointment")}
                 pageSettings={{
                   backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",

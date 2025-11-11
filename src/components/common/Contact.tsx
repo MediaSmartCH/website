@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox } from "antd";
-// import emailjs from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
 import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
@@ -39,22 +39,18 @@ const Contact = () => {
   const [isChecked, setIsChecked] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  // ---- Form state
   const [contact, setContact] = React.useState({
     name: "",
     email: "",
     message: "",
   });
 
-  // ---- Phone (E.164)
-  const [phoneValue, setPhoneValue] = React.useState(""); // ex: +41796341212
+  const [phoneValue, setPhoneValue] = React.useState("");
   const [phoneValid, setPhoneValid] = React.useState(true);
-  // const dialOnly = /^\+\d{1,4}\s*$/.test(phoneValue) || phoneValue === "";
 
-  // Renvoie uniquement les chiffres "locaux" (après l'indicatif)
   const getLocalDigits = (phone: string) => {
-    const { country } = guessCountryByPartialPhoneNumber({ phone }); // <- objet, pas string
-    const dial = country?.dialCode || "";                            // <- dialCode via country
+    const { country } = guessCountryByPartialPhoneNumber({ phone });
+    const dial = country?.dialCode || "";
     try {
       return removeDialCode({ phone, dialCode: dial }).replace(/\D/g, "");
     } catch {
@@ -65,10 +61,8 @@ const Contact = () => {
   const localDigits = getLocalDigits(phoneValue);
   const dialOnly = localDigits.length === 0;
 
-  // ---- Email validation
   const [emailValid, setEmailValid] = React.useState(true);
 
-  // Regex “raisonnable” + garde-fous (TLD >=2, pas de '..', labels corrects)
   const emailBase = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}$/i;
   const isValidEmailStrict = (value: string) => {
     if (!emailBase.test(value)) return false;
@@ -106,8 +100,6 @@ const Contact = () => {
         target.setCustomValidity("");
       }
     }
-
-    // target.reportValidity();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -131,8 +123,6 @@ const Contact = () => {
     setError("");
   };
 
-  // const isDev = import.meta.env.NODE_ENV === 'development';
-
   return (
     <div id="contact" className={`${themeReducer === "light" ? "bg-[#F7F7FF]" : "bg-[#2B284C]"} `}>
       <div className="md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px] mt-[32px] lg:mt-[42px] 2xl:mt-[54px]">
@@ -148,7 +138,6 @@ const Contact = () => {
             className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
               } flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-y-[35px] `}
           >
-            {/* Bloc gauche */}
             <div className="w-full lg:w-[50%]" data-aos="fade-right" data-aos-duration="1000">
               <div className="flex items-center gap-x-[18px]">
                 <img src={email} alt="email" />
@@ -242,7 +231,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Formulaire */}
             <form
               noValidate
               className="w-full lg:w-[50%]"
@@ -251,7 +239,6 @@ const Contact = () => {
               onSubmit={async (e) => {
                 e.preventDefault();
 
-                // Validations basiques
                 if (!isChecked) {
                   setError(t.text("home.contactErrorText"));
                   return;
@@ -301,111 +288,44 @@ const Contact = () => {
                       }
                     }
                   } else {
-                    // console.log('🏠 Mode local : ReCAPTCHA bypassed');
+                    console.log('🏠 Mode local : ReCAPTCHA bypassed');
                   }
 
-                  // const payload = { ...contact, phone: phoneValue };
-                  // const result = await emailjs.send(
-                  //   "REMOVED_EMAILJS_SERVICE_ID",
-                  //   "REMOVED_EMAILJS_TEMPLATE_ID",
-                  //   payload,
-                  //   "REMOVED_EMAILJS_PUBLIC_KEY"
-                  // );
+                  const EMAILJS_CONFIG = {
+                    serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                    templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+                    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+                  };
 
-                  setLoading(false);
-                  setDone(true);
-                  setContact({ name: "", email: "", message: "" });
-                  setPhoneValue("");
-                  setIsChecked(false);
-                  setEmailValid(true);
-                  setPhoneValid(true);
-                  handleClick();
+                  const payload = { ...contact, phone: phoneValue };
+                  const result = await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    payload,
+                    EMAILJS_CONFIG.publicKey
+                  );
+
+                  if (result.status >= 200 && result.status < 300) {
+                    setLoading(false);
+                    setDone(true);
+                    setContact({ name: "", email: "", message: "" });
+                    setPhoneValue("");
+                    setIsChecked(false);
+                    setEmailValid(true);
+                    setPhoneValid(true);
+                    handleClick();
+                  } else {
+                    setLoading(false);
+                    setError(`Erreur lors de l'envoi (${result.status})`);
+                  }
 
                 } catch (error) {
-                  if (error instanceof Error) {
-                    console.error('Message:', error.message);
-                    console.error('Stack:', error.stack);
-                  }
+                  console.error('Erreur EmailJS:', error);
                   setLoading(false);
+                  setError('Une erreur est survenue lors de l\'envoi du message, veuillez rééssayer plus tard.');
                 }
               }}
-            // onSubmit={async (e) => {
-            //   e.preventDefault();
-
-            //   if (!isChecked) {
-            //     setError(t.text("home.contactErrorText"));
-            //     return;
-            //   }
-
-            //   if (!isValidEmailStrict(contact.email)) {
-            //     setEmailValid(false);
-            //     return;
-            //   }
-
-            //   if (phoneValue && !isValidPhoneNumber(phoneValue)) {
-            //     setPhoneValid(false);
-            //     return;
-            //   }
-
-            //   setLoading(true);
-
-            //   try {
-            //     // Vérifier si on est réellement en local
-            //     const isLocalHost = window.location.hostname === 'localhost' ||
-            //       window.location.hostname === '127.0.0.1';
-
-            //     console.log('🔍 Debug:', {
-            //       hostname: window.location.hostname,
-            //       isLocalHost,
-            //       hasExecuteRecaptcha: !!executeRecaptcha,
-            //       NODE_ENV: import.meta.env.NODE_ENV
-            //     });
-
-            //     // ReCAPTCHA uniquement si on n'est PAS en local ET que executeRecaptcha existe
-            //     if (!isLocalHost && executeRecaptcha) {
-            //       console.log('🔐 Exécution ReCAPTCHA...');
-            //       const token = await executeRecaptcha('contact_form');
-            //       const verification = await verifyRecaptchaToken(token);
-
-            //       if (!verification.success) {
-            //         setError('Échec de la vérification de sécurité');
-            //         setLoading(false);
-            //         return;
-            //       }
-            //       console.log('✅ ReCAPTCHA validé');
-            //     } else {
-            //       console.log('⚠️ ReCAPTCHA bypassed (local ou non disponible)');
-            //     }
-
-            //     // Envoi email
-            //     const payload = { ...contact, phone: phoneValue };
-            //     console.log('📧 Envoi email...');
-
-            //     await emailjs.send(
-            //       "REMOVED_EMAILJS_SERVICE_ID",
-            //       "REMOVED_EMAILJS_TEMPLATE_ID",
-            //       payload,
-            //       "REMOVED_EMAILJS_PUBLIC_KEY"
-            //     );
-
-            //     console.log('✅ Email envoyé');
-            //     setLoading(false);
-            //     setDone(true);
-            //     setContact({ name: "", email: "", message: "" });
-            //     setPhoneValue("");
-            //     setIsChecked(false);
-            //     setEmailValid(true);
-            //     setPhoneValid(true);
-            //     handleClick();
-
-            //   } catch (error) {
-            //     console.error('❌ Erreur:', error);
-            //     setError('Une erreur est survenue');
-            //     setLoading(false);
-            //   }
-            // }}
             >
-              {/* Nom */}
               <div
                 className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
                   } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
@@ -425,7 +345,6 @@ const Contact = () => {
                 <img src={contactUser} alt="User" />
               </div>
 
-              {/* Email */}
               <div
                 className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
                 relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
@@ -442,13 +361,10 @@ const Contact = () => {
                   onBlur={(e) => setEmailValid(isValidEmailStrict(e.target.value))}
                   value={contact.email}
                   required
-                // Empêche la validation HTML trop permissive
-                // pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,24}"
                 />
                 <img src={contactEmail} alt="Email" />
               </div>
 
-              {/* Téléphone : PhoneInput */}
               <div
                 className={`font-poppins
                   ${themeReducer === "light" ? "text-[#222222] rip-light" : "text-[#E5E5E5] rip-dark"}
@@ -463,7 +379,6 @@ const Contact = () => {
                   value={phoneValue}
                   onChange={(value) => {
                     setPhoneValue(value);
-                    // indicatif seul = champ "vide" (optionnel)
                     const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
                     if (phoneInput) {
                       phoneInput.setCustomValidity("");
@@ -472,7 +387,6 @@ const Contact = () => {
                     const isDialOnly = local.length === 0;
                     setPhoneValid(isDialOnly ? true : isValidPhoneNumber(value));
                   }}
-                  // forceDialCode
                   preferredCountries={["ch", "fr", "de", "it", "gb"]}
                   inputProps={{
                     name: "phone",
@@ -480,7 +394,6 @@ const Contact = () => {
                     "aria-label": t.text("home.contactMobile"),
                   }}
                   className="w-full"
-                  // réserve la place pour le libellé + l'icône à droite
                   inputClassName="custom-contact-input bg-transparent outline-none w-full pr-[110px]"
                   countrySelectorStyleProps={{
                     buttonStyle: {
@@ -495,7 +408,6 @@ const Contact = () => {
                   }}
                 />
 
-                {/* Zone droite : libellé inline (disparaît dès qu’on tape un chiffre local) + icône */}
                 < div className="pointer-events-none absolute inset-y-0 right-[16px] flex items-center gap-3" >
                   {dialOnly && (
                     <span
@@ -512,7 +424,6 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Message */}
               <div
                 className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
                   } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
@@ -534,7 +445,6 @@ const Contact = () => {
                 <img src={contactMessage} alt="help" className="absolute right-[24px] top-[24px]" />
               </div>
 
-              {/* Consent */}
               <div className="contact-checkbox">
                 <Checkbox onChange={onCheckboxChange} checked={isChecked}>
                   <p className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"} font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}>
