@@ -113,6 +113,13 @@ header {
   position: relative !important;
 }
 
+.mobile-menu-dropdown .ant-dropdown-menu-item,
+.mobile-menu-dropdown a,
+.mobile-menu-dropdown button {
+  z-index: 99999 !important;
+  position: relative !important;
+}
+
 :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown .ant-dropdown-menu,
 :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu .ant-dropdown-menu {
   border-radius: 5px;
