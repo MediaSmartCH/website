@@ -242,7 +242,7 @@ const Error404Page: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <PopupButton
                 className="custom-btn rounded-[80px] text-white px-8 py-3 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2"
-                url="https://calendly.com/mediasmartch/30min"
+                url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
                 rootElement={rootElement as HTMLElement}
                 // text={dictionary["error404"][languageReducer]["bookingButton"]}
                 text={t.text("error404.bookingButton")}

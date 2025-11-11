@@ -5,18 +5,20 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { visualizer } from "rollup-plugin-visualizer";
 
 const plugins = [react(), tsconfigPaths()];
+
 if (process.env.ANALYZE === "true") {
   plugins.push(
     visualizer({
       open: true,
       filename: "bundle-report.html",
       gzipSize: true,
+      brotliSize: true,
     })
   );
 }
 
 export default defineConfig({
-  plugins,                              // <= utilise le tableau ci-dessus
+  plugins,
   server: { port: 3000, open: true },
   resolve: {
     alias: {

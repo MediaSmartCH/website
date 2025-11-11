@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import {
   X,
@@ -158,15 +156,47 @@ const ModernCookieBanner = () => {
     }
   }, [currentPath, shouldHide]);
 
-  // blocage scroll
+  // blocage scroll avec détection d'extensions bloquant les cookies
   useEffect(() => {
     if (actuallyVisible) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
+      // Vérifier si le banner est réellement visible (pas caché par une extension)
+      const checkVisibility = () => {
+        // Chercher l'élément du banner par son z-index et classe
+        const banner = document.querySelector('[style*="z-index: 999999"]') ||
+                       document.querySelector('.fixed.inset-0.z-50');
+
+        if (banner) {
+          const computedStyle = window.getComputedStyle(banner as Element);
+          const isHiddenByExtension =
+            computedStyle.display === 'none' ||
+            computedStyle.visibility === 'hidden' ||
+            computedStyle.opacity === '0';
+
+          if (isHiddenByExtension) {
+            // Extension détectée : débloquer le scroll
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+            return;
+          }
+        }
+
+        // Banner visible normalement : bloquer le scroll
+        document.body.style.overflow = "hidden";
+        document.documentElement.style.overflow = "hidden";
+      };
+
+      // Vérifier immédiatement
+      checkVisibility();
+
+      // Re-vérifier après un court délai (au cas où l'extension met du temps)
+      const timer = setTimeout(checkVisibility, 100);
+
+      return () => clearTimeout(timer);
     } else {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
     }
+
     return () => {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
