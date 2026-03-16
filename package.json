@@ -2,6 +2,7 @@
   "name": "sparklet.ai",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.32.1",
   "dependencies": {
     "@emailjs/browser": "^4.2.0",
     "@lottiefiles/dotlottie-react": "^0.15.2",
