@@ -23,7 +23,7 @@ export default async function handler(
   }
 
   try {
-    const secret = import.meta.env.RECAPTCHA_SECRET_KEY;
+    const secret = process.env.RECAPTCHA_SECRET_KEY;
     if (!secret) {
       console.error('SECRET KEY IS MISSING!');
       return res.status(500).json({ 
