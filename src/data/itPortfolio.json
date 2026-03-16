@@ -1,0 +1,129 @@
+{
+  "items": [
+    {
+      "id": "corporate-showcase",
+      "title": {
+        "fr": "Site vitrine corporate",
+        "en": "Corporate showcase website"
+      },
+      "description": {
+        "fr": "Une presence web claire et rassurante pour presenter votre activite, vos services et vos points de contact sans surcharge visuelle.",
+        "en": "A clear and reassuring web presence built to present your business, services, and contact points without visual overload."
+      },
+      "url": "https://example.com",
+      "images": [
+        "/portfolio/it-services-portfolio1.png",
+        "/portfolio/it-services-portfolio2.png"
+      ]
+    },
+    {
+      "id": "saas-launch-page",
+      "title": {
+        "fr": "Landing page SaaS",
+        "en": "SaaS landing page"
+      },
+      "description": {
+        "fr": "Une page orientee conversion avec message direct, sections impactantes et CTA visibles pour lancer un produit ou un service.",
+        "en": "A conversion-focused page with direct messaging, strong sections, and clear CTAs to launch a product or service."
+      },
+      "url": "https://www.google.com",
+      "images": ["/portfolio/it-services-portfolio3.png"]
+    },
+    {
+      "id": "product-platform",
+      "title": {
+        "fr": "Plateforme produit",
+        "en": "Product platform"
+      },
+      "description": {
+        "fr": "Une interface plus dense pour structurer des services, des contenus et des parcours utilisateurs sur plusieurs niveaux.",
+        "en": "A denser interface designed to structure services, content, and user journeys across multiple levels."
+      },
+      "url": "https://example.com",
+      "images": [
+        "/portfolio/it-services-portfolio4.png",
+        "/portfolio/it-services-portfolio2.png",
+        "/portfolio/it-services-portfolio1.png",
+        "/portfolio/it-services-portfolio3.png"
+      ]
+    },
+    {
+      "id": "analytics-dashboard",
+      "title": {
+        "fr": "Dashboard analytique",
+        "en": "Analytics dashboard"
+      },
+      "description": {
+        "fr": "Un exemple d'environnement applicatif avec panneaux, graphiques et donnees lisibles pour un usage quotidien.",
+        "en": "An application-style environment with panels, charts, and readable data for daily use."
+      },
+      "url": "https://www.google.com",
+      "images": ["/portfolio/it-services-portfolio4.png"]
+    },
+    {
+      "id": "analytics-dashboard",
+      "title": {
+        "fr": "Dashboard analytique",
+        "en": "Analytics dashboard"
+      },
+      "description": {
+        "fr": "Un exemple d'environnement applicatif avec panneaux, graphiques et donnees lisibles pour un usage quotidien.",
+        "en": "An application-style environment with panels, charts, and readable data for daily use."
+      },
+      "url": "https://www.google.com",
+      "images": ["/portfolio/it-services-portfolio4.png"]
+    },
+    {
+      "id": "analytics-dashboard",
+      "title": {
+        "fr": "Dashboard analytique",
+        "en": "Analytics dashboard"
+      },
+      "description": {
+        "fr": "Un exemple d'environnement applicatif avec panneaux, graphiques et donnees lisibles pour un usage quotidien.",
+        "en": "An application-style environment with panels, charts, and readable data for daily use."
+      },
+      "url": "https://www.google.com",
+      "images": ["/portfolio/it-services-portfolio4.png"]
+    },
+    {
+      "id": "analytics-dashboard",
+      "title": {
+        "fr": "Dashboard analytique",
+        "en": "Analytics dashboard"
+      },
+      "description": {
+        "fr": "Un exemple d'environnement applicatif avec panneaux, graphiques et donnees lisibles pour un usage quotidien.",
+        "en": "An application-style environment with panels, charts, and readable data for daily use."
+      },
+      "url": "https://www.google.com",
+      "images": ["/portfolio/it-services-portfolio4.png"]
+    },
+    {
+      "id": "analytics-dashboard",
+      "title": {
+        "fr": "Dashboard analytique",
+        "en": "Analytics dashboard"
+      },
+      "description": {
+        "fr": "Un exemple d'environnement applicatif avec panneaux, graphiques et donnees lisibles pour un usage quotidien.",
+        "en": "An application-style environment with panels, charts, and readable data for daily use."
+      },
+      "url": "https://www.google.com",
+      "images": ["/portfolio/it-services-portfolio4.png"]
+    },
+    {
+      "id": "analytics-dashboard",
+      "title": {
+        "fr": "Dashboard analytique",
+        "en": "Analytics dashboard"
+      },
+      "description": {
+        "fr": "Un exemple d'environnement applicatif avec panneaux, graphiques et donnees lisibles pour un usage quotidien.",
+        "en": "An application-style environment with panels, charts, and readable data for daily use."
+      },
+      "url": "https://www.google.com",
+      "images": ["/portfolio/it-services-portfolio4.png"]
+    }
+  ]
+}

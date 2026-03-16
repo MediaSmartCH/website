@@ -7,8 +7,6 @@ import {
   Target,
   Settings,
   Zap,
-  Sun,
-  Moon,
   Globe
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
@@ -20,6 +18,11 @@ import flag2 from "assets/images/french.png";
 import { useTranslations } from "services/locales/safe";
 import { Link, useInRouterContext } from "react-router-dom";
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
+import ThemeSelector from "components/common/ThemeSelector";
+import {
+  resolveThemePreference,
+  ThemePreference,
+} from "store/slices/common/themeUtils";
 
 const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
@@ -58,6 +61,7 @@ const ModernCookieBanner = () => {
     (state) => state.language.currentLanguage
   );
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const themeModePreference = useAppSelector((state) => state.theme.themePreference);
   const t = useTranslations(languageReducer);
   const dispatch = useAppDispatch();
 
@@ -103,11 +107,20 @@ const ModernCookieBanner = () => {
   };
 
   // thème
-  const handleThemeChange = () => {
-    if (isThemeChanging) return;
-    setIsThemeChanging(true);
-    const newTheme = themeReducer === "light" ? "dark" : "light";
-    dispatch(setTheme(newTheme));
+  const handleThemeChange = (nextTheme: ThemePreference) => {
+    if (isThemeChanging || nextTheme === themeModePreference) return;
+
+    const nextResolvedTheme = resolveThemePreference(nextTheme);
+    const shouldShowLoader = nextResolvedTheme !== themeReducer;
+
+    if (shouldShowLoader) {
+      setIsThemeChanging(true);
+    }
+
+    dispatch(setTheme(nextTheme));
+
+    if (!shouldShowLoader) return;
+
     setTimeout(() => setIsThemeChanging(false), 300);
   };
 
@@ -348,6 +361,12 @@ const ModernCookieBanner = () => {
   });
 
   const themeClasses = getThemeClasses();
+  const themeSelectorLabels = {
+    selector: t.text("navbar.themeSelector"),
+    light: t.text("navbar.themeLight"),
+    dark: t.text("navbar.themeDark"),
+    system: t.text("navbar.themeSystem"),
+  };
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -448,20 +467,15 @@ const ModernCookieBanner = () => {
                         </button>
                       </div>
 
-                      {/* Bouton changement de thème */}
-                      <button
-                        onClick={handleThemeChange}
-                        disabled={isThemeChanging}
-                        className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors ${isThemeChanging ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        title={t.text("cookies.ariaToggleTheme")}
-                        aria-label={t.text("cookies.ariaToggleTheme")}
-                      >
-                        {themeReducer === 'light' ? (
-                          <Moon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
-                        ) : (
-                          <Sun className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" />
-                        )}
-                      </button>
+                      <div className={isThemeChanging ? "opacity-50" : ""}>
+                        <ThemeSelector
+                          currentTheme={themeReducer}
+                          themePreference={themeModePreference}
+                          onChange={handleThemeChange}
+                          size="xs"
+                          labels={themeSelectorLabels}
+                        />
+                      </div>
 
                       {/* Bouton fermeture */}
                       <button
@@ -577,22 +591,15 @@ const ModernCookieBanner = () => {
                           </span>
                         </button>
 
-                        {/* Bouton changement de thème */}
-                        <button
-                          onClick={handleThemeChange}
-                          disabled={isThemeChanging}
-                          className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors ${isThemeChanging ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          // title={dictionary["cookies"][languageReducer]["ariaToggleTheme"]}
-                          title={t.text("cookies.ariaToggleTheme")}
-                          // aria-label={dictionary["cookies"][languageReducer]["ariaToggleTheme"]}
-                          aria-label={t.text("cookies.ariaToggleTheme")}
-                        >
-                          {themeReducer === 'light' ? (
-                            <Moon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
-                          ) : (
-                            <Sun className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" />
-                          )}
-                        </button>
+                        <div className={isThemeChanging ? "opacity-50" : ""}>
+                          <ThemeSelector
+                            currentTheme={themeReducer}
+                            themePreference={themeModePreference}
+                            onChange={handleThemeChange}
+                            size="xs"
+                            labels={themeSelectorLabels}
+                          />
+                        </div>
 
                         {/* Bouton fermeture */}
                         <button

@@ -15,9 +15,8 @@ import Services from "components/presentation/videoServices/Services";
 // import Faq from "components/presentation/videoServices/Faq";
 import Booking from "components/common/Booking";
 import Contact from "components/common/Contact";
+import WaveBackdrop from "components/common/WaveBackdrop";
 // import Footer from "components/common/Footer";
-
-import bg from "assets/images/faq-bg.png";
 
 export default function VideoServicesPage() {
   // useScrollToHash();
@@ -59,14 +58,15 @@ export default function VideoServicesPage() {
         <Testimonials />
       </div> */}
       {/* <Faq /> */}
-      <div className="relative pt-[40px] md:pt-[50px] w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto">
-        <img
-          src={bg}
-          className="absolute left-0 top-[70px] md:top-[30px] lg:top-[30px] xl:top-[0px] 2xl:top-[-50px]"
-          alt="Background"
+      <div className="relative overflow-hidden pt-[40px] md:pt-[50px]">
+        <WaveBackdrop
+          theme={themeReducer}
+          className="top-[52px] h-[460px] md:top-[18px] md:h-[500px] lg:top-[8px] lg:h-[540px] xl:top-[-8px] xl:h-[580px]"
         />
-        <div className="pt-[130px] md:pt-[170px] lg:pt-[220px] xl:pt-[250px] 2xl:pt-[250px] pb-[40px]">
-          <Booking />
+        <div className="relative z-10 w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto">
+          <div className="pt-[130px] md:pt-[170px] lg:pt-[220px] xl:pt-[250px] 2xl:pt-[250px] pb-[40px]">
+            <Booking />
+          </div>
         </div>
       </div>
       {/* <div className="pt-[40px] md:pt-[50px] w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto">

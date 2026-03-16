@@ -13,21 +13,21 @@ const video = {
 
     // Services
     videoServicesMainTitle1: "Nos",
-    videoServicesMainTitle2: "Services",
+    videoServicesMainTitle2: "services",
     videoServicesContactBtn: "Contactez-nous",
-    videoServicesTitle1: "Réalisation de Vidéo en Direct :",
+    videoServicesTitle1: "Réalisation de Vidéo en Direct",
     videoServicesDescription1:
         "Rehaussez votre événement avec la réalisation de vidéo en direct de MediaSmart. Notre production assure une diffusion fluide et professionnelle, captivant votre audience en temps réel. Idéal pour les événements d'entreprise, webinaires et diffusions sur les réseaux sociaux.",
-    videoServicesTitle2: "Retransmission d'Événements :",
+    videoServicesTitle2: "Retransmission d'Événements",
     videoServicesDescription2:
         "Revivez les moments forts avec nos services de retransmission d'événements. Nous capturons et diffusons vos occasions spéciales, offrant des flux vidéo de haute qualité qui peuvent être revécus et partagés. Parfait pour les concerts, conférences et événements culturels.",
-    videoServicesTitle3: "Montage Vidéo :",
+    videoServicesTitle3: "Montage Vidéo",
     videoServicesDescription3:
         "Nous façonnons votre récit visuel avec précision et panache. Le montage vidéo n'est pas juste une question de coupe et d'assemblage ; c'est une forme d'art dont nous sommes fiers. Que ce soit pour une vidéo de mariage émouvante, un documentaire captivant ou un clip promotionnel engageant, nous donnons vie à votre histoire avec une touche cinématographique. Notre expertise garantit que chaque transition est fluide, chaque scène est percutante, et votre vision est réalisée dans sa forme la plus éclatante.",
-    videoServicesTitle4: "Location de Matériel :",
+    videoServicesTitle4: "Location de Matériel",
     videoServicesDescription4:
         "Accédez à du matériel vidéo professionnel sans engagement. MediaSmart propose une gamme complète de locations d'équipements, vous assurant d'avoir les bons outils pour capturer votre vision, des caméras à l'éclairage et au son.",
-    videoServicesTitle5: "Photographie :",
+    videoServicesTitle5: "Photographie",
     videoServicesDescription5:
         "À travers l'objectif de MediaSmart, chaque instantané raconte une histoire. Nous sommes spécialisés dans la capture des moments qui comptent le plus pour vous. Des événements d'entreprise aux rassemblements intimes, nos services de photographie sont conçus pour mettre en valeur l'essence de chaque occasion. Avec un œil attentif aux détails et une passion pour le récit, nous garantissons que vos souvenirs sont préservés avec une clarté et des couleurs éblouissantes. Laissez-nous encadrer vos événements de manière à ce que vous puissiez les revivre, encore et encore.",
 };

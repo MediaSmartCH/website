@@ -26,6 +26,7 @@ const it = {
 
     portfolioModalHeading: "Our Portfolio",
     portfolioModalDescription: "Turning ideas into interactive, visually stunning, and user-friendly web experiences that leave a lasting impact.",
+    portfolioVisitSite: "Visit website",
 
     service1: "Website Creation & Redesign",
     description1: `

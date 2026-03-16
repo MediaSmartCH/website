@@ -8,7 +8,7 @@ const home = {
     videoBtn: "Explorer les services vidéo",
 
     // booking
-    bookingTitle: "Intéressé par une Consultation Gratuite de 30 minutes ?",
+    bookingTitle: "Vous souhaitez une consultation gratuite de 30 minutes ?",
     bookingDescription:
         "Lancez-vous dans votre aventure créative avec MediaSmart grâce à une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – que ce soit chez vous, dans un espace public, ou même en ligne – et sélectionnez un horaire qui correspond à notre disponibilité. Fournissez simplement les détails de la réunion souhaitée et vos coordonnées, et nous organiserons le rendez-vous. Cette session est votre chance de discuter de vos idées avec nous et de découvrir comment nous pouvons collaborer pour transformer votre vision en récits visuels captivants.",
     bookingBtn: "Réservez votre Consultation de 30 Min",
@@ -20,18 +20,41 @@ const home = {
     aboutTitle: "À propos de ",
     aboutSubtitle: "MediaSmart",
     aboutDescription: `
-      MediaSmart est l'endroit où deux mondes se rencontrent :
+      MediaSmart est l'endroit où deux mondes se rencontrent.
       <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li><strong>Production vidéo</strong>, pour sublimer vos événements, messages et image de marque.</li>
         <li><strong>Solutions informatiques</strong>, pour garantir des outils fiables, sécurisés et performants.</li>
       </ul>
       Basée en Suisse romande, nous fournissons des services modernes, flexibles et axés sur les résultats.
     `,
+    soloBadge: "Indépendant",
+    soloTitle: "Derrière MediaSmart",
+    soloName: "Raphael Rouiller",
+    soloJobTitle: "Fondateur & Prestataire indépendant",
+    soloRole: "Un interlocuteur unique pour vos besoins en vidéo et en informatique.",
+    soloLead:
+        "Pour l’instant, je travaille seul en tant qu’indépendant. Vous échangez donc directement avec la personne qui conçoit, pilote et livre votre projet.",
+    soloDescription:
+        "Cette structure volontairement légère me permet d’être plus réactif, plus clair dans les échanges et plus impliqué sur chaque détail. Si une mission demande un renfort spécifique, je peux aussi m’appuyer ponctuellement sur un réseau de partenaires de confiance.",
+    soloStatDirectLabel: "Format",
+    soloStatDirectValue: "1 interlocuteur unique",
+    soloStatExpertiseLabel: "Expertises",
+    soloStatExpertiseValue: "Vidéo + informatique",
+    soloStatLocationLabel: "Base",
+    soloStatLocationValue: "Suisse romande",
+    soloWorkingTitle: "Ce que cela change pour vous",
+    soloHighlights: [
+        "Un contact direct du premier échange jusqu’à la livraison.",
+        "Un accompagnement sur mesure, sans couches commerciales ni transmission de dossier.",
+        "Des partenaires externes mobilisés seulement lorsque le projet le justifie."
+    ],
+    soloNote:
+        "L’objectif n’est pas de paraître plus grand, mais d’être plus utile: simple, fiable et impliqué.",
 
     // ITOverview
     ITOverviewTitle: "Aperçu informatique",
     ITOverviewDescription:
-        "Un service informatique agile, adapté à vos besoins:",
+        "Un service informatique agile, adapté à vos besoins.",
     ITOverviewExploreBtn: "En savoir plus sur les services informatiques",
     ITOverviewCards: [
         {
@@ -40,7 +63,7 @@ const home = {
         },
         {
             title: "Maintenance Windows & macOS",
-            description: "Des mises à jour régulières pour Windows et macOS maintiennent vos systèmes stables, sécurisés et fonctionnent correctement."
+            description: "Des mises à jour régulières pour Windows et macOS maintiennent vos systèmes stables, sécurisés et performants."
         },
         {
             title: "Optimisation de performances",
@@ -72,26 +95,26 @@ const home = {
         },
         {
             title: "Retransmission d’événements",
-            description: "Des mises à jour régulières pour Windows et macOS maintiennent vos systèmes stables, sécurisés et fonctionnent correctement."
+            description: "Revivez les moments forts. Nous capturons et diffusons vos occasions spéciales en flux vidéo haute qualité, parfaits pour concerts, conférences et événements culturels."
         },
         {
             title: "Montage vidéo professionnel",
-            description: "Nous peaufinons vos appareils pour augmenter la vitesse, améliorer l'efficacité et prolonger leur durée de vie."
+            description: "Nous façonnons votre récit visuel avec précision. Chaque transition fluide, chaque scène percutante pour donner vie à votre histoire avec une touche cinématographique."
         },
         {
             title: "Location de matériel audiovisuel",
-            description: "De la configuration antivirus aux pare-feu et aux audits, nous protégeons vos systèmes contre les menaces numériques."
+            description: "Accédez à du matériel vidéo professionnel sans engagement : caméras, éclairage, son. Nous vous assurons les bons outils pour capturer votre vision."
         },
         {
             title: "Photographie d’événements",
-            description: "Des options de sauvegarde fiables et de récupération rapide garantissent que vos fichiers importants sont toujours en sécurité."
+            description: "Chaque instantané raconte une histoire. Nous capturons les moments qui comptent le plus pour vous, des événements d’entreprise aux rassemblements intimes."
         },
     ],
 
     // FAQ
     faqTitle: "Questions fréquentes",
     tile1: {
-        faqQuestion: "Quels types d'événements MediaSmart peut-il gérer?",
+        faqQuestion: "Quels types d'événements MediaSmart peut-il gérer ?",
         faqAnswer:
             "MediaSmart est polyvalent dans la gestion d'une grande variété d'événements, y compris des conférences d'entreprise, des mariages, des séminaires éducatifs et des performances en direct. Nous adaptons nos services pour répondre aux exigences uniques de chaque événement.",
     },
@@ -105,11 +128,11 @@ const home = {
         faqQuestion:
             "Comment fonctionne la location d'équipement avec MediaSmart ?",
         faqAnswer:
-            "Notre processus de location d'équipement est conçu pour la commodité et la qualité. Il suffit de nous indiquer quel est votre besoin lors d’une consultation gratuite de 30 minutes set nous vous proposerons du matériel adéquat avec un devis sur mesure.",
+            "Notre processus de location d'équipement est conçu pour la commodité et la qualité. Indiquez-nous votre besoin lors d’une consultation gratuite de 30 minutes et nous vous proposerons une offre adaptée avec un devis sur mesure.",
     },
     tile4: {
         faqQuestion:
-            "MediaSmart propose-t-il un montage vidéo post-événement?",
+            "MediaSmart propose-t-il un montage vidéo post-événement ?",
         faqAnswer:
             "Oui, c'est notre spécialité. Notre montage post-événement utilise des méthodes avancées pour convertir vos prises brutes en un rendu final élégant, capturant parfaitement l'âme de votre événement.",
     },
@@ -176,6 +199,9 @@ const home = {
     contactRequiredMsgError: "Ce champ est requis.",
     contactRequired: "* Obligatoire",
     contactDone: "Fait",
-    contactLoading: "Chargement..."
+    contactLoading: "Chargement...",
+    contactSuccessTitle: "Message envoyé !",
+    contactSuccessBody: "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais.",
+    contactSuccessNew: "Envoyer un autre message"
 };
 export default home;

@@ -11,8 +11,8 @@ const underConstruction = {
     videoServicesDescription: "Nous produisons des contenus audiovisuels de haute qualité, pensés pour valoriser votre image, captiver votre audience et renforcer l’impact de votre communication.",
 
     progressLabel: "Suivi de l’avancement du projet",
-    stayInformed: "Restez informé(e) des dernières étapes",
-    launchNotice: "Notre lancement officiel est prévu très prochainement. Inscrivez-vous dès aujourd’hui pour recevoir nos actualités et être averti(e) en avant-première.",
+    stayInformed: "Suivez les dernières étapes",
+    launchNotice: "Notre lancement officiel est prévu très prochainement. Inscrivez-vous dès aujourd’hui pour recevoir nos actualités et être les premiers informés.",
 
     emailPlaceholder: "Saisissez votre adresse email",
     errorEmailRequired: "Veuillez entrer une adresse email pour continuer.",

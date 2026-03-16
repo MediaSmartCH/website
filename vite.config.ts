@@ -19,7 +19,13 @@ if (process.env.ANALYZE === "true") {
 
 export default defineConfig({
   plugins,
-  server: { port: 3000, open: true },
+  server: {
+    port: 3000,
+    open: true,
+    proxy: {
+      '/api': 'http://localhost:3001',
+    },
+  },
   resolve: {
     alias: {
       components: path.resolve(__dirname, "src/components"),
