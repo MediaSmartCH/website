@@ -427,13 +427,13 @@ const ModernCookieBanner = () => {
               {!showCustomize ? (
                 <div className="p-6 md:p-8">
                   {/* Header avec contrôles intégrés */}
-                  <div className="flex flex-col lg:flex-row flex-wrap lg:items-start lg:justify-between gap-1 sm:gap-2 lg:gap-3 mb-4 px-3 lg:px-6">
+                  <div className="flex items-start justify-between gap-3 mb-4 px-3 lg:px-6">
                     {/* Bloc titre */}
-                    <div className="order-2 lg:order-1 flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shrink-0">
                         <Cookie className="w-6 h-6 text-white" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <h3 className={`text-xl sm:text-2xl font-bold ${themeClasses.text}`}>
                           {t.text("cookies.title")}
                         </h3>
@@ -444,7 +444,7 @@ const ModernCookieBanner = () => {
                     </div>
 
                     {/* Bloc contrôles */}
-                    <div className="order-1 lg:order-2 flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3 self-end lg:self-auto">
+                    <div className="flex items-center gap-1 sm:gap-2 lg:gap-3 shrink-0">
                       {/* Sélecteur de langue */}
                       <div className="flex items-center gap-2">
                         <Globe className={`w-3 h-3 sm:w-4 sm:h-4 ${themeClasses.textSecondary}`} />
