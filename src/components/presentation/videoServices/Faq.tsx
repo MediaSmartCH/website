@@ -2,9 +2,9 @@ import React from "react";
 import { Collapse } from "antd";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
+import WaveBackdrop from "components/common/WaveBackdrop";
 
 import "assets/styles/faqCss.css";
-import bg from "assets/images/faq-bg.png";
 
 type FaqTile = { faqQuestion: string; faqAnswer: string };
 
@@ -113,13 +113,12 @@ const Faq: React.FC = () => {
   ];
 
   return (
-    <div id="faq" className="md:pt-[120px] lg:pt-[140px] xl:pt-[200px] 2xl:pt-[240px] relative">
-      <img
-        src={bg}
-        className="absolute left-0 top-[100px] md:top-[-20px] lg:top-[-50px] xl:top-[-50px] 2xl:top-[-70px]"
-        alt="background"
+    <div id="faq" className="relative overflow-hidden md:pt-[120px] lg:pt-[140px] xl:pt-[200px] 2xl:pt-[240px]">
+      <WaveBackdrop
+        theme={themeReducer}
+        className="top-[116px] h-[620px] md:top-[12px] md:h-[700px] lg:top-[-12px] lg:h-[760px] xl:top-[-18px] xl:h-[790px]"
       />
-      <div className="w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
+      <div className="relative z-10 w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
         <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl::px-[60px] flex flex-col items-start">
           <p
             className={`${

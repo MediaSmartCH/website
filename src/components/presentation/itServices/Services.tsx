@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense } from "react";
 // import Lottie from 'react-lottie';
 // import DotAnim from "components/common/DotAnim";
 
@@ -6,6 +6,7 @@ import React, { lazy, Suspense, useState } from "react";
 import { useAppSelector } from "services/hooks/hooks";
 // import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
+import PortfolioGallery from "./PortfolioGallery";
 
 // Importation of lottie files
 // import services1 from 'assets/images/lotties/itWebsiteLight.json';
@@ -21,11 +22,6 @@ import { useTranslations } from "services/locales/safe";
 // import services6 from 'assets/images/lotties/itSupportLight.json';
 // import services6d from 'assets/images/lotties/itSupportDark.json';
 
-import portfolio1 from "assets/images/it-services-portfolio1.png";
-import portfolio2 from "assets/images/it-services-portfolio2.png";
-import portfolio3 from "assets/images/it-services-portfolio3.png";
-import portfolio4 from "assets/images/it-services-portfolio4.png";
-
 const Services = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
   const languageReducer = useAppSelector(
@@ -35,9 +31,6 @@ const Services = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
-
-  // Modal state
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // const services1Lottie = {
   //   loop: true,
@@ -93,10 +86,6 @@ const Services = () => {
   //   }
   // };
 
-  // Modal handlers
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
   return (
     <div id="services">
       <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[40px] md:pt-[50px] md:pb-[50px] mx-auto">
@@ -137,7 +126,6 @@ const Services = () => {
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
-                  max-w-[700px] mx-auto px-4
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
@@ -169,54 +157,7 @@ const Services = () => {
             </div>
           </div>
           {/* check portfolio */}
-          <div className="mt-[10px] px-[20px] lg:px-[50px] 2xl:px-[100px]">
-            <p
-              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                } w-full font-redDisplay font-bold text-[18px] md:text-[20px] lg:text-[20px] xl:text-[22px] 2xl:text-[24px] `}
-            >
-              {/* {dictionary["it"][languageReducer]["portfolioTxt"]} */} {t.text("it.portfolioTxt")}
-            </p>
-            <div className="mt-[12px] grid grid-cols-2 lg:grid-cols-4 gap-3 justify-between">
-              <div className="w-full flex justify-center items-center"
-                data-aos="zoom-in"
-                data-aos-easing="ease-in-sine"
-                data-aos-duration="1100"
-              >
-                <img src={portfolio1} alt="portfolio-1" className="" />
-              </div>
-              <div className="w-full flex justify-center items-center"
-                data-aos="zoom-in"
-                data-aos-easing="ease-in-sine"
-                data-aos-duration="1200"
-              >
-                <img src={portfolio2} alt="portfolio-2" className="" />
-              </div>
-              <div className="w-full flex justify-center items-center"
-                data-aos="zoom-in"
-                data-aos-easing="ease-in-sine"
-                data-aos-duration="1300"
-              >
-                <img src={portfolio3} alt="portfolio-3" className="" />
-              </div>
-              <div className="relative w-full flex justify-center items-center"
-                data-aos="zoom-in"
-                data-aos-easing="ease-in-sine"
-                data-aos-duration="1400"
-              >
-                <div className="center-child">
-                  <button
-                    onClick={openModal}
-                    className="hero-btn custom-btn w-full min-w-[140px] md:min-w-[130px] h-[38px] lg:min-w-[150px] lg:h-[45px] xl:min-w-[170px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2"
-                  >
-                    <span className="custom-btn-inner">
-                      {/* {dictionary["it"][languageReducer]["portfolioBtn"]} */} {t.text("it.portfolioBtn")}
-                    </span>
-                  </button>
-                </div>
-                <img src={portfolio4} alt="portfolio-4" className="" />
-              </div>
-            </div>
-          </div>
+          <PortfolioGallery />
         </div>
 
         {/* 2 */}
@@ -256,7 +197,6 @@ const Services = () => {
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
-                  max-w-[700px] mx-auto px-4
                   mt-6
                 `}
               dangerouslySetInnerHTML={{
@@ -285,7 +225,6 @@ const Services = () => {
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
-                  max-w-[700px] mx-auto px-4
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
@@ -355,7 +294,6 @@ const Services = () => {
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
-                  max-w-[700px] mx-auto px-4
                   mt-6
                 `}
               dangerouslySetInnerHTML={{
@@ -384,7 +322,6 @@ const Services = () => {
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
-                  max-w-[700px] mx-auto px-4
                   mt-6
                 `}
                 dangerouslySetInnerHTML={{
@@ -454,7 +391,6 @@ const Services = () => {
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
-                  max-w-[700px] mx-auto px-4
                   mt-6
                 `}
               dangerouslySetInnerHTML={{
@@ -465,80 +401,6 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex: 99999 }}>
-          {/* Backdrop with blur effect */}
-          <div
-            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-700 ease-in-out"
-            onClick={closeModal}
-          />
-
-          {/* Modal content */}
-          <div className={`relative w-[75%] h-[75%] ${themeReducer === "light" ? "bg-white" : "bg-[#2B284C]"} rounded-lg shadow-2xl transform transition-all duration-700 ease-in-out animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-4`}>
-            {/* Close button */}
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full transition-colors duration-200 text-gray-700 dark:text-gray-300"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-
-            {/* Modal content */}
-            <div className={`p-8 h-full flex flex-col items-center justify-start ${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-              }`}>
-              <h2 className={`mb-1 font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px]`}>
-                {/* {dictionary["it"][languageReducer]["portfolioModalHeading"]} */} {t.text("it.portfolioModalHeading")}
-              </h2>
-              <p
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                  } w-full text-center font-helvetica font-light text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] `}
-              >
-                {/* {dictionary["it"][languageReducer]["portfolioModalDescription"]} */} {t.text("it.portfolioModalDescription")}
-              </p>
-              <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-3 justify-between">
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio1} alt="portfolio-1" className="" />
-                </div>
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio2} alt="portfolio-2" className="" />
-                </div>
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio3} alt="portfolio-3" className="" />
-                </div>
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio4} alt="portfolio-4" className="" />
-                </div>
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio1} alt="portfolio-1" className="" />
-                </div>
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio2} alt="portfolio-2" className="" />
-                </div>
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio3} alt="portfolio-3" className="" />
-                </div>
-                <div className="w-full flex justify-center items-center">
-                  <img src={portfolio4} alt="portfolio-4" className="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

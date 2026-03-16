@@ -26,6 +26,7 @@ const it = {
 
     portfolioModalHeading: "Notre portfolio",
     portfolioModalDescription: "Transformer les idées en expériences Web interactives, visuellement époustouflantes et conviviales qui laissent un impact durable.",
+    portfolioVisitSite: "Visiter le site",
 
     service1: "Création & refonte de sites web",
     description1: `
@@ -42,7 +43,7 @@ const it = {
     description2: `
         Un ordinateur bien entretenu dure plus longtemps et évite les pannes imprévues.
         <br />
-        Nous proposons un service de <b> maintenance proactive, </b>, incluant :
+        Nous proposons un service de <b>maintenance proactive</b>, incluant :
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Mises à jour régulières (système et logiciels). </li>

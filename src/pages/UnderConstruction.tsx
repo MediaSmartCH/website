@@ -83,8 +83,8 @@ const UnderConstruction: React.FC = () => {
   };
 
   const handleThemeChange = () => {
-    const newTheme = themeReducer === "light" ? "dark" : "light";
-    dispatch(setTheme(newTheme));
+    const nextTheme = themeReducer === "light" ? "dark" : "light";
+    dispatch(setTheme(nextTheme));
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {

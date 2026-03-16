@@ -57,9 +57,9 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
           >
             <span className="mr-3 gradient-text">
-              {/* {dictionary["home"][languageReducer]["heroTitle"]} */} {t.text("home.heroTitle")}
+              {t.text("home.heroTitle")}
             </span>
-            {/* {dictionary["home"][languageReducer]["heroSubtitle"]} */} {t.text("home.heroSubtitle")}
+            {t.text("home.heroSubtitle")}
           </p>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"

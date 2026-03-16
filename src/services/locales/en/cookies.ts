@@ -41,7 +41,7 @@ const cookies = {
     calendlyTargeted: "Calendly - Targeted advertising",
     calendlyTargetedDesc: "Interest profile for relevant ads",
     themePreference: "Theme preferences",
-    themePreferenceDesc: "Remembers your choice between dark and light theme",
+    themePreferenceDesc: "Remembers your choice between light, dark or system theme",
     languagePreference: "Language preferences",
     languagePreferenceDesc: "Remembers your preferred language (FR/EN)",
     privacyLinkText: "View our privacy policy",

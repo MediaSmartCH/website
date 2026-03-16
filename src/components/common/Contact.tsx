@@ -1,6 +1,5 @@
 import React from "react";
 import { Checkbox } from "antd";
-import emailjs from "@emailjs/browser";
 import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
@@ -10,6 +9,7 @@ import { verifyRecaptchaToken } from "services/api/recaptcha";
 
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
+
 
 import email from "assets/icons/email.svg";
 import address from "assets/icons/address.svg";
@@ -61,6 +61,8 @@ const Contact = () => {
   const localDigits = getLocalDigits(phoneValue);
   const dialOnly = localDigits.length === 0;
 
+  const [nameValid, setNameValid] = React.useState(true);
+  const [messageValid, setMessageValid] = React.useState(true);
   const [emailValid, setEmailValid] = React.useState(true);
 
   const emailBase = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}$/i;
@@ -114,9 +116,7 @@ const Contact = () => {
     setContact((c) => ({ ...c, [name]: value }));
   };
 
-  const handleClick = () => {
-    setTimeout(() => setDone(false), 3000);
-  };
+  const handleClick = () => {};
 
   const onCheckboxChange = (e: any) => {
     setIsChecked(e.target.checked);
@@ -231,13 +231,39 @@ const Contact = () => {
               </div>
             </div>
 
+            {done ? (
+              <div className="w-full lg:w-[50%] flex flex-col items-center justify-center text-center gap-y-[20px] py-[40px]">
+                <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center"
+                  style={{ background: "linear-gradient(135deg, #5b4fcf, #a855f7)" }}>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <h3 className={`font-redDisplay font-bold text-[22px] md:text-[26px] ${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}>
+                  {t.text("home.contactSuccessTitle")}
+                </h3>
+                <p className={`font-poppins font-light text-[14px] md:text-[16px] max-w-[380px] leading-relaxed ${themeReducer === "light" ? "text-[#555555]" : "text-[#C8CADE]"}`}>
+                  {t.text("home.contactSuccessBody")}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setDone(false)}
+                  className="custom-btn rounded-[80px] text-white px-[40px] py-[11px] lg:py-[14px] mt-[8px]"
+                >
+                  <span className="custom-btn-inner">{t.text("home.contactSuccessNew")}</span>
+                </button>
+              </div>
+            ) : (
             <form
               noValidate
               className="w-full lg:w-[50%]"
-              data-aos="fade-up"
-              data-aos-duration="1200"
               onSubmit={async (e) => {
                 e.preventDefault();
+
+                if (!contact.name.trim()) {
+                  setNameValid(false);
+                  return;
+                }
 
                 if (!isChecked) {
                   setError(t.text("home.contactErrorText"));
@@ -252,6 +278,11 @@ const Contact = () => {
                     emailInput.setCustomValidity(t.text("home.contactInvalidEmailError"));
                     emailInput.reportValidity();
                   }
+                  return;
+                }
+
+                if (!contact.message.trim()) {
+                  setMessageValid(false);
                   return;
                 }
 
@@ -291,28 +322,28 @@ const Contact = () => {
                     console.log('🏠 Mode local : ReCAPTCHA bypassed');
                   }
 
-                  const EMAILJS_CONFIG = {
-                    serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                    templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-                  };
+                  const urlLang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+                  const payload = { ...contact, phone: dialOnly ? "" : phoneValue, lang: urlLang };
+                  const controller = new AbortController();
+                  const timeout = setTimeout(() => controller.abort(), 10000);
+                  const result = await fetch('/api/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal,
+                  });
+                  clearTimeout(timeout);
 
-                  const payload = { ...contact, phone: phoneValue };
-                  const result = await emailjs.send(
-                    EMAILJS_CONFIG.serviceId,
-                    EMAILJS_CONFIG.templateId,
-                    payload,
-                    EMAILJS_CONFIG.publicKey
-                  );
-
-                  if (result.status >= 200 && result.status < 300) {
+                  if (result.ok) {
                     setLoading(false);
                     setDone(true);
                     setContact({ name: "", email: "", message: "" });
                     setPhoneValue("");
                     setIsChecked(false);
+                    setNameValid(true);
                     setEmailValid(true);
                     setPhoneValid(true);
+                    setMessageValid(true);
                     handleClick();
                   } else {
                     setLoading(false);
@@ -322,23 +353,22 @@ const Contact = () => {
                 } catch (error) {
                   console.error('Erreur EmailJS:', error);
                   setLoading(false);
-                  setError('Une erreur est survenue lors de l\'envoi du message, veuillez rééssayer plus tard.');
+                  setError('Une erreur est survenue lors de l\'envoi du message, veuillez réessayer plus tard.');
                 }
               }}
             >
               <div
-                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-                  } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
+                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
+                  ${nameValid ? "border-[#C8CAE4]" : "border-red-500"}`}
               >
                 <input
                   placeholder={t.text("home.contactName")}
-                  className={`custom-contact-input ${themeReducer === "light"
-                    ? "text-[#222222] placeholder:text-[#222222]"
-                    : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
-                    } `}
+                  className={`custom-contact-input ${nameValid ? "" : "text-red-500"}
+                    ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"}`}
                   type="text"
                   name="name"
-                  onChange={handleChange}
+                  onChange={(e) => { setNameValid(true); handleChange(e); }}
                   value={contact.name}
                   required
                 />
@@ -425,19 +455,18 @@ const Contact = () => {
               </div>
 
               <div
-                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
-                  } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px] `}
+                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                  relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
+                  ${messageValid ? "border-[#C8CAE4]" : "border-red-500"}`}
               >
                 <textarea
                   placeholder={t.text("home.contactMsg")}
-                  className={`custom-contact-input ${themeReducer === "light"
-                    ? "text-[#222222] placeholder:text-[#222222]"
-                    : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"
-                    } `}
+                  className={`custom-contact-input ${messageValid ? "" : "text-red-500"}
+                    ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"}`}
                   rows={4}
                   style={{ resize: "none" }}
                   name="message"
-                  onChange={handleChange}
+                  onChange={(e) => { setMessageValid(true); handleChange(e); }}
                   onInvalid={handleInvalid}
                   value={contact.message}
                   required
@@ -476,9 +505,7 @@ const Contact = () => {
                   type="submit"
                   className="custom-btn rounded-[80px] text-white px-[50px] lg:px-[54px] py-[11px] lg:py-[16px]"
                 >
-                  {done ? (
-                    <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">{t.text("home.contactDone")}</span>
-                  ) : loading ? (
+                  {loading ? (
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">{t.text("home.contactLoading")}</span>
                   ) : (
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">
@@ -491,6 +518,7 @@ const Contact = () => {
                 </button>
               </div>
             </form>
+            )}
           </div>
         </div>
       </div >

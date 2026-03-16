@@ -39,6 +39,7 @@
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-filter": "^0.0.22",
+    "resend": "^6.9.3",
     "rrweb": "^2.0.0-alpha.4",
     "slick-carousel": "^1.8.1",
     "typescript": "^4.4.2",
@@ -46,6 +47,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "api": "node scripts/dev-api.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "analyze": "cross-env ANALYZE=true vite build"

@@ -67,7 +67,7 @@ const Booking = () => {
             data-aos-easing="ease-in-sine"
           >
             <PopupButton
-              className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
+              className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
               url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
               rootElement={rootElement as HTMLElement}
               // text={
@@ -84,7 +84,7 @@ const Booking = () => {
             />
             {/* <button
               onClick={() => setShowBookingModal(true)}
-              className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
+              className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
             >
               {t.text("home.bookingBtn")}
             </button> */}
