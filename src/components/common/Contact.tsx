@@ -7,6 +7,7 @@ import { isValidPhoneNumber } from "libphonenumber-js";
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { verifyRecaptchaToken } from "services/api/recaptcha";
+import { fetchWithDeployment } from "services/api/fetchWithDeployment";
 
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
@@ -458,7 +459,7 @@ const Contact = () => {
                   const payload = { ...contact, phone: dialOnly ? "" : phoneValue, lang: urlLang, intent, projectType: intent === "quote" ? projectType : "" };
                   const controller = new AbortController();
                   const timeout = setTimeout(() => controller.abort(), 10000);
-                  const result = await fetch('/api/send', {
+                  const result = await fetchWithDeployment('/api/send', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
