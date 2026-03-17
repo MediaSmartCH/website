@@ -5,6 +5,9 @@ on:
     - cron: '0 23 * * *'  # 23:00 UTC = minuit CET (UTC+1)
   workflow_dispatch:       # Déclenchement manuel possible
 
+permissions:
+  contents: write
+
 jobs:
   screenshot:
     runs-on: ubuntu-latest
