@@ -1,46 +1,160 @@
-# Getting Started with Create React App
+# MediaSmart Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Marketing website built with React, TypeScript, and Vite, deployed on Vercel with two serverless API endpoints:
 
-## Available Scripts
+- `POST /api/send` for contact emails via Resend
+- `POST /api/verify-recaptcha` for reCAPTCHA verification
 
-In the project directory, you can run:
+## Stack
 
-### `yarn start`
+- React 18
+- TypeScript
+- Vite 7
+- pnpm 10
+- Vercel Functions (`api/`)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js 20.x
+- pnpm 10.x
+- Vercel CLI for local project sync
 
-### `yarn test`
+## Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Install dependencies:
 
-### `yarn build`
+   ```bash
+   pnpm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Copy the environment template and fill in the values:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   cp .env.example .env.local
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Validate the local environment:
 
-### `yarn eject`
+   ```bash
+   make check-env
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Run Locally
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Start the frontend:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+make dev
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Start the local API server in another terminal:
 
-## Learn More
+```bash
+make api
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Local URLs:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Frontend: `http://localhost:3000`
+- Local API proxy target: `http://localhost:3001`
+
+## Build And Preview
+
+Build the production bundle:
+
+```bash
+make build
+```
+
+Preview the production bundle:
+
+```bash
+make preview
+```
+
+Generate a bundle report:
+
+```bash
+make analyze
+```
+
+## Environment Variables
+
+Application variables:
+
+- `VITE_RECAPTCHA_SITE_KEY`: preferred public key used by Vite builds
+- `REACT_APP_RECAPTCHA_SITE_KEY`: backward-compatible fallback while the Vercel project is still carrying the legacy CRA variable
+- `RECAPTCHA_SECRET_KEY`: server-side secret used by `/api/verify-recaptcha`
+- `RESEND_API_KEY`: server-side key used by `/api/send`
+
+Vercel project sync variables:
+
+- `VERCEL_PROJECT_ID`
+- `VERCEL_TEAM_ID`
+- `VERCEL_TOKEN`
+
+`VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID` are optional locally if `.vercel/project.json` already exists. `VERCEL_TOKEN` is required in CI.
+
+## Vercel Configuration
+
+Repo-controlled deployment settings live in [`vercel.json`](vercel.json):
+
+- Vite framework preset
+- pnpm install and build commands
+- `dist` output directory
+- `fluid: true`
+
+Dashboard-only settings are versioned in [`config/vercel-project-settings.json`](config/vercel-project-settings.json) and synced with:
+
+```bash
+make vercel-sync-dry-run
+make vercel-sync
+```
+
+The sync script applies:
+
+- `productionDeploymentsFastLane`
+- `resourceConfig.fluid`
+
+The client now pins API requests with `x-deployment-id`, so the code is already ready for Vercel skew protection. The dashboard-level toggle itself still requires a Pro or Enterprise plan.
+
+The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.github/workflows/sync-vercel-project-settings.yml) re-applies those settings on `main` whenever the sync config changes.
+
+## Make Targets
+
+```bash
+make help
+```
+
+Main targets:
+
+- `make install`
+- `make update`
+- `make dev`
+- `make api`
+- `make build`
+- `make preview`
+- `make analyze`
+- `make clean`
+- `make check-env`
+- `make vercel-sync-dry-run`
+- `make vercel-sync`
+
+## Project Structure
+
+```text
+api/                         Vercel Functions
+config/                      Deployment settings tracked in git
+public/                      Static assets
+scripts/                     Local tooling and Vercel sync scripts
+src/components/              UI components
+src/pages/                   Route-level pages
+src/services/                API helpers, hooks, and localization
+src/store/                   Redux store
+```
+
+## Troubleshooting
+
+- If the contact form fails in production, confirm that either `VITE_RECAPTCHA_SITE_KEY` or `REACT_APP_RECAPTCHA_SITE_KEY` exists in Vercel project env vars.
+- If `make vercel-sync` fails locally, run `vercel login` and confirm the project is linked.
+- If the sync GitHub workflow fails, verify `VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, and `VERCEL_TEAM_ID` in repository secrets.

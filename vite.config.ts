@@ -18,6 +18,10 @@ if (process.env.ANALYZE === "true") {
 }
 
 export default defineConfig({
+  envPrefix: ["VITE_", "REACT_APP_"],
+  define: {
+    __VERCEL_DEPLOYMENT_ID__: JSON.stringify(process.env.VERCEL_DEPLOYMENT_ID ?? ""),
+  },
   plugins,
   server: {
     port: 3000,

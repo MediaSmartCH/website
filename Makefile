@@ -1,70 +1,51 @@
-# Makefile pour sparklet.ai / MediaSmart
-# Application React + TypeScript + Vite
+SHELL := /bin/sh
 
-.PHONY: help install dev start build preview analyze clean lint
-
-# Couleurs pour l'affichage
-CYAN := \033[36m
-GREEN := \033[32m
-YELLOW := \033[33m
-RESET := \033[0m
-
-# Commande par défaut
 .DEFAULT_GOAL := help
 
-## Afficher l'aide
-help:
-	@echo ""
-	@echo "$(CYAN)═══════════════════════════════════════════════════════════$(RESET)"
-	@echo "$(GREEN)  Makefile - sparklet.ai$(RESET)"
-	@echo "$(CYAN)═══════════════════════════════════════════════════════════$(RESET)"
-	@echo ""
-	@echo "$(YELLOW)Commandes disponibles:$(RESET)"
-	@echo ""
-	@echo "  $(GREEN)make install$(RESET)    - Installer les dépendances npm"
-	@echo "  $(GREEN)make dev$(RESET)        - Lancer le serveur de développement (port 3000)"
-	@echo "  $(GREEN)make start$(RESET)      - Alias pour 'make dev'"
-	@echo "  $(GREEN)make build$(RESET)      - Build de production (dans dist/)"
-	@echo "  $(GREEN)make preview$(RESET)    - Prévisualiser le build de production"
-	@echo "  $(GREEN)make analyze$(RESET)    - Build avec analyse du bundle"
-	@echo "  $(GREEN)make clean$(RESET)      - Nettoyer les fichiers générés"
-	@echo ""
+VERCEL_SYNC_SCRIPT := scripts/sync-vercel-project-settings.mjs
 
-## Installer les dépendances
-install:
-	@echo "$(CYAN)📦 Installation des dépendances...$(RESET)"
+.PHONY: help install update dev api start build preview analyze clean env check-env vercel-sync vercel-sync-dry-run
+
+help: ## Show available targets
+	@grep -E '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-22s %s\n", $$1, $$2}'
+
+install: ## Install dependencies with pnpm
 	pnpm install
 
-## Lancer le serveur de développement
-dev:
-	@echo "$(CYAN)🚀 Lancement du serveur de développement...$(RESET)"
-	@echo "$(GREEN)→ http://localhost:3000$(RESET)"
+update: ## Refresh dependencies from the lockfile
+	pnpm update
+
+dev: ## Start the Vite development server
 	pnpm run dev
 
-## Alias pour dev
-start: dev
+api: ## Start the local API server for /api/send
+	pnpm run api
 
-## Build de production
-build:
-	@echo "$(CYAN)🔨 Build de production...$(RESET)"
+start: dev ## Alias for dev
+
+build: ## Build the production bundle
 	pnpm run build
-	@echo "$(GREEN)✅ Build terminé dans dist/$(RESET)"
 
-## Prévisualiser le build de production
-preview: build
-	@echo "$(CYAN)👀 Prévisualisation du build de production...$(RESET)"
-	parnpm run preview
+preview: ## Preview the production build
+	pnpm run preview
 
-## Analyser le bundle
-analyze:
-	@echo "$(CYAN)📊 Analyse du bundle...$(RESET)"
+analyze: ## Generate the bundle analysis report
 	pnpm run analyze
-	@echo "$(GREEN)✅ Rapport généré: bundle-report.html$(RESET)"
 
-## Nettoyer les fichiers générés
-clean:
-	@echo "$(CYAN)🧹 Nettoyage...$(RESET)"
-	rm -rf dist
-	rm -rf node_modules/.vite
-	rm -f bundle-report.html
-	@echo "$(GREEN)✅ Nettoyage terminé$(RESET)"
+clean: ## Remove generated files
+	rm -rf dist node_modules/.vite bundle-report.html
+
+env: check-env ## Alias for check-env
+
+check-env: ## Validate the local environment file
+	@test -f .env.local || (echo "Missing .env.local. Copy .env.example first." && exit 1)
+	@grep -Eq '^(VITE_RECAPTCHA_SITE_KEY|REACT_APP_RECAPTCHA_SITE_KEY)=' .env.local || (echo "Missing VITE_RECAPTCHA_SITE_KEY or REACT_APP_RECAPTCHA_SITE_KEY in .env.local." && exit 1)
+	@grep -q '^RECAPTCHA_SECRET_KEY=' .env.local || (echo "Missing RECAPTCHA_SECRET_KEY in .env.local." && exit 1)
+	@grep -q '^RESEND_API_KEY=' .env.local || (echo "Missing RESEND_API_KEY in .env.local." && exit 1)
+	@echo "Local environment looks valid."
+
+vercel-sync-dry-run: ## Show the Vercel project patch without applying it
+	node $(VERCEL_SYNC_SCRIPT) --dry-run
+
+vercel-sync: ## Apply tracked Vercel project settings
+	node $(VERCEL_SYNC_SCRIPT)

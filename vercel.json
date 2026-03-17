@@ -1,8 +1,9 @@
 {
-  "buildCommand": "npm run build",
+  "framework": "vite",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
-  "installCommand": "npm install --legacy-peer-deps",
-  "framework": null,
+  "fluid": true,
   "rewrites": [
     {
       "source": "/((?!api/).*)",

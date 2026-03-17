@@ -1,0 +1,12 @@
+{
+  "productionDeploymentsFastLane": true,
+  "resourceConfig": {
+    "fluid": true,
+    "functionDefaultRegions": [
+      "iad1"
+    ],
+    "functionDefaultTimeout": 10,
+    "functionZeroConfigFailover": false,
+    "elasticConcurrencyEnabled": false
+  }
+}
