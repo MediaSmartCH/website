@@ -37,4 +37,22 @@ export default defineConfig({
     },
   },
   assetsInclude: ["**/*.lottie"],
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        // Suppress eval warnings from @dotlottie (third-party library)
+        if (warning.code === "EVAL" && warning.id?.includes("@dotlottie")) return;
+        warn(warning);
+      },
+      output: {
+        manualChunks: {
+          "react-vendor": ["react", "react-dom", "react-router-dom"],
+          "redux-vendor": ["redux", "react-redux", "@reduxjs/toolkit", "redux-persist"],
+          "antd-vendor": ["antd"],
+          "ui-vendor": ["lucide-react", "aos"],
+        },
+      },
+    },
+  },
 });
