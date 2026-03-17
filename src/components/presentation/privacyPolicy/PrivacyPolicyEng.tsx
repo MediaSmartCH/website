@@ -13,7 +13,7 @@ export default function PrivacyPolicyEng({
   return (
     <div className="w-full relative mt-[73px] md:mt-[130px] lg:mt-[100px]">
       {/* Hero Cover */}
-      <div className="hero-bg px-[20px] h-[350px] md:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px] flex justify-center items-start">
+      <div className={`${tText("hero-bg", "hero-bg-dark")} px-[20px] h-[350px] md:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px] flex justify-center items-start`}>
         <div className="mt-[70px] 2xl:mt-[100px]">
           <h1
             className={`${tText("text-[#14172D]", "text-[#F6F6F6]")} w-full mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px]`}

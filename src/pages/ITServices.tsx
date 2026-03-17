@@ -13,6 +13,9 @@ import Contact from "components/common/Contact";
 import WaveBackdrop from "components/common/WaveBackdrop";
 // import Footer from "components/common/Footer";
 import Process from "components/presentation/itServices/Process";
+import FaqIT from "components/presentation/itServices/FaqIT";
+import PracticalInfo from "components/presentation/itServices/PracticalInfo";
+import ProjectEstimates from "components/presentation/itServices/ProjectEstimates";
 
 export default function ITServicesPage() {
   // useScrollToHash();
@@ -49,7 +52,10 @@ export default function ITServicesPage() {
       <Hero />
       <About />
       <Services />
+      <PracticalInfo />
+      <ProjectEstimates />
       <Process />
+      <FaqIT />
       <div className="relative overflow-hidden pt-[40px] md:pt-[50px]">
         <WaveBackdrop
           theme={themeReducer}

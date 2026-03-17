@@ -5,9 +5,12 @@ const navbar = {
   navItem4: "À propos",
   navItem5: "Témoignages",
   navbarButton: "Prendre rendez-vous",
+  languageSelector: "Sélecteur de langue",
   themeSelector: "Sélecteur de thème",
   themeLight: "Thème clair",
   themeDark: "Thème sombre",
   themeSystem: "Thème système",
+  themeChangingTitle: "Changement de thème",
+  themeChangingDescription: "Veuillez patienter...",
 };
 export default navbar;

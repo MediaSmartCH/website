@@ -7,33 +7,29 @@ import emailjs from "@emailjs/browser";
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { verifyRecaptchaToken } from 'services/api/recaptcha';
 
-import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
-import { setLanguage } from "store/slices/common/languageSlice";
-import { setTheme } from "store/slices/common/themeSlice";
-
 import logo from "assets/images/logo-header.png";
 import logoDark from "assets/images/logo-footer.png";
 import bookLine from "assets/icons/bookLine.svg";
 import contactEmail from "assets/icons/contactEmail.svg";
 import arrow from "assets/icons/rightArrow.svg";
-import flag1 from "assets/images/flag1.png";
-import flag2 from "assets/images/french.png";
-import light from "assets/images/light.png";
-import dark from "assets/images/dark.png";
 
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
 import { useTranslations } from "services/locales/safe";
+import LocaleThemeControls from "components/common/LocaleThemeControls";
+import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
 
 const UnderConstruction: React.FC = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const dispatch = useAppDispatch();
-
-  const languageReducer = useAppSelector(
-    (state) => state.language.currentLanguage
-  );
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const {
+    currentLanguage: languageReducer,
+    currentTheme: themeReducer,
+    themePreference,
+    changeLanguage,
+    changeTheme,
+    labels,
+  } = useInterfaceControls({ preserveScroll: true });
 
   const t = useTranslations(languageReducer);
 
@@ -50,42 +46,6 @@ const UnderConstruction: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const progressPercentage = CONSTRUCTION_CONFIG.progressPercentage;
-
-  const handleLanguageChange = (languageCode: string) => {
-    const x = window.scrollX;
-    const y = window.scrollY;
-
-    dispatch(setLanguage(languageCode));
-
-    try {
-      const currentPath = window.location.pathname;
-      const currentSearch = window.location.search;
-      const currentHash = window.location.hash;
-
-      const stripped = currentPath.replace(/^\/(fr|en)/, "");
-      const newUrl = `/${languageCode}${stripped}${currentSearch}${currentHash}`;
-
-      window.history.replaceState(null, "", newUrl);
-
-      requestAnimationFrame(() => {
-        window.scrollTo(x, y);
-        setTimeout(() => window.scrollTo(x, y), 0);
-        setTimeout(() => window.scrollTo(x, y), 50);
-      });
-    } catch (e) {
-      console.warn("Lang change URL swap failed:", e);
-    }
-  };
-
-  const toggleLanguage = () => {
-    const next = languageReducer === "fr" ? "en" : "fr";
-    handleLanguageChange(next);
-  };
-
-  const handleThemeChange = () => {
-    const nextTheme = themeReducer === "light" ? "dark" : "light";
-    dispatch(setTheme(nextTheme));
-  };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -167,47 +127,18 @@ const UnderConstruction: React.FC = () => {
         : "bg-[#2B284C]"
         } min-h-screen relative overflow-hidden flex items-center justify-center px-6 sm:px-8 md:px-4 py-8`}
     >
-      <div className="hero-bg absolute inset-0 z-0"></div>
 
       {/* Boutons de contrôle discrets - positionnés différemment sur mobile */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-auto sm:right-6 sm:top-6 sm:translate-x-0 z-20 flex items-center gap-2 sm:gap-4">
-        {/* Bouton changement de langue */}
-        <button
-          onClick={toggleLanguage}
-          className={`${themeReducer === "light"
-            ? "bg-white/80 hover:bg-white border-gray-200"
-            : "bg-[#685A9C]/80 hover:bg-[#685A9C] border-purple-600/30"
-            } backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md`}
-          title={t.text("cookies.ariaToggleLanguage")}
-          aria-label={t.text("cookies.ariaToggleLanguage")}
-        >
-          <img
-            src={languageReducer === "en" ? flag1 : flag2}
-            alt={languageReducer === "en" ? "English" : "Français"}
-            className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full"
-          />
-          <span className={`${themeReducer === "light" ? "text-gray-700" : "text-[#E5E5E5]"
-            } font-helvetica font-light text-xs sm:text-sm uppercase`}>
-            {languageReducer}
-          </span>
-        </button>
-
-        {/* Bouton changement de thème */}
-        <button
-          onClick={handleThemeChange}
-          className={`${themeReducer === "light"
-            ? "bg-white/80 hover:bg-white border-gray-200"
-            : "bg-[#685A9C]/80 hover:bg-[#685A9C] border-purple-600/30"
-            } backdrop-blur-sm p-1.5 sm:p-2 rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md`}
-          title={themeReducer === "light" ? "Mode sombre" : "Mode clair"}
-          aria-label={themeReducer === "light" ? "Activer le mode sombre" : "Activer le mode clair"}
-        >
-          <img
-            src={themeReducer === "light" ? light : dark}
-            alt={themeReducer === "light" ? "Mode sombre" : "Mode clair"}
-            className="w-4 h-4 sm:w-5 sm:h-5 rounded-full"
-          />
-        </button>
+        <LocaleThemeControls
+          currentLanguage={languageReducer}
+          currentTheme={themeReducer}
+          themePreference={themePreference}
+          onLanguageChange={changeLanguage}
+          onThemeChange={changeTheme}
+          size="xs"
+          labels={labels}
+        />
       </div>
 
       <div className="max-w-4xl mx-auto text-center w-full relative z-10">
@@ -463,17 +394,7 @@ const UnderConstruction: React.FC = () => {
             to { width: 85%; }
           }
 
-          .hero-bg {
-            transform: translateY(-68vh);
-          }
-
-          @media (max-width: 768px) {
-            .hero-bg {
-              transform: translateY(-99vh);
-            }
-          }
-
-          .custom-contact-input {
+.custom-contact-input {
             background: transparent;
             border: none;
             outline: none;

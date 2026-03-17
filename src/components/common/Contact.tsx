@@ -1,4 +1,5 @@
 import React from "react";
+import { ChevronDown, Check } from "lucide-react";
 import { Checkbox } from "antd";
 import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
 import "react-international-phone/style.css";
@@ -26,6 +27,79 @@ import arrow from "assets/icons/rightArrow.svg";
 import { Link } from "react-router-dom";
 import { useLangLink } from "services/router/langPath";
 
+const ProjectTypeDropdown = ({
+  options,
+  value,
+  onChange,
+  placeholder,
+  selectedLabel,
+  isLight,
+  isValid,
+}: {
+  options: { value: string; label: string }[];
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  selectedLabel: string | undefined;
+  isLight: boolean;
+  isValid: boolean;
+}) => {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative mb-[16px] lg:mb-[22px]">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={`w-full flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] transition-all
+          ${isLight ? "bg-white" : "bg-[#685A9C]"}
+          ${isValid ? "border-[#C8CAE4]" : "border-red-500"}`}
+      >
+        <span className={`custom-contact-input !w-auto ${isLight ? "text-[#222222]" : "text-[#E5E5E5]"}`}>
+          {selectedLabel ?? placeholder}
+        </span>
+        <ChevronDown
+          size={16}
+          className={`shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""} ${isLight ? "text-[#8B8FA8]" : "text-[#C8CADE]"}`}
+        />
+      </button>
+
+      {open && (
+        <div className={`absolute z-50 w-full mt-[6px] rounded-[11px] border-2 overflow-hidden shadow-lg
+          ${isLight ? "bg-white border-[#C8CAE4]" : "bg-[#3D2E6B] border-[#677DFF33]"}`}
+        >
+          {options.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+              className={`w-full flex items-center justify-between px-[24px] py-[13px] custom-contact-input transition-colors
+                ${isLight
+                  ? "text-[#222222] hover:bg-[#F4F4FF]"
+                  : "text-[#E5E5E5] hover:bg-[#4D3D80]"
+                }`}
+            >
+              {opt.label}
+              {value === opt.value && (
+                <Check size={14} className={isLight ? "text-[#677DFF]" : "text-[#A89FFF]"} />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Contact = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { L } = useLangLink();
@@ -38,6 +112,18 @@ const Contact = () => {
   const [done, setDone] = React.useState(false);
   const [isChecked, setIsChecked] = React.useState(false);
   const [error, setError] = React.useState("");
+  const [intent, setIntent] = React.useState<"question" | "quote">("question");
+  const [projectType, setProjectType] = React.useState("");
+  const [projectTypeValid, setProjectTypeValid] = React.useState(true);
+
+  React.useEffect(() => {
+    const handler = (e: CustomEvent) => {
+      setIntent(e.detail.intent);
+      if (e.detail.intent === "question") setProjectType("");
+    };
+    window.addEventListener("contact-intent", handler as EventListener);
+    return () => window.removeEventListener("contact-intent", handler as EventListener);
+  }, []);
 
   const [contact, setContact] = React.useState({
     name: "",
@@ -60,6 +146,47 @@ const Contact = () => {
 
   const localDigits = getLocalDigits(phoneValue);
   const dialOnly = localDigits.length === 0;
+
+  const toggleRef = React.useRef<HTMLDivElement>(null);
+  const suppressToggleClickRef = React.useRef(false);
+  const toggleDragState = React.useRef({ pointerId: null as number | null, startX: 0, hasMoved: false });
+  const [dragIntent, setDragIntent] = React.useState<"question" | "quote" | null>(null);
+
+  const getIntentFromClientX = (clientX: number): "question" | "quote" => {
+    const rect = toggleRef.current?.getBoundingClientRect();
+    if (!rect) return intent;
+    return clientX < rect.left + rect.width / 2 ? "question" : "quote";
+  };
+
+  const handleTogglePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    toggleDragState.current = { pointerId: e.pointerId, startX: e.clientX, hasMoved: false };
+    setDragIntent(intent);
+  };
+
+  const handleTogglePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (toggleDragState.current.pointerId !== e.pointerId) return;
+    if (Math.abs(e.clientX - toggleDragState.current.startX) > 4) {
+      if (!toggleDragState.current.hasMoved) e.currentTarget.setPointerCapture(e.pointerId);
+      toggleDragState.current.hasMoved = true;
+    }
+    if (!toggleDragState.current.hasMoved) return;
+    setDragIntent(getIntentFromClientX(e.clientX));
+  };
+
+  const handleTogglePointerEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (toggleDragState.current.pointerId !== e.pointerId) return;
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
+    if (toggleDragState.current.hasMoved && dragIntent !== null) {
+      suppressToggleClickRef.current = true;
+      const next = dragIntent;
+      setIntent(next);
+      if (next === "question") { setProjectType(""); setProjectTypeValid(true); }
+      window.setTimeout(() => { suppressToggleClickRef.current = false; }, 0);
+    }
+    toggleDragState.current.pointerId = null;
+    toggleDragState.current.hasMoved = false;
+    setDragIntent(null);
+  };
 
   const [nameValid, setNameValid] = React.useState(true);
   const [messageValid, setMessageValid] = React.useState(true);
@@ -256,12 +383,17 @@ const Contact = () => {
             ) : (
             <form
               noValidate
-              className="w-full lg:w-[50%]"
+              className="w-full"
               onSubmit={async (e) => {
                 e.preventDefault();
 
                 if (!contact.name.trim()) {
                   setNameValid(false);
+                  return;
+                }
+
+                if (intent === "quote" && !projectType) {
+                  setProjectTypeValid(false);
                   return;
                 }
 
@@ -323,7 +455,7 @@ const Contact = () => {
                   }
 
                   const urlLang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
-                  const payload = { ...contact, phone: dialOnly ? "" : phoneValue, lang: urlLang };
+                  const payload = { ...contact, phone: dialOnly ? "" : phoneValue, lang: urlLang, intent, projectType: intent === "quote" ? projectType : "" };
                   const controller = new AbortController();
                   const timeout = setTimeout(() => controller.abort(), 10000);
                   const result = await fetch('/api/send', {
@@ -344,6 +476,8 @@ const Contact = () => {
                     setEmailValid(true);
                     setPhoneValid(true);
                     setMessageValid(true);
+                    setProjectType("");
+                    setProjectTypeValid(true);
                     handleClick();
                   } else {
                     setLoading(false);
@@ -357,6 +491,40 @@ const Contact = () => {
                 }
               }}
             >
+              {/* Intent toggle */}
+              <div
+                ref={toggleRef}
+                className={`${themeReducer === "light" ? "bg-white border-[#C8CAE4]" : "bg-[#685A9C] border-[#C8CAE4]"} flex border-2 rounded-[11px] p-[5px] gap-[5px] mb-[16px] lg:mb-[22px] cursor-grab active:cursor-grabbing select-none`}
+                style={{ touchAction: "none" }}
+                onPointerDown={handleTogglePointerDown}
+                onPointerMove={handleTogglePointerMove}
+                onPointerUp={handleTogglePointerEnd}
+                onPointerCancel={handleTogglePointerEnd}
+              >
+                {(["question", "quote"] as const).map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => {
+                      if (suppressToggleClickRef.current) return;
+                      setIntent(v);
+                      if (v === "question") { setProjectType(""); setProjectTypeValid(true); }
+                    }}
+                    className={`flex-1 py-[10px] lg:py-[13px] rounded-[8px] font-poppins font-medium text-[14px] transition-all
+                      ${(dragIntent ?? intent) === v
+                        ? themeReducer === "light"
+                          ? "bg-[#F4F4FF] border border-[#677DFF33] text-[#14172D] shadow-sm"
+                          : "bg-[#3D2E6B] border border-[#677DFF55] text-white shadow-sm"
+                        : themeReducer === "light"
+                          ? "text-[#8B8FA8] hover:text-[#14172D]"
+                          : "text-[#B0A8CC] hover:text-[#E5E5E5]"
+                      }`}
+                  >
+                    {v === "question" ? t.text("home.contactIntentQuestion") : t.text("home.contactIntentQuote")}
+                  </button>
+                ))}
+              </div>
+
               <div
                 className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
                   relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
@@ -453,6 +621,29 @@ const Contact = () => {
                   < img src={contactPhone} alt="Phone" />
                 </div>
               </div>
+
+              {/* Project type (quote only) */}
+              {intent === "quote" && (() => {
+                const projectOptions = [
+                  { value: "vitrine", label: t.text("home.contactProjectVitrine") },
+                  { value: "business", label: t.text("home.contactProjectBusiness") },
+                  { value: "refonte", label: t.text("home.contactProjectRefonte") },
+                  { value: "app", label: t.text("home.contactProjectApp") },
+                  { value: "other", label: t.text("home.contactProjectOther") },
+                ];
+                const selectedLabel = projectOptions.find(o => o.value === projectType)?.label;
+                return (
+                  <ProjectTypeDropdown
+                    options={projectOptions}
+                    value={projectType}
+                    onChange={(v) => { setProjectType(v); setProjectTypeValid(true); }}
+                    placeholder={t.text("home.contactProjectTypeLabel")}
+                    selectedLabel={selectedLabel}
+                    isLight={themeReducer === "light"}
+                    isValid={projectTypeValid}
+                  />
+                );
+              })()}
 
               <div
                 className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}

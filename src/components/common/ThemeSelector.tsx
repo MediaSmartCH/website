@@ -38,23 +38,23 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   const sizeConfig =
     size === "xs"
       ? {
-          padding: 3,
+          padding: 2,
           gap: 2,
-          button: 24,
-          icon: 12,
+          button: 22,
+          icon: 11,
         }
       : size === "sm"
       ? {
+          padding: 2,
+          gap: 3,
+          button: 26,
+          icon: 13,
+        }
+      : {
           padding: 3,
           gap: 3,
           button: 28,
           icon: 14,
-        }
-      : {
-          padding: 4,
-          gap: 3,
-          button: 30,
-          icon: 15,
         };
 
   const containerClasses =
