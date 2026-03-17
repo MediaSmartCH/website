@@ -14,10 +14,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        # Use a Node 24-based action runtime to avoid the GitHub deprecation warning.
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        # Keep the project runtime on Node 20 while the action itself runs on Node 24.
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
