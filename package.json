@@ -54,7 +54,9 @@
     "api": "node scripts/dev-api.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "analyze": "cross-env ANALYZE=true vite build"
+    "analyze": "cross-env ANALYZE=true vite build",
+    "vercel:sync": "node scripts/sync-vercel-project-settings.mjs",
+    "vercel:sync:dry-run": "node scripts/sync-vercel-project-settings.mjs --dry-run"
   },
   "eslintConfig": {
     "extends": [

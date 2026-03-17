@@ -1,3 +1,5 @@
+import { fetchWithDeployment } from "./fetchWithDeployment";
+
 interface RecaptchaResponse {
   success: boolean;
   score?: number;
@@ -13,7 +15,7 @@ export const verifyRecaptchaToken = async (token: string): Promise<RecaptchaResp
 
   // Vérification réelle sur Vercel
   try {
-    const response = await fetch('/api/verify-recaptcha', {
+    const response = await fetchWithDeployment('/api/verify-recaptcha', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),

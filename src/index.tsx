@@ -61,7 +61,10 @@ if (import.meta.env.DEV) {
   console.warn = () => {};
 }
 
-const RECAPTCHA_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
+const RECAPTCHA_KEY =
+  import.meta.env.VITE_RECAPTCHA_SITE_KEY ||
+  import.meta.env.REACT_APP_RECAPTCHA_SITE_KEY ||
+  "";
 
 root.render(
   <React.StrictMode>
