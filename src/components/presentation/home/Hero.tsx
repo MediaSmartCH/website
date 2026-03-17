@@ -43,7 +43,7 @@ const Hero = () => {
   // };
 
   return (
-    <div className="hero-bg mt-[73px] md:mt-[130px] lg:mt-[100px]" id="home">
+    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="home">
       <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[50px] relative">
         <div
           className="w-full mx-auto text-center relative"
@@ -57,9 +57,9 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
           >
             <span className="mr-3 gradient-text">
-              {/* {dictionary["home"][languageReducer]["heroTitle"]} */} {t.text("home.heroTitle")}
+              {t.text("home.heroTitle")}
             </span>
-            {/* {dictionary["home"][languageReducer]["heroSubtitle"]} */} {t.text("home.heroSubtitle")}
+            {t.text("home.heroSubtitle")}
           </p>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"

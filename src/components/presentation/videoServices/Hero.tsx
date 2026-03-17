@@ -29,7 +29,7 @@ const Hero = () => {
   // };
 
   return (
-    <div className="hero-bg mt-[73px] md:mt-[130px] lg:mt-[100px]" id="video-services-home">
+    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="video-services-home">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[43px] relative">
         <div
           className="w-full mx-auto text-center relative"
@@ -69,9 +69,9 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
           >
             <a href="#contact">
-              <button className="hero-btn custom-btn w-full md:min-w-[150px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2">
+              <button className="hero-btn custom-btn w-full md:min-w-[150px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 flex items-center justify-center">
                 <span className="custom-btn-inner">
-                  {/* {dictionary["video"][languageReducer]["videoContactBtn"]} */} {t.text("video.videoContactBtn")}
+                  {t.text("video.videoContactBtn")}
                 </span>
               </button>
             </a>

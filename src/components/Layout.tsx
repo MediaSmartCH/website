@@ -9,7 +9,7 @@ interface LayoutProps { children: React.ReactNode; }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const firstRenderRef = React.useRef(true);
 
   // ⚠️ Init AOS après que TOUT soit chargé pour éviter le reflow (FOUC)
@@ -44,6 +44,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     });
   }, [pathname]);
+
+  // Scroll vers l'ancre quand le hash change
+  React.useEffect(() => {
+    if (!hash) return;
+    const id = hash.slice(1);
+    const scroll = () => {
+      const el = document.getElementById(id);
+      if (el) { el.scrollIntoView({ behavior: "smooth" }); return true; }
+      return false;
+    };
+    if (!scroll()) {
+      // L'élément n'est pas encore monté (navigation inter-pages) — réessaie après le paint
+      const timer = setTimeout(scroll, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [hash, pathname]);
 
   return (
     <div>

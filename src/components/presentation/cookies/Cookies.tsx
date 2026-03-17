@@ -6,20 +6,18 @@ import {
   BarChart3,
   Target,
   Settings,
-  Zap,
-  Sun,
-  Moon,
-  Globe
+  Zap
 } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
-import { setLanguage } from "store/slices/common/languageSlice";
-import { setTheme } from "store/slices/common/themeSlice";
 import { getSafeConsentData, saveConsentData } from "store/slices/common/cookieUtils";
-import flag1 from "assets/images/flag1.png";
-import flag2 from "assets/images/french.png";
 import { useTranslations } from "services/locales/safe";
 import { Link, useInRouterContext } from "react-router-dom";
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
+import LocaleThemeControls from "components/common/LocaleThemeControls";
+import {
+  resolveThemePreference,
+  ThemePreference,
+} from "store/slices/common/themeUtils";
+import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
 const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
@@ -54,12 +52,15 @@ const ModernCookieBanner = () => {
     };
   }, []);
 
-  const languageReducer = useAppSelector(
-    (state) => state.language.currentLanguage
-  );
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const {
+    currentLanguage: languageReducer,
+    currentTheme: themeReducer,
+    themePreference: themeModePreference,
+    changeLanguage,
+    changeTheme,
+    labels,
+  } = useInterfaceControls();
   const t = useTranslations(languageReducer);
-  const dispatch = useAppDispatch();
 
   const isConstruction = !!CONSTRUCTION_CONFIG?.isUnderConstruction;
   const onPrivacy = currentPath.includes("privacy-policy");
@@ -85,29 +86,21 @@ const ModernCookieBanner = () => {
 
   const advertisingEnabled = calendlyAdvertising;
 
-  // changement de langue
-  const handleLanguageChange = (languageCode: string) => {
-    dispatch(setLanguage(languageCode));
-    try {
-      const currentPath = window.location.pathname;
-      const currentSearch = window.location.search;
-      const currentHash = window.location.hash;
-      const stripped = currentPath.replace(/^\/(fr|en)/, "");
-      const newUrl = `/${languageCode}${stripped}${currentSearch}${currentHash}`;
-      window.history.replaceState(null, "", newUrl);
-      window.dispatchEvent(new PopStateEvent("popstate"));
-    } catch (error) {
-      console.warn("Erreur lors du changement de langue:", error);
-      dispatch(setLanguage(languageCode));
-    }
-  };
-
   // thème
-  const handleThemeChange = () => {
-    if (isThemeChanging) return;
-    setIsThemeChanging(true);
-    const newTheme = themeReducer === "light" ? "dark" : "light";
-    dispatch(setTheme(newTheme));
+  const handleThemeChange = (nextTheme: ThemePreference) => {
+    if (isThemeChanging || nextTheme === themeModePreference) return;
+
+    const nextResolvedTheme = resolveThemePreference(nextTheme);
+    const shouldShowLoader = nextResolvedTheme !== themeReducer;
+
+    if (shouldShowLoader) {
+      setIsThemeChanging(true);
+    }
+
+    changeTheme(nextTheme);
+
+    if (!shouldShowLoader) return;
+
     setTimeout(() => setIsThemeChanging(false), 300);
   };
 
@@ -352,7 +345,7 @@ const ModernCookieBanner = () => {
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && actuallyVisible) {
-        handleClose();
+        handleRejectAll();
       }
     };
 
@@ -381,9 +374,11 @@ const ModernCookieBanner = () => {
             </div>
             <h3 className={`font-medium text-xl mb-2 ${themeReducer === 'light' ? 'text-gray-800' : 'text-white'
               }`}>
+              {t.text("navbar.themeChangingTitle")}
             </h3>
             <p className={`text-sm ${themeReducer === 'light' ? 'text-gray-600' : 'text-gray-300'
               }`}>
+              {t.text("navbar.themeChangingDescription")}
             </p>
           </div>
         </div>
@@ -396,7 +391,7 @@ const ModernCookieBanner = () => {
           style={{ zIndex: 999999 }}
         >
           {/* Backdrop */}
-          <div onClick={handleClose} className={`absolute inset-0 backdrop-blur-sm ${themeReducer === "light" ? "bg-black/20" : "bg-black/40"
+          <div onClick={handleRejectAll} className={`absolute inset-0 backdrop-blur-sm ${themeReducer === "light" ? "bg-black/20" : "bg-black/40"
             }`} />
 
           {/* Container avec scroll externe pour cas extrêmes */}
@@ -408,13 +403,13 @@ const ModernCookieBanner = () => {
               {!showCustomize ? (
                 <div className="p-6 md:p-8">
                   {/* Header avec contrôles intégrés */}
-                  <div className="flex flex-col lg:flex-row flex-wrap lg:items-start lg:justify-between gap-1 sm:gap-2 lg:gap-3 mb-4 px-3 lg:px-6">
+                  <div className="mb-4 flex flex-wrap items-start justify-between gap-3 px-3 lg:px-6">
                     {/* Bloc titre */}
-                    <div className="order-2 lg:order-1 flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                    <div className="flex min-w-[180px] flex-1 items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shrink-0">
                         <Cookie className="w-6 h-6 text-white" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <h3 className={`text-xl sm:text-2xl font-bold ${themeClasses.text}`}>
                           {t.text("cookies.title")}
                         </h3>
@@ -425,48 +420,23 @@ const ModernCookieBanner = () => {
                     </div>
 
                     {/* Bloc contrôles */}
-                    <div className="order-1 lg:order-2 flex flex-wrap items-center gap-1 sm:gap-2 lg:gap-3 self-end lg:self-auto">
-                      {/* Sélecteur de langue */}
-                      <div className="flex items-center gap-2">
-                        <Globe className={`w-3 h-3 sm:w-4 sm:h-4 ${themeClasses.textSecondary}`} />
-                        <button
-                          onClick={() =>
-                            handleLanguageChange(languageReducer === 'fr' ? 'en' : 'fr')
-                          }
-                          className={`flex items-center gap-1 px-2 py-1 rounded-lg ${themeClasses.bg} ${themeClasses.hover} transition-colors`}
-                          title={t.text("cookies.ariaToggleLanguage")}
-                          aria-label={t.text("cookies.ariaToggleLanguage")}
-                        >
-                          <img
-                            src={languageReducer === 'en' ? flag1 : flag2}
-                            alt="flag"
-                            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full"
-                          />
-                          <span className={`text-xs font-medium ${themeClasses.text} uppercase`}>
-                            {languageReducer}
-                          </span>
-                        </button>
-                      </div>
-
-                      {/* Bouton changement de thème */}
-                      <button
-                        onClick={handleThemeChange}
-                        disabled={isThemeChanging}
-                        className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors ${isThemeChanging ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        title={t.text("cookies.ariaToggleTheme")}
-                        aria-label={t.text("cookies.ariaToggleTheme")}
-                      >
-                        {themeReducer === 'light' ? (
-                          <Moon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
-                        ) : (
-                          <Sun className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" />
-                        )}
-                      </button>
+                    <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2 sm:flex-nowrap sm:gap-3 shrink-0">
+                      <LocaleThemeControls
+                        currentLanguage={languageReducer}
+                        currentTheme={themeReducer}
+                        themePreference={themeModePreference}
+                        onLanguageChange={changeLanguage}
+                        onThemeChange={handleThemeChange}
+                        size="xs"
+                        labels={labels}
+                        themeDisabled={isThemeChanging}
+                        className="max-w-full flex-wrap justify-end sm:flex-nowrap"
+                      />
 
                       {/* Bouton fermeture */}
                       <button
-                        onClick={handleClose}
-                        className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
+                        onClick={handleRejectAll}
+                        className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
                         title={t.text("cookies.ariaCloseModal")}
                         aria-label={t.text("cookies.ariaCloseModal")}
                       >
@@ -550,54 +520,32 @@ const ModernCookieBanner = () => {
                 <div className="flex flex-col max-h-[95vh]">
                   {/* Header fixe responsive */}
                   <div className={`flex-shrink-0 border-b ${themeClasses.border}`}>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 md:p-6 pb-3">
+                    <div className="flex flex-wrap items-start justify-between gap-3 p-4 md:p-6 pb-3">
                       {/* Bloc titre */}
                       <h3
-                        className={`order-2 sm:order-1 text-lg sm:text-xl font-bold ${themeClasses.text}`}
+                        className={`min-w-[140px] flex-1 text-lg sm:text-xl font-bold ${themeClasses.text}`}
                       >
                         {t.text("cookies.detailedPrefs")}
                       </h3>
 
                       {/* Bloc contrôles */}
-                      <div className="order-1 sm:order-2 flex items-center gap-2 sm:gap-3 self-end sm:self-auto">
-                        {/* Bouton langue */}
-                         <button
-                          onClick={() => handleLanguageChange(languageReducer === 'fr' ? 'en' : 'fr')}
-                          className={`flex items-center gap-1 px-2 py-1 rounded-lg ${themeClasses.bg} ${themeClasses.hover} transition-colors`}
-                          title={t.text("cookies.ariaToggleLanguage")}
-                          aria-label={t.text("cookies.ariaToggleLanguage")}
-                        >
-                          <img
-                            src={languageReducer === 'en' ? flag1 : flag2}
-                            alt="flag"
-                            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full"
-                          />
-                          <span className={`text-xs font-medium ${themeClasses.text} uppercase`}>
-                            {languageReducer}
-                          </span>
-                        </button>
-
-                        {/* Bouton changement de thème */}
-                        <button
-                          onClick={handleThemeChange}
-                          disabled={isThemeChanging}
-                          className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors ${isThemeChanging ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          // title={dictionary["cookies"][languageReducer]["ariaToggleTheme"]}
-                          title={t.text("cookies.ariaToggleTheme")}
-                          // aria-label={dictionary["cookies"][languageReducer]["ariaToggleTheme"]}
-                          aria-label={t.text("cookies.ariaToggleTheme")}
-                        >
-                          {themeReducer === 'light' ? (
-                            <Moon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
-                          ) : (
-                            <Sun className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" />
-                          )}
-                        </button>
+                      <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2 sm:flex-nowrap sm:gap-3 shrink-0">
+                        <LocaleThemeControls
+                          currentLanguage={languageReducer}
+                          currentTheme={themeReducer}
+                          themePreference={themeModePreference}
+                          onLanguageChange={changeLanguage}
+                          onThemeChange={handleThemeChange}
+                          size="xs"
+                          labels={labels}
+                          themeDisabled={isThemeChanging}
+                          className="max-w-full flex-wrap justify-end sm:flex-nowrap"
+                        />
 
                         {/* Bouton fermeture */}
                         <button
                           onClick={handleClose}
-                          className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
+                          className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
                           // title={dictionary["cookies"][languageReducer]["ariaCloseModal"]}
                           title={t.text("cookies.ariaCloseModal")}
                           // aria-label={dictionary["cookies"][languageReducer]["ariaCloseModal"]}

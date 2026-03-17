@@ -14,7 +14,7 @@ const home = {
     bookingBtn: "Book your 30-Min Consultation",
 
     // partners
-    partnersTitle: "Our trusted partner",
+    partnersTitle: "Our trusted partners",
 
     // about
     aboutTitle: "About ",
@@ -27,6 +27,29 @@ const home = {
       </ul>
       Based in Western Switzerland, we provide businesses, associations, and individuals with modern, flexible, and results-driven services.
     `,
+    soloBadge: "Independent",
+    soloTitle: "Behind MediaSmart",
+    soloName: "Raphael Rouiller",
+    soloJobTitle: "Founder & Independent Contractor",
+    soloRole: "A single point of contact for both video and IT needs.",
+    soloLead:
+        "For now, I work solo as an independent professional. That means you speak directly with the person who plans, builds, and delivers your project.",
+    soloDescription:
+        "This deliberately lean setup keeps communication clear, response times fast, and execution consistent. When a project needs extra support, I can bring in trusted specialists without turning the collaboration into a heavy agency process.",
+    soloStatDirectLabel: "Format",
+    soloStatDirectValue: "1 direct contact",
+    soloStatExpertiseLabel: "Expertise",
+    soloStatExpertiseValue: "Video + IT",
+    soloStatLocationLabel: "Base",
+    soloStatLocationValue: "Western Switzerland",
+    soloWorkingTitle: "What this means for you",
+    soloHighlights: [
+        "Direct communication from the first conversation to delivery.",
+        "A tailored collaboration without layers of sales handoff or account management.",
+        "Trusted external specialists only when the project genuinely requires them."
+    ],
+    soloNote:
+        "The goal is not to look bigger than I am, but to stay useful: direct, reliable, and fully involved.",
 
     // ITOverview
     ITOverviewTitle: "IT Overview",
@@ -56,15 +79,15 @@ const home = {
         },
         {
             title: "User support & training",
-            description: "We provide hands-on support and simple training so your team can work with confidence., "
+            description: "We provide hands-on support and simple training so your team can work with confidence."
         }
     ],
 
     // VideoOverview
     VideoOverviewTitle: "Video Overview",
     VideoOverviewDescription:
-        "Agile IT services tailored to your needs:",
-    VideoOverviewExploreBtn: "Explore More About IT Services",
+        "Professional video services, available individually or as a complete package.",
+    VideoOverviewExploreBtn: "Explore More About Video Services",
     VideoOverviewCards: [
         {
             title: "Live video production & streaming",
@@ -72,19 +95,19 @@ const home = {
         },
         {
             title: "Event broadcasting",
-            description: "Regular updates for Windows and macOS keep your systems stable, secure, and running smoothly."
+            description: "Relive the highlights. We capture and broadcast your special occasions with high-quality video feeds, perfect for concerts, conferences, and cultural events."
         },
         {
             title: "Professional video editing",
-            description: "We fine-tune your devices to boost speed, improve efficiency, and extend their lifespan."
+            description: "We craft your visual narrative with precision. Every transition seamless, every scene impactful — bringing your story to life with a cinematic touch."
         },
         {
             title: "Equipment rental",
-            description: "From antivirus setup to firewalls and audits, we protect your systems against digital threats."
+            description: "Access professional-grade video gear without commitment: cameras, lighting, and sound. We ensure you have the right tools to capture your vision."
         },
         {
             title: "Event photography",
-            description: "Reliable backup and fast recovery options ensure your important files are always safe."
+            description: "Every snapshot tells a story. We specialize in capturing the moments that matter most, from corporate events to intimate gatherings."
         },
     ],
 
@@ -108,7 +131,7 @@ const home = {
     tile4: {
         faqQuestion: "Does MediaSmart offer post-event video editing?",
         faqAnswer:
-            "Yes, that's our specialty. Our post-event editing utilizes advanced methods to turn your raw footage into a sleek final product, perfectly capturing the essence of your event",
+            "Yes, that's our specialty. Our post-event editing utilizes advanced methods to turn your raw footage into a sleek final product, perfectly capturing the essence of your event.",
     },
     tile5: {
         faqQuestion:
@@ -172,6 +195,18 @@ const home = {
     contactRequiredMsgError: "This field is required.",
     contactRequired: "* Required",
     contactDone: "Done",
-    contactLoading: "Loading..."
+    contactLoading: "Loading...",
+    contactSuccessTitle: "Message sent!",
+    contactSuccessBody: "Thank you for your message. Our team will get back to you as soon as possible.",
+    contactSuccessNew: "Send another message",
+    contactIntentQuestion: "Ask a question",
+    contactIntentQuote: "Request a quote",
+    contactProjectTypeLabel: "Project type *",
+    contactProjectTypeRequired: "Please select a project type.",
+    contactProjectVitrine: "Showcase Website",
+    contactProjectBusiness: "Business Website",
+    contactProjectRefonte: "Redesign / Migration",
+    contactProjectApp: "Custom Web App",
+    contactProjectOther: "Other / Not sure"
 };
 export default home;

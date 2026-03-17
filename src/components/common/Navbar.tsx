@@ -3,24 +3,22 @@ import { Link } from "react-router-dom";
 import { Dropdown } from "antd";
 import { PopupButton } from "react-calendly";
 
-import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
-import { setLanguage } from "store/slices/common/languageSlice";
-import { setTheme } from "store/slices/common/themeSlice";
 import logo from "assets/images/logo-header.png";
 import logoDark from "assets/images/logo-footer.png";
 import toggler from "assets/icons/toggler.svg";
-import flag1 from "assets/images/flag1.png";
-import flag2 from "assets/images/french.png";
 // import dropdown from "assets/icons/dropdown.svg";
 // import dropdownDark from "assets/icons/dropdownDark.svg";
-import light from "assets/images/light.png";
-import dark from "assets/images/dark.png";
 
 import { useLangLink } from "services/router/langPath";
+import LocaleThemeControls from "./LocaleThemeControls";
+import {
+  resolveThemePreference,
+  ThemePreference,
+} from "store/slices/common/themeUtils";
+import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
-import "components/preLoader/preLoader.css"
+import "components/preLoader/preLoader.css";
 
 // import { debounce } from 'lodash';
 
@@ -30,67 +28,48 @@ const Navbar = () => {
   const { L, Lhash } = useLangLink();
 
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  const scrollToSection = (id: string, e: React.MouseEvent) => {
+    const el = document.getElementById(id);
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: "smooth" });
+      setMobileMenuOpen(false);
+    }
+  };
   const [isThemeChanging, setIsThemeChanging] = React.useState(false);
 
   const rootElement = document.getElementById("root");
-  const dispatch = useAppDispatch();
-
-  const languageReducer = useAppSelector(
-    (state) => state.language.currentLanguage
-  );
-
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const {
+    currentLanguage: languageReducer,
+    currentTheme: themeReducer,
+    themePreference,
+    changeLanguage,
+    changeTheme,
+    labels,
+  } = useInterfaceControls({ preserveScroll: true });
 
   const t = useTranslations(languageReducer);
 
-  const handleLanguageChange = (languageCode: string) => {
-    const x = window.scrollX;
-    const y = window.scrollY;
+  const handleThemeChange = (nextTheme: ThemePreference) => {
+    if (isThemeChanging || nextTheme === themePreference) return;
 
-    dispatch(setLanguage(languageCode));
+    const nextResolvedTheme = resolveThemePreference(nextTheme);
+    const shouldShowLoader = nextResolvedTheme !== themeReducer;
 
-    try {
-      const currentPath = window.location.pathname;
-      const currentSearch = window.location.search;
-      const currentHash = window.location.hash;
-
-      const stripped = currentPath.replace(/^\/(fr|en)/, "");
-      const newUrl = `/${languageCode}${stripped}${currentSearch}${currentHash}`;
-
-      window.history.replaceState(null, "", newUrl);
-
-      requestAnimationFrame(() => {
-        window.scrollTo(x, y);
-        setTimeout(() => window.scrollTo(x, y), 0);
-        setTimeout(() => window.scrollTo(x, y), 50);
-      });
-    } catch (e) {
-      console.warn("Lang change URL swap failed:", e);
+    if (shouldShowLoader) {
+      setIsThemeChanging(true);
     }
-  };
 
-  const toggleLanguage = () => {
-    const next = languageReducer === "fr" ? "en" : "fr";
-    handleLanguageChange(next);
-  };
+    changeTheme(nextTheme);
 
-  const handleThemeChange = () => {
-    if (isThemeChanging) return;
-
-    setIsThemeChanging(true);
-    const newTheme = themeReducer === "light" ? "dark" : "light";
-    dispatch(setTheme(newTheme));
+    if (!shouldShowLoader) return;
 
     // Laisser le temps aux lotties de se charger
     setTimeout(() => {
       setIsThemeChanging(false);
     }, 500);
   };
-
-  // const handleThemeChange = () => {
-  //   const newTheme = themeReducer === "light" ? "dark" : "light";
-  //   dispatch(setTheme(newTheme));
-  // };
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -123,122 +102,13 @@ const Navbar = () => {
     };
   }, []);
 
-  /* Lang toggle (desktop) */
-  // <button
-  //   onClick={toggleLanguage}
-  //   className="flex items-center gap-x-[6px] cursor-pointer font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-  //   title={t.text("cookies.ariaToggleLanguage")}
-  //   aria-label={t.text("cookies.ariaToggleLanguage")}
-  // >
-  //   <div role="img" aria-label="Selected Flag">
-  //     <img
-  //       src={languageReducer === "en" ? flag1 : flag2}
-  //       alt={languageReducer === "en" ? "English" : "Français"}
-  //       className="w-[16px] h-[16px] rounded-full"
-  //     />
-  //   </div>
-  //   <span className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#FFFFFF]"} uppercase`}>
-  //     {languageReducer}
-  //   </span>
-  // </button>
-
-  // const menu = (
-  //   <Menu className="w-[80px]">
-  //     <Menu.Item key="fr" onClick={() => handleLanguageChange("fr")}>
-  //       <div className="flex items-center gap-x-[6px]">
-  //         <img
-  //           src={flag2}
-  //           alt="flag2"
-  //           className="w-[16px] h-[16px]  rounded-full"
-  //         />
-  //         FR
-  //       </div>
-  //     </Menu.Item>
-  //     <Menu.Item key="en" onClick={() => handleLanguageChange("en")}>
-  //       <div className="flex items-center gap-x-[6px]">
-  //         <img
-  //           src={flag1}
-  //           alt="flag1"
-  //           className="w-[16px] h-[16px]  rounded-full"
-  //         />
-  //         EN
-  //       </div>
-  //     </Menu.Item>
-  //   </Menu>
-  // );
-
-  // const menuOptions = (
-  //   <Menu className="w-full header-dropdown">
-  //     <Menu.Item key="home">
-  //       <Link
-  //         to={Lhash("#home")}
-  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
-  //       >
-  //         {/* {dictionary["navbar"][languageReducer]["navItem1"]} */} {t.text("navbar.navItem1")}
-  //       </Link>
-  //     </Menu.Item>
-  //     <Menu.Item key="it-services">
-  //       <Link
-  //         to={L("/it-services")}
-  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
-  //       >
-  //         {/* {dictionary["navbar"][languageReducer]["navItem2"]} */} {t.text("navbar.navItem2")}
-  //       </Link>
-  //     </Menu.Item>
-  //     <Menu.Item key="video-services">
-  //       <Link
-  //         to={L("/video-services")}
-  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
-  //       >
-  //         {/* {dictionary["navbar"][languageReducer]["navItem3"]} */} {t.text("navbar.navItem3")}
-  //       </Link>
-  //     </Menu.Item>
-  //     <Menu.Item key="about">
-  //       <Link
-  //         to={Lhash("#about")}
-  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
-  //       >
-  //         {/* {dictionary["navbar"][languageReducer]["navItem4"]} */} {t.text("navbar.navItem4")}
-  //       </Link>
-  //     </Menu.Item>
-  //     <Menu.Item key="testimonials">
-  //       <Link
-  //         to={Lhash("#testimonials")}
-  //         className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"
-  //           } font-helvetica font-medium text-[16px] md:text-[16px] xl:text-[15px] 2xl:text-[16px] pl-[5px]`}
-  //       >
-  //         {/* {dictionary["navbar"][languageReducer]["navItem5"]} */} {t.text("navbar.navItem5")}
-  //       </Link>
-  //     </Menu.Item>
-  //     <Menu.Item key="booking">
-  //       <PopupButton
-  //         className="navbar-btn px-[16px] h-[35px] rounded-[5px] text-[#fff] font-helvetica font-medium text-[16px]"
-  //         url="https://calendly.com/mediasmartch/30min"
-  //         rootElement={rootElement as HTMLElement}
-  //         // text={/* {dictionary["navbar"][languageReducer]["navbarButton"]} */} 
-  //         text={t.text("navbar.navbarButton")}
-  //         pageSettings={{
-  //           backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
-  //           hideEventTypeDetails: false,
-  //           hideLandingPageDetails: false,
-  //           primaryColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
-  //           textColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
-  //         }}
-  //       />
-  //     </Menu.Item>
-  //   </Menu>
-  // );
   const menuItems = [
     {
       key: 'home',
       label: (
         <Link
           to={Lhash("#home")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-poppins font-medium text-[16px] pl-[5px]`}
         >
           {t.text("navbar.navItem1")}
         </Link>
@@ -249,7 +119,7 @@ const Navbar = () => {
       label: (
         <Link
           to={L("/it-services")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-poppins font-medium text-[16px] pl-[5px]`}
         >
           {t.text("navbar.navItem2")}
         </Link>
@@ -260,7 +130,7 @@ const Navbar = () => {
       label: (
         <Link
           to={L("/video-services")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-poppins font-medium text-[16px] pl-[5px]`}
         >
           {t.text("navbar.navItem3")}
         </Link>
@@ -271,7 +141,8 @@ const Navbar = () => {
       label: (
         <Link
           to={Lhash("#about")}
-          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-helvetica font-medium text-[16px] pl-[5px]`}
+          onClick={(e) => scrollToSection("about", e)}
+          className={`${themeReducer === "light" ? "menu-text-light" : "menu-text-dark"} font-poppins font-medium text-[16px] pl-[5px]`}
         >
           {t.text("navbar.navItem4")}
         </Link>
@@ -281,7 +152,7 @@ const Navbar = () => {
       key: 'booking',
       label: (
         <PopupButton
-          className="navbar-btn px-[16px] h-[35px] rounded-[5px] text-[#fff] font-helvetica font-medium text-[16px]"
+          className="navbar-btn px-[16px] min-h-[35px] py-[6px] rounded-[5px] text-[#fff] font-poppins font-medium text-[16px]"
           url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
           rootElement={rootElement as HTMLElement}
           text={t.text("navbar.navbarButton")}
@@ -321,11 +192,11 @@ const Navbar = () => {
 
             <h3 className={`font-medium text-xl mb-2 ${themeReducer === 'light' ? 'text-gray-800' : 'text-white'
               }`}>
-              {languageReducer === 'fr' ? 'Changement de thème' : 'Changing theme'}
+              {t.text("navbar.themeChangingTitle")}
             </h3>
             <p className={`text-sm ${themeReducer === 'light' ? 'text-gray-600' : 'text-gray-300'
               }`}>
-              {languageReducer === 'fr' ? 'Veuillez patienter...' : 'Please wait...'}
+              {t.text("navbar.themeChangingDescription")}
             </p>
           </div>
         </div>
@@ -349,7 +220,7 @@ const Navbar = () => {
                 className="w-[170px] xl:w-[190px] 2xl:w-[206px]"
               />
             </Link>
-            <ul className="nav-list flex items-center justify-center lg:gap-x-[0px] xl:gap-x-[10px] 2xl:gap-x-[20px] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] lg:ml-[50px] lg:mr-[34px] xl:ml-[75px] xl:mr-[44px]">
+            <ul className="nav-list flex items-center justify-center lg:gap-x-[0px] xl:gap-x-[10px] 2xl:gap-x-[20px] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] lg:ml-[50px] lg:mr-[34px] xl:ml-[75px] xl:mr-[44px]">
               <li
                 className=""
                 data-aos="fade-down"
@@ -414,6 +285,7 @@ const Navbar = () => {
                 <div className="btn-test from-bottom">
                   <Link
                     to={Lhash("#about")}
+                    onClick={(e) => scrollToSection("about", e)}
                     className={
                       themeReducer === "light"
                         ? "text-[#14172D] hover:text-[#fff]"
@@ -451,81 +323,16 @@ const Navbar = () => {
               data-aos-easing="ease-in-sine"
               data-aos-duration="1900"
             >
-              {/* <Dropdown overlay={menu} trigger={["click"]}>
-                <a
-                  className="ant-dropdown-link flex items-center gap-x-[6px] cursor-pointer font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <div role="img" aria-label="Selected Flag">
-                    {languageReducer === "en" ? (
-                      <img
-                        src={flag1}
-                        alt="flag1"
-                        className="w-[16px] h-[16px]  rounded-full"
-                      />
-                    ) : (
-                      <img
-                        src={flag2}
-                        alt="flag2"
-                        className="w-[16px] h-[16px] rounded-full"
-                      />
-                    )}
-                  </div>
-                  <span
-                    className={`${themeReducer === "light"
-                      ? "text-[#14172D]"
-                      : "text-[#FFFFFF]"
-                      } uppercase`}
-                  >
-                    {languageReducer === "en" ? "EN" : "FR"}
-                  </span>
-                  <img
-                    src={themeReducer === "light" ? dropdown : dropdownDark}
-                    alt="dropdown"
-                    className=""
-                  />
-                </a>
-              </Dropdown> */}
-              {/* Lang toggle (mobile) */}
-              <button
-                onClick={toggleLanguage}
-                className="flex items-center gap-x-[6px] cursor-pointer font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-                title={t.text("cookies.ariaToggleLanguage")}
-                aria-label={t.text("cookies.ariaToggleLanguage")}
-              >
-                <div role="img" aria-label="Selected Flag">
-                  <img
-                    src={languageReducer === "en" ? flag1 : flag2}
-                    alt={languageReducer === "en" ? "English" : "Français"}
-                    className="w-[16px] h-[16px] rounded-full"
-                  />
-                </div>
-                <span className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#FFFFFF]"} uppercase`}>
-                  {languageReducer}
-                </span>
-              </button>
-
-              <button onClick={handleThemeChange}>
-                {themeReducer === "light" ? (
-                  <img
-                    src={light}
-                    width="20px"
-                    height="20px"
-                    className="rounded-full"
-                    alt="Logo lightmode"
-                  />
-                ) : (
-                  <img
-                    src={dark}
-                    width="20px"
-                    height="20px"
-                    className="rounded-full"
-                    alt="Logo darkmode"
-                  />
-                )}
-              </button>
+              <LocaleThemeControls
+                currentLanguage={languageReducer}
+                currentTheme={themeReducer}
+                themePreference={themePreference}
+                onLanguageChange={changeLanguage}
+                onThemeChange={handleThemeChange}
+                labels={labels}
+              />
               <PopupButton
-                className="custom-btn2 middle-out px-[15px] xl:px-[18px] lg:h-[40px] xl:h-[44px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
+                className="custom-btn2 middle-out px-[15px] xl:px-[18px] lg:min-h-[40px] xl:min-h-[44px] py-[8px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
                 url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
                 rootElement={rootElement as HTMLElement}
                 text={t.text("navbar.navbarButton")}
@@ -548,89 +355,18 @@ const Navbar = () => {
                 className="w-[130px]"
               />
             </Link>
-            <div className="flex justify-center items-center gap-x-[20px]">
-              {/* Lang toggle (mobile) */}
-              <button
-                onClick={toggleLanguage}
-                className="flex items-center gap-x-[6px] cursor-pointer font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-                title={t.text("cookies.ariaToggleLanguage")}
-                aria-label={t.text("cookies.ariaToggleLanguage")}
-              >
-                <div role="img" aria-label="Selected Flag">
-                  <img
-                    src={languageReducer === "en" ? flag1 : flag2}
-                    alt={languageReducer === "en" ? "English" : "Français"}
-                    className="w-[16px] h-[16px] rounded-full"
-                  />
-                </div>
-                <span className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#FFFFFF]"} uppercase`}>
-                  {languageReducer}
-                </span>
-              </button>
-              {/* <Dropdown overlay={menu} trigger={["click"]}>
-                <div
-                  className="ant-dropdown-link flex items-center gap-x-[6px] cursor-pointer  font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <div role="img" aria-label="Selected Flag">
-                    {languageReducer === "en" ? (
-                      <img
-                        src={flag1}
-                        alt="flag1"
-                        className="w-[16px] h-[16px]  rounded-full"
-                      />
-                    ) : (
-                      <img
-                        src={flag2}
-                        alt="flag2"
-                        className="w-[16px] h-[16px] rounded-full"
-                      />
-                    )}
-                  </div>
-                  <span
-                    className={`${themeReducer === "light"
-                      ? "text-[#14172D]"
-                      : "text-[#FFFFFF]"
-                      } uppercase`}
-                  >
-                    {languageReducer === "en" ? "EN" : "FR"}
-                  </span>
-                  <img
-                    src={themeReducer === "light" ? dropdown : dropdownDark}
-                    alt="dropdown"
-                    className=""
-                  />
-                </div>
-              </Dropdown> */}
-              <button onClick={handleThemeChange}>
-                {themeReducer === "light" ? (
-                  <img
-                    src={light}
-                    width="20px"
-                    height="20px"
-                    className="rounded-full"
-                    alt="Logo lightmode"
-                  />
-                ) : (
-                  <img
-                    src={dark}
-                    width="20px"
-                    height="20px"
-                    className="rounded-full"
-                    alt="Logo darkmode"
-                  />
-                )}
-              </button>
+            <div className="flex justify-center items-center gap-x-[12px] sm:gap-x-[20px]">
+              <LocaleThemeControls
+                currentLanguage={languageReducer}
+                currentTheme={themeReducer}
+                themePreference={themePreference}
+                onLanguageChange={changeLanguage}
+                onThemeChange={handleThemeChange}
+                size="xs"
+                labels={labels}
+              />
               <div className="">
-                {/* <Dropdown overlay={menuOptions} trigger={["click"]}>
-                <img
-                  src={toggler}
-                  alt="toggler"
-                  className="w-[28px] h-[24px]"
-                />
-              </Dropdown> */}
                 <Dropdown
-                  // overlay={menuOptions}
                   menu={{ items: menuItems }}
                   trigger={["click"]}
                   open={mobileMenuOpen}

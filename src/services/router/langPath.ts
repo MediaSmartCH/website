@@ -1,9 +1,16 @@
 import { useParams, useLocation } from "react-router-dom";
-export type Lang = "fr" | "en";
+import {
+  AppLanguage,
+  buildLocalizedPath,
+  normalizeLanguage,
+  stripLanguageFromPath,
+} from "config/languages";
+
+export type Lang = AppLanguage;
 
 export const useLang = (): Lang => {
-  const { lang } = useParams<{ lang?: Lang }>();
-  return lang === "en" ? "en" : "fr";
+  const { lang } = useParams<{ lang?: string }>();
+  return normalizeLanguage(lang);
 };
 
 export const useLangLink = () => {
@@ -19,17 +26,16 @@ export const useLangLink = () => {
   const L = (path: string) => {
     const n = normalize(path);
     if (n.startsWith("#")) return `/${lang}${n}`;
-    return `/${lang}${n}`;
+    return buildLocalizedPath(lang, n);
   };
 
   const Lhash = (hash: string, opts?: { keepPath?: boolean }) => {
     const clean = hash.startsWith("#") ? hash : `#${hash}`;
     if (opts?.keepPath) {
-      const stripped = pathname.replace(/^\/(fr|en)/, "");
-      const base = stripped || "/";
-      return `/${lang}${base}${clean}`;
+      const base = stripLanguageFromPath(pathname) || "/";
+      return buildLocalizedPath(lang, base, "", clean);
     }
-    return `/${lang}${clean}`;
+    return buildLocalizedPath(lang, "/", "", clean);
   };
 
   return { lang, L, Lhash };

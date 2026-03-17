@@ -44,7 +44,7 @@ const Error404Page: React.FC = () => {
   };
 
   return (
-    <div className="hero-bg min-h-[80vh] relative overflow-hidden">
+    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} relative overflow-hidden min-h-[80vh]`}>
       <div className="relative z-10 flex items-center justify-center min-h-[80vh] px-6 py-12">
         <div className="max-w-4xl mx-auto text-center">
 

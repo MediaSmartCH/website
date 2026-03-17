@@ -26,6 +26,9 @@ const OVERVIEW_ANIMS: LottieKey[] = [
   "video.rental",
   "video.photography",
 ];
+const MAX_OVERVIEW_CARDS = 6;
+const OVERVIEW_CARD_WIDTH =
+  "w-full md:w-[calc((100%-30px)/2)] lg:w-[calc((100%-40px)/3)] xl:w-[calc((100%-60px)/3)] 2xl:w-[calc((100%-80px)/3)]";
 
 export default function VideoOverview() {
   const languageReducer = useAppSelector(
@@ -37,7 +40,10 @@ export default function VideoOverview() {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
-  const cards = t.array<OverviewCard>("home.VideoOverviewCards");
+  const cards = t.array<OverviewCard>("home.VideoOverviewCards").slice(
+    0,
+    MAX_OVERVIEW_CARDS
+  );
 
   const preloadVideoServices = () => {
     import("../../../../pages/VideoServices");
@@ -116,7 +122,7 @@ export default function VideoOverview() {
         {/* {dictionary["home"][languageReducer]["VideoOverviewDescription"]} */} {t.text("home.VideoOverviewDescription")}
       </p>
       {/* cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center gap-[30px] lg:gap-[20px] xl:gap-[30px] 2xl:gap-[40px] my-[40px] md:my-[50px]">
+      <div className="flex flex-wrap justify-center gap-[30px] lg:gap-[20px] xl:gap-[30px] 2xl:gap-[40px] my-[40px] md:my-[50px]">
         {/* {dictionary["home"][languageReducer]["VideoOverviewCards"].map((card: any, index: number) => (
           <VideoOverviewCard
             key={index}
@@ -128,19 +134,24 @@ export default function VideoOverview() {
           />
         ))} */}
 
-        {cards.map((card, i) => (
-          <VideoOverviewCard
-            key={i}
-            title={card.title}
-            description={card.description}
-            themeReducer={themeReducer}
-            anim={OVERVIEW_ANIMS[i]}
-          />
-        ))}
+        {cards.map((card, i) => {
+          const anim = OVERVIEW_ANIMS[Math.min(i, OVERVIEW_ANIMS.length - 1)];
+
+          return (
+            <div key={i} className={OVERVIEW_CARD_WIDTH}>
+              <VideoOverviewCard
+                title={card.title}
+                description={card.description}
+                themeReducer={themeReducer}
+                anim={anim}
+              />
+            </div>
+          );
+        })}
       </div>
       <div className="flex justify-center w-full">
         <Link to="video-services" onMouseEnter={preloadVideoServices}>
-          <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
+          <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] flex items-center justify-center rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
             <span className="custom-btn-inner">
               {/* {dictionary["home"][languageReducer]["VideoOverviewExploreBtn"]} */} {t.text("home.VideoOverviewExploreBtn")}
             </span>

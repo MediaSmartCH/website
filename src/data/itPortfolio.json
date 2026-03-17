@@ -1,0 +1,112 @@
+{
+  "items": [
+    {
+      "id": "cc-wk",
+      "title": {
+        "fr": "C.C. & W.K. SA – Cabinet d’architecture",
+        "en": "C.C. & W.K. SA – Architecture firm"
+      },
+      "description": {
+        "fr": "Site corporate pour un cabinet d’architecture suisse mettant en avant ses projets, ses services et son expertise dans la conception d’espaces techniques, résidentiels et de laboratoires. L’interface a été pensée pour présenter l’entreprise de manière claire, structurée et professionnelle.",
+        "en": "Corporate website for a Swiss architecture firm showcasing its projects, services and expertise in technical, residential and laboratory design. The interface was built to present the company in a clear, structured and professional way."
+      },
+      "url": "https://cc-wk.ch",
+      "screenshotUrls": [
+        "https://cc-wk.ch",
+        "/projects",
+        "/services",
+        "/about-us",
+        "/contact"
+      ]
+    },
+    {
+      "id": "jocolor",
+      "title": {
+        "fr": "JoColor – Peinture en bâtiment",
+        "en": "JoColor – Building painting services"
+      },
+      "description": {
+        "fr": "Site vitrine pour une entreprise de peinture en bâtiment basée en Valais. Le projet présente les prestations, l’approche de l’entreprise et quelques réalisations, avec un ton accessible et une structure simple orientée prise de contact.",
+        "en": "Showcase website for a building painting company based in Valais. The project presents services, the company’s approach and selected work through a simple structure designed to support clarity and contact conversion."
+      },
+      "url": "https://www.jocolor.ch",
+      "screenshotUrls": [
+        "https://www.jocolor.ch",
+        "/prestations",
+        "/%C3%A0-propos",
+        "/portfolio"
+      ]
+    },
+    {
+      "id": "lechoixdesmots",
+      "title": {
+        "fr": "Le Choix des Mots – Officiante laïque",
+        "en": "Le Choix des Mots – Secular ceremony officiant"
+      },
+      "description": {
+        "fr": "Site de présentation pour une officiante laïque proposant des cérémonies personnalisées et un accompagnement sur mesure. L’ensemble met en avant une approche humaine, centrée sur l’écoute, l’écriture et la personnalisation de chaque moment de vie.",
+        "en": "Presentation website for a secular officiant offering personalized ceremonies and tailored support. The site highlights a human-centered approach focused on listening, writing and creating meaningful custom ceremonies."
+      },
+      "url": "https://lechoixdesmots.ch",
+      "screenshotUrls": ["https://lechoixdesmots.ch"]
+    },
+    {
+      "id": "soclean4u",
+      "title": {
+        "fr": "SoClean4U – Services de nettoyage",
+        "en": "SoClean4U – Cleaning services"
+      },
+      "description": {
+        "fr": "Site vitrine pour une entreprise de nettoyage active dans la région Chablais VS/VD. Le contenu présente les services proposés, notamment pour hôtels, appartements de vacances, bureaux et conciergerie, avec une mise en page orientée visibilité des prestations et contact rapide.",
+        "en": "Showcase website for a cleaning company operating in the Chablais VS/VD region. The content highlights key services for hotels, holiday apartments, offices and concierge needs, with a layout focused on service visibility and quick contact."
+      },
+      "url": "https://www.soclean4u.ch",
+      "screenshotUrls": ["https://www.soclean4u.ch"]
+    },
+    {
+      "id": "actions-suisse",
+      "title": {
+        "fr": "Actions Suisse – Média et retransmission d’événements",
+        "en": "Actions Suisse – Media and live event streaming"
+      },
+      "description": {
+        "fr": "Site média dédié à la diffusion d’actualités, de contenus vidéo et à la retransmission d’événements en direct. La plateforme met en avant des articles, des projets éditoriaux et des actions citoyennes dans une structure pensée pour consulter les contenus et suivre l’activité du média.",
+        "en": "Media website dedicated to news publishing, video content and live event streaming. The platform highlights articles, editorial projects and civic actions through a structure designed to make content easy to browse and follow."
+      },
+      "url": "https://actions-suisse.ch",
+      "screenshotUrls": [
+        "https://actions-suisse.ch/home/",
+        "/articles/",
+        "/projets/",
+        "/actions-citoyennes/",
+        "/#contact"
+      ]
+    },
+    {
+      "id": "chateau-castalia",
+      "title": {
+        "fr": "Château Castalia – Lieu d’événements et patrimoine historique",
+        "en": "Château Castalia – Historic event venue"
+      },
+      "description": {
+        "fr": "Site de présentation du Château Castalia, un domaine historique situé à Cressier (Fribourg). La plateforme met en valeur le lieu, son histoire et les services proposés pour l’organisation d’événements et de réceptions dans un cadre patrimonial unique.",
+        "en": "Presentation website for Château Castalia, a historic estate located in Cressier (Fribourg). The platform highlights the venue, its history and the services offered for events and receptions in a unique heritage setting."
+      },
+      "url": "https://www.chateaucastalia.com",
+      "screenshotUrls": ["https://www.chateaucastalia.com"]
+    },
+    {
+      "id": "arml",
+      "title": {
+        "fr": "ARML – Association Romande des Médias Libres",
+        "en": "ARML – Romandy Association of Independent Media"
+      },
+      "description": {
+        "fr": "Site institutionnel de l’Association Romande des Médias Libres. L’organisation rassemble des acteurs du journalisme indépendant en Suisse romande afin de promouvoir une information diversifiée, favoriser la collaboration entre médias et soutenir des projets éditoriaux communs.",
+        "en": "Institutional website for the Romandy Association of Independent Media. The organization brings together independent media actors in French-speaking Switzerland to promote diverse journalism, collaboration between outlets and shared editorial projects."
+      },
+      "url": "https://www.arml.ch",
+      "screenshotUrls": ["https://www.arml.ch"]
+    }
+  ]
+}
