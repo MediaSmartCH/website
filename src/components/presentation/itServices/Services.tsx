@@ -112,7 +112,7 @@ const Services = () => {
           className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
             } my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
-          <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] pt-[30px]">
+          <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] pt-[30px] px-[20px] md:px-[30px] lg:px-0">
             <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
               <p
                 className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
@@ -211,7 +211,7 @@ const Services = () => {
           className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
             } my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
-          <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
+          <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px] px-[20px] md:px-[30px] lg:px-0">
             <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
               <p
                 className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
@@ -308,7 +308,7 @@ const Services = () => {
           className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
             } my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
-          <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
+          <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px] px-[20px] md:px-[30px] lg:px-0">
             <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
               <p
                 className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"

@@ -2,8 +2,9 @@ import React, { useEffect, useId, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 import portfolioContent from "../../../data/itPortfolio.json";
-import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
+import LocaleThemeControls from "components/common/LocaleThemeControls";
+import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
 type SupportedLanguage = "fr" | "en";
 type LocalizedField = string | Partial<Record<SupportedLanguage, string>>;
@@ -13,7 +14,8 @@ interface PortfolioItem {
   title: LocalizedField;
   description: LocalizedField;
   url?: string;
-  images: string[];
+  images?: string[];
+  screenshotUrls?: string[];
 }
 
 interface PortfolioData {
@@ -22,6 +24,27 @@ interface PortfolioData {
 
 const PREVIEW_LIMIT = 4;
 const SCROLLABLE_GALLERY_THRESHOLD = 3;
+
+function getItemImages(item: PortfolioItem): string[] {
+  if (item.screenshotUrls && item.screenshotUrls.length > 0) {
+    return item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`);
+  }
+
+  return item.images ?? [];
+}
+
+function resolveScreenshotUrl(screenshotUrl: string, baseUrl?: string): string {
+  if (screenshotUrl.startsWith("http://") || screenshotUrl.startsWith("https://")) {
+    return screenshotUrl;
+  }
+  try {
+    const base = new URL(baseUrl ?? "");
+    const path = screenshotUrl.startsWith("/") ? screenshotUrl : `/${screenshotUrl}`;
+    return `${base.origin}${path}`;
+  } catch {
+    return screenshotUrl;
+  }
+}
 
 function resolveLocalizedField(
   field: LocalizedField,
@@ -135,10 +158,14 @@ const PortfolioGallery = () => {
   const dialogTitleId = useId();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const languageReducer = useAppSelector(
-    (state) => state.language.currentLanguage
-  );
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const {
+    currentLanguage: languageReducer,
+    currentTheme: themeReducer,
+    themePreference,
+    changeLanguage,
+    changeTheme,
+    labels,
+  } = useInterfaceControls();
 
   const t = useTranslations(languageReducer);
 
@@ -146,7 +173,7 @@ const PortfolioGallery = () => {
     const data = portfolioContent as PortfolioData;
 
     return (data.items ?? []).filter(
-      (item) => Array.isArray(item.images) && item.images.length > 0
+      (item) => getItemImages(item).length > 0
     );
   }, []);
 
@@ -221,43 +248,54 @@ const PortfolioGallery = () => {
         className={`relative z-10 flex max-h-[calc(100vh-2rem)] w-full max-w-6xl flex-col overflow-hidden rounded-[28px] border ${panelSurfaceClass}`}
       >
         <div
-          className={`flex items-start justify-between gap-4 border-b px-5 py-5 md:px-8 md:py-6 ${isLightTheme ? "border-[#E6E8F7]" : "border-white/10"}`}
+          className={`grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-3 border-b px-5 py-5 md:px-8 md:py-6 ${isLightTheme ? "border-[#E6E8F7]" : "border-white/10"}`}
         >
-          <div className="min-w-0">
-            <h2
-              id={dialogTitleId}
-              className="font-redDisplay text-[28px] font-bold leading-none md:text-[40px] xl:text-[48px]"
+          <h2
+            id={dialogTitleId}
+            className="min-w-0 font-redDisplay text-[28px] font-bold leading-none md:text-[40px] xl:text-[48px]"
+          >
+            {t.text("it.portfolioModalHeading")}
+          </h2>
+
+          <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <LocaleThemeControls
+              currentLanguage={languageReducer}
+              currentTheme={themeReducer}
+              themePreference={themePreference}
+              onLanguageChange={changeLanguage}
+              onThemeChange={changeTheme}
+              size="xs"
+              labels={labels}
+              className="order-2 sm:order-1"
+            />
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              className={`order-1 flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full border transition duration-200 sm:order-2 sm:h-11 sm:w-11 ${isLightTheme ? "border-[#D9DCF2] text-[#14172D] hover:bg-[#F4F4FF]" : "border-white/10 text-[#F6F6F6] hover:bg-white/10"}`}
+              aria-label={languageReducer === "fr" ? "Fermer" : "Close"}
             >
-              {t.text("it.portfolioModalHeading")}
-            </h2>
-            <p
-              className={`${mutedTextClass} mt-3 max-w-3xl text-[13px] font-helvetica font-light leading-6 md:text-[15px]`}
-            >
-              {t.text("it.portfolioModalDescription")}
-            </p>
+              <svg
+                className="h-3.5 w-3.5 sm:h-5 sm:w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(false)}
-            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition duration-200 ${isLightTheme ? "border-[#D9DCF2] text-[#14172D] hover:bg-[#F4F4FF]" : "border-white/10 text-[#F6F6F6] hover:bg-white/10"}`}
-            aria-label={languageReducer === "fr" ? "Fermer" : "Close"}
+          <p
+            className={`${mutedTextClass} col-span-2 max-w-3xl text-[13px] font-helvetica font-light leading-6 md:text-[15px]`}
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+            {t.text("it.portfolioModalDescription")}
+          </p>
         </div>
 
         <div className="portfolio-scrollbar flex-1 overflow-y-auto overscroll-contain px-5 pb-5 pt-5 md:px-8 md:pb-8 md:pt-6">
@@ -274,17 +312,14 @@ const PortfolioGallery = () => {
                 item.description,
                 languageReducer
               );
+              const images = getItemImages(item);
               const shouldScrollGallery =
-                item.images.length > SCROLLABLE_GALLERY_THRESHOLD;
+                images.length > SCROLLABLE_GALLERY_THRESHOLD;
 
               return (
-                <a
+                <div
                   key={item.id}
-                  href={item.url || "#"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`group flex h-full max-w-[360px] flex-col rounded-[24px] border p-5 transition duration-300 hover:-translate-y-1 ${cardSurfaceClass}`}
-                  aria-label={`${t.text("it.portfolioVisitSite")} ${title}`}
+                  className={`flex h-full w-full flex-col rounded-[24px] border p-5 ${cardSurfaceClass}`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
@@ -296,16 +331,19 @@ const PortfolioGallery = () => {
                       <p
                         className={`${mutedTextClass} mt-1 text-[12px] font-helvetica font-light uppercase tracking-[0.18em]`}
                       >
-                        {formatImageCount(item.images.length, languageReducer)}
+                        {formatImageCount(images.length, languageReducer)}
                       </p>
                     </div>
 
                     {item.url && (
-                      <span
-                        className={`shrink-0 rounded-full border px-3 py-2 text-[12px] font-medium transition duration-200 ${isLightTheme ? "border-[#D9DCF2] text-[#2C3A87] group-hover:bg-[#EEF0FF]" : "border-white/10 text-[#DAD7FF] group-hover:bg-white/10"}`}
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`shrink-0 rounded-full border px-3 py-2 text-[12px] font-medium transition duration-200 ${isLightTheme ? "border-[#D9DCF2] text-[#2C3A87] hover:bg-[#EEF0FF]" : "border-white/10 text-[#DAD7FF] hover:bg-white/10"}`}
                       >
                         {t.text("it.portfolioVisitSite")}
-                      </span>
+                      </a>
                     )}
                   </div>
 
@@ -315,42 +353,58 @@ const PortfolioGallery = () => {
                     {description}
                   </p>
 
-                  <div className="mt-5">
+                  <div className="mt-auto pt-5">
                     {shouldScrollGallery ? (
                       <div className="portfolio-scrollbar flex gap-3 overflow-x-auto overscroll-contain pb-2 pr-1 snap-x snap-mandatory">
-                        {item.images.map((image, index) => (
-                          <div
-                            key={`${item.id}-${index}`}
-                            className={`snap-start shrink-0 overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
-                          >
-                            <img
-                              src={image}
-                              alt={`${title} ${index + 1}`}
-                              className="aspect-[16/11] h-full w-full object-cover"
-                              loading="lazy"
-                            />
-                          </div>
-                        ))}
+                        {images.map((image, index) => {
+                          const targetUrl = item.screenshotUrls?.[index]
+                            ? resolveScreenshotUrl(item.screenshotUrls[index], item.url)
+                            : item.url ?? "#";
+                          return (
+                            <a
+                              key={`${item.id}-${index}`}
+                              href={targetUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className={`group/img snap-start shrink-0 overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
+                            >
+                              <img
+                                src={image}
+                                alt={`${title} ${index + 1}`}
+                                className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                                loading="lazy"
+                              />
+                            </a>
+                          );
+                        })}
                       </div>
                     ) : (
-                      <div className={getInlineGalleryClassName(item.images.length)}>
-                        {item.images.map((image, index) => (
-                          <div
-                            key={`${item.id}-${index}`}
-                            className={`overflow-hidden rounded-[18px] border ${imageShellClass}`}
-                          >
-                            <img
-                              src={image}
-                              alt={`${title} ${index + 1}`}
-                              className="aspect-[16/11] h-full w-full object-cover"
-                              loading="lazy"
-                            />
-                          </div>
-                        ))}
+                      <div className={getInlineGalleryClassName(images.length)}>
+                        {images.map((image, index) => {
+                          const targetUrl = item.screenshotUrls?.[index]
+                            ? resolveScreenshotUrl(item.screenshotUrls[index], item.url)
+                            : item.url ?? "#";
+                          return (
+                            <a
+                              key={`${item.id}-${index}`}
+                              href={targetUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className={`group/img overflow-hidden rounded-[18px] border ${imageShellClass}`}
+                            >
+                              <img
+                                src={image}
+                                alt={`${title} ${index + 1}`}
+                                className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                                loading="lazy"
+                              />
+                            </a>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
-                </a>
+                </div>
               );
             })}
           </div>
@@ -401,6 +455,8 @@ const PortfolioGallery = () => {
               languageReducer
             );
 
+            const previewImages = getItemImages(item);
+
             return (
               <a
                 key={item.id}
@@ -412,7 +468,7 @@ const PortfolioGallery = () => {
               >
                 <div className={`aspect-[16/11] w-full overflow-hidden ${imageShellClass}`}>
                   <img
-                    src={item.images[0]}
+                    src={previewImages[0]}
                     alt={title}
                     className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     loading="lazy"
@@ -425,11 +481,11 @@ const PortfolioGallery = () => {
                     >
                       {title}
                     </h3>
-                    {item.images.length > 1 && (
+                    {previewImages.length > 1 && (
                       <span
                         className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium ${isLightTheme ? "bg-[#EEF0FF] text-[#4453A6]" : "bg-white/10 text-[#DAD7FF]"}`}
                       >
-                        {item.images.length}
+                        {previewImages.length}
                       </span>
                     )}
                   </div>

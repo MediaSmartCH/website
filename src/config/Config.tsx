@@ -11,12 +11,14 @@ import Layout from "components/Layout";
 import ConstructionWrapper from "components/ConstructionWrapper";
 import LangLayout from "config/LangLayout";
 import ErrorBoundary from "components/dev/ErrorBoundary";
+import { DEFAULT_LANGUAGE } from "config/languages";
 
 const Homepage = lazy(() => import("../pages/Home"));
 const VideoServicesPage = lazy(() => import("../pages/VideoServices"));
 const ITServicesPage = lazy(() => import("../pages/ITServices"));
 const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicy"));
 const Error404Page = lazy(() => import("../pages/Error404"));
+const SupportContractPage = lazy(() => import("../pages/SupportContract"));
 
 /** Petit wrapper réutilisable : Suspense + ErrorBoundary */
 const Wrap = (node: React.ReactNode) => (
@@ -37,7 +39,7 @@ const LayoutWrapper: React.FC = () => (
 );
 
 const routes: RouteObject[] = [
-  { path: "/", element: <Navigate to="/fr" replace /> },
+  { path: "/", element: <Navigate to={`/${DEFAULT_LANGUAGE}`} replace /> },
 
   {
     path: "/:lang/*",
@@ -50,6 +52,7 @@ const routes: RouteObject[] = [
           { path: "it-services", element: Wrap(<ITServicesPage />) },
           { path: "video-services", element: Wrap(<VideoServicesPage />) },
           { path: "privacy-policy", element: Wrap(<PrivacyPolicyPage />) },
+          { path: "support-contract", element: Wrap(<SupportContractPage />) },
           { path: "404", element: Wrap(<Error404Page />) },
           { path: "*", element: <Navigate to="../404" replace /> },
         ],
@@ -58,7 +61,7 @@ const routes: RouteObject[] = [
   },
 
   // 404 global pour les URLs sans langue valide
-  { path: "*", element: <Navigate to="/fr/404" replace /> },
+  { path: "*", element: <Navigate to={`/${DEFAULT_LANGUAGE}/404`} replace /> },
 ];
 
 const router = createBrowserRouter(routes, {

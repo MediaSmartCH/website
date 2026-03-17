@@ -198,6 +198,15 @@ const home = {
     contactLoading: "Loading...",
     contactSuccessTitle: "Message sent!",
     contactSuccessBody: "Thank you for your message. Our team will get back to you as soon as possible.",
-    contactSuccessNew: "Send another message"
+    contactSuccessNew: "Send another message",
+    contactIntentQuestion: "Ask a question",
+    contactIntentQuote: "Request a quote",
+    contactProjectTypeLabel: "Project type *",
+    contactProjectTypeRequired: "Please select a project type.",
+    contactProjectVitrine: "Showcase Website",
+    contactProjectBusiness: "Business Website",
+    contactProjectRefonte: "Redesign / Migration",
+    contactProjectApp: "Custom Web App",
+    contactProjectOther: "Other / Not sure"
 };
 export default home;

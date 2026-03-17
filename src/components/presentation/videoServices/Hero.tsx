@@ -29,7 +29,7 @@ const Hero = () => {
   // };
 
   return (
-    <div className="hero-bg mt-[73px] md:mt-[130px] lg:mt-[100px]" id="video-services-home">
+    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="video-services-home">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[43px] relative">
         <div
           className="w-full mx-auto text-center relative"

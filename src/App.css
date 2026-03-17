@@ -202,11 +202,19 @@ nav.shift ul li a:hover:after {
 /* hero */
 
 .hero-bg {
-  background: url("./assets/images/hero-bg.png");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 760'%3E%3Cpath d='M-120 0 L1720 0 L1720 476 C1580 542 1449 528 1332 437 C1186 323 1020 285 824 313 C620 343 431 282 288 184 C154 92 6 96 -120 188 Z' fill='%23F4F1FF' fill-opacity='0.88'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: 100% 100%;
   background-size: cover;
+  background-position: top center;
 }
+
+.hero-bg-dark {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 760'%3E%3Cpath d='M-120 0 L1720 0 L1720 476 C1580 542 1449 528 1332 437 C1186 323 1020 285 824 313 C620 343 431 282 288 184 C154 92 6 96 -120 188 Z' fill='%232B284C' fill-opacity='0.92'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+}
+
 
 .hero-btn {
   box-shadow: 0px 4px 4px 0px #00000040;

@@ -12,7 +12,7 @@ import About from "components/presentation/videoServices/About";
 import Services from "components/presentation/videoServices/Services";
 // import Partner from "components/presentation/videoServices/Partner";
 // import Testimonials from "components/common/testimonials";
-// import Faq from "components/presentation/videoServices/Faq";
+import Faq from "components/presentation/videoServices/Faq";
 import Booking from "components/common/Booking";
 import Contact from "components/common/Contact";
 import WaveBackdrop from "components/common/WaveBackdrop";
@@ -57,7 +57,7 @@ export default function VideoServicesPage() {
       {/* <div className="pt-[40px] md:pt-[50px]">
         <Testimonials />
       </div> */}
-      {/* <Faq /> */}
+      <Faq />
       <div className="relative overflow-hidden pt-[40px] md:pt-[50px]">
         <WaveBackdrop
           theme={themeReducer}

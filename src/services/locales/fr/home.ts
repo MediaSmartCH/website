@@ -202,6 +202,15 @@ const home = {
     contactLoading: "Chargement...",
     contactSuccessTitle: "Message envoyé !",
     contactSuccessBody: "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais.",
-    contactSuccessNew: "Envoyer un autre message"
+    contactSuccessNew: "Envoyer un autre message",
+    contactIntentQuestion: "Poser une question",
+    contactIntentQuote: "Demander un devis",
+    contactProjectTypeLabel: "Type de projet *",
+    contactProjectTypeRequired: "Veuillez sélectionner un type de projet.",
+    contactProjectVitrine: "Site vitrine",
+    contactProjectBusiness: "Site business",
+    contactProjectRefonte: "Refonte / Migration",
+    contactProjectApp: "Application web sur mesure",
+    contactProjectOther: "Autre / Je ne sais pas encore"
 };
 export default home;

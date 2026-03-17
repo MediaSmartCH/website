@@ -11,6 +11,8 @@ const i18n = {
     headerSub: 'Quelqu\'un vous a contacté via le formulaire',
     intro: 'Bonjour, vous avez reçu un nouveau message depuis votre site :',
     labelName: 'Nom', labelEmail: 'Email', labelPhone: 'Téléphone', labelMessage: 'Message',
+    labelIntent: 'Demande', labelProjectType: 'Type de projet',
+    intentQuestion: 'Question', intentQuote: 'Demande de devis',
     phoneEmpty: 'Non renseigné',
     replyBtn: (name: string) => `Répondre à ${name} →`,
     autoNote: 'Ce message a été envoyé automatiquement via le formulaire de contact de',
@@ -29,6 +31,8 @@ const i18n = {
     headerSub: 'Someone contacted you via the form',
     intro: 'Hello, you received a new contact message from your website:',
     labelName: 'Name', labelEmail: 'Email', labelPhone: 'Phone', labelMessage: 'Message',
+    labelIntent: 'Request type', labelProjectType: 'Project type',
+    intentQuestion: 'Question', intentQuote: 'Quote request',
     phoneEmpty: 'Not provided',
     replyBtn: (name: string) => `Reply to ${name} →`,
     autoNote: 'This message was sent automatically via the contact form of',
@@ -42,7 +46,8 @@ const i18n = {
   },
 };
 
-function buildInternalHtml(t: typeof i18n.fr, name: string, email: string, phone: string, message: string) {
+function buildInternalHtml(t: typeof i18n.fr, name: string, email: string, phone: string, message: string, intent?: string, projectType?: string) {
+  const intentLabel = intent === 'quote' ? t.intentQuote : t.intentQuestion;
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#0f0e1a;font-family:'Segoe UI',Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f0e1a;padding:40px 16px;"><tr><td align="center">
@@ -54,6 +59,10 @@ function buildInternalHtml(t: typeof i18n.fr, name: string, email: string, phone
 </td></tr>
 <tr><td style="background:#1a1830;padding:36px 40px;">
 <p style="margin:0 0 28px;font-size:15px;color:#a0a3bf;line-height:1.6;">${t.intro}</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;"><tr><td style="background:#22203a;border-left:3px solid #5b4fcf;border-radius:0 10px 10px 0;padding:16px 20px;">
+<p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5b4fcf;">${t.labelIntent}</p>
+<p style="margin:0;font-size:16px;font-weight:600;color:#e8e9f3;">${intentLabel}${intent === 'quote' && projectType ? ` — ${projectType}` : ''}</p>
+</td></tr></table>
 <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;"><tr><td style="background:#22203a;border-left:3px solid #7c3aed;border-radius:0 10px 10px 0;padding:16px 20px;">
 <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7c3aed;">${t.labelName}</p>
 <p style="margin:0;font-size:16px;font-weight:600;color:#e8e9f3;">${name}</p>
@@ -116,7 +125,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ success: false, message: 'Method not allowed' });
   }
 
-  const { name, email, phone, message, lang } = req.body ?? {};
+  const { name, email, phone, message, lang, intent, projectType } = req.body ?? {};
 
   if (!name?.trim() || !email?.trim() || !message?.trim()) {
     return res.status(400).json({ success: false, message: 'Champs requis manquants' });
@@ -136,7 +145,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         to: 'website@mediasmart.ch',
         replyTo: email,
         subject: t.subject(name),
-        html: buildInternalHtml(t, name, email, phone, message),
+        html: buildInternalHtml(t, name, email, phone, message, intent, projectType),
       }),
       resend.emails.send({
         from: 'MediaSmart <noreply@mediasmart.ch>',
