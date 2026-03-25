@@ -12,6 +12,7 @@ const contactApiErrors = {
   invalidPayload: 'Champs invalides',
   sendFailed: 'Erreur lors de l\'envoi',
   serverError: 'Erreur serveur',
+  rateLimited: 'Trop de tentatives, veuillez reessayer plus tard',
 };
 
 const i18n = {
@@ -314,7 +315,7 @@ function buildContactEmails(payload) {
 }
 
 /**
- * @param {{ emails: { send: (payload: Record<string, unknown>) => Promise<{ error?: unknown }> } }} resend
+ * @param {{ emails: { send: (...args: any[]) => Promise<{ error?: unknown }> } }} resend
  * @param {ContactPayload} payload
  */
 async function sendContactEmails(resend, payload) {
