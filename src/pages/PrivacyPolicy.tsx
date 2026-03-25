@@ -1,7 +1,7 @@
 import React from "react";
-import AOS from "aos";
 
 import { useAppSelector } from "services/hooks/hooks";
+import { refreshAosAnimations } from "services/aos/timing";
 
 import PrivacyPolicy from "components/presentation/privacyPolicy/index";
 
@@ -12,7 +12,7 @@ const PrivacyPolicyPage = () => {
   const [hasAnimated, setHasAnimated] = React.useState(false);
 
   React.useEffect(() => {
-      AOS.refresh();
+      refreshAosAnimations();
       setHasAnimated(true);
     }, []);
 

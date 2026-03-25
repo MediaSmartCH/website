@@ -1,9 +1,9 @@
 import React from "react";
-import AOS from "aos";
 import { Link } from "react-router-dom";
 import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowRight, ArrowLeft } from "lucide-react";
 import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
+import { refreshAosAnimations } from "services/aos/timing";
 import { useTranslations } from "services/locales/safe";
 import { useLangLink } from "services/router/langPath";
 import Contact from "components/common/Contact";
@@ -16,7 +16,7 @@ export default function SupportContractPage() {
   const isLight = themeReducer === "light";
 
   const [hasAnimated, setHasAnimated] = React.useState(false);
-  React.useEffect(() => { AOS.refresh(); setHasAnimated(true); }, []);
+  React.useEffect(() => { refreshAosAnimations(); setHasAnimated(true); }, []);
 
   // Freeze AOS animations on theme change to prevent re-triggering entrance effects
   React.useEffect(() => {

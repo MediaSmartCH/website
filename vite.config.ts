@@ -69,12 +69,42 @@ export default defineConfig({
         warn(warning);
       },
       output: {
-        // Split large dependencies into named chunks to improve long-term caching
-        manualChunks: {
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
-          "redux-vendor": ["redux", "react-redux", "@reduxjs/toolkit", "redux-persist"],
-          "antd-vendor": ["antd"],
-          "ui-vendor": ["lucide-react", "aos"],
+        // Group major libraries into stable vendor chunks to improve cache hit
+        // rates and keep the Lottie runtime isolated from route code.
+        manualChunks(id) {
+          if (id.includes("@lottiefiles") || id.includes("@dotlottie")) {
+            return "lottie-vendor";
+          }
+
+          if (
+            id.includes("/node_modules/react/") ||
+            id.includes("/node_modules/react-dom/") ||
+            id.includes("/node_modules/react-router-dom/")
+          ) {
+            return "react-vendor";
+          }
+
+          if (
+            id.includes("/node_modules/redux/") ||
+            id.includes("/node_modules/react-redux/") ||
+            id.includes("/node_modules/@reduxjs/toolkit/") ||
+            id.includes("/node_modules/redux-persist/")
+          ) {
+            return "redux-vendor";
+          }
+
+          if (id.includes("/node_modules/antd/")) {
+            return "antd-vendor";
+          }
+
+          if (
+            id.includes("/node_modules/lucide-react/") ||
+            id.includes("/node_modules/aos/")
+          ) {
+            return "ui-vendor";
+          }
+
+          return undefined;
         },
       },
     },
