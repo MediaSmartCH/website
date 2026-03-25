@@ -4,8 +4,8 @@ import { Dropdown } from "antd";
 
 import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
 import { useTranslations } from "services/locales/safe";
-import logo from "assets/images/logo-header.png";
-import logoDark from "assets/images/logo-footer.png";
+import logo from "assets/images/logo-header.webp";
+import logoDark from "assets/images/logo-footer.webp";
 import toggler from "assets/icons/toggler.svg";
 
 import { useLangLink } from "services/router/langPath";
@@ -209,8 +209,10 @@ const Navbar = () => {
             >
               <img
                 src={themeReducer === "light" ? logo : logoDark}
-                alt="logo"
+                alt="MediaSmart"
                 className="w-[170px] xl:w-[190px] 2xl:w-[206px]"
+                width="412"
+                height="53"
               />
             </Link>
             <ul className="nav-list flex items-center justify-center lg:gap-x-[0px] xl:gap-x-[10px] 2xl:gap-x-[20px] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] lg:ml-[50px] lg:mr-[34px] xl:ml-[75px] xl:mr-[44px]">
@@ -323,8 +325,10 @@ const Navbar = () => {
             <Link to={L("/")} className="header-aos">
               <img
                 src={themeReducer === "light" ? logo : logoDark}
-                alt="logo"
+                alt="MediaSmart"
                 className="w-[130px]"
+                width="412"
+                height="53"
               />
             </Link>
             <div className="flex justify-center items-center gap-x-[12px] sm:gap-x-[20px]">
@@ -347,7 +351,7 @@ const Navbar = () => {
                   getPopupContainer={() => document.body}
                   overlayClassName="mobile-menu-dropdown"
                 >
-                  <img src={toggler} alt="toggler" className="w-[28px] h-[24px]" />
+                  <img src={toggler} alt="Menu" className="w-[28px] h-[24px]" />
                 </Dropdown>
               </div>
             </div>

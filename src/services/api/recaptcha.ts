@@ -3,6 +3,11 @@ type ExecuteRecaptcha = ((action: string) => Promise<string>) | undefined;
 const privateNetworkPattern =
   /^(localhost|127\.0\.0\.1|10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/;
 
+export const getRecaptchaSiteKey = () =>
+  import.meta.env.VITE_RECAPTCHA_SITE_KEY ||
+  import.meta.env.REACT_APP_RECAPTCHA_SITE_KEY ||
+  "";
+
 export const shouldBypassRecaptcha = () => {
   if (typeof window === "undefined") {
     return false;

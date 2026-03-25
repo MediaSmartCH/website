@@ -32,31 +32,22 @@ const Hero = () => {
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}
         >
-          <p
+          <h1
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] md:w-[75%] lg:w-[80%] 2xl:w-[70%]`}
-            data-aos="fade-up"
-            data-aos-duration="900"
-            data-aos-easing="ease-in-sine"
           >
             <span className="mr-3 gradient-text">
               {t.text("home.heroTitle")}
             </span>
             {t.text("home.heroSubtitle")}
-          </p>
+          </h1>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"
               } w-full mx-auto text-center mb-[20px] lg:mb-[32px] font-poppins font-normal text-[12px] md:text-[16px] xl:text-[17px] 2xl:text-[18px] lg:w-[80%] 2xl:w-[65%]`}
-            data-aos="fade-up"
-            data-aos-duration="1100"
-            data-aos-easing="ease-in-sine"
           >
             {t.text("home.heroDescription")}
           </p>
           <div className="w-full justify-center flex items-center gap-3 md:gap-5 flex-wrap px-[20px]"
-            data-aos="fade-up"
-            data-aos-duration="1300"
-            data-aos-easing="ease-in-sine"
           >
             <Link to={L("/it-services")} onMouseEnter={preloadITServices}>
               <button
@@ -91,9 +82,6 @@ const Hero = () => {
         <div
           className="w-full md:w-[80%] lg:w-[75%] xl:w-[75%] h-full mx-auto mt-[30px] lg:mt-[30px]"
           style={{ zIndex: 50 }}
-          data-aos="fade-up"
-          data-aos-duration="1500"
-          data-aos-easing="ease-in-sine"
         >
           <div className="w-full h-full mx-auto">
             <Suspense

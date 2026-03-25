@@ -5,7 +5,7 @@ import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "re
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { getRecaptchaToken } from "services/api/recaptcha";
 import { fetchWithDeployment } from "services/api/fetchWithDeployment";
 
@@ -26,6 +26,7 @@ import arrow from "assets/icons/rightArrow.svg";
 
 import { Link } from "react-router-dom";
 import { useLangLink } from "services/router/langPath";
+import ScopedRecaptchaProvider from "./ScopedRecaptchaProvider";
 
 const ProjectTypeDropdown = ({
   options,
@@ -101,7 +102,7 @@ const ProjectTypeDropdown = ({
   );
 };
 
-const Contact = () => {
+const ContactInner = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { L } = useLangLink();
 
@@ -754,5 +755,11 @@ const Contact = () => {
     </div>
   );
 };
+
+const Contact = () => (
+  <ScopedRecaptchaProvider>
+    <ContactInner />
+  </ScopedRecaptchaProvider>
+);
 
 export default Contact;
