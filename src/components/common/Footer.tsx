@@ -85,7 +85,7 @@ const Footer = () => {
               data-aos-duration="1000"
               href="https://www.linkedin.com/company/MediaSmartCH"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <img
                 src={linkedin}
@@ -101,7 +101,7 @@ const Footer = () => {
               data-aos-duration="1000"
               href="https://www.instagram.com/MediaSmartCH"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <img
                 src={insta}
@@ -115,9 +115,9 @@ const Footer = () => {
               className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
               data-aos="fade-down"
               data-aos-duration="1000"
-              href="https:/t.me/MediaSmartCH"
+              href="https://t.me/MediaSmartCH"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <img
                 src={telegram}
