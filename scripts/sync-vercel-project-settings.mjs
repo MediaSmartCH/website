@@ -26,14 +26,17 @@ const parseJsonOutput = (output) => {
 };
 
 const getProjectContext = () => {
-  const fallback = existsSync(localProjectPath) ? readJson(localProjectPath) : {};
+  const localContext = existsSync(localProjectPath) ? readJson(localProjectPath) : {};
 
-  const projectId = process.env.VERCEL_PROJECT_ID || fallback.projectId;
-  const teamId = process.env.VERCEL_TEAM_ID || fallback.orgId;
+  const projectId = process.env.VERCEL_PROJECT_ID || localContext.projectId;
+  const teamId =
+    process.env.VERCEL_TEAM_ID ||
+    process.env.VERCEL_ORG_ID ||
+    localContext.orgId;
 
   if (!projectId) {
     throw new Error(
-      "Missing VERCEL_PROJECT_ID. Set it explicitly or link the project with Vercel first."
+      "Missing VERCEL_PROJECT_ID. Set it explicitly in CI or link the project locally with Vercel first."
     );
   }
 
