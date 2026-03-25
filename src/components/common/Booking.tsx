@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { PopupButton } from "react-calendly";
+import React from "react";
 
+import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import bookLine from "assets/icons/bookLine.svg";
 
 const Booking = () => {
-  const [showBookingModal, setShowBookingModal] = useState(false);
-  const rootElement = document.getElementById("root");
-
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -16,19 +13,6 @@ const Booking = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
-
-  // Prevent background scroll while the modal is open.
-  useEffect(() => {
-    if (showBookingModal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [showBookingModal]);
 
   return (
     <div className="md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px]">
@@ -65,10 +49,9 @@ const Booking = () => {
             data-aos-duration="1500"
             data-aos-easing="ease-in-sine"
           >
-            <PopupButton
+            <ConsentAwareCalendlyButton
               className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
-              url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
-              rootElement={rootElement as HTMLElement}
+              blockedTitle={t.text("cookies.manageCookies")}
               text={t.text("home.bookingBtn")}
               pageSettings={{
                 backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",

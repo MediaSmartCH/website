@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from "react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
@@ -19,12 +20,11 @@ const Hero = () => {
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}
         >
-          <p
+          <RichText
+            as="p"
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full lg:w-[70%] 2xl:w-[60%] it-service-hero-gradient mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] leading-[40px] lg:leading-[50px] xl:leading-[70px]`}
-            dangerouslySetInnerHTML={{
-              __html: t.text("it.itServicesHeroTitle"),
-            }}
+            html={t.text("it.itServicesHeroTitle")}
             data-aos="fade-up"
             data-aos-duration="900"
             data-aos-easing="ease-in-sine"

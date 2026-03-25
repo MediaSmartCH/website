@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Mail } from "lucide-react";
-import { PopupButton } from "react-calendly";
+import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
@@ -10,7 +10,6 @@ const Error404Page: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useParams<{ lang?: string }>();
   const currentLang = lang || 'fr';
-  const rootElement = document.getElementById("root");
 
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
@@ -165,10 +164,9 @@ const Error404Page: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <PopupButton
+              <ConsentAwareCalendlyButton
                 className="custom-btn rounded-[80px] text-white px-8 py-3 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2"
-                url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
-                rootElement={rootElement as HTMLElement}
+                blockedTitle={t.text("cookies.manageCookies")}
                 text={t.text("error404.bookingButton")}
                 pageSettings={{
                   backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",

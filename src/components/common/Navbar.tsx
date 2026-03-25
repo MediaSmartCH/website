@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown } from "antd";
-import { PopupButton } from "react-calendly";
 
+import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
 import { useTranslations } from "services/locales/safe";
 import logo from "assets/images/logo-header.png";
 import logoDark from "assets/images/logo-footer.png";
@@ -33,7 +33,6 @@ const Navbar = () => {
   };
   const [isThemeChanging, setIsThemeChanging] = React.useState(false);
 
-  const rootElement = document.getElementById("root");
   const {
     currentLanguage: languageReducer,
     currentTheme: themeReducer,
@@ -147,10 +146,9 @@ const Navbar = () => {
     {
       key: 'booking',
       label: (
-        <PopupButton
+        <ConsentAwareCalendlyButton
           className="navbar-btn px-[16px] min-h-[35px] py-[6px] rounded-[5px] text-[#fff] font-poppins font-medium text-[16px]"
-          url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
-          rootElement={rootElement as HTMLElement}
+          blockedTitle={t.text("cookies.manageCookies")}
           text={t.text("navbar.navbarButton")}
           pageSettings={{
             backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
@@ -306,10 +304,9 @@ const Navbar = () => {
                 onThemeChange={handleThemeChange}
                 labels={labels}
               />
-              <PopupButton
+              <ConsentAwareCalendlyButton
                 className="custom-btn2 middle-out px-[15px] xl:px-[18px] lg:min-h-[40px] xl:min-h-[44px] py-[8px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
-                url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
-                rootElement={rootElement as HTMLElement}
+                blockedTitle={t.text("cookies.manageCookies")}
                 text={t.text("navbar.navbarButton")}
                 pageSettings={{
                   backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
