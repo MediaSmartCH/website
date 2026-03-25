@@ -3,6 +3,7 @@ import AOS from "aos";
 import { useAppSelector } from "services/hooks/hooks";
 import Navbar from "components/common/Navbar";
 import Footer from "components/common/Footer";
+import PageTopBackdrop from "components/common/PageTopBackdrop";
 import { useLocation } from "react-router-dom";
 
 interface LayoutProps { children: React.ReactNode; }
@@ -64,7 +65,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div>
       <Navbar />
-      <main>{children}</main>
+      <main className="relative">
+        <PageTopBackdrop />
+        <div className="relative z-10">{children}</div>
+      </main>
       <Footer />
     </div>
   );

@@ -37,7 +37,6 @@ const Hero = () => {
   React.useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const mediaQuery = window.matchMedia("(max-width: 767px)");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const connection = (navigator as Navigator & { connection?: NetworkInformationLike })
       .connection;
@@ -47,27 +46,26 @@ const Hero = () => {
         connection?.saveData === true ||
         ["slow-2g", "2g", "3g"].includes(connection?.effectiveType || "");
 
-      setUseLightweightVisual(
-        mediaQuery.matches || motionQuery.matches || slowConnection
-      );
+      setUseLightweightVisual(motionQuery.matches || slowConnection);
     };
 
     updateVisualMode();
 
-    mediaQuery.addEventListener("change", updateVisualMode);
     motionQuery.addEventListener("change", updateVisualMode);
     connection?.addEventListener?.("change", updateVisualMode);
 
     return () => {
-      mediaQuery.removeEventListener("change", updateVisualMode);
       motionQuery.removeEventListener("change", updateVisualMode);
       connection?.removeEventListener?.("change", updateVisualMode);
     };
   }, []);
 
   return (
-    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="home">
-      <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[50px] relative">
+    <div
+      className="pt-[73px] md:pt-[130px] lg:pt-[100px]"
+      id="home"
+    >
+      <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[24px] lg:pt-[36px] xl:pt-[40px] pb-[50px] relative">
         <div
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}

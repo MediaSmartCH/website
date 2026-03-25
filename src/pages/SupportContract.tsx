@@ -130,8 +130,7 @@ export default function SupportContractPage() {
         </div>
       </div>
 
-      {/* Hero and priorities share the wave background so they fade together */}
-      <div className={`${isLight ? "hero-bg" : "hero-bg-dark"} pt-[150px] pb-[50px]`}>
+      <div className="pt-[150px] pb-[50px]">
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto">
           <RichText
             as="p"

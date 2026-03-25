@@ -3,14 +3,12 @@ import AOS from "aos";
 
 import { useAppSelector } from "services/hooks/hooks";
 
+import About from "components/presentation/home/About";
 import Hero from "components/presentation/home/Hero";
+import ITOverview from "components/presentation/home/it-overview";
+import VideoOverview from "components/presentation/home/video-overview";
 import useScrollToHash from "services/hooks/useScrolltoHash";
 
-const About = lazy(() => import("components/presentation/home/About"));
-const ITOverview = lazy(() => import("components/presentation/home/it-overview"));
-const VideoOverview = lazy(
-  () => import("components/presentation/home/video-overview")
-);
 const Contact = lazy(() => import("components/common/Contact"));
 
 type NetworkInformationLike = {
@@ -18,7 +16,7 @@ type NetworkInformationLike = {
   saveData?: boolean;
 };
 
-const getShouldDeferBelowFold = () => {
+const getShouldDeferContact = () => {
   if (typeof window === "undefined") return false;
 
   const mediaQuery = window.matchMedia("(max-width: 767px)");
@@ -36,75 +34,14 @@ const Homepage = () => {
   useScrollToHash();
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-  const [shouldDeferBelowFold] = React.useState(() => getShouldDeferBelowFold());
+  const [shouldDeferContact] = React.useState(() => getShouldDeferContact());
   const [hasAnimated, setHasAnimated] = React.useState(false);
-  const [showBelowFold, setShowBelowFold] = React.useState(
-    typeof window !== "undefined"
-      ? Boolean(window.location.hash) || !getShouldDeferBelowFold()
-      : true
-  );
   const [showContact, setShowContact] = React.useState(
     typeof window !== "undefined"
-      ? window.location.hash === "#contact" || !getShouldDeferBelowFold()
+      ? window.location.hash === "#contact" || !getShouldDeferContact()
       : true
   );
   const contactSentinelRef = React.useRef<HTMLDivElement | null>(null);
-
-  React.useEffect(() => {
-    if (showBelowFold || typeof window === "undefined" || !shouldDeferBelowFold) {
-      return;
-    }
-
-    const reveal = () => {
-      React.startTransition(() => {
-        setShowBelowFold(true);
-      });
-    };
-
-    const handleHashNavigation = () => {
-      if (window.location.hash === "#contact") {
-        setShowContact(true);
-      }
-      reveal();
-    };
-    const handleUserIntent = () => reveal();
-
-    window.addEventListener("hashchange", handleHashNavigation);
-    window.addEventListener("scroll", handleUserIntent, { once: true, passive: true });
-    window.addEventListener("wheel", handleUserIntent, { once: true, passive: true });
-    window.addEventListener("touchstart", handleUserIntent, {
-      once: true,
-      passive: true,
-    });
-    window.addEventListener("keydown", handleUserIntent, { once: true });
-
-    let timeoutId: number | undefined;
-    let idleId: number | undefined;
-
-    const timeout = 600;
-
-    if ("requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(reveal, { timeout });
-    } else {
-      timeoutId = window.setTimeout(reveal, timeout);
-    }
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashNavigation);
-      window.removeEventListener("scroll", handleUserIntent);
-      window.removeEventListener("wheel", handleUserIntent);
-      window.removeEventListener("touchstart", handleUserIntent);
-      window.removeEventListener("keydown", handleUserIntent);
-
-      if (typeof idleId === "number" && "cancelIdleCallback" in window) {
-        window.cancelIdleCallback(idleId);
-      }
-
-      if (typeof timeoutId === "number") {
-        window.clearTimeout(timeoutId);
-      }
-    };
-  }, [showBelowFold, shouldDeferBelowFold]);
 
   React.useEffect(() => {
     AOS.refresh();
@@ -112,8 +49,20 @@ const Homepage = () => {
   }, []);
 
   React.useEffect(() => {
-    if (!showBelowFold) return;
+    if (typeof window === "undefined") return undefined;
 
+    const handleHashNavigation = () => {
+      if (window.location.hash === "#contact") {
+        setShowContact(true);
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashNavigation);
+
+    return () => window.removeEventListener("hashchange", handleHashNavigation);
+  }, []);
+
+  React.useEffect(() => {
     const rafId = window.requestAnimationFrame(() => {
       AOS.refresh();
 
@@ -129,14 +78,13 @@ const Homepage = () => {
     });
 
     return () => window.cancelAnimationFrame(rafId);
-  }, [showBelowFold, showContact]);
+  }, [showContact]);
 
   React.useEffect(() => {
     if (
-      !showBelowFold ||
       showContact ||
       typeof window === "undefined" ||
-      !shouldDeferBelowFold
+      !shouldDeferContact
     ) {
       return;
     }
@@ -161,7 +109,7 @@ const Homepage = () => {
     observer.observe(target);
 
     return () => observer.disconnect();
-  }, [showBelowFold, showContact, shouldDeferBelowFold]);
+  }, [showContact, shouldDeferContact]);
 
   React.useEffect(() => {
     if (!showContact || typeof window === "undefined" || window.location.hash !== "#contact") {
@@ -185,18 +133,18 @@ const Homepage = () => {
         (el as HTMLElement).style.transform = 'none';
       });
     }
-  }, [themeReducer, hasAnimated, showBelowFold, showContact]);
+  }, [themeReducer, hasAnimated, showContact]);
 
   return (
     <>
       <Hero />
-      {showBelowFold && (
+      <About />
+      <ITOverview />
+      <VideoOverview />
+      <div ref={contactSentinelRef} aria-hidden="true" className="h-px w-full" />
+      {showContact && (
         <Suspense fallback={null}>
-          <About />
-          <ITOverview />
-          <VideoOverview />
-          <div ref={contactSentinelRef} aria-hidden="true" className="h-px w-full" />
-          {showContact && <Contact />}
+          <Contact />
         </Suspense>
       )}
     </>
