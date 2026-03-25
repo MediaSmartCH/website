@@ -21,6 +21,7 @@ export default function useScrollToHash(offset = -25) {
         window.scrollTo({ top, left: 0, behavior: "smooth" });
         return;
       }
+      // Retry via rAF up to 50 times to handle elements that render asynchronously
       if (attempts-- > 0) requestAnimationFrame(tick);
     };
 

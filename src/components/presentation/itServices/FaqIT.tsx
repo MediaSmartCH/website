@@ -2,7 +2,6 @@ import React from "react";
 import { Collapse } from "antd";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
-import WaveBackdrop from "components/common/WaveBackdrop";
 
 import "assets/styles/faqCss.css";
 
@@ -23,6 +22,7 @@ const FaqIT: React.FC = () => {
 
   const keys = ["itFaq1", "itFaq2", "itFaq3", "itFaq4", "itFaq5", "itFaq6"] as const;
 
+  // Build Ant Design Collapse items from translation objects
   const items = keys.map((key, i) => ({
     key: String(i + 1),
     label: t.object<FaqTile>(`it.${key}`).faqQuestion,
@@ -36,10 +36,6 @@ const FaqIT: React.FC = () => {
 
   return (
     <div id="faq-it" className="relative overflow-hidden">
-      {/* <WaveBackdrop
-        theme={themeReducer}
-        className="top-[116px] h-[620px] md:top-[12px] md:h-[700px] lg:top-[-12px] lg:h-[760px] xl:top-[-18px] xl:h-[790px]"
-      /> */}
       <div className="relative z-10 w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
         <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl:px-[60px] flex flex-col items-start">
           <p

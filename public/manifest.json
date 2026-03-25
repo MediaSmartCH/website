@@ -1,6 +1,7 @@
 {
   "short_name": "MediaSmart",
-  "name": "Elevate Your Brand with MediaSmart: Captivating Visuals, Memorable Stories.",
+  "name": "MediaSmart",
+  "description": "MediaSmart provides IT services, website creation and video production in Switzerland.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +19,10 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "lang": "fr",
+  "start_url": "/fr",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#0f0e1a",
   "background_color": "#ffffff"
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { PopupButton } from "react-calendly";
 import { Calendar } from "lucide-react";
-// import DotAnim from "components/common/DotAnim";
 import emailjs from "@emailjs/browser";
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -38,7 +37,6 @@ const UnderConstruction: React.FC = () => {
     setRootEl(document.getElementById("root") as HTMLElement | null);
   }, []);
 
-  // États pour la gestion du formulaire
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -71,6 +69,7 @@ const UnderConstruction: React.FC = () => {
     setError("");
 
     try {
+      // Skip reCAPTCHA verification on local/private network hosts
       const isLocalHost =
         ["localhost", "127.0.0.1"].includes(window.location.hostname) ||
         /^192\.168\./.test(window.location.hostname) ||
@@ -91,8 +90,6 @@ const UnderConstruction: React.FC = () => {
           setIsSubmitting(false);
           return;
         }
-      } else {
-        // console.log("🏠 Localhost : ReCAPTCHA bypassed");
       }
 
       await emailjs.send(
@@ -111,7 +108,6 @@ const UnderConstruction: React.FC = () => {
       setEmail("");
       setTimeout(() => setDone(false), 3000);
     } catch (err) {
-      // console.log("FAILED...", err);
       setError(t.text("UnderConstruction.sendErrorGeneric"));
     } finally {
       setLoading(false);
@@ -128,7 +124,6 @@ const UnderConstruction: React.FC = () => {
         } min-h-screen relative overflow-hidden flex items-center justify-center px-6 sm:px-8 md:px-4 py-8`}
     >
 
-      {/* Boutons de contrôle discrets - positionnés différemment sur mobile */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-auto sm:right-6 sm:top-6 sm:translate-x-0 z-20 flex items-center gap-2 sm:gap-4">
         <LocaleThemeControls
           currentLanguage={languageReducer}
@@ -155,13 +150,11 @@ const UnderConstruction: React.FC = () => {
           />
         </div>
 
-        {/* Main title */}
         <h2 className={`${themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
           } font-redDisplay font-bold text-3xl sm:text-4xl md:text-6xl mb-6 sm:mb-8 px-2`}>
           {t.text("UnderConstruction.title")}
         </h2>
 
-        {/* Subtitle */}
         <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
           } font-poppins font-normal text-lg sm:text-xl md:text-2xl mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4`}>
           {t.text("UnderConstruction.subtitle")}{" "}
@@ -171,7 +164,6 @@ const UnderConstruction: React.FC = () => {
           {t.text("UnderConstruction.tagline")}
         </p>
 
-        {/* Main Lottie animation */}
         <div className="relative mb-16 sm:mb-20">
           <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 mx-auto">
             <Suspense
@@ -191,7 +183,6 @@ const UnderConstruction: React.FC = () => {
           </div>
         </div>
 
-        {/* Services cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-3xl mx-auto px-4">
           <div className={`${themeReducer === "light"
             ? "bg-white/90 border-purple-100"
@@ -254,7 +245,6 @@ const UnderConstruction: React.FC = () => {
           </div>
         </div>
 
-        {/* Progress bar */}
         <div className="mb-10 sm:mb-12 px-4">
           <div className="flex items-center justify-between mb-4">
             <span className={`${themeReducer === "light" ? "text-gray-700" : "text-[#E5E5E5]"
@@ -277,7 +267,6 @@ const UnderConstruction: React.FC = () => {
           </div>
         </div>
 
-        {/* Subscription form */}
         <div className={`${themeReducer === "light"
           ? "bg-white/90 border-gray-100"
           : "bg-[#685A9C]/90 border-gray-700"
@@ -337,7 +326,6 @@ const UnderConstruction: React.FC = () => {
               </button>
             </div>
 
-            {/* Error message */}
             {error && (
               <p id="uc-email-error" className="text-red-500 font-poppins font-light text-sm text-center" aria-live="polite">
                 {error}
@@ -346,7 +334,6 @@ const UnderConstruction: React.FC = () => {
           </form>
         </div>
 
-        {/* Emergency contact */}
         <div className="text-center px-4">
           <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
             } font-poppins font-normal text-base sm:text-lg mb-4`}>
@@ -385,7 +372,6 @@ const UnderConstruction: React.FC = () => {
         </div>
       </div>
 
-      {/* CSS styles */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -405,19 +391,19 @@ const UnderConstruction: React.FC = () => {
           .calendly-overlay {
             padding: 15px !important;
           }
-          
+
           .calendly-popup {
             margin: 15px !important;
             border-radius: 12px !important;
             max-width: calc(100vw - 30px) !important;
             max-height: calc(100vh - 30px) !important;
           }
-          
+
           @media (max-width: 768px) {
             .calendly-overlay {
               padding: 10px !important;
             }
-            
+
             .calendly-popup {
               margin: 10px !important;
               max-width: calc(100vw - 20px) !important;

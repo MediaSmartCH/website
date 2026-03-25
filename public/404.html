@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 | MediaSmart</title>
+  <meta
+    name="description"
+    content="The requested page could not be found. Explore MediaSmart IT services and video production instead."
+  />
+  <meta name="robots" content="noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="theme-color" content="#0f0e1a" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f0e1a;
+      --panel: rgba(25, 24, 48, 0.84);
+      --panel-border: rgba(168, 139, 250, 0.18);
+      --text: #f6f6f6;
+      --muted: #c8cae0;
+      --accent: #8b5cf6;
+      --accent-2: #4f8cff;
+      --shadow: 0 24px 80px rgba(10, 10, 25, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(139, 92, 246, 0.3), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(79, 140, 255, 0.24), transparent 30%),
+        linear-gradient(180deg, #141327 0%, var(--bg) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    main {
+      width: min(880px, 100%);
+      border: 1px solid var(--panel-border);
+      border-radius: 28px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 40px 28px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 24px rgba(139, 92, 246, 0.55);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Red Hat Display", "Segoe UI", Arial, sans-serif;
+      font-size: clamp(48px, 9vw, 88px);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      margin: 16px 0 0;
+      max-width: 640px;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      padding: 24px 28px 28px;
+    }
+
+    .card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 22px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-family: "Red Hat Display", "Segoe UI", Arial, sans-serif;
+      font-size: 24px;
+    }
+
+    .card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .primary,
+    .secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 14px 32px rgba(79, 140, 255, 0.26);
+    }
+
+    .secondary {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .primary:hover,
+    .secondary:hover,
+    .primary:focus-visible,
+    .secondary:focus-visible {
+      transform: translateY(-1px);
+    }
+
+    .footer {
+      padding: 0 28px 28px;
+      color: rgba(255, 255, 255, 0.64);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 720px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero,
+      .grid,
+      .footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        MediaSmart
+      </div>
+      <h1>404</h1>
+      <p class="subtitle">
+        The requested page could not be found. Cette page n'existe pas ou n'est plus disponible.
+      </p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Explore the website</h2>
+        <p>
+          Browse the main MediaSmart sections for IT services, video production, support plans, and company information.
+        </p>
+        <div class="actions">
+          <a class="primary" href="/fr">Accueil</a>
+          <a class="secondary" href="/en">Home</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Quick links</h2>
+        <p>
+          Use these entry points if you were looking for one of the core service pages.
+        </p>
+        <div class="actions">
+          <a class="secondary" href="/fr/it-services">Services IT</a>
+          <a class="secondary" href="/fr/video-services">Services video</a>
+          <a class="secondary" href="/fr/support-contract">Support</a>
+          <a class="secondary" href="mailto:contact@mediasmart.ch">Contact</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="footer">
+      MediaSmart, Switzerland. If you reached this page from an internal link, the URL should be corrected.
+    </div>
+  </main>
+</body>
+</html>

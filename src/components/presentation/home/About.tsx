@@ -1,17 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import raphaelPhoto from "assets/images/raphael-rouiller.jpg";
 import { Briefcase, CheckCircle2, Linkedin, MapPin, User } from "lucide-react";
-// import Lottie from 'react-lottie';
-// import DotAnim from "components/common/DotAnim";
-
-// Hooks
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
-
-// Importation of lottie files
-// import aboutLight from 'assets/images/lotties/aboutLight.json';
-// import aboutDark from 'assets/images/lotties/aboutDark.json';
 
 const About = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
@@ -42,15 +33,6 @@ const About = () => {
   ];
   const soloHighlights = t.array<string>("home.soloHighlights", []);
 
-  // const aboutLottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? aboutLight : aboutDark,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet"
-  //   }
-  // };
-
   return (
     <div id="about" className="scroll-mt-[120px]">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] py-[40px] mx-auto">
@@ -71,9 +53,9 @@ const About = () => {
                     : "text-[#F6F6F6]"
                     } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                 >
-                  {/* {dictionary["home"][languageReducer]["aboutTitle"]} */} {t.text("home.aboutTitle")}
+                  {t.text("home.aboutTitle")}
                   <span className="gradient-text">
-                    {/* {dictionary["home"][languageReducer]["aboutSubtitle"]} */} {t.text("home.aboutSubtitle")}
+                    {t.text("home.aboutSubtitle")}
                   </span>
 
                 </p>
@@ -91,9 +73,6 @@ const About = () => {
               data-aos-duration="1300"
             >
               <div className="w-full lg:w-[90%] 2xl:w-[85%] mx-auto">
-                {/* <Lottie
-                  options={aboutLottie}
-                /> */}
                 <Suspense
                   fallback={
                     <div className="h-[220px] flex items-center justify-center">
@@ -120,6 +99,7 @@ const About = () => {
             : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]"
             } relative overflow-hidden rounded-[24px] border p-5 md:p-8 lg:p-10`}
         >
+          {/* Decorative blurred blobs for visual depth */}
           <div className="absolute -top-16 right-0 h-44 w-44 rounded-full bg-[#59C3FF]/15 blur-3xl" />
           <div className="absolute -bottom-12 left-8 h-36 w-36 rounded-full bg-[#7A6BFF]/10 blur-3xl" />
 
@@ -139,6 +119,7 @@ const About = () => {
                       draggable={false}
                       onContextMenu={(e) => e.preventDefault()}
                     />
+                    {/* Transparent overlay prevents right-click save on the photo */}
                     <div className="absolute inset-0 rounded-[31px]" onContextMenu={(e) => e.preventDefault()} />
                   </div>
                 </div>

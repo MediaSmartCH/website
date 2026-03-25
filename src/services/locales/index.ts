@@ -1,12 +1,3 @@
-// import { navbar } from "./navbar";
-// import { footer } from "./footer"
-// import { en } from "./en/index"
-// import { home } from "./home"
-// import { it } from "./it"
-// import { video } from "./video"
-// import { error404 } from "./error404"
-// import { cookies } from "./cookies";
-// import type { Dictionary, Lang } from "./types";
 import * as EN from "./en";
 import * as FR from "./fr";
 

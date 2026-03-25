@@ -9,6 +9,7 @@ const WaveBackdrop: React.FC<WaveBackdropProps> = ({
   className = "",
   theme,
 }) => {
+  // useId produces strings like ":r0:" — colons are invalid in SVG id attributes.
   const gradientId = useId().replace(/:/g, "");
   const isLight = theme === "light";
   const fillGradientId = `wave-fill-${gradientId}`;
@@ -43,12 +44,16 @@ const WaveBackdrop: React.FC<WaveBackdropProps> = ({
           </linearGradient>
         </defs>
 
+        {/* Organic wave path — fills from the wave line downward to the bottom
+            of the viewBox, creating a soft background wash beneath content. */}
         <path
           d="M-120 188C6 96 154 92 288 184C431 282 620 343 824 313C1020 285 1186 323 1332 437C1449 528 1580 542 1720 476V760H-120V188Z"
           fill={`url(#${fillGradientId})`}
         />
       </svg>
 
+      {/* Soft elliptical glow at the bottom edge to blend the wave into the
+          section below it. */}
       <div
         className="absolute bottom-[-6%] left-1/2 h-[26%] w-[76%] -translate-x-1/2 rounded-[50%] blur-[72px]"
         style={{

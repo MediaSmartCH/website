@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { pathname, hash } = useLocation();
   const firstRenderRef = React.useRef(true);
 
-  // ⚠️ Init AOS après que TOUT soit chargé pour éviter le reflow (FOUC)
+  // Defer AOS init until the window load event to avoid layout shifts (FOUC)
   React.useEffect(() => {
     const onLoad = () => {
       AOS.init({
@@ -27,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return () => window.removeEventListener("load", onLoad);
   }, []);
 
-  // Forcer l’en-tête à rester visible après changement de thème
+  // AOS animations can hide elements — force header visibility after a theme change
   React.useEffect(() => {
     const elements = document.querySelectorAll(".header-aos");
     elements.forEach((el) => {
@@ -36,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     });
   }, [themeReducer]);
 
-  // Scroll top sur changement de route (hors ancres)
+  // Scroll to top on route change, skipping the initial render and hash links
   React.useEffect(() => {
     if (firstRenderRef.current) { firstRenderRef.current = false; return; }
     if (window.location.hash) return;
@@ -45,7 +45,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     });
   }, [pathname]);
 
-  // Scroll vers l'ancre quand le hash change
+  // Scroll to the target element when a hash is present. If the element isn't
+  // mounted yet (cross-page navigation), retry after a short delay.
   React.useEffect(() => {
     if (!hash) return;
     const id = hash.slice(1);
@@ -55,7 +56,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       return false;
     };
     if (!scroll()) {
-      // L'élément n'est pas encore monté (navigation inter-pages) — réessaie après le paint
       const timer = setTimeout(scroll, 120);
       return () => clearTimeout(timer);
     }

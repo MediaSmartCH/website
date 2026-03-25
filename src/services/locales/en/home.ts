@@ -1,5 +1,4 @@
 const home = {
-    // Hero
     heroTitle: "MediaSmart",
     heroSubtitle: "Powering your projects",
     heroDescription:
@@ -7,16 +6,13 @@ const home = {
     itBtn: "Explore IT Services",
     videoBtn: "Explore Video Services",
 
-    // booking
     bookingTitle: "Interested in Booking a Free 30-Minute Consultation?",
     bookingDescription:
         "Embark on your creative journey with MediaSmart through a complimentary, 30-minute consultation. Choose a convenient location for you – be it your home, a public space, or even a virtual meeting – and select a time that aligns with our schedule. Simply provide your preferred meeting details and contact information, and we'll set up the appointment. This session is your opportunity to discuss your ideas with us and discover how we can collaborate to turn your vision into compelling visual narratives.",
     bookingBtn: "Book your 30-Min Consultation",
 
-    // partners
     partnersTitle: "Our trusted partners",
 
-    // about
     aboutTitle: "About ",
     aboutSubtitle: "MediaSmart",
     aboutDescription: `
@@ -51,7 +47,6 @@ const home = {
     soloNote:
         "The goal is not to look bigger than I am, but to stay useful: direct, reliable, and fully involved.",
 
-    // ITOverview
     ITOverviewTitle: "IT Overview",
     ITOverviewDescription:
         "Agile IT services tailored to your needs:",
@@ -83,7 +78,6 @@ const home = {
         }
     ],
 
-    // VideoOverview
     VideoOverviewTitle: "Video Overview",
     VideoOverviewDescription:
         "Professional video services, available individually or as a complete package.",
@@ -111,7 +105,6 @@ const home = {
         },
     ],
 
-    // FAQ
     faqTitle: "Frequently Asked Questions",
     tile1: {
         faqQuestion: "What types of events can MediaSmart handle?",
@@ -145,18 +138,17 @@ const home = {
             "We recommend booking as early as possible, especially for larger events or during peak periods. This ensures that we can allocate the appropriate resources and staff to meet your specific needs. However, we also strive to accommodate last-minute requests as much as possible.",
     },
 
-    // Testimonials
     testimonialTitle: "Testimonials",
     testimonialTitleDescription:
         "Trusted by our clients",
     author1: "John Doe",
     author1title: "CEO, Company Name",
     testimonial1:
-        "I’m very pleased with their work. When I need help with any aspect of development, I’m able to call on them to take care of it. They’re professional and complete tasks in a timely manner.",
+        "I'm very pleased with their work. When I need help with any aspect of development, I'm able to call on them to take care of it. They're professional and complete tasks in a timely manner.",
     author2: "Jane Doe",
     author2title: "CEO, Company Name",
     testimonial2:
-        "Scopic has never let me down. I’m pleased with our partnership and they consistently develop reliable applications. They estimate a range of hours for each project and they manage it efficiently.",
+        "Scopic has never let me down. I'm pleased with our partnership and they consistently develop reliable applications. They estimate a range of hours for each project and they manage it efficiently.",
     author3: "John Doe",
     author3title: "CEO, Company Name",
     testimonial3:
@@ -176,7 +168,6 @@ const home = {
     review: "Tell us your experience",
     noTestimonial: "No testimonials yet, be the first to leave a review on Google?",
 
-    // Contact
     contactTitle: "Get in touch with us",
     contactName: "Name *",
     contactEmail: "Email *",
