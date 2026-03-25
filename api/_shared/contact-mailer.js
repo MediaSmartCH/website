@@ -1,8 +1,15 @@
-const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}$/i;
+const {
+  fieldLimits,
+  isValidEmailStrict,
+  isWithinLength,
+  normalizeMultilineText,
+  normalizeSingleLineText,
+} = require('./input-validation.js');
 
 const contactApiErrors = {
   missingRequired: 'Champs requis manquants',
   invalidEmail: 'Email invalide',
+  invalidPayload: 'Champs invalides',
   sendFailed: 'Erreur lors de l\'envoi',
   serverError: 'Erreur serveur',
 };
@@ -83,10 +90,6 @@ const i18n = {
  * @typedef {{ ok: true, data: ContactPayload } | { ok: false, error: ContactValidationError }} ContactValidationResult
  */
 
-function normalizeText(value) {
-  return typeof value === 'string' ? value.trim() : '';
-}
-
 function normalizeLang(value) {
   return value === 'en' ? 'en' : 'fr';
 }
@@ -128,13 +131,13 @@ function normalizeContactPayload(payload) {
   const intent = normalizeIntent(payload?.intent);
 
   return {
-    name: normalizeText(payload?.name),
-    email: normalizeText(payload?.email),
-    phone: normalizeText(payload?.phone),
-    message: normalizeText(payload?.message),
+    name: normalizeSingleLineText(payload?.name),
+    email: normalizeSingleLineText(payload?.email).toLowerCase(),
+    phone: normalizeSingleLineText(payload?.phone),
+    message: normalizeMultilineText(payload?.message),
     lang: normalizeLang(payload?.lang),
     intent,
-    projectType: intent === 'quote' ? normalizeText(payload?.projectType) : '',
+    projectType: intent === 'quote' ? normalizeSingleLineText(payload?.projectType) : '',
   };
 }
 
@@ -145,7 +148,12 @@ function normalizeContactPayload(payload) {
 function validateContactPayload(payload) {
   const normalizedPayload = normalizeContactPayload(payload);
 
-  if (!normalizedPayload.name || !normalizedPayload.email || !normalizedPayload.message) {
+  if (
+    !normalizedPayload.name ||
+    !normalizedPayload.email ||
+    !normalizedPayload.message ||
+    (normalizedPayload.intent === 'quote' && !normalizedPayload.projectType)
+  ) {
     return {
       ok: false,
       error: {
@@ -155,12 +163,28 @@ function validateContactPayload(payload) {
     };
   }
 
-  if (!emailRegex.test(normalizedPayload.email)) {
+  if (!isValidEmailStrict(normalizedPayload.email)) {
     return {
       ok: false,
       error: {
         status: 400,
         message: contactApiErrors.invalidEmail,
+      },
+    };
+  }
+
+  if (
+    !isWithinLength(normalizedPayload.name, fieldLimits.contact.name) ||
+    !isWithinLength(normalizedPayload.email, fieldLimits.contact.email) ||
+    !isWithinLength(normalizedPayload.phone, fieldLimits.contact.phone) ||
+    !isWithinLength(normalizedPayload.message, fieldLimits.contact.message) ||
+    !isWithinLength(normalizedPayload.projectType, fieldLimits.contact.projectType)
+  ) {
+    return {
+      ok: false,
+      error: {
+        status: 400,
+        message: contactApiErrors.invalidPayload,
       },
     };
   }

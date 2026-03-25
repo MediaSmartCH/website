@@ -1,0 +1,42 @@
+name: CodeQL
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: '0 3 * * 1'
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+
+    strategy:
+      matrix:
+        language: ['javascript']
+
+    steps:
+      - name: Checkout repository
+        # Pin the action to an immutable commit to reduce supply-chain risk.
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+
+      - name: Initialize CodeQL
+        # Pin the action to an immutable commit to reduce supply-chain risk.
+        uses: github/codeql-action/init@480db559a14342288b67e54bd959dd52dc3ee68f
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        # Pin the action to an immutable commit to reduce supply-chain risk.
+        uses: github/codeql-action/autobuild@480db559a14342288b67e54bd959dd52dc3ee68f
+
+      - name: Analyze
+        # Pin the action to an immutable commit to reduce supply-chain risk.
+        uses: github/codeql-action/analyze@480db559a14342288b67e54bd959dd52dc3ee68f

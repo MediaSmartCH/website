@@ -6,7 +6,7 @@ import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { verifyRecaptchaToken } from "services/api/recaptcha";
+import { getRecaptchaToken } from "services/api/recaptcha";
 import { fetchWithDeployment } from "services/api/fetchWithDeployment";
 
 import { useAppSelector } from "services/hooks/hooks";
@@ -399,6 +399,10 @@ const Contact = () => {
               className="w-full"
               onSubmit={async (e) => {
                 e.preventDefault();
+                if (loading) return;
+
+                const formElement = e.currentTarget;
+                const honeypotValue = String(new FormData(formElement).get("website") ?? "");
 
                 if (!contact.name.trim()) {
                   setNameValid(false);
@@ -447,43 +451,44 @@ const Contact = () => {
                 setLoading(true);
 
                 try {
-                  const isLocalHost = window.location.hostname === 'localhost' ||
-                    window.location.hostname === '127.0.0.1';
+                  const recaptchaToken = await getRecaptchaToken(executeRecaptcha, "contact_form");
 
-                  // reCAPTCHA is bypassed in local development to avoid requiring
-                  // a valid token when working offline or without API keys.
-                  if (!isLocalHost) {
-                    if (!executeRecaptcha) {
-                    } else {
-                      const token = await executeRecaptcha('contact_form');
-                      const verification = await verifyRecaptchaToken(token);
-
-                      if (!verification.success) {
-                        console.error('reCAPTCHA failed:', verification);
-                        setError('Security verification failed');
-                        setLoading(false);
-                        return;
-                      }
-                    }
+                  if (recaptchaToken === null) {
+                    setError('Security verification failed');
+                    return;
                   }
 
                   // Derive language from the URL prefix rather than the Redux store
                   // so the server-side email template uses the correct locale.
                   const urlLang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
                   // Omit the phone field entirely when the user only selected a dial code.
-                  const payload = { ...contact, phone: dialOnly ? "" : phoneValue, lang: urlLang, intent, projectType: intent === "quote" ? projectType : "" };
+                  const payload = {
+                    ...contact,
+                    phone: dialOnly ? "" : phoneValue,
+                    lang: urlLang,
+                    intent,
+                    projectType: intent === "quote" ? projectType : "",
+                    recaptchaToken,
+                    website: honeypotValue,
+                  };
                   const controller = new AbortController();
-                  const timeout = setTimeout(() => controller.abort(), 10000);
-                  const result = await fetchWithDeployment('/api/send', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                    signal: controller.signal,
-                  });
-                  clearTimeout(timeout);
+                  const timeout = window.setTimeout(() => controller.abort(), 10000);
+                  let result: Response;
+
+                  try {
+                    result = await fetchWithDeployment('/api/send', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(payload),
+                      signal: controller.signal,
+                    });
+                  } finally {
+                    window.clearTimeout(timeout);
+                  }
+
+                  const responsePayload = await result.json().catch(() => null);
 
                   if (result.ok) {
-                    setLoading(false);
                     setDone(true);
                     setContact({ name: "", email: "", message: "" });
                     setPhoneValue("");
@@ -496,17 +501,33 @@ const Contact = () => {
                     setProjectTypeValid(true);
                     handleClick();
                   } else {
-                    setLoading(false);
-                    setError(`Send error (${result.status})`);
+                    setError(
+                      responsePayload?.message === 'Security verification failed' ||
+                      responsePayload?.message === 'Security token missing'
+                        ? 'Security verification failed'
+                        : 'An error occurred while sending the message, please try again later.'
+                    );
                   }
 
                 } catch (error) {
                   console.error('Send error:', error);
-                  setLoading(false);
                   setError('An error occurred while sending the message, please try again later.');
+                } finally {
+                  setLoading(false);
                 }
               }}
             >
+              <div className="absolute left-[-9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+                <label htmlFor="contact-website">Website</label>
+                <input
+                  id="contact-website"
+                  type="text"
+                  name="website"
+                  autoComplete="off"
+                  tabIndex={-1}
+                />
+              </div>
+
               {/* Draggable intent toggle — supports both click and horizontal drag. */}
               <div
                 ref={toggleRef}

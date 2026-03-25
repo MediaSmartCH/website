@@ -11,20 +11,21 @@ permissions:
 jobs:
   screenshot:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
-        # Use a Node 24-based action runtime to avoid the GitHub deprecation warning.
-        uses: actions/checkout@v5
+        # Pin the action to an immutable commit to reduce supply-chain risk.
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
 
       - name: Setup Node.js
-        # Keep the project runtime on Node 20 while the action itself runs on Node 24.
-        uses: actions/setup-node@v6
+        # Pin the action to an immutable commit to reduce supply-chain risk.
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: '20'
 
       - name: Install Puppeteer
-        run: npm install puppeteer --no-save
+        run: pnpm add --no-save puppeteer@24.40.0
 
       - name: Capture screenshots
         run: node scripts/capture-screenshots.mjs

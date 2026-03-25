@@ -1,10 +1,10 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { PopupButton } from "react-calendly";
 import { Calendar } from "lucide-react";
-import emailjs from "@emailjs/browser";
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { verifyRecaptchaToken } from 'services/api/recaptcha';
+import { getRecaptchaToken } from 'services/api/recaptcha';
+import { fetchWithDeployment } from "services/api/fetchWithDeployment";
 
 import logo from "assets/images/logo-header.png";
 import logoDark from "assets/images/logo-footer.png";
@@ -54,6 +54,9 @@ const UnderConstruction: React.FC = () => {
     e.preventDefault();
     if (isSubmitting || loading) return;
 
+    const formElement = e.currentTarget as HTMLFormElement;
+    const honeypotValue = String(new FormData(formElement).get("website") ?? "");
+
     if (!email.trim()) {
       setError(t.text("UnderConstruction.errorEmailRequired"));
       return;
@@ -69,40 +72,34 @@ const UnderConstruction: React.FC = () => {
     setError("");
 
     try {
-      // Skip reCAPTCHA verification on local/private network hosts
-      const isLocalHost =
-        ["localhost", "127.0.0.1"].includes(window.location.hostname) ||
-        /^192\.168\./.test(window.location.hostname) ||
-        window.location.hostname.endsWith(".local");
-
-      if (!isLocalHost) {
-        if (!executeRecaptcha) {
-          setError(t.text("UnderConstruction.sendErrorGeneric"));
-          setLoading(false);
-          setIsSubmitting(false);
-          return;
-        }
-        const token = await executeRecaptcha("uc_newsletter");
-        const verification = await verifyRecaptchaToken(token);
-        if (!verification?.success) {
-          setError(t.text("UnderConstruction.sendErrorGeneric"));
-          setLoading(false);
-          setIsSubmitting(false);
-          return;
-        }
+      const recaptchaToken = await getRecaptchaToken(executeRecaptcha, "uc_newsletter");
+      if (recaptchaToken === null) {
+        setError(t.text("UnderConstruction.sendErrorGeneric"));
+        return;
       }
 
-      await emailjs.send(
-        "REMOVED_EMAILJS_SERVICE_ID",
-        "REMOVED_EMAILJS_TEMPLATE_ID",
-        {
-          name: "Inscription Newsletter",
-          email: email.trim(),
-          phone: "",
-          message: `Nouvelle inscription newsletter depuis la page en construction.\n\nEmail: ${email.trim()}\nDate: ${new Date().toLocaleString("fr-FR")}\nSource: Page en construction`,
-        },
-        "REMOVED_EMAILJS_PUBLIC_KEY"
-      );
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 10000);
+
+      try {
+        const response = await fetchWithDeployment("/api/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim(),
+            source: "under-construction",
+            recaptchaToken,
+            website: honeypotValue,
+          }),
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Newsletter signup failed with status ${response.status}`);
+        }
+      } finally {
+        window.clearTimeout(timeout);
+      }
 
       setDone(true);
       setEmail("");
@@ -282,6 +279,17 @@ const UnderConstruction: React.FC = () => {
           </p>
 
           <form noValidate onSubmit={handleSubmit} className="max-w-lg mx-auto">
+            <div className="absolute left-[-9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+              <label htmlFor="uc-website">Website</label>
+              <input
+                id="uc-website"
+                type="text"
+                name="website"
+                autoComplete="off"
+                tabIndex={-1}
+              />
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
               <div className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
                 } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] flex-1`}>
