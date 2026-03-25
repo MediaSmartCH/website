@@ -8,7 +8,11 @@ import {
   Settings,
   Zap
 } from "lucide-react";
-import { getSafeConsentData, saveConsentData } from "store/slices/common/cookieUtils";
+import {
+  getSafeConsentData,
+  OPEN_COOKIE_SETTINGS_EVENT,
+  saveConsentData,
+} from "store/slices/common/cookieUtils";
 import { useTranslations } from "services/locales/safe";
 import { Link, useInRouterContext } from "react-router-dom";
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
@@ -202,6 +206,26 @@ const ModernCookieBanner = () => {
     setShowSettingsButton(false);
     setIsClosing(false);
   };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleOpenCookieSettings = () => {
+      reopenSettings();
+    };
+
+    window.addEventListener(
+      OPEN_COOKIE_SETTINGS_EVENT,
+      handleOpenCookieSettings as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        OPEN_COOKIE_SETTINGS_EVENT,
+        handleOpenCookieSettings as EventListener
+      );
+    };
+  }, [currentPath, shouldHide]);
 
   const handleAcceptAll = () => {
     setGoogleAnalytics(true);

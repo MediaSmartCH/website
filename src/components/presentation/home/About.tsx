@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import raphaelPhoto from "assets/images/raphael-rouiller.jpg";
 import { Briefcase, CheckCircle2, Linkedin, MapPin, User } from "lucide-react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
@@ -59,11 +60,9 @@ const About = () => {
                   </span>
 
                 </p>
-                <div
+                <RichText
                   className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} about-description w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
-                  dangerouslySetInnerHTML={{
-                    __html: t.text("home.aboutDescription"),
-                  }}
+                  html={t.text("home.aboutDescription")}
                 />
               </div>
             </div>

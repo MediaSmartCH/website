@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle2, Clock, Zap, Shield, Star } from "lucide-react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
@@ -69,9 +70,10 @@ const SupportPricing = () => {
   return (
     <div id="support-pricing" className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[20px] pb-[40px] md:pb-[50px] mx-auto">
       <div className="mb-[30px]">
-        <p
+        <RichText
+          as="p"
           className={`${isLight ? "text-[#1F2326]" : "text-[#F6F6F6]"} w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-          dangerouslySetInnerHTML={{ __html: t.text("it.supportPricingTitle") }}
+          html={t.text("it.supportPricingTitle")}
         />
         <p
           className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}

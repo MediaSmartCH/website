@@ -1,5 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
-import { PopupButton } from "react-calendly";
+import React, { useState, lazy, Suspense } from "react";
 import { Calendar } from "lucide-react";
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -15,8 +14,10 @@ import arrow from "assets/icons/rightArrow.svg";
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
 import { useTranslations } from "services/locales/safe";
 import LocaleThemeControls from "components/common/LocaleThemeControls";
+import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
 import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
+import "./UnderConstruction.css";
 
 const UnderConstruction: React.FC = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
@@ -31,11 +32,6 @@ const UnderConstruction: React.FC = () => {
   } = useInterfaceControls({ preserveScroll: true });
 
   const t = useTranslations(languageReducer);
-
-  const [rootEl, setRootEl] = useState<HTMLElement | null>(null);
-  useEffect(() => {
-    setRootEl(document.getElementById("root") as HTMLElement | null);
-  }, []);
 
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -361,66 +357,21 @@ const UnderConstruction: React.FC = () => {
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            {rootEl && (
-              <PopupButton
-                rootElement={rootEl}
-                className="font-helvetica font-light text-base sm:text-lg text-purple-600 hover:text-purple-700 font-semibold transition-colors duration-200 underline decoration-purple-600 hover:decoration-purple-700"
-                url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
-                text={t.text("UnderConstruction.bookAppointment")}
-                pageSettings={{
-                  backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",
-                  hideEventTypeDetails: false,
-                  hideLandingPageDetails: false,
-                  primaryColor: themeReducer === "light" ? "#7c3aed" : "#F6F6F6",
-                  textColor: themeReducer === "light" ? "#1f2937" : "#F6F6F6",
-                }}
-              />
-            )}
+            <ConsentAwareCalendlyButton
+              className="font-helvetica font-light text-base sm:text-lg text-purple-600 hover:text-purple-700 font-semibold transition-colors duration-200 underline decoration-purple-600 hover:decoration-purple-700"
+              blockedTitle={t.text("cookies.manageCookies")}
+              text={t.text("UnderConstruction.bookAppointment")}
+              pageSettings={{
+                backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",
+                hideEventTypeDetails: false,
+                hideLandingPageDetails: false,
+                primaryColor: themeReducer === "light" ? "#7c3aed" : "#F6F6F6",
+                textColor: themeReducer === "light" ? "#1f2937" : "#F6F6F6",
+              }}
+            />
           </div>
         </div>
       </div>
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-          @keyframes progressBar {
-            from { width: 0%; }
-            to { width: 85%; }
-          }
-
-.custom-contact-input {
-            background: transparent;
-            border: none;
-            outline: none;
-            width: 100%;
-            font-family: inherit;
-          }
-
-          .calendly-overlay {
-            padding: 15px !important;
-          }
-
-          .calendly-popup {
-            margin: 15px !important;
-            border-radius: 12px !important;
-            max-width: calc(100vw - 30px) !important;
-            max-height: calc(100vh - 30px) !important;
-          }
-
-          @media (max-width: 768px) {
-            .calendly-overlay {
-              padding: 10px !important;
-            }
-
-            .calendly-popup {
-              margin: 10px !important;
-              max-width: calc(100vw - 20px) !important;
-              max-height: calc(100vh - 20px) !important;
-            }
-          }
-        `,
-        }}
-      />
     </div>
   );
 };

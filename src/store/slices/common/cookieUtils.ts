@@ -1,4 +1,24 @@
 export const COOKIE_CONSENT_UPDATED_EVENT = "cookie-consent-updated";
+export const OPEN_COOKIE_SETTINGS_EVENT = "open-cookie-settings";
+
+export interface ConsentPreferences {
+  googleAnalytics: boolean;
+  calendlyFunctionality: boolean;
+  calendlyPerformance: boolean;
+  calendlyAdvertising: boolean;
+  themePreference: boolean;
+  languagePreference: boolean;
+  timestamp?: string;
+}
+
+export const DEFAULT_CONSENT_PREFERENCES: ConsentPreferences = {
+  googleAnalytics: false,
+  calendlyFunctionality: false,
+  calendlyPerformance: false,
+  calendlyAdvertising: false,
+  themePreference: false,
+  languagePreference: false,
+};
 
 export function setCookie(name: string, value: string, days: number) {
   let expires = "";
@@ -61,6 +81,36 @@ export function getSafeConsentData(): Record<string, any> | null {
     localStorage.removeItem("cookie_consent");
     return null;
   }
+}
+
+export function getNormalizedConsentData(): ConsentPreferences {
+  const consent = getSafeConsentData();
+
+  return {
+    ...DEFAULT_CONSENT_PREFERENCES,
+    googleAnalytics: Boolean(consent?.googleAnalytics),
+    calendlyFunctionality: Boolean(consent?.calendlyFunctionality),
+    calendlyPerformance: Boolean(consent?.calendlyPerformance),
+    calendlyAdvertising: Boolean(consent?.calendlyAdvertising),
+    themePreference: Boolean(consent?.themePreference),
+    languagePreference: Boolean(consent?.languagePreference),
+    timestamp: typeof consent?.timestamp === "string" ? consent.timestamp : undefined,
+  };
+}
+
+export function canLoadEmbeddedCalendly(
+  consent: Partial<ConsentPreferences> | null | undefined
+) {
+  return Boolean(
+    consent?.calendlyFunctionality &&
+      consent?.calendlyPerformance &&
+      consent?.calendlyAdvertising
+  );
+}
+
+export function requestCookieSettingsOpen() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(OPEN_COOKIE_SETTINGS_EVENT));
 }
 
 // Persists consent data to localStorage, adding an ISO timestamp for auditing

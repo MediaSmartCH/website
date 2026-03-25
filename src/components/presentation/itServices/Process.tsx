@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
@@ -19,12 +20,11 @@ export default function Process() {
                     } rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px] px-[30px] md:px-[100px] lg:px-[50px] 2xl:px-[100px]`}
             >
                 <div>
-                    <p
+                    <RichText
+                        as="p"
                         className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
                             } w-full it-service-process-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-                        dangerouslySetInnerHTML={{
-                            __html: t.text("it.itServicesProcessTitle"),
-                        }}
+                        html={t.text("it.itServicesProcessTitle")}
                     />
                     <p
                         className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"

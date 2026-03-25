@@ -2,6 +2,7 @@ import React from "react";
 import AOS from "aos";
 import { Link } from "react-router-dom";
 import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowRight, ArrowLeft } from "lucide-react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import { useLangLink } from "services/router/langPath";
@@ -132,9 +133,10 @@ export default function SupportContractPage() {
       {/* Hero and priorities share the wave background so they fade together */}
       <div className={`${isLight ? "hero-bg" : "hero-bg-dark"} pt-[150px] pb-[50px]`}>
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto">
-          <p
+          <RichText
+            as="p"
             className={`${titleColor} font-redDisplay font-bold text-[32px] md:text-[40px] lg:text-[48px] xl:text-[56px] leading-tight mb-4`}
-            dangerouslySetInnerHTML={{ __html: t.text("it.supportPageTitle") }}
+            html={t.text("it.supportPageTitle")}
           />
           <p className={`${textColor} font-poppins font-light text-[15px] md:text-[16px] leading-7 max-w-[680px]`}>
             {t.text("it.supportPageSubtitle")}

@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from "react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import PortfolioGallery from "./PortfolioGallery";
@@ -17,12 +18,11 @@ const Services = () => {
     <div id="services">
       <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[40px] md:pt-[50px] md:pb-[50px] mx-auto">
         <div>
-          <p
+          <RichText
+            as="p"
             className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
               } w-full it-service-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-            dangerouslySetInnerHTML={{
-              __html: t.text("it.itServicesTitle"),
-            }}
+            html={t.text("it.itServicesTitle")}
           />
           <p
             className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
@@ -45,7 +45,8 @@ const Services = () => {
               >
                 {t.text("it.service1")}
               </p>
-              <p
+              <RichText
+                as="div"
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
@@ -53,9 +54,7 @@ const Services = () => {
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
                   mt-6
                 `}
-                dangerouslySetInnerHTML={{
-                  __html: t.text("it.description1"),
-                }}
+                html={t.text("it.description1")}
               />
             </div>
             <div className="w-full lg:w-[48%] flex justify-center items-center"
@@ -113,7 +112,8 @@ const Services = () => {
             >
               {t.text("it.service2")}
             </p>
-            <p
+            <RichText
+              as="div"
               className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
@@ -121,9 +121,7 @@ const Services = () => {
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
                   mt-6
                 `}
-              dangerouslySetInnerHTML={{
-                __html: t.text("it.description2"),
-              }}
+              html={t.text("it.description2")}
             />
           </div>
         </div>
@@ -141,7 +139,8 @@ const Services = () => {
               >
                 {t.text("it.service3")}
               </p>
-              <p
+              <RichText
+                as="div"
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
@@ -149,9 +148,7 @@ const Services = () => {
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
                   mt-6
                 `}
-                dangerouslySetInnerHTML={{
-                  __html: t.text("it.description3"),
-                }}
+                html={t.text("it.description3")}
               />
             </div>
             <div className="w-full lg:w-[48%] flex justify-center items-center"
@@ -208,7 +205,8 @@ const Services = () => {
             >
               {t.text("it.service4")}
             </p>
-            <p
+            <RichText
+              as="div"
               className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
@@ -216,9 +214,7 @@ const Services = () => {
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
                   mt-6
                 `}
-              dangerouslySetInnerHTML={{
-                __html: t.text("it.description4"),
-              }}
+              html={t.text("it.description4")}
             />
           </div>
         </div>
@@ -236,7 +232,8 @@ const Services = () => {
               >
                 {t.text("it.service5")}
               </p>
-              <p
+              <RichText
+                as="div"
                 className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
@@ -244,9 +241,7 @@ const Services = () => {
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
                   mt-6
                 `}
-                dangerouslySetInnerHTML={{
-                  __html: t.text("it.description5"),
-                }}
+                html={t.text("it.description5")}
               />
             </div>
             <div className="w-full lg:w-[48%] flex justify-center items-center"
@@ -303,7 +298,8 @@ const Services = () => {
             >
               {t.text("it.service6")}
             </p>
-            <p
+            <RichText
+              as="div"
               className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
                   it-service-description
                   text-justify lg:text-left
@@ -311,9 +307,7 @@ const Services = () => {
                   text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
                   mt-6
                 `}
-              dangerouslySetInnerHTML={{
-                __html: t.text("it.description6"),
-              }}
+              html={t.text("it.description6")}
             />
           </div>
         </div>
