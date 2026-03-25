@@ -1,35 +1,36 @@
-import { fetchWithDeployment } from "./fetchWithDeployment";
+type ExecuteRecaptcha = ((action: string) => Promise<string>) | undefined;
 
-interface RecaptchaResponse {
-  success: boolean;
-  score?: number;
-  message?: string;
-}
+const privateNetworkPattern =
+  /^(localhost|127\.0\.0\.1|10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/;
 
-export const verifyRecaptchaToken = async (token: string): Promise<RecaptchaResponse> => {
-  // Skip verification on localhost to allow local development without reCAPTCHA credentials
-  if (window.location.hostname === 'localhost') {
-    return { success: true, score: 1.0 };
+export const shouldBypassRecaptcha = () => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return (
+    privateNetworkPattern.test(window.location.hostname) ||
+    window.location.hostname.endsWith(".local")
+  );
+};
+
+export const getRecaptchaToken = async (
+  executeRecaptcha: ExecuteRecaptcha,
+  action: string
+): Promise<string | null> => {
+  if (shouldBypassRecaptcha()) {
+    return "";
+  }
+
+  if (!executeRecaptcha) {
+    return null;
   }
 
   try {
-    const response = await fetchWithDeployment('/api/verify-recaptcha', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
+    const token = await executeRecaptcha(action);
+    return typeof token === "string" && token.trim() ? token : null;
   } catch (error) {
-    console.error('Erreur lors de la vérification ReCAPTCHA:', error);
-    return {
-      success: false,
-      message: 'Erreur de connexion au serveur',
-    };
+    console.error("Unable to generate a reCAPTCHA token:", error);
+    return null;
   }
 };

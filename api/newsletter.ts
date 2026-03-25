@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
-import contactMailer from './_shared/contact-mailer.js';
+import newsletterMailer from './_shared/newsletter-mailer.js';
 import recaptcha from './_shared/recaptcha.js';
 
-const { contactApiErrors, sendContactEmails, validateContactPayload } = contactMailer;
+const { newsletterApiErrors, sendNewsletterEmail, validateNewsletterPayload } = newsletterMailer;
 const { extractRemoteIp, verifyRecaptcha } = recaptcha;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -15,18 +15,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (typeof req.body?.website === 'string' && req.body.website.trim()) {
-    console.warn('Contact honeypot triggered');
+    console.warn('Newsletter honeypot triggered');
     return res.status(200).json({ success: true });
   }
 
-  const validation = validateContactPayload(req.body ?? {});
+  const validation = validateNewsletterPayload(req.body ?? {});
   if (!validation.ok) {
     return res.status(validation.error.status).json({ success: false, message: validation.error.message });
   }
 
   const recaptchaResult = await verifyRecaptcha({
     token: req.body?.recaptchaToken,
-    expectedAction: 'contact_form',
+    expectedAction: 'uc_newsletter',
     remoteIp: extractRemoteIp(req.headers['x-forwarded-for']),
   });
 
@@ -35,22 +35,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (!process.env.RESEND_API_KEY) {
-    return res.status(500).json({ success: false, message: contactApiErrors.serverError });
+    return res.status(500).json({ success: false, message: newsletterApiErrors.serverError });
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
-    const result = await sendContactEmails(resend, validation.data);
+    const result = await sendNewsletterEmail(resend, validation.data);
 
     if (result.error) {
-      console.error('Resend error:', result.error);
-      return res.status(500).json({ success: false, message: contactApiErrors.sendFailed });
+      console.error('Resend newsletter error:', result.error);
+      return res.status(500).json({ success: false, message: newsletterApiErrors.sendFailed });
     }
 
     return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error('Send error:', err);
-    return res.status(500).json({ success: false, message: contactApiErrors.serverError });
+  } catch (error) {
+    console.error('Newsletter send error:', error);
+    return res.status(500).json({ success: false, message: newsletterApiErrors.serverError });
   }
 }
