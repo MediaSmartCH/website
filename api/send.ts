@@ -1,12 +1,12 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
+import type { ApiRequest, ApiResponse } from './_shared/http-types';
 import contactMailer from './_shared/contact-mailer.js';
 import recaptcha from './_shared/recaptcha.js';
 
 const { contactApiErrors, sendContactEmails, validateContactPayload } = contactMailer;
 const { extractRemoteIp, verifyRecaptcha } = recaptcha;
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: ApiRequest, res: ApiResponse) {
   res.setHeader('Allow', 'POST');
   res.setHeader('Cache-Control', 'no-store');
 
