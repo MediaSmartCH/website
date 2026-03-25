@@ -1,5 +1,21 @@
 import AOS from "aos";
 
+let _animationsEnabled = true;
+
+export function setAosEnabled(enabled: boolean) {
+  _animationsEnabled = enabled;
+}
+
+export function disableAosAnimations() {
+  if (typeof window === "undefined") return;
+  AOS.init({ disable: true });
+  document.querySelectorAll<HTMLElement>("[data-aos]").forEach((el) => {
+    el.classList.add("aos-animate");
+    el.style.opacity = "1";
+    el.style.transform = "none";
+  });
+}
+
 const ORIGINAL_DURATION_ATTR = "data-aos-duration-original";
 const ORIGINAL_DELAY_ATTR = "data-aos-delay-original";
 
@@ -84,6 +100,11 @@ export function tuneAosElements(root: ParentNode = document) {
 export function initAosAnimations() {
   if (typeof window === "undefined") return;
 
+  if (!_animationsEnabled) {
+    disableAosAnimations();
+    return;
+  }
+
   tuneAosElements();
 
   AOS.init({
@@ -102,6 +123,11 @@ export function initAosAnimations() {
 
 export function refreshAosAnimations() {
   if (typeof window === "undefined") return;
+
+  if (!_animationsEnabled) {
+    disableAosAnimations();
+    return;
+  }
 
   tuneAosElements();
   AOS.refreshHard();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector } from "services/hooks/hooks";
-import { initAosAnimations } from "services/aos/timing";
+import { initAosAnimations, refreshAosAnimations, setAosEnabled, disableAosAnimations } from "services/aos/timing";
 import Navbar from "components/common/Navbar";
 import Footer from "components/common/Footer";
 import PageTopBackdrop from "components/common/PageTopBackdrop";
@@ -10,18 +10,35 @@ interface LayoutProps { children: React.ReactNode; }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
   const { pathname, hash } = useLocation();
   const firstRenderRef = React.useRef(true);
+  const didInitRef = React.useRef(false);
 
-  // Initialize AOS as soon as React mounts so navigation and hero copy do not
-  // wait for every image/font on the page to finish loading first.
+  // Initialize AOS on first mount, respecting the animations preference.
   React.useEffect(() => {
+    if (didInitRef.current) return;
+    didInitRef.current = true;
+
+    setAosEnabled(animationsEnabled);
     const rafId = window.requestAnimationFrame(() => {
       initAosAnimations();
     });
 
     return () => window.cancelAnimationFrame(rafId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Respond to the user toggling animations on/off.
+  React.useEffect(() => {
+    if (!didInitRef.current) return;
+    setAosEnabled(animationsEnabled);
+    if (animationsEnabled) {
+      refreshAosAnimations();
+    } else {
+      disableAosAnimations();
+    }
+  }, [animationsEnabled]);
 
   // AOS animations can hide elements — force header visibility after a theme change
   React.useEffect(() => {
