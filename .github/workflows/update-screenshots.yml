@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout repository
         # Pin the action to an immutable commit to reduce supply-chain risk.
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Setup Node.js
         # Pin the action to an immutable commit to reduce supply-chain risk.
