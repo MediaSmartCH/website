@@ -11,6 +11,7 @@ const newsletterApiErrors = {
   missingRequired: 'Email requis',
   sendFailed: 'Erreur lors de l\'envoi',
   serverError: 'Erreur serveur',
+  rateLimited: 'Trop de tentatives, veuillez reessayer plus tard',
 };
 
 function escapeHtml(value) {

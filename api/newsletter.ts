@@ -1,10 +1,20 @@
 import { Resend } from 'resend';
 import type { ApiRequest, ApiResponse } from './_shared/http-types';
 import newsletterMailer from './_shared/newsletter-mailer.js';
+import {
+  applyRateLimitHeaders,
+  checkRateLimit,
+  getRateLimitIdentifier,
+} from './_shared/rate-limit';
 import recaptcha from './_shared/recaptcha.js';
 
 const { newsletterApiErrors, sendNewsletterEmail, validateNewsletterPayload } = newsletterMailer;
-const { extractRemoteIp, verifyRecaptcha } = recaptcha;
+const { extractClientIp, verifyRecaptcha } = recaptcha;
+
+const NEWSLETTER_RATE_LIMIT = {
+  limit: 6,
+  windowMs: 60 * 60 * 1000,
+};
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
   res.setHeader('Allow', 'POST');
@@ -14,6 +24,21 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return res.status(405).json({ success: false, message: 'Method not allowed' });
   }
 
+  const clientIp = extractClientIp(req.headers);
+  const rateLimitResult = checkRateLimit({
+    namespace: 'newsletter',
+    identifier: getRateLimitIdentifier(req.headers),
+    ...NEWSLETTER_RATE_LIMIT,
+  });
+  applyRateLimitHeaders(res, rateLimitResult);
+
+  if (!rateLimitResult.ok) {
+    return res.status(429).json({
+      success: false,
+      message: newsletterApiErrors.rateLimited,
+    });
+  }
+
   if (typeof req.body?.website === 'string' && req.body.website.trim()) {
     console.warn('Newsletter honeypot triggered');
     return res.status(200).json({ success: true });
@@ -21,17 +46,26 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
 
   const validation = validateNewsletterPayload(req.body ?? {});
   if (!validation.ok) {
-    return res.status(validation.error.status).json({ success: false, message: validation.error.message });
+    const validationError = validation.error ?? {
+      status: 400,
+      message: newsletterApiErrors.invalidPayload,
+    };
+
+    return res
+      .status(validationError.status)
+      .json({ success: false, message: validationError.message });
   }
 
   const recaptchaResult = await verifyRecaptcha({
     token: req.body?.recaptchaToken,
     expectedAction: 'uc_newsletter',
-    remoteIp: extractRemoteIp(req.headers['x-forwarded-for']),
+    remoteIp: clientIp,
   });
 
   if (!recaptchaResult.ok) {
-    return res.status(recaptchaResult.status).json({ success: false, message: recaptchaResult.message });
+    return res
+      .status(recaptchaResult.status ?? 500)
+      .json({ success: false, message: recaptchaResult.message });
   }
 
   if (!process.env.RESEND_API_KEY) {
