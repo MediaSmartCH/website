@@ -1,3 +1,5 @@
+export const COOKIE_CONSENT_UPDATED_EVENT = "cookie-consent-updated";
+
 export function setCookie(name: string, value: string, days: number) {
   let expires = "";
   if (Number.isFinite(days) && days > 0) {
@@ -5,7 +7,11 @@ export function setCookie(name: string, value: string, days: number) {
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = "; expires=" + date.toUTCString();
   }
-  document.cookie = `${name}=${encodeURIComponent(value || "")}${expires}; path=/`;
+  const secure =
+    typeof window !== "undefined" && window.location.protocol === "https:"
+      ? "; Secure"
+      : "";
+  document.cookie = `${name}=${encodeURIComponent(value || "")}${expires}; path=/; SameSite=Lax${secure}`;
 }
 
 export function getCookie(name: string): string | null {
@@ -65,6 +71,11 @@ export function saveConsentData(consentData: Record<string, any>) {
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem("cookie_consent", JSON.stringify(dataWithTimestamp));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent(COOKIE_CONSENT_UPDATED_EVENT, { detail: dataWithTimestamp })
+      );
+    }
     return true;
   } catch {
     return false;
