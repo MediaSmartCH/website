@@ -122,9 +122,9 @@ const LOTTIE_PRESENTATION: Record<LottieKey, LottiePresentation> = {
   "it.services.backup": { width: 512, height: 343, scale: 1.08 },
   "it.services.support": { width: 421, height: 409, scale: 1.08 },
 
-  // The canvas player frames this tall animation more conservatively than the
-  // old SVG web component, so we slightly enlarge it to match the previous UI.
-  "it.process": { width: 488, height: 939, scale: 1.9 },
+  // Keep the tall process animation at its native footprint. Overscaling makes
+  // it visually overpower the step list and overlap surrounding content.
+  "it.process": { width: 488, height: 939 },
 
   "video.editing": { width: 584, height: 458, scale: 1.08 },
   "video.live": { width: 574, height: 392, scale: 1.08 },
