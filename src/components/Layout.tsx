@@ -1,6 +1,6 @@
 import React from "react";
-import AOS from "aos";
 import { useAppSelector } from "services/hooks/hooks";
+import { initAosAnimations } from "services/aos/timing";
 import Navbar from "components/common/Navbar";
 import Footer from "components/common/Footer";
 import PageTopBackdrop from "components/common/PageTopBackdrop";
@@ -13,19 +13,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { pathname, hash } = useLocation();
   const firstRenderRef = React.useRef(true);
 
-  // Defer AOS init until the window load event to avoid layout shifts (FOUC)
+  // Initialize AOS as soon as React mounts so navigation and hero copy do not
+  // wait for every image/font on the page to finish loading first.
   React.useEffect(() => {
-    const onLoad = () => {
-      AOS.init({
-        once: true,
-        offset: 50,
-        startEvent: "load",
-        disableMutationObserver: true,
-      });
-    };
-    if (document.readyState === "complete") onLoad();
-    else window.addEventListener("load", onLoad, { once: true });
-    return () => window.removeEventListener("load", onLoad);
+    const rafId = window.requestAnimationFrame(() => {
+      initAosAnimations();
+    });
+
+    return () => window.cancelAnimationFrame(rafId);
   }, []);
 
   // AOS animations can hide elements — force header visibility after a theme change

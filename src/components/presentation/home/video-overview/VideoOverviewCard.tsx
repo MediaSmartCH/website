@@ -27,7 +27,7 @@ export default function VideoOverviewCard({ themeReducer, anim, title, descripti
                     >
                         <DotAnim
                             anim={anim}
-                            className="h-full w-auto max-w-[85%]"
+                            className="h-full w-full max-w-[85%]"
                             crisp
                             protect
                         />

@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
-import AOS from "aos";
 
 import { useAppSelector } from "services/hooks/hooks";
+import { refreshAosAnimations } from "services/aos/timing";
 
 import About from "components/presentation/home/About";
 import Hero from "components/presentation/home/Hero";
@@ -16,35 +16,33 @@ type NetworkInformationLike = {
   saveData?: boolean;
 };
 
-const getShouldDeferContact = () => {
-  if (typeof window === "undefined") return false;
-
-  const mediaQuery = window.matchMedia("(max-width: 767px)");
-  const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const connection = (navigator as Navigator & { connection?: NetworkInformationLike })
-    .connection;
-  const slowConnection =
-    connection?.saveData === true ||
-    ["slow-2g", "2g", "3g"].includes(connection?.effectiveType || "");
-
-  return mediaQuery.matches || motionQuery.matches || slowConnection;
-};
-
 const Homepage = () => {
   useScrollToHash();
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-  const [shouldDeferContact] = React.useState(() => getShouldDeferContact());
+  const [shouldDeferContact] = React.useState(() => {
+    if (typeof window === "undefined") return false;
+
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const connection = (navigator as Navigator & { connection?: NetworkInformationLike })
+      .connection;
+    const slowConnection =
+      connection?.saveData === true ||
+      ["slow-2g", "2g", "3g"].includes(connection?.effectiveType || "");
+
+    return mediaQuery.matches || motionQuery.matches || slowConnection;
+  });
   const [hasAnimated, setHasAnimated] = React.useState(false);
   const [showContact, setShowContact] = React.useState(
     typeof window !== "undefined"
-      ? window.location.hash === "#contact" || !getShouldDeferContact()
+      ? window.location.hash === "#contact" || !shouldDeferContact
       : true
   );
   const contactSentinelRef = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
-    AOS.refresh();
+    refreshAosAnimations();
     setHasAnimated(true);
   }, []);
 
@@ -64,7 +62,7 @@ const Homepage = () => {
 
   React.useEffect(() => {
     const rafId = window.requestAnimationFrame(() => {
-      AOS.refresh();
+      refreshAosAnimations();
 
       if (window.location.hash === "#contact" && !showContact) {
         setShowContact(true);
@@ -81,13 +79,7 @@ const Homepage = () => {
   }, [showContact]);
 
   React.useEffect(() => {
-    if (
-      showContact ||
-      typeof window === "undefined" ||
-      !shouldDeferContact
-    ) {
-      return;
-    }
+    if (showContact || typeof window === "undefined" || !shouldDeferContact) return;
 
     if (window.location.hash === "#contact") {
       setShowContact(true);

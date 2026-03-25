@@ -1,86 +1,211 @@
-// All Lottie animation assets must be imported before any other module-level
-// code in this file because some bundlers resolve side-effect order based on
-// import position.
-import Home_light from "../assets/lotties/home/Home_light.lottie";
-import Home_dark from "../assets/lotties/home/Home_dark.lottie";
+type LottieAssetModule = { default: string };
+type LottieVariantLoader = () => Promise<LottieAssetModule>;
+type ResourceStatus = "pending" | "resolved" | "rejected";
+type LottieDimensions = { width: number; height: number };
+type LottieFit = "contain" | "cover" | "fill" | "none" | "fit-width" | "fit-height";
+type LottiePresentation = {
+  width: number;
+  height: number;
+  fit?: LottieFit;
+  scale?: number;
+  align?: [number, number];
+};
 
-import About_light from "../assets/lotties/home/About_light.lottie";
-import About_dark from "../assets/lotties/home/About_dark.lottie";
+type LottiePairLoader = {
+  light: LottieVariantLoader;
+  dark?: LottieVariantLoader;
+};
 
-import IT_light from "../assets/lotties/it/IT_light.lottie";
-import IT_dark from "../assets/lotties/it/IT_dark.lottie";
+type LottieResource = {
+  preload: () => Promise<void>;
+  read: () => string;
+};
 
-import Introduction_light from "../assets/lotties/it/Introduction_light.lottie";
-import Introduction_dark from "../assets/lotties/it/Introduction_dark.lottie";
+// Assets are resolved lazily so each route only loads the animation variants it
+// actually needs instead of importing the full catalog upfront.
+const LOTTIE_LOADERS = {
+  "home.hero": {
+    light: () => import("../assets/lotties/home/Home_light.lottie"),
+    dark: () => import("../assets/lotties/home/Home_dark.lottie"),
+  },
+  "home.about": {
+    light: () => import("../assets/lotties/home/About_light.lottie"),
+    dark: () => import("../assets/lotties/home/About_dark.lottie"),
+  },
 
-import Website_light from "../assets/lotties/it/Website_light.lottie";
-import Website_dark from "../assets/lotties/it/Website_dark.lottie";
+  "it.hero": {
+    light: () => import("../assets/lotties/it/IT_light.lottie"),
+    dark: () => import("../assets/lotties/it/IT_dark.lottie"),
+  },
+  "it.about": {
+    light: () => import("../assets/lotties/it/Introduction_light.lottie"),
+    dark: () => import("../assets/lotties/it/Introduction_dark.lottie"),
+  },
 
-import Maintenance_light from "../assets/lotties/it/Maintenance_light.lottie";
-import Maintenance_dark from "../assets/lotties/it/Maintenance_dark.lottie";
+  "it.services.website": {
+    light: () => import("../assets/lotties/it/Website_light.lottie"),
+    dark: () => import("../assets/lotties/it/Website_dark.lottie"),
+  },
+  "it.services.maintenance": {
+    light: () => import("../assets/lotties/it/Maintenance_light.lottie"),
+    dark: () => import("../assets/lotties/it/Maintenance_dark.lottie"),
+  },
+  "it.services.optimization": {
+    light: () => import("../assets/lotties/it/Optimization_light.lottie"),
+    dark: () => import("../assets/lotties/it/Optimization_dark.lottie"),
+  },
+  "it.services.security": {
+    light: () => import("../assets/lotties/it/Security_light.lottie"),
+    dark: () => import("../assets/lotties/it/Security_dark.lottie"),
+  },
+  "it.services.backup": {
+    light: () => import("../assets/lotties/it/Backup_light.lottie"),
+    dark: () => import("../assets/lotties/it/Backup_dark.lottie"),
+  },
+  "it.services.support": {
+    light: () => import("../assets/lotties/it/Support_light.lottie"),
+    dark: () => import("../assets/lotties/it/Support_dark.lottie"),
+  },
 
-import Optimization_light from "../assets/lotties/it/Optimization_light.lottie";
-import Optimization_dark from "../assets/lotties/it/Optimization_dark.lottie";
+  "it.process": {
+    light: () => import("../assets/lotties/it/Process_light.lottie"),
+    dark: () => import("../assets/lotties/it/Process_dark.lottie"),
+  },
 
-import Security_light from "../assets/lotties/it/Security_light.lottie";
-import Security_dark from "../assets/lotties/it/Security_dark.lottie";
+  "video.editing": {
+    light: () => import("../assets/lotties/video/Editing_light.lottie"),
+    dark: () => import("../assets/lotties/video/Editing_dark.lottie"),
+  },
+  "video.live": {
+    light: () => import("../assets/lotties/video/Live_light.lottie"),
+    dark: () => import("../assets/lotties/video/Live_dark.lottie"),
+  },
+  "video.photography": {
+    light: () => import("../assets/lotties/video/Photography_light.lottie"),
+    dark: () => import("../assets/lotties/video/Photography_dark.lottie"),
+  },
+  "video.rental": {
+    light: () => import("../assets/lotties/video/Rental_light.lottie"),
+    dark: () => import("../assets/lotties/video/Rental_dark.lottie"),
+  },
+  "video.retransmission": {
+    light: () => import("../assets/lotties/video/Retransmission_light.lottie"),
+    dark: () => import("../assets/lotties/video/Retransmission_dark.lottie"),
+  },
+  "video.production": {
+    light: () => import("../assets/lotties/video/Video_light.lottie"),
+    dark: () => import("../assets/lotties/video/Video_dark.lottie"),
+  },
+  "video.header": {
+    light: () => import("../assets/lotties/video/VideoHeader_light.lottie"),
+    dark: () => import("../assets/lotties/video/VideoHeader_dark.lottie"),
+  },
+} as const satisfies Record<string, LottiePairLoader>;
 
-import Backup_light from "../assets/lotties/it/Backup_light.lottie";
-import Backup_dark from "../assets/lotties/it/Backup_dark.lottie";
+export type LottieKey = keyof typeof LOTTIE_LOADERS;
 
-import Support_light from "../assets/lotties/it/Support_light.lottie";
-import Support_dark from "../assets/lotties/it/Support_dark.lottie";
+// The React canvas player does not inherit the source animation footprint the
+// same way the old SVG web component did. Keeping the native dimensions here
+// lets DotAnim restore the expected size across all sections without page-level
+// CSS workarounds.
+const LOTTIE_PRESENTATION: Record<LottieKey, LottiePresentation> = {
+  "home.hero": { width: 1050, height: 433 },
+  "home.about": { width: 615, height: 480, scale: 1.08 },
 
-import Process_light from "../assets/lotties/it/Process_light.lottie";
-import Process_dark from "../assets/lotties/it/Process_dark.lottie";
+  "it.hero": { width: 981, height: 488 },
+  "it.about": { width: 604, height: 480, scale: 1.12 },
 
-import Editing_light from "../assets/lotties/video/Editing_light.lottie";
-import Editing_dark from "../assets/lotties/video/Editing_dark.lottie";
+  "it.services.website": { width: 470, height: 375, scale: 1.08 },
+  "it.services.maintenance": { width: 499, height: 375, scale: 1.08 },
+  "it.services.optimization": { width: 433, height: 358, scale: 1.08 },
+  "it.services.security": { width: 478, height: 369, scale: 1.08 },
+  "it.services.backup": { width: 512, height: 343, scale: 1.08 },
+  "it.services.support": { width: 421, height: 409, scale: 1.08 },
 
-import Live_light from "../assets/lotties/video/Live_light.lottie";
-import Live_dark from "../assets/lotties/video/Live_dark.lottie";
+  // The canvas player frames this tall animation more conservatively than the
+  // old SVG web component, so we slightly enlarge it to match the previous UI.
+  "it.process": { width: 488, height: 939, scale: 1.9 },
 
-import Photography_light from "../assets/lotties/video/Photography_light.lottie";
-import Photography_dark from "../assets/lotties/video/Photography_dark.lottie";
+  "video.editing": { width: 584, height: 458, scale: 1.08 },
+  "video.live": { width: 574, height: 392, scale: 1.08 },
+  "video.photography": { width: 612, height: 466, scale: 1.14 },
+  "video.rental": { width: 572, height: 403, scale: 1.16 },
+  "video.retransmission": { width: 523, height: 439, scale: 1.16 },
+  "video.production": { width: 661, height: 453, scale: 1.12 },
+  "video.header": { width: 966, height: 516 },
+};
 
-import Rental_light from "../assets/lotties/video/Rental_light.lottie";
-import Rental_dark from "../assets/lotties/video/Rental_dark.lottie";
+const resourceCache = new Map<string, LottieResource>();
 
-import Retransmission_light from "../assets/lotties/video/Retransmission_light.lottie";
-import Retransmission_dark from "../assets/lotties/video/Retransmission_dark.lottie";
+function createResource(loader: LottieVariantLoader): LottieResource {
+  let status: ResourceStatus = "pending";
+  let value = "";
+  let error: unknown;
 
-import Video_light from "../assets/lotties/video/Video_light.lottie";
-import Video_dark from "../assets/lotties/video/Video_dark.lottie";
+  const promise = loader().then(
+    (module) => {
+      status = "resolved";
+      value = module.default;
+    },
+    (reason) => {
+      status = "rejected";
+      error = reason;
+    }
+  );
 
-import VideoHeader_light from "../assets/lotties/video/VideoHeader_light.lottie";
-import VideoHeader_dark from "../assets/lotties/video/VideoHeader_dark.lottie";
+  return {
+    preload: () => promise.then(() => undefined),
+    read: () => {
+      if (status === "pending") {
+        throw promise;
+      }
 
-export type LottiePair = { light: string; dark?: string };
+      if (status === "rejected") {
+        throw error;
+      }
 
-// Keyed lookup used by DotAnim to resolve the correct asset pair for a given animation slot.
-export const LOTTIES = {
-  "home.hero": { light: Home_light, dark: Home_dark },
-  "home.about": { light: About_light, dark: About_dark },
+      return value;
+    },
+  };
+}
 
-  "it.hero": { light: IT_light, dark: IT_dark },
-  "it.about": { light: Introduction_light, dark: Introduction_dark },
+function getResource(cacheKey: string, loader: LottieVariantLoader) {
+  const cached = resourceCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
 
-  "it.services.website": { light: Website_light, dark: Website_dark },
-  "it.services.maintenance": { light: Maintenance_light, dark: Maintenance_dark },
-  "it.services.optimization": { light: Optimization_light, dark: Optimization_dark },
-  "it.services.security": { light: Security_light, dark: Security_dark },
-  "it.services.backup": { light: Backup_light, dark: Backup_dark },
-  "it.services.support": { light: Support_light, dark: Support_dark },
+  const resource = createResource(loader);
+  resourceCache.set(cacheKey, resource);
+  return resource;
+}
 
-  "it.process": { light: Process_light, dark: Process_dark },
+function resolveLoader(key: LottieKey, theme: string) {
+  const pair = LOTTIE_LOADERS[key];
+  const variant = theme === "dark" && pair.dark ? "dark" : "light";
+  const loader = variant === "dark" && pair.dark ? pair.dark : pair.light;
 
-  "video.editing": { light: Editing_light, dark: Editing_dark },
-  "video.live": { light: Live_light, dark: Live_dark },
-  "video.photography": { light: Photography_light, dark: Photography_dark },
-  "video.rental": { light: Rental_light, dark: Rental_dark },
-  "video.retransmission": { light: Retransmission_light, dark: Retransmission_dark },
-  "video.production": { light: Video_light, dark: Video_dark },
-  "video.header": { light: VideoHeader_light, dark: VideoHeader_dark },
-} as const;
+  return {
+    cacheKey: `${key}:${variant}`,
+    loader,
+  };
+}
 
-export type LottieKey = keyof typeof LOTTIES;
+export function preloadLottieSrc(key: LottieKey, theme: string) {
+  const { cacheKey, loader } = resolveLoader(key, theme);
+  return getResource(cacheKey, loader).preload();
+}
+
+export function readLottieSrc(key: LottieKey, theme: string) {
+  const { cacheKey, loader } = resolveLoader(key, theme);
+  return getResource(cacheKey, loader).read();
+}
+
+export function getLottieAspectRatio(key: LottieKey) {
+  const { width, height } = LOTTIE_PRESENTATION[key];
+  return width / height;
+}
+
+export function getLottiePresentation(key: LottieKey) {
+  return LOTTIE_PRESENTATION[key];
+}
