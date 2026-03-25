@@ -49,6 +49,8 @@ const LocaleThemeControls: React.FC<LocaleThemeControlsProps> = ({
       size={size}
       menuAlign={menuAlign}
     />
+    {/* Wrap ThemeSelector in a non-interactive overlay when disabled so the
+        visual control remains visible but cannot be interacted with. */}
     <div className={themeDisabled ? "pointer-events-none opacity-50" : ""}>
       <ThemeSelector
         currentTheme={currentTheme}

@@ -22,12 +22,11 @@ import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
 
-  // chemin courant
   const [currentPath, setCurrentPath] = useState(
     typeof window !== "undefined" && window.location ? window.location.pathname : ""
   );
 
-  // écoute des changements d'URL
+  // Patch history methods to detect SPA navigation without a router context
   useEffect(() => {
     if (typeof window === "undefined") return;
     const update = () => setCurrentPath(window.location.pathname);
@@ -67,7 +66,6 @@ const ModernCookieBanner = () => {
   const shouldHide = isConstruction || onPrivacy;
   const privacyPath = `/${languageReducer}/privacy-policy`;
 
-  // états
   const [openedManually, setOpenedManually] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const actuallyVisible = isVisible && (!shouldHide || openedManually);
@@ -76,7 +74,6 @@ const ModernCookieBanner = () => {
   const [showSettingsButton, setShowSettingsButton] = useState(false);
   const [isThemeChanging, setIsThemeChanging] = useState(false);
 
-  // états cookies
   const [googleAnalytics, setGoogleAnalytics] = useState(false);
   const [calendlyFunctionality, setCalendlyFunctionality] = useState(false);
   const [calendlyPerformance, setCalendlyPerformance] = useState(false);
@@ -86,7 +83,6 @@ const ModernCookieBanner = () => {
 
   const advertisingEnabled = calendlyAdvertising;
 
-  // thème
   const handleThemeChange = (nextTheme: ThemePreference) => {
     if (isThemeChanging || nextTheme === themeModePreference) return;
 
@@ -104,7 +100,7 @@ const ModernCookieBanner = () => {
     setTimeout(() => setIsThemeChanging(false), 300);
   };
 
-  // toggles cat.
+  // Returns whether all, some, or none of a category's services are enabled
   const getFunctionalityToggleState = () => {
     const services = [calendlyFunctionality, themePreference, languagePreference];
     const activeCount = services.filter(Boolean).length;
@@ -124,12 +120,11 @@ const ModernCookieBanner = () => {
     return "inactive";
   };
 
-  // consentement - VERSION CORRIGÉE ET SÉCURISÉE
   useEffect(() => {
     const consent = getSafeConsentData();
-    
+
     if (consent) {
-      // Application sécurisée des valeurs avec Boolean() pour éviter les undefined
+      // Apply stored consent values safely; Boolean() guards against undefined entries
       setGoogleAnalytics(Boolean(consent.googleAnalytics));
       setCalendlyFunctionality(Boolean(consent.calendlyFunctionality));
       setCalendlyPerformance(Boolean(consent.calendlyPerformance));
@@ -139,7 +134,6 @@ const ModernCookieBanner = () => {
       setIsVisible(false);
       setShowSettingsButton(true);
     } else {
-      // Comportement par défaut quand aucune donnée de consentement n'existe
       if (shouldHide) {
         setIsVisible(false);
         setShowSettingsButton(true);
@@ -149,12 +143,11 @@ const ModernCookieBanner = () => {
     }
   }, [currentPath, shouldHide]);
 
-  // blocage scroll avec détection d'extensions bloquant les cookies
   useEffect(() => {
     if (actuallyVisible) {
-      // Vérifier si le banner est réellement visible (pas caché par une extension)
+      // Some browser extensions hide cookie banners by setting display:none or opacity:0.
+      // If that is detected, unblock scroll so the page remains usable.
       const checkVisibility = () => {
-        // Chercher l'élément du banner par son z-index et classe
         const banner = document.querySelector('[style*="z-index: 999999"]') ||
                        document.querySelector('.fixed.inset-0.z-50');
 
@@ -166,22 +159,19 @@ const ModernCookieBanner = () => {
             computedStyle.opacity === '0';
 
           if (isHiddenByExtension) {
-            // Extension détectée : débloquer le scroll
             document.body.style.overflow = "";
             document.documentElement.style.overflow = "";
             return;
           }
         }
 
-        // Banner visible normalement : bloquer le scroll
         document.body.style.overflow = "hidden";
         document.documentElement.style.overflow = "hidden";
       };
 
-      // Vérifier immédiatement
       checkVisibility();
 
-      // Re-vérifier après un court délai (au cas où l'extension met du temps)
+      // Re-check after a short delay in case the extension acts asynchronously
       const timer = setTimeout(checkVisibility, 100);
 
       return () => clearTimeout(timer);
@@ -200,7 +190,7 @@ const ModernCookieBanner = () => {
     setIsClosing(true);
     setTimeout(() => {
       setIsVisible(false);
-      setOpenedManually(false); // reset
+      setOpenedManually(false);
       setShowSettingsButton(true);
     }, 300);
   };
@@ -220,8 +210,7 @@ const ModernCookieBanner = () => {
     setCalendlyAdvertising(true);
     setThemePreference(true);
     setLanguagePreference(true);
-    
-    // Sauvegarde sécurisée
+
     saveConsentData({
       googleAnalytics: true,
       calendlyFunctionality: true,
@@ -230,7 +219,7 @@ const ModernCookieBanner = () => {
       themePreference: true,
       languagePreference: true
     });
-    
+
     handleClose();
   };
 
@@ -242,7 +231,6 @@ const ModernCookieBanner = () => {
     setThemePreference(false);
     setLanguagePreference(false);
 
-    // Sauvegarde sécurisée
     saveConsentData({
       googleAnalytics: false,
       calendlyFunctionality: false,
@@ -251,12 +239,11 @@ const ModernCookieBanner = () => {
       themePreference: false,
       languagePreference: false
     });
-    
+
     handleClose();
   };
 
   const handleSavePreferences = () => {
-    // Sauvegarde sécurisée des préférences actuelles
     saveConsentData({
       googleAnalytics,
       calendlyFunctionality,
@@ -265,21 +252,18 @@ const ModernCookieBanner = () => {
       themePreference,
       languagePreference
     });
-    
+
     handleClose();
   };
 
-  // Gestion des clics sur les toggles de catégorie
   const handleFunctionalityToggle = () => {
     const currentState = getFunctionalityToggleState();
 
     if (currentState === 'inactive' || currentState === 'partial') {
-      // Activer
       setCalendlyFunctionality(true);
       setThemePreference(true);
       setLanguagePreference(true);
     } else {
-      // Désactiver
       setCalendlyFunctionality(false);
       setThemePreference(false);
       setLanguagePreference(false);
@@ -302,7 +286,7 @@ const ModernCookieBanner = () => {
     setCalendlyAdvertising(newState);
   };
 
-  // Composant pour les toggles de catégorie avec états intermédiaires
+  // Three-state toggle: active (all on), partial (some on), inactive (all off)
   const CategoryToggle = ({ state, onClick }: { state: 'active' | 'inactive' | 'partial', onClick: () => void }) => {
     const getToggleClasses = () => {
       switch (state) {
@@ -326,7 +310,6 @@ const ModernCookieBanner = () => {
     );
   };
 
-  // Classes CSS dynamiques basées sur le thème
   const getThemeClasses = () => ({
     modal: themeReducer === "light" ? "bg-white" : "bg-[#2B284C]",
     text: themeReducer === "light" ? "text-gray-900" : "text-[#F6F6F6]",
@@ -355,7 +338,6 @@ const ModernCookieBanner = () => {
 
   return (
     <>
-      {/* Overlay de changement de thème */}
       {isThemeChanging && (
         <div
           className={`fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-sm transition-all duration-300 ${themeReducer === 'light' ? 'bg-white/90' : 'bg-black/90'
@@ -384,17 +366,15 @@ const ModernCookieBanner = () => {
         </div>
       )}
 
-      {/* Modale principale */}
       {actuallyVisible && (
         <div
           className={`fixed inset-0 z-50 transition-all duration-300 ${isClosing ? 'opacity-0' : 'opacity-100'}`}
           style={{ zIndex: 999999 }}
         >
-          {/* Backdrop */}
           <div onClick={handleRejectAll} className={`absolute inset-0 backdrop-blur-sm ${themeReducer === "light" ? "bg-black/20" : "bg-black/40"
             }`} />
 
-          {/* Container avec scroll externe pour cas extrêmes */}
+          {/* Outer scroll container handles viewport overflow on very small screens */}
           <div className="h-full overflow-y-auto flex items-start justify-center p-2 py-4">
             <div
               className={`relative ${themeClasses.modal} rounded-3xl shadow-2xl ${themeClasses.border} border w-full max-w-2xl my-auto transform transition-all duration-300 ${isClosing ? 'translate-y-full scale-95 opacity-0' : 'translate-y-0 scale-100 opacity-100'
@@ -402,9 +382,7 @@ const ModernCookieBanner = () => {
             >
               {!showCustomize ? (
                 <div className="p-6 md:p-8">
-                  {/* Header avec contrôles intégrés */}
                   <div className="mb-4 flex flex-wrap items-start justify-between gap-3 px-3 lg:px-6">
-                    {/* Bloc titre */}
                     <div className="flex min-w-[180px] flex-1 items-center gap-3">
                       <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shrink-0">
                         <Cookie className="w-6 h-6 text-white" />
@@ -419,7 +397,6 @@ const ModernCookieBanner = () => {
                       </div>
                     </div>
 
-                    {/* Bloc contrôles */}
                     <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2 sm:flex-nowrap sm:gap-3 shrink-0">
                       <LocaleThemeControls
                         currentLanguage={languageReducer}
@@ -433,7 +410,6 @@ const ModernCookieBanner = () => {
                         className="max-w-full flex-wrap justify-end sm:flex-nowrap"
                       />
 
-                      {/* Bouton fermeture */}
                       <button
                         onClick={handleRejectAll}
                         className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
@@ -445,7 +421,6 @@ const ModernCookieBanner = () => {
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="mb-6">
                     <p className={`${themeClasses.textSecondary} leading-relaxed`}>
                       {t.text("cookies.description")}
@@ -461,7 +436,6 @@ const ModernCookieBanner = () => {
                     )}
                   </div>
 
-                  {/* Cookie types preview */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
                     <div className="flex items-center gap-2 p-2 rounded-xl bg-green-50 border border-green-200">
                       <Shield className="w-3 h-3 text-green-600" />
@@ -493,7 +467,6 @@ const ModernCookieBanner = () => {
                     </div>
                   </div>
 
-                  {/* Actions */}
                   <div className="flex flex-col lg:flex-row flex-wrap gap-2 lg:gap-3 w-full">
                     <button
                       onClick={handleAcceptAll}
@@ -518,17 +491,14 @@ const ModernCookieBanner = () => {
                 </div>
               ) : (
                 <div className="flex flex-col max-h-[95vh]">
-                  {/* Header fixe responsive */}
                   <div className={`flex-shrink-0 border-b ${themeClasses.border}`}>
                     <div className="flex flex-wrap items-start justify-between gap-3 p-4 md:p-6 pb-3">
-                      {/* Bloc titre */}
                       <h3
                         className={`min-w-[140px] flex-1 text-lg sm:text-xl font-bold ${themeClasses.text}`}
                       >
                         {t.text("cookies.detailedPrefs")}
                       </h3>
 
-                      {/* Bloc contrôles */}
                       <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2 sm:flex-nowrap sm:gap-3 shrink-0">
                         <LocaleThemeControls
                           currentLanguage={languageReducer}
@@ -542,13 +512,10 @@ const ModernCookieBanner = () => {
                           className="max-w-full flex-wrap justify-end sm:flex-nowrap"
                         />
 
-                        {/* Bouton fermeture */}
                         <button
                           onClick={handleClose}
                           className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
-                          // title={dictionary["cookies"][languageReducer]["ariaCloseModal"]}
                           title={t.text("cookies.ariaCloseModal")}
-                          // aria-label={dictionary["cookies"][languageReducer]["ariaCloseModal"]}
                           aria-label={t.text("cookies.ariaCloseModal")}
                         >
                           <X className={`w-3 h-3 sm:w-4 sm:h-4 ${themeClasses.textSecondary}`} />
@@ -558,54 +525,51 @@ const ModernCookieBanner = () => {
                     </div>
                   </div>
 
-                  {/* Contenu scrollable */}
                   <div className="flex-1 overflow-y-auto px-4 md:px-6 py-3" style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
                     <div className="space-y-3">
-                      {/* Necessary cookies */}
                       <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <Shield className="w-4 h-4 text-green-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{/* {dictionary["cookies"][languageReducer]["cookiesNecessary"]} */} {t.text("cookies.cookiesNecessary")}</h4>
+                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesNecessary")}</h4>
                           </div>
                           <div className="w-10 h-5 bg-green-500 rounded-full flex items-center justify-end pr-1">
                             <div className="w-3 h-3 bg-white rounded-full" />
                           </div>
                         </div>
                         <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {/* {dictionary["cookies"][languageReducer]["necessaryDesc"]} */} {t.text("cookies.necessaryDesc")}
+                          {t.text("cookies.necessaryDesc")}
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                           <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
                             <div className="flex items-center gap-1 mb-1">
                               <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                              <p className={`font-medium text-xs ${themeClasses.text}`}>{/* {dictionary["cookies"][languageReducer]["contactForm"]} */} {t.text("cookies.contactForm")}</p>
+                              <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.contactForm")}</p>
                             </div>
-                            <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["contactFormDesc"]} */} {t.text("cookies.contactFormDesc")}</p>
+                            <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.contactFormDesc")}</p>
                           </div>
                           <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
                             <div className="flex items-center gap-1 mb-1">
                               <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                               <p className={`font-medium text-xs ${themeClasses.text}`}>Google reCAPTCHA</p>
                             </div>
-                            <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["antiSpamDesc"]} */} {t.text("cookies.antiSpamDesc")}</p>
+                            <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.antiSpamDesc")}</p>
                           </div>
                           <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
                             <div className="flex items-center gap-1 mb-1">
                               <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                              <p className={`font-medium text-xs ${themeClasses.text}`}>{/* {dictionary["cookies"][languageReducer]["calendlyBasic"]} */} {t.text("cookies.calendlyBasic")}</p>
+                              <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.calendlyBasic")}</p>
                             </div>
-                            <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["appointmentBooking"]} */} {t.text("cookies.appointmentBooking")}</p>
+                            <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.appointmentBooking")}</p>
                           </div>
                         </div>
                       </div>
 
-                      {/* Functionality cookies */}
                       <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <Zap className="w-4 h-4 text-purple-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{/* {dictionary["cookies"][languageReducer]["cookiesFunctionality"]} */} {t.text("cookies.cookiesFunctionality")}</h4>
+                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesFunctionality")}</h4>
                           </div>
                           <CategoryToggle
                             state={getFunctionalityToggleState()}
@@ -613,7 +577,7 @@ const ModernCookieBanner = () => {
                           />
                         </div>
                         <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {/* {dictionary["cookies"][languageReducer]["functionalityDesc"]} */} {t.text("cookies.functionalityDesc")}
+                          {t.text("cookies.functionalityDesc")}
                         </p>
 
                         <div className="space-y-2">
@@ -622,9 +586,9 @@ const ModernCookieBanner = () => {
                               <div>
                                 <div className="flex items-center gap-1 mb-1">
                                   <div className={`w-1.5 h-1.5 rounded-full ${calendlyFunctionality ? 'bg-purple-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{/* {dictionary["cookies"][languageReducer]["calendlyFunctionality"]} */} {t.text("cookies.calendlyFunctionality")}</p>
+                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.calendlyFunctionality")}</p>
                                 </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["calendlyFunctionalityDesc"]} */} {t.text("cookies.calendlyFunctionalityDesc")}</p>
+                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyFunctionalityDesc")}</p>
                               </div>
                               <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -643,9 +607,9 @@ const ModernCookieBanner = () => {
                               <div>
                                 <div className="flex items-center gap-1 mb-1">
                                   <div className={`w-1.5 h-1.5 rounded-full ${themePreference ? 'bg-purple-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{/* {dictionary["cookies"][languageReducer]["themePreference"]} */} {t.text("cookies.themePreference")}</p>
+                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.themePreference")}</p>
                                 </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["themePreferenceDesc"]} */} {t.text("cookies.themePreferenceDesc")}</p>
+                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.themePreferenceDesc")}</p>
                               </div>
                               <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -664,9 +628,9 @@ const ModernCookieBanner = () => {
                               <div>
                                 <div className="flex items-center gap-1 mb-1">
                                   <div className={`w-1.5 h-1.5 rounded-full ${languagePreference ? 'bg-purple-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{/* {dictionary["cookies"][languageReducer]["languagePreference"]} */} {t.text("cookies.languagePreference")}</p>
+                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.languagePreference")}</p>
                                 </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["languagePreferenceDesc"]} */} {t.text("cookies.languagePreferenceDesc")}</p>
+                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.languagePreferenceDesc")}</p>
                               </div>
                               <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -682,12 +646,11 @@ const ModernCookieBanner = () => {
                         </div>
                       </div>
 
-                      {/* Performance cookies */}
                       <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <BarChart3 className="w-4 h-4 text-blue-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{/* {dictionary["cookies"][languageReducer]["cookiesPerformance"]} */} {t.text("cookies.cookiesPerformance")}</h4>
+                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesPerformance")}</h4>
                           </div>
                           <CategoryToggle
                             state={getPerformanceToggleState()}
@@ -695,7 +658,7 @@ const ModernCookieBanner = () => {
                           />
                         </div>
                         <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {/* {dictionary["cookies"][languageReducer]["performanceDesc"]} */} {t.text("cookies.performanceDesc")}
+                          {t.text("cookies.performanceDesc")}
                         </p>
 
                         <div className="space-y-2">
@@ -706,7 +669,7 @@ const ModernCookieBanner = () => {
                                   <div className={`w-1.5 h-1.5 rounded-full ${googleAnalytics ? 'bg-blue-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
                                   <p className={`font-medium text-xs ${themeClasses.text}`}>Google Analytics</p>
                                 </div>
-                                <p className={`font-medium text-xs ${themeClasses.text}`}>{/* {dictionary["cookies"][languageReducer]["pagesVisited"]} */} {t.text("cookies.pagesVisited")}</p>
+                                <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.pagesVisited")}</p>
                               </div>
                               <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -725,9 +688,9 @@ const ModernCookieBanner = () => {
                               <div>
                                 <div className="flex items-center gap-1 mb-1">
                                   <div className={`w-1.5 h-1.5 rounded-full ${calendlyPerformance ? 'bg-blue-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{/* {dictionary["cookies"][languageReducer]["calendlyPerformance"]} */} {t.text("cookies.calendlyPerformance")}</p>
+                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.calendlyPerformance")}</p>
                                 </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["calendlyPerformanceDesc"]} */} {t.text("cookies.calendlyPerformanceDesc")}</p>
+                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyPerformanceDesc")}</p>
                               </div>
                               <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -743,12 +706,11 @@ const ModernCookieBanner = () => {
                         </div>
                       </div>
 
-                      {/* Advertising cookies */}
                       <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <Target className="w-4 h-4 text-orange-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{/* {dictionary["cookies"][languageReducer]["cookiesAdvertising"]} */} {t.text("cookies.cookiesAdvertising")}</h4>
+                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesAdvertising")}</h4>
                           </div>
                           <CategoryToggle
                             state={getAdvertisingToggleState()}
@@ -756,7 +718,7 @@ const ModernCookieBanner = () => {
                           />
                         </div>
                         <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {/* {dictionary["cookies"][languageReducer]["advertisingDesc"]} */} {t.text("cookies.advertisingDesc")}
+                          {t.text("cookies.advertisingDesc")}
                         </p>
 
                         <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
@@ -764,9 +726,9 @@ const ModernCookieBanner = () => {
                             <div>
                               <div className="flex items-center gap-1 mb-1">
                                 <div className={`w-1.5 h-1.5 rounded-full ${calendlyAdvertising ? 'bg-orange-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["calendlyTargeted"]} */} {t.text("cookies.calendlyTargeted")}</p>
+                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyTargeted")}</p>
                               </div>
-                              <p className={`text-xs ${themeClasses.textSecondary}`}>{/* {dictionary["cookies"][languageReducer]["calendlyTargetedDesc"]} */} {t.text("cookies.calendlyTargetedDesc")}</p>
+                              <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyTargetedDesc")}</p>
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                               <input
@@ -783,20 +745,19 @@ const ModernCookieBanner = () => {
                     </div>
                   </div>
 
-                  {/* Actions fixes en bas */}
                   <div className={`flex-shrink-0 p-4 md:p-6 pt-3 border-t ${themeClasses.border}`}>
                     <div className="flex flex-col sm:flex-row gap-2">
                       <button
                         onClick={handleSavePreferences}
                         className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2.5 rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
                       >
-                        {/* {dictionary["cookies"][languageReducer]["confirmChoices"]} */} {t.text("cookies.confirmChoices")}
+                        {t.text("cookies.confirmChoices")}
                       </button>
                       <button
                         onClick={() => setShowCustomize(false)}
                         className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors text-sm ${themeClasses.buttonSecondary}`}
                       >
-                        {/* {dictionary["cookies"][languageReducer]["back"]} */} {t.text("cookies.back")}
+                        {t.text("cookies.back")}
                       </button>
                     </div>
                   </div>
@@ -807,15 +768,12 @@ const ModernCookieBanner = () => {
         </div>
       )}
 
-      {/* Bouton de réouverture discret */}
       {(showSettingsButton || shouldHide) && (
         <div className="fixed bottom-4 right-4 z-40" style={{ zIndex: 999998 }}>
           <button
             onClick={reopenSettings}
             className={`${themeClasses.bgSecondary} border ${themeClasses.borderSecondary} shadow-lg rounded-full p-3 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 hover:scale-110`}
-            // title={dictionary["cookies"][languageReducer]["ariaManageCookies"]}
             title={t.text("cookies.ariaManageCookies")}
-            // aria-label={dictionary["cookies"][languageReducer]["ariaManageCookies"]}
             aria-label={t.text("cookies.ariaManageCookies")}
           >
             <Cookie className={`w-5 h-5 ${themeClasses.textSecondary}`} />

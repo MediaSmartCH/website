@@ -27,7 +27,7 @@ export function getCookie(name: string): string | null {
   return null;
 }
 
-/** Parse JSON en sécurité avec fallback (ne jette jamais) */
+// Parses JSON safely with a fallback value; never throws
 export function safeJSONParse<T>(jsonString: unknown, fallback: T): T {
   if (typeof jsonString !== "string") return fallback;
   const trimmed = jsonString.trim();
@@ -42,7 +42,7 @@ export function safeJSONParse<T>(jsonString: unknown, fallback: T): T {
   }
 }
 
-/** Récupère et parse les données de consentement depuis localStorage (auto-clean si corrompu) */
+// Reads cookie consent from localStorage; removes the entry if it is corrupted
 export function getSafeConsentData(): Record<string, any> | null {
   try {
     const stored = localStorage.getItem("cookie_consent");
@@ -57,7 +57,7 @@ export function getSafeConsentData(): Record<string, any> | null {
   }
 }
 
-/** Sauvegarde sécurisée des données de consentement */
+// Persists consent data to localStorage, adding an ISO timestamp for auditing
 export function saveConsentData(consentData: Record<string, any>) {
   try {
     const dataWithTimestamp = {

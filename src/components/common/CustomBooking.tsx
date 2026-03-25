@@ -16,13 +16,12 @@ interface CalendarDay {
   day: number;
 }
 
-// Props pour recevoir le thème depuis le parent
 interface CalendlyInspiredBookingProps {
   themeReducer?: string;
 }
 
-const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({ 
-  themeReducer = "light" // Valeur par défaut si pas fournie
+const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
+  themeReducer = "light"
 }) => {
   const [currentStep, setCurrentStep] = useState<'date' | 'time' | 'details'>('date');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -36,7 +35,8 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
 
-  // Simulation des traductions basée sur votre système
+  // Inline translation map used as a stand-in until this component is wired to
+  // the real i18n system. Keys follow the same dot-notation convention.
   const t = {
     text: (key: string): string => {
       const translations: Record<string, string> = {
@@ -63,7 +63,7 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
         "booking.confirmation.at": "à",
         "booking.confirmation.emailSent": "Un email de confirmation vous a été envoyé.",
         "booking.days.sun": "D",
-        "booking.days.mon": "L", 
+        "booking.days.mon": "L",
         "booking.days.tue": "M",
         "booking.days.wed": "M",
         "booking.days.thu": "J",
@@ -93,12 +93,13 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
     }
   };
 
-  // Créneaux disponibles par jour
+  // All days share the same set of available time slots regardless of the selected date.
   const availableSlots = {
     default: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30']
   };
 
-  // Générer les jours du calendrier
+  // Build a 6-week (42-cell) grid starting from the Sunday before the first day of
+  // the current month, matching the layout of a standard calendar widget.
   const generateCalendarDays = (): CalendarDay[] => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
@@ -136,7 +137,7 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
 
   const getDayNames = (): string[] => [
     t.text("booking.days.sun"),
-    t.text("booking.days.mon"), 
+    t.text("booking.days.mon"),
     t.text("booking.days.tue"),
     t.text("booking.days.wed"),
     t.text("booking.days.thu"),
@@ -170,12 +171,12 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
       t.text("booking.days.friday"),
       t.text("booking.days.saturday")
     ];
-    
+
     const dayName = dayNames[date.getDay()];
     const day = date.getDate();
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
-    
+
     return `${dayName} ${day} ${month} ${year}`;
   };
 
@@ -194,6 +195,7 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
     setCurrentStep('details');
   };
 
+  // Simulates an async submission with a fixed delay; replace with a real API call.
   const handleSubmit = async (): Promise<void> => {
     setIsSubmitting(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -201,6 +203,8 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
     setIsConfirmed(true);
   };
 
+  // Mutating currentMonth directly and wrapping in new Date() forces a state update
+  // because setMonth returns void on the Date object.
   const goToPreviousMonth = (): void => {
     setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)));
   };
@@ -238,7 +242,7 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
 
   return (
     <div className={`flex ${themeReducer === "light" ? "bg-[#F7F7FF]" : "bg-[#2B284C]"} rounded-3xl shadow-2xl max-h-[85vh] overflow-hidden min-h-[700px]`}>
-      {/* Sidebar gauche */}
+      {/* Left sidebar: title, duration badge, and selected date/time summary. */}
       <div className={`w-80 ${themeReducer === "light" ? "bg-white" : "bg-[#14172D]"} p-8 flex flex-col relative border-r ${themeReducer === "light" ? "border-gray-100" : "border-[#413C58]"}`}>
         <div className="mb-8">
           <h1 className={`text-2xl font-redDisplay font-bold ${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"} mb-4 leading-tight`}>
@@ -293,18 +297,16 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
         )}
       </div>
 
-      {/* Contenu principal */}
+      {/* Main content area — renders one of three steps: date, time, or details. */}
       <div className="flex-1 p-8 overflow-y-auto">
         <div className="w-full max-w-2xl mx-auto">
 
-          {/* Sélection de la date */}
           {currentStep === 'date' && (
             <div>
               <h2 className={`text-2xl font-redDisplay font-bold ${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"} mb-8 text-center`}>
                 {t.text("booking.selectDate")}
               </h2>
 
-              {/* Navigation du calendrier */}
               <div className="flex items-center justify-between mb-6">
                 <button
                   onClick={goToPreviousMonth}
@@ -327,14 +329,13 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
                 </button>
               </div>
 
-              {/* Calendrier */}
               <div className={`${themeReducer === "light" ? "bg-white" : "bg-[#14172D]"} rounded-2xl border ${themeReducer === "light" ? "border-gray-100" : "border-[#413C58]"} p-6 shadow-lg`}>
-                {/* En-têtes des jours */}
+                {/* Day-of-week header row */}
                 <div className="grid grid-cols-7 gap-2 mb-4">
                   {getDayNames().map((day, idx) => (
                     <div key={day} className="h-10 flex items-center justify-center">
-                      <span className={`font-helvetica font-semibold text-sm ${idx === 0 || idx === 6 
-                        ? (themeReducer === "light" ? "text-gray-400" : "text-gray-500") 
+                      <span className={`font-helvetica font-semibold text-sm ${idx === 0 || idx === 6
+                        ? (themeReducer === "light" ? "text-gray-400" : "text-gray-500")
                         : (themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]")
                       }`}>
                         {day}
@@ -343,7 +344,7 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
                   ))}
                 </div>
 
-                {/* Jours du calendrier */}
+                {/* Calendar day cells */}
                 <div className="grid grid-cols-7 gap-2">
                   {calendarDays.map((dayObj, idx) => (
                     <button
@@ -355,8 +356,8 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
                         ${!dayObj.isCurrentMonth
                           ? (themeReducer === "light" ? "text-gray-300" : "text-gray-600") + " cursor-default"
                           : dayObj.isAvailable
-                            ? (themeReducer === "light" 
-                                ? "text-[#14172D] hover:bg-gradient-to-r hover:from-[#A855F7] hover:to-[#7C3AED] hover:text-white border border-gray-200 hover:border-[#A855F7]" 
+                            ? (themeReducer === "light"
+                                ? "text-[#14172D] hover:bg-gradient-to-r hover:from-[#A855F7] hover:to-[#7C3AED] hover:text-white border border-gray-200 hover:border-[#A855F7]"
                                 : "text-[#F6F6F6] hover:bg-gradient-to-r hover:from-[#A855F7] hover:to-[#7C3AED] hover:text-white border border-[#413C58] hover:border-[#A855F7]") + " cursor-pointer hover:shadow-lg"
                             : (themeReducer === "light" ? "text-gray-400" : "text-gray-600") + " cursor-not-allowed opacity-50"
                         }
@@ -370,7 +371,6 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
             </div>
           )}
 
-          {/* Sélection de l'heure */}
           {currentStep === 'time' && (
             <div>
               <h2 className={`text-2xl font-redDisplay font-bold ${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"} mb-4 text-center`}>
@@ -387,8 +387,8 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
                       key={time}
                       onClick={() => handleTimeSelect(time)}
                       className={`h-14 px-4 font-helvetica font-medium text-base rounded-xl border-2 transition-all duration-200 transform hover:scale-105 hover:shadow-lg ${
-                        themeReducer === "light" 
-                          ? "border-gray-200 text-[#14172D] hover:bg-gradient-to-r hover:from-[#A855F7] hover:to-[#7C3AED] hover:text-white hover:border-[#A855F7]" 
+                        themeReducer === "light"
+                          ? "border-gray-200 text-[#14172D] hover:bg-gradient-to-r hover:from-[#A855F7] hover:to-[#7C3AED] hover:text-white hover:border-[#A855F7]"
                           : "border-[#413C58] text-[#F6F6F6] hover:bg-gradient-to-r hover:from-[#A855F7] hover:to-[#7C3AED] hover:text-white hover:border-[#A855F7]"
                       }`}
                     >
@@ -400,7 +400,6 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
             </div>
           )}
 
-          {/* Formulaire de détails */}
           {currentStep === 'details' && (
             <div>
               <h2 className={`text-2xl font-redDisplay font-bold ${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"} mb-8 text-center`}>
@@ -420,8 +419,8 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className={`w-full pl-12 pr-4 py-4 font-helvetica text-base border-2 rounded-xl focus:ring-4 focus:ring-[#A855F7] focus:ring-opacity-20 focus:border-[#A855F7] transition-all duration-200 ${
-                          themeReducer === "light" 
-                            ? "bg-[#F7F7FF] border-gray-200 text-[#14172D] placeholder:text-[#413C58]" 
+                          themeReducer === "light"
+                            ? "bg-[#F7F7FF] border-gray-200 text-[#14172D] placeholder:text-[#413C58]"
                             : "bg-[#2B284C] border-[#413C58] text-[#F6F6F6] placeholder:text-[#E5E5E5]"
                         }`}
                         placeholder={t.text("booking.form.fullNamePlaceholder")}
@@ -441,8 +440,8 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className={`w-full pl-12 pr-4 py-4 font-helvetica text-base border-2 rounded-xl focus:ring-4 focus:ring-[#A855F7] focus:ring-opacity-20 focus:border-[#A855F7] transition-all duration-200 ${
-                          themeReducer === "light" 
-                            ? "bg-[#F7F7FF] border-gray-200 text-[#14172D] placeholder:text-[#413C58]" 
+                          themeReducer === "light"
+                            ? "bg-[#F7F7FF] border-gray-200 text-[#14172D] placeholder:text-[#413C58]"
                             : "bg-[#2B284C] border-[#413C58] text-[#F6F6F6] placeholder:text-[#E5E5E5]"
                         }`}
                         placeholder={t.text("booking.form.emailPlaceholder")}
@@ -462,8 +461,8 @@ const CalendlyInspiredBooking: React.FC<CalendlyInspiredBookingProps> = ({
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         rows={4}
                         className={`w-full pl-12 pr-4 py-4 font-helvetica text-base border-2 rounded-xl focus:ring-4 focus:ring-[#A855F7] focus:ring-opacity-20 focus:border-[#A855F7] transition-all duration-200 resize-none ${
-                          themeReducer === "light" 
-                            ? "bg-[#F7F7FF] border-gray-200 text-[#14172D] placeholder:text-[#413C58]" 
+                          themeReducer === "light"
+                            ? "bg-[#F7F7FF] border-gray-200 text-[#14172D] placeholder:text-[#413C58]"
                             : "bg-[#2B284C] border-[#413C58] text-[#F6F6F6] placeholder:text-[#E5E5E5]"
                         }`}
                         placeholder={t.text("booking.form.messagePlaceholder")}

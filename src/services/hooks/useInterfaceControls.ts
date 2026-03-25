@@ -54,6 +54,7 @@ export const useInterfaceControls = (
         return;
       }
 
+      // Restore scroll position across multiple frames because layout may reflow after language change
       requestAnimationFrame(() => {
         window.scrollTo(scrollX, scrollY);
         setTimeout(() => window.scrollTo(scrollX, scrollY), 0);

@@ -12,7 +12,6 @@ import { fetchWithDeployment } from "services/api/fetchWithDeployment";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
-
 import email from "assets/icons/email.svg";
 import address from "assets/icons/address.svg";
 import phone from "assets/icons/phone.svg";
@@ -48,6 +47,7 @@ const ProjectTypeDropdown = ({
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
 
+  // Close the dropdown when clicking outside its container.
   React.useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
@@ -117,6 +117,8 @@ const Contact = () => {
   const [projectType, setProjectType] = React.useState("");
   const [projectTypeValid, setProjectTypeValid] = React.useState(true);
 
+  // Listen for external "contact-intent" events so other components can pre-select
+  // the question/quote toggle (e.g. a CTA button on another section).
   React.useEffect(() => {
     const handler = (e: CustomEvent) => {
       setIntent(e.detail.intent);
@@ -135,6 +137,7 @@ const Contact = () => {
   const [phoneValue, setPhoneValue] = React.useState("");
   const [phoneValid, setPhoneValid] = React.useState(true);
 
+  // Strip the dial code prefix and return only the subscriber digits.
   const getLocalDigits = (phone: string) => {
     const { country } = guessCountryByPartialPhoneNumber({ phone });
     const dial = country?.dialCode || "";
@@ -146,13 +149,16 @@ const Contact = () => {
   };
 
   const localDigits = getLocalDigits(phoneValue);
+  // True when the user has typed only a dial code with no subscriber digits yet.
   const dialOnly = localDigits.length === 0;
 
   const toggleRef = React.useRef<HTMLDivElement>(null);
+  // Suppresses the click event that fires immediately after a drag gesture ends.
   const suppressToggleClickRef = React.useRef(false);
   const toggleDragState = React.useRef({ pointerId: null as number | null, startX: 0, hasMoved: false });
   const [dragIntent, setDragIntent] = React.useState<"question" | "quote" | null>(null);
 
+  // Determine which toggle option the pointer is currently over.
   const getIntentFromClientX = (clientX: number): "question" | "quote" => {
     const rect = toggleRef.current?.getBoundingClientRect();
     if (!rect) return intent;
@@ -167,6 +173,8 @@ const Contact = () => {
   const handleTogglePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (toggleDragState.current.pointerId !== e.pointerId) return;
     if (Math.abs(e.clientX - toggleDragState.current.startX) > 4) {
+      // Capture the pointer on first significant move so the drag stays smooth
+      // even if the cursor leaves the element.
       if (!toggleDragState.current.hasMoved) e.currentTarget.setPointerCapture(e.pointerId);
       toggleDragState.current.hasMoved = true;
     }
@@ -178,6 +186,7 @@ const Contact = () => {
     if (toggleDragState.current.pointerId !== e.pointerId) return;
     if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
     if (toggleDragState.current.hasMoved && dragIntent !== null) {
+      // A drag just finished — set a flag so the subsequent click event is ignored.
       suppressToggleClickRef.current = true;
       const next = dragIntent;
       setIntent(next);
@@ -194,6 +203,8 @@ const Contact = () => {
   const [emailValid, setEmailValid] = React.useState(true);
 
   const emailBase = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}$/i;
+  // Stricter than the base regex: also rejects consecutive dots, leading/trailing
+  // dots in the local part, and hyphens at label boundaries in the domain.
   const isValidEmailStrict = (value: string) => {
     if (!emailBase.test(value)) return false;
     if (value.includes("..")) return false;
@@ -237,6 +248,7 @@ const Contact = () => {
 
     if (name === "email") {
       setContact((c) => ({ ...c, email: value }));
+      // Show valid state when the field is empty so the error doesn't flash on first keystroke.
       setEmailValid(value === "" ? true : isValidEmailStrict(value));
       return;
     }
@@ -306,7 +318,7 @@ const Contact = () => {
               </div>
 
               <div className="
-                flex flex-wrap 
+                flex flex-wrap
                 justify-center lg:justify-start
                 gap-x-[13px] gap-y-[12px]
                 mt-[25px] lg:mt-[45px]
@@ -438,6 +450,8 @@ const Contact = () => {
                   const isLocalHost = window.location.hostname === 'localhost' ||
                     window.location.hostname === '127.0.0.1';
 
+                  // reCAPTCHA is bypassed in local development to avoid requiring
+                  // a valid token when working offline or without API keys.
                   if (!isLocalHost) {
                     if (!executeRecaptcha) {
                     } else {
@@ -445,17 +459,18 @@ const Contact = () => {
                       const verification = await verifyRecaptchaToken(token);
 
                       if (!verification.success) {
-                        console.error('❌ ReCAPTCHA échec:', verification);
-                        setError('Échec de la vérification de sécurité');
+                        console.error('reCAPTCHA failed:', verification);
+                        setError('Security verification failed');
                         setLoading(false);
                         return;
                       }
                     }
-                  } else {
-                    console.log('🏠 Mode local : ReCAPTCHA bypassed');
                   }
 
+                  // Derive language from the URL prefix rather than the Redux store
+                  // so the server-side email template uses the correct locale.
                   const urlLang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+                  // Omit the phone field entirely when the user only selected a dial code.
                   const payload = { ...contact, phone: dialOnly ? "" : phoneValue, lang: urlLang, intent, projectType: intent === "quote" ? projectType : "" };
                   const controller = new AbortController();
                   const timeout = setTimeout(() => controller.abort(), 10000);
@@ -482,17 +497,17 @@ const Contact = () => {
                     handleClick();
                   } else {
                     setLoading(false);
-                    setError(`Erreur lors de l'envoi (${result.status})`);
+                    setError(`Send error (${result.status})`);
                   }
 
                 } catch (error) {
-                  console.error('Erreur EmailJS:', error);
+                  console.error('Send error:', error);
                   setLoading(false);
-                  setError('Une erreur est survenue lors de l\'envoi du message, veuillez réessayer plus tard.');
+                  setError('An error occurred while sending the message, please try again later.');
                 }
               }}
             >
-              {/* Intent toggle */}
+              {/* Draggable intent toggle — supports both click and horizontal drag. */}
               <div
                 ref={toggleRef}
                 className={`${themeReducer === "light" ? "bg-white border-[#C8CAE4]" : "bg-[#685A9C] border-[#C8CAE4]"} flex border-2 rounded-[11px] p-[5px] gap-[5px] mb-[16px] lg:mb-[22px] cursor-grab active:cursor-grabbing select-none`}
@@ -578,6 +593,7 @@ const Contact = () => {
                   value={phoneValue}
                   onChange={(value) => {
                     setPhoneValue(value);
+                    // Clear any native validity message set by a previous failed attempt.
                     const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
                     if (phoneInput) {
                       phoneInput.setCustomValidity("");
@@ -607,7 +623,8 @@ const Contact = () => {
                   }}
                 />
 
-                < div className="pointer-events-none absolute inset-y-0 right-[16px] flex items-center gap-3" >
+                {/* Overlay showing the placeholder text and phone icon; hidden once the user starts typing. */}
+                <div className="pointer-events-none absolute inset-y-0 right-[16px] flex items-center gap-3">
                   {dialOnly && (
                     <span
                       className={`whitespace-nowrap leading-none
@@ -617,13 +634,12 @@ const Contact = () => {
                     >
                       {t.text("home.contactMobile")}
                     </span>
-                  )
-                  }
-                  < img src={contactPhone} alt="Phone" />
+                  )}
+                  <img src={contactPhone} alt="Phone" />
                 </div>
               </div>
 
-              {/* Project type (quote only) */}
+              {/* Project type dropdown — only visible when the quote intent is selected. */}
               {intent === "quote" && (() => {
                 const projectOptions = [
                   { value: "vitrine", label: t.text("home.contactProjectVitrine") },
@@ -713,8 +729,8 @@ const Contact = () => {
             )}
           </div>
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 

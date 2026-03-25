@@ -2,23 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
 import VideoOverviewCard from "./VideoOverviewCard";
 import { LottieKey } from "config/lotties";
 
-// Importation of lottie files
-// import overview1 from 'assets/images/lotties/liveVideoDirectionLight.json';
-// import overview1d from 'assets/images/lotties/liveVideoDirectionDark.json';
-// import overview2 from 'assets/images/lotties/eventRetransmissionLight.json';
-// import overview2d from 'assets/images/lotties/eventRetransmissionDark.json';
-// import overview3 from 'assets/images/lotties/videoEditingLight.json';
-// import overview3d from 'assets/images/lotties/videoEditingDark.json';
-// import overview4 from 'assets/images/lotties/equipmentRentalLight.json';
-// import overview4d from 'assets/images/lotties/equipmentRentalDark.json';
-// import overview5 from 'assets/images/lotties/photographyLight.json';
-// import overview5d from 'assets/images/lotties/photographyDark.json';
-
+// Animation keys are ordered to match the translation array index for each service card
 const OVERVIEW_ANIMS: LottieKey[] = [
   "video.live",
   "video.retransmission",
@@ -45,67 +33,10 @@ export default function VideoOverview() {
     MAX_OVERVIEW_CARDS
   );
 
+  // Prefetch route chunk on hover to reduce navigation latency
   const preloadVideoServices = () => {
     import("../../../../pages/VideoServices");
   };
-
-  // const overview1Lottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? overview1 : overview1d,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet"
-  //   }
-  // };
-
-  // const overview2Lottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? overview2 : overview2d,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet"
-  //   }
-  // };
-
-  // const overview3Lottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? overview3 : overview3d,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet"
-  //   }
-  // };
-
-  // const overview4Lottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? overview4 : overview4d,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet"
-  //   }
-  // };
-
-  // const overview5Lottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? overview5 : overview5d,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet"
-  //   }
-  // };
-
-  // Define Lottie options for each card
-  // const getLottieOptionsForCard = (index: number) => {
-  //   const lottieOptions = [
-  //     overview1Lottie,
-  //     overview2Lottie,
-  //     overview3Lottie,
-  //     overview4Lottie,
-  //     overview5Lottie
-  //   ];
-
-  // return lottieOptions[index];
-  // };
 
   return (
     <div id="services" className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto py-[40px] relative">
@@ -113,28 +44,17 @@ export default function VideoOverview() {
         className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
           } w-full text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
       >
-        {/* {dictionary["home"][languageReducer]["VideoOverviewTitle"]} */} {t.text("home.VideoOverviewTitle")}
+        {t.text("home.VideoOverviewTitle")}
       </p>
       <p
         className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
           } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
       >
-        {/* {dictionary["home"][languageReducer]["VideoOverviewDescription"]} */} {t.text("home.VideoOverviewDescription")}
+        {t.text("home.VideoOverviewDescription")}
       </p>
-      {/* cards */}
       <div className="flex flex-wrap justify-center gap-[30px] lg:gap-[20px] xl:gap-[30px] 2xl:gap-[40px] my-[40px] md:my-[50px]">
-        {/* {dictionary["home"][languageReducer]["VideoOverviewCards"].map((card: any, index: number) => (
-          <VideoOverviewCard
-            key={index}
-            themeReducer={themeReducer}
-            // lottieOptions={getLottieOptionsForCard(index)}
-            anim={OVERVIEW_ANIMS[index]}
-            title={card.title}
-            description={card.description}
-          />
-        ))} */}
-
         {cards.map((card, i) => {
+          // Clamp the index so extra cards beyond OVERVIEW_ANIMS still get a valid key
           const anim = OVERVIEW_ANIMS[Math.min(i, OVERVIEW_ANIMS.length - 1)];
 
           return (
@@ -153,7 +73,7 @@ export default function VideoOverview() {
         <Link to="video-services" onMouseEnter={preloadVideoServices}>
           <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] flex items-center justify-center rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
             <span className="custom-btn-inner">
-              {/* {dictionary["home"][languageReducer]["VideoOverviewExploreBtn"]} */} {t.text("home.VideoOverviewExploreBtn")}
+              {t.text("home.VideoOverviewExploreBtn")}
             </span>
           </button>
         </Link>

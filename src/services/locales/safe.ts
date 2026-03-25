@@ -1,18 +1,15 @@
-// services/locales/safe.ts
-import { dictionary } from "./index"; // ton dico existant
-type Lang = string;                   // ou ton union 'en' | 'fr'
-const DEFAULT_LANG: Lang = "en";      // adapte si besoin
-
-// type Json = string | number | boolean | null | Json[] | { [k: string]: Json };
+import { dictionary } from "./index";
+type Lang = string;
+const DEFAULT_LANG: Lang = "en";
 
 function getIn(obj: any, path: string): any {
-  // path: "home.ITOverviewCards" ou "home.tile1.faqQuestion"
   return path.split(".").reduce((acc, k) => (acc == null ? acc : acc[k]), obj);
 }
 
 function pickLang(section: string, lang: Lang) {
   const sec = (dictionary as any)[section];
   if (!sec) return undefined;
+  // Fall back to DEFAULT_LANG if the requested language is not available
   return sec[lang] ?? sec[DEFAULT_LANG];
 }
 
@@ -29,19 +26,14 @@ function coerceString(val: any, fallback: string): string {
 }
 
 export type SafeTranslator = {
-  /** Texte simple */
   text: (path: string, fallback?: string) => string;
-  /** Objet typé */
   object: <T = Record<string, unknown>>(path: string, fallback?: T) => T;
-  /** Tableau typé */
   array: <T = unknown>(path: string, fallback?: T[]) => T[];
 };
 
 export function makeTranslator(lang: Lang): SafeTranslator {
   const warn = (path: string, why: string) => {
-    // if (import.meta.env.NODE_ENV !== "production") {
     if (import.meta.env.DEV) {
-      // évite le spam mais utile en dev
       console.warn(`[i18n] ${why} at "${path}" (lang=${lang})`);
     }
   };
@@ -71,5 +63,4 @@ export function makeTranslator(lang: Lang): SafeTranslator {
   };
 }
 
-/** Hook pratique pour React */
 export const useTranslations = (lang: Lang) => makeTranslator(lang);

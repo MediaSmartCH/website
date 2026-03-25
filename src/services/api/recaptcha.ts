@@ -7,13 +7,11 @@ interface RecaptchaResponse {
 }
 
 export const verifyRecaptchaToken = async (token: string): Promise<RecaptchaResponse> => {
-  // Bypass en développement local
+  // Skip verification on localhost to allow local development without reCAPTCHA credentials
   if (window.location.hostname === 'localhost') {
-    // console.log('🔧 Mode développement local : ReCAPTCHA bypassed');
     return { success: true, score: 1.0 };
   }
 
-  // Vérification réelle sur Vercel
   try {
     const response = await fetchWithDeployment('/api/verify-recaptcha', {
       method: 'POST',

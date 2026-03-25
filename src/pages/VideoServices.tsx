@@ -3,40 +3,26 @@ import AOS from "aos";
 
 import { useAppSelector } from "services/hooks/hooks";
 
-// import useScrollToHash from "services/hooks/useScrolltoHash";
-
-// import Layout from "../components/Layout";
-// import Navbar from "components/common/Navbar";
 import Hero from "components/presentation/videoServices/Hero";
 import About from "components/presentation/videoServices/About";
 import Services from "components/presentation/videoServices/Services";
-// import Partner from "components/presentation/videoServices/Partner";
-// import Testimonials from "components/common/testimonials";
 import Faq from "components/presentation/videoServices/Faq";
 import Booking from "components/common/Booking";
 import Contact from "components/common/Contact";
 import WaveBackdrop from "components/common/WaveBackdrop";
-// import Footer from "components/common/Footer";
 
 export default function VideoServicesPage() {
-  // useScrollToHash();
-
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
   const [hasAnimated, setHasAnimated] = React.useState(false);
 
   React.useEffect(() => {
     AOS.refresh();
-    // AOS.init({
-    //   once: true,
-    //   offset: 50,
-    // });
     setHasAnimated(true);
   }, []);
 
-  // Empêcher les re-animations lors du changement de thème
+  // Freeze AOS animations on theme change to prevent re-triggering entrance effects
   React.useEffect(() => {
     if (hasAnimated) {
-      // Désactiver temporairement AOS
       const elements = document.querySelectorAll('[data-aos]');
       elements.forEach(el => {
         el.classList.add('aos-animate');
@@ -47,16 +33,10 @@ export default function VideoServicesPage() {
   }, [themeReducer, hasAnimated]);
 
   return (
-    // <div>
     <>
-      {/* <Navbar /> */}
       <Hero />
-      {/* <Partner /> */}
       <About />
       <Services />
-      {/* <div className="pt-[40px] md:pt-[50px]">
-        <Testimonials />
-      </div> */}
       <Faq />
       <div className="relative overflow-hidden pt-[40px] md:pt-[50px]">
         <WaveBackdrop
@@ -69,15 +49,7 @@ export default function VideoServicesPage() {
           </div>
         </div>
       </div>
-      {/* <div className="pt-[40px] md:pt-[50px] w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto">
-        <div className="px-[20px] md:px-[50px] lg:px-0 booking-bg rounded-[20px] 2xl:rounded-[20px] pt-[27px] pb-[32px] lg:pt-[42px] lg:pb-[28px]">
-          <Booking />
-        </div>
-      </div> */}
       <Contact />
-      {/* <Footer /> */}
     </>
-    // </div>
   );
 };
-

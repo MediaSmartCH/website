@@ -1,17 +1,14 @@
 const video = {
-    // Hero
     videoTitle: "MediaSmart Video ",
     videoSubitle: "Captivate, Inspire, Leave a Mark!",
     videoDescription:
         "From event filming to creative editing, MediaSmart brings your stories to life with videos that engage and resonate with your audience.",
     videoContactBtn: "Contact Us",
 
-    // About
     videoServicesAbout: "About MediaSmart",
     videoServicesAboutDescription:
-        "MediaSmart stands at the forefront of digital storytelling, transforming visions into vivid visuals. Our commitment is to deliver impactful video content that not only captivates viewers but also amplifies your brand’s unique voice. Specializing in comprehensive live event coverage, dynamic promotional videos, and personalized content creation, we empower your digital presence, ensuring your message resonates with your audience and leaves a lasting impression.",
+        "MediaSmart stands at the forefront of digital storytelling, transforming visions into vivid visuals. Our commitment is to deliver impactful video content that not only captivates viewers but also amplifies your brand's unique voice. Specializing in comprehensive live event coverage, dynamic promotional videos, and personalized content creation, we empower your digital presence, ensuring your message resonates with your audience and leaves a lasting impression.",
 
-    // Services
     videoServicesMainTitle1: "Our",
     videoServicesMainTitle2: "Services",
     videoServicesContactBtn: "Contact Us",

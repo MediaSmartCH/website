@@ -12,11 +12,8 @@ mkdirSync(outputDir, { recursive: true });
 
 const data = JSON.parse(readFileSync(dataPath, 'utf-8'));
 
-/**
- * Résout une URL de screenshot :
- * - URL absolue (https://...) → utilisée telle quelle
- * - Chemin relatif (/projets) → préfixé avec l'origine du champ `url`
- */
+// Resolves a screenshot URL: absolute URLs are used as-is; relative paths are
+// prefixed with the origin of the item's base URL.
 function resolveScreenshotUrl(screenshotUrl, baseUrl) {
   if (screenshotUrl.startsWith('http://') || screenshotUrl.startsWith('https://')) {
     return screenshotUrl;
@@ -49,14 +46,14 @@ for (const item of data.items) {
       const page = await browser.newPage();
       await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
 
-      // Cookie banner : on accepte automatiquement si présent
+      // Mask the webdriver flag so pages do not activate bot-detection or cookie banners
       await page.evaluateOnNewDocument(() => {
         Object.defineProperty(navigator, 'webdriver', { get: () => false });
       });
 
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 
-      // Scroll progressif pour déclencher le lazy-load des images
+      // Scroll progressively through the page to trigger lazy-loaded images
       await page.evaluate(async () => {
         await new Promise((resolve) => {
           let totalHeight = 0;
@@ -73,7 +70,7 @@ for (const item of data.items) {
         });
       });
 
-      // Attente pour que les images lazy-loadées se chargent
+      // Wait for lazy-loaded images to finish rendering after the scroll pass
       await new Promise((r) => setTimeout(r, 3000));
 
       await page.screenshot({
@@ -95,4 +92,4 @@ for (const item of data.items) {
 
 await browser.close();
 
-console.log(`\nTerminé : ${successCount} réussi(s), ${errorCount} échec(s)`);
+console.log(`\nDone: ${successCount} succeeded, ${errorCount} failed`);

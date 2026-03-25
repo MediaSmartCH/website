@@ -25,6 +25,7 @@ interface PortfolioData {
 const PREVIEW_LIMIT = 4;
 const SCROLLABLE_GALLERY_THRESHOLD = 3;
 
+// Returns the resolved image paths for a portfolio item, preferring generated screenshot paths
 function getItemImages(item: PortfolioItem): string[] {
   if (item.screenshotUrls && item.screenshotUrls.length > 0) {
     return item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`);
@@ -33,6 +34,7 @@ function getItemImages(item: PortfolioItem): string[] {
   return item.images ?? [];
 }
 
+// Resolves a relative screenshot URL against the item's base URL
 function resolveScreenshotUrl(screenshotUrl: string, baseUrl?: string): string {
   if (screenshotUrl.startsWith("http://") || screenshotUrl.startsWith("https://")) {
     return screenshotUrl;
@@ -46,6 +48,7 @@ function resolveScreenshotUrl(screenshotUrl: string, baseUrl?: string): string {
   }
 }
 
+// Returns the string value for the current language, falling back to fr then en
 function resolveLocalizedField(
   field: LocalizedField,
   language: string
@@ -109,6 +112,7 @@ function formatRemainingProjectsCta(count: number, language: string): string {
   return `View ${count} more`;
 }
 
+// Returns Tailwind grid class based on how many images a card holds
 function getInlineGalleryClassName(imageCount: number): string {
   if (imageCount <= 1) {
     return "grid grid-cols-1 gap-3";
@@ -121,6 +125,7 @@ function getInlineGalleryClassName(imageCount: number): string {
   return "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3";
 }
 
+// Locks body scroll while the modal is open and restores original styles on cleanup
 function useBodyScrollLock(isLocked: boolean): void {
   useEffect(() => {
     if (!isLocked) {
@@ -133,6 +138,7 @@ function useBodyScrollLock(isLocked: boolean): void {
       paddingRight: document.body.style.paddingRight,
       touchAction: document.body.style.touchAction,
     };
+    // Add padding to compensate for the scrollbar disappearing and prevent layout shift
     const scrollbarWidth =
       window.innerWidth - document.documentElement.clientWidth;
 
@@ -169,6 +175,7 @@ const PortfolioGallery = () => {
 
   const t = useTranslations(languageReducer);
 
+  // Filter out items with no displayable images so empty cards never appear
   const portfolioItems = useMemo(() => {
     const data = portfolioContent as PortfolioData;
 
@@ -230,6 +237,7 @@ const PortfolioGallery = () => {
     : "text-[#E6E3FF]";
   const previewButtonText = t.text("it.portfolioBtn");
 
+  // Full modal rendered via portal so it escapes any overflow:hidden ancestors
   const modal = (
     <div
       className="fixed inset-0 z-[99999] flex items-center justify-center p-4 md:p-6"
@@ -313,6 +321,7 @@ const PortfolioGallery = () => {
                 languageReducer
               );
               const images = getItemImages(item);
+              // Switch to a horizontally scrollable row when the image count exceeds the threshold
               const shouldScrollGallery =
                 images.length > SCROLLABLE_GALLERY_THRESHOLD;
 

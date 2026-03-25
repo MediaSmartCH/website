@@ -1,22 +1,14 @@
 import React, { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-// import Lottie from "react-lottie";
-// import DotAnim from "components/common/DotAnim";
-// import { useParams, useLocation } from "react-router-dom";
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
-
 import { useLangLink } from "services/router/langPath";
-
-// import heroLight from "assets/images/lotties/homeHeroLight.json";
-// import heroDark from "assets/images/lotties/homeHeroDark.json";
-
 
 const Hero = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
   const { L } = useLangLink();
 
+  // Prefetch route chunks on hover to reduce navigation latency
   const preloadITServices = () => {
     import("../../../pages/ITServices");
   };
@@ -32,15 +24,6 @@ const Hero = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
-
-  // const heroLottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? heroLight : heroDark,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet",
-  //   },
-  // };
 
   return (
     <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="home">
@@ -68,7 +51,7 @@ const Hero = () => {
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"
           >
-            {/* {dictionary["home"][languageReducer]["heroDescription"]} */} {t.text("home.heroDescription")}
+            {t.text("home.heroDescription")}
           </p>
           <div className="w-full justify-center flex items-center gap-3 md:gap-5 flex-wrap px-[20px]"
             data-aos="fade-up"
@@ -85,7 +68,7 @@ const Hero = () => {
                   text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
               >
                 <span className="custom-btn-inner">
-                  {/* {dictionary["home"][languageReducer]["itBtn"]} */} {t.text("home.itBtn")}
+                  {t.text("home.itBtn")}
                 </span>
               </button>
             </Link>
@@ -99,7 +82,7 @@ const Hero = () => {
                   text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px]"
               >
                 <span className="custom-btn-inner">
-                  {/* {dictionary["home"][languageReducer]["videoBtn"]} */} {t.text("home.videoBtn")}
+                  {t.text("home.videoBtn")}
                 </span>
               </button>
             </Link>
@@ -113,9 +96,6 @@ const Hero = () => {
           data-aos-easing="ease-in-sine"
         >
           <div className="w-full h-full mx-auto">
-            {/* <Lottie
-              options={heroLottie}
-            /> */}
             <Suspense
               fallback={
                 <div className="h-[220px] flex items-center justify-center">

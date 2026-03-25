@@ -14,6 +14,9 @@ function App() {
   const dispatch = useAppDispatch();
   const { currentTheme, themePreference } = useAppSelector((state) => state.theme);
 
+  // Keep the theme in sync with the OS color-scheme when the user has not
+  // chosen a manual preference. Uses the modern addEventListener API and
+  // falls back to the deprecated addListener for older browsers.
   useEffect(() => {
     if (themePreference !== "system") return;
 
@@ -40,12 +43,6 @@ function App() {
       mediaQuery.removeListener(handleSystemThemeChange);
     };
   }, [dispatch, themePreference]);
-
-  // // Reset scroll on mount to ensure scroll is never blocked
-  // useEffect(() => {
-  //   document.body.style.overflow = "";
-  //   document.documentElement.style.overflow = "";
-  // }, []);
 
   return (
     <div className={`${currentTheme === "light" ? "App" : "AppDark"} `}>

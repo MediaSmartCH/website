@@ -23,10 +23,13 @@ export type AppLanguage = (typeof SUPPORTED_LANGUAGES)[number]["code"];
 
 const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(({ code }) => code);
 const supportedLanguageSet = new Set<string>(supportedLanguageCodes);
+
+// Escape each code so it is safe to embed as a literal in a RegExp.
 const escapedLanguageCodes = supportedLanguageCodes.map((code) =>
   code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 );
 
+// Matches a leading language prefix such as "/fr" or "/en" followed by "/" or end-of-string.
 export const LANGUAGE_PREFIX_REGEX = new RegExp(
   `^/(${escapedLanguageCodes.join("|")})(?=/|$)`
 );
@@ -48,6 +51,7 @@ export const normalizeLanguage = (
     return normalizedValue;
   }
 
+  // Accept BCP-47 tags like "en-US" by trying just the base language code.
   const baseLanguage = normalizedValue.split("-")[0];
 
   if (isSupportedLanguage(baseLanguage)) {
@@ -74,6 +78,7 @@ export const getNextLanguage = (language: string): AppLanguage => {
     return DEFAULT_LANGUAGE;
   }
 
+  // Wraps around to the first language after the last one.
   return SUPPORTED_LANGUAGES[
     (currentIndex + 1) % SUPPORTED_LANGUAGES.length
   ].code;
@@ -93,6 +98,7 @@ export const buildLocalizedPath = (
 ): string => {
   const nextLanguage = normalizeLanguage(language);
   const strippedPath = stripLanguageFromPath(pathname) || "";
+  // Avoid a double slash when the path is exactly "/" or empty.
   const normalizedPath =
     strippedPath === "/" || strippedPath === "" ? "" : strippedPath;
 

@@ -31,6 +31,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const activeLanguage = getLanguageConfig(currentLanguage);
   const isLightTheme = currentTheme === "light";
 
+  // Size-variant token sets — keeps inline style logic out of JSX.
   const sizeConfig =
     size === "xs"
       ? {
@@ -65,6 +66,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           meta: "text-[11px]",
         };
 
+  // Attach global listeners only while the dropdown is open to avoid unnecessary
+  // overhead, and clean them up as soon as it closes.
   React.useEffect(() => {
     if (!isOpen) {
       return undefined;

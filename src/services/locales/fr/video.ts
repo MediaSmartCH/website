@@ -1,17 +1,14 @@
 const video = {
-    // Hero
     videoTitle: "MediaSmart Vidéo ",
     videoSubitle: "Captivez, Inspirez, Marquez les esprits !",
     videoDescription:
-        "De la captation d’événements au montage créatif, MediaSmart donne vie à vos histoires avec des vidéos qui marquent et engagent votre audience.",
+        "De la captation d'événements au montage créatif, MediaSmart donne vie à vos histoires avec des vidéos qui marquent et engagent votre audience.",
     videoContactBtn: "Contactez-nous",
 
-    // About
     videoServicesAbout: "À propos de MediaSmart",
     videoServicesAboutDescription:
         "MediaSmart se positionne à l'avant-garde du récit numérique, transformant les visions en visuels vivants. Notre engagement est de fournir un contenu vidéo impactant qui captive non seulement les spectateurs, mais amplifie également la voix unique de votre marque. Spécialisés dans la couverture complète d'événements en direct, les vidéos promotionnelles dynamiques et la création de contenu personnalisé, nous renforçons votre présence numérique, garantissant que votre message résonne auprès de votre public et laisse une impression durable.",
 
-    // Services
     videoServicesMainTitle1: "Nos",
     videoServicesMainTitle2: "services",
     videoServicesContactBtn: "Contactez-nous",

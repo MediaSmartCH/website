@@ -12,17 +12,15 @@ export default function PrivacyPolicy() {
 
     const [formattedDate, setFormattedDate] = useState("");
 
-    // Get current date and format it based on language
     useEffect(() => {
         const currentDate = new Date('2025-09-13')
-        const options: Intl.DateTimeFormatOptions = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+        const options: Intl.DateTimeFormatOptions = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         };
-        
-        // Use the language reducer to determine locale
+
         const locale = languageReducer === 'en' ? 'en-US' : 'fr-FR';
         const formatted = currentDate.toLocaleDateString(locale, options);
         setFormattedDate(formatted);

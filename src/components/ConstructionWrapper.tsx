@@ -11,7 +11,8 @@ const ConstructionWrapper: React.FC<ConstructionWrapperProps> = ({ children }) =
     typeof window !== "undefined" ? window.location.pathname : "/"
   );
 
-  // Écouter les changements de route
+  // Track client-side navigation by patching history methods and listening to
+  // popstate/hashchange, since there is no router context available here.
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -19,7 +20,6 @@ const ConstructionWrapper: React.FC<ConstructionWrapperProps> = ({ children }) =
       setCurrentPath(window.location.pathname);
     };
 
-    // Écouter les changements d'URL
     const originalPushState = window.history.pushState.bind(window.history);
     const originalReplaceState = window.history.replaceState.bind(window.history);
 
@@ -36,7 +36,6 @@ const ConstructionWrapper: React.FC<ConstructionWrapperProps> = ({ children }) =
     window.addEventListener("popstate", handleRouteChange);
     window.addEventListener("hashchange", handleRouteChange);
 
-    // Initialiser
     handleRouteChange();
 
     return () => {
@@ -47,18 +46,15 @@ const ConstructionWrapper: React.FC<ConstructionWrapperProps> = ({ children }) =
     };
   }, []);
 
-  // Vérifier si on est sur une route autorisée en mode construction
+  // Privacy-policy pages are always accessible regardless of construction mode
   const isAllowedRoute = () => {
-    // Routes autorisées : privacy-policy dans toutes les langues
     return currentPath.includes('/privacy-policy');
   };
 
-  // Si le mode construction est activé et qu'on n'est pas sur une route autorisée
   if (CONSTRUCTION_CONFIG.isUnderConstruction && !isAllowedRoute()) {
     return <UnderConstruction />;
   }
 
-  // Sinon, afficher l'application normale
   return <>{children}</>;
 };
 

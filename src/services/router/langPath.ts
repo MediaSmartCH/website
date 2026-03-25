@@ -25,6 +25,7 @@ export const useLangLink = () => {
 
   const L = (path: string) => {
     const n = normalize(path);
+    // Hash-only paths get the language prefix prepended directly
     if (n.startsWith("#")) return `/${lang}${n}`;
     return buildLocalizedPath(lang, n);
   };

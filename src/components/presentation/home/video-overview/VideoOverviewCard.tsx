@@ -1,20 +1,8 @@
-// import Lottie from "react-lottie";
-// import DotAnim from "components/common/DotAnim";
 import { lazy, Suspense } from "react";
 import { LottieKey } from "config/lotties";
 
-// interface LottieOptions {
-//     loop: boolean;
-//     autoplay: boolean;
-//     animationData: any;
-//     rendererSettings: {
-//         preserveAspectRatio: string;
-//     };
-// }
-
 interface OverviewCardProps {
     themeReducer: string;
-    // lottieOptions: LottieOptions;
     anim: LottieKey;
     title: string;
     description: string;
@@ -27,9 +15,9 @@ export default function VideoOverviewCard({ themeReducer, anim, title, descripti
             className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
                 } rounded-[15px] lg:rounded-[15px] xl:rounded-[20px] 2xl:rounded-[25px] px-5 py-6 md:py-8 2xl:py-10`}
         >
+            {/* Fixed aspect ratio container keeps animation size consistent across card widths */}
             <div className="relative w-full aspect-[4/3] lg:aspect-[16/11] xl:aspect-[5/4]">
                 <div className="absolute inset-0 flex items-center justify-center">
-                    {/* <Lottie options={lottieOptions} /> */}
                     <Suspense
                         fallback={
                             <div className="h-[220px] flex items-center justify-center">

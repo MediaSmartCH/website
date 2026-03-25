@@ -6,6 +6,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 const plugins = [react(), tsconfigPaths()];
 
+// Bundle analyzer is opt-in via ANALYZE=true environment variable
 if (process.env.ANALYZE === "true") {
   plugins.push(
     visualizer({
@@ -26,6 +27,7 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    // Forward /api requests to the local dev API server
     proxy: {
       '/api': 'http://localhost:3001',
     },
@@ -45,11 +47,12 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       onwarn(warning, warn) {
-        // Suppress eval warnings from @dotlottie (third-party library)
+        // Suppress eval warnings originating from the @dotlottie third-party library
         if (warning.code === "EVAL" && warning.id?.includes("@dotlottie")) return;
         warn(warning);
       },
       output: {
+        // Split large dependencies into named chunks to improve long-term caching
         manualChunks: {
           "react-vendor": ["react", "react-dom", "react-router-dom"],
           "redux-vendor": ["redux", "react-redux", "@reduxjs/toolkit", "redux-persist"],
