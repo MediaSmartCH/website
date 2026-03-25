@@ -1,11 +1,55 @@
 import fs from "fs";
-import { defineConfig } from "vite";
+import { createHash } from "crypto";
+import { createRequire } from "module";
+import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { visualizer } from "rollup-plugin-visualizer";
 
-const plugins = [react(), tsconfigPaths()];
+const _require = createRequire(import.meta.url);
+
+/**
+ * Emits the DotLottie WASM binary as a content-hashed asset and exposes its
+ * public URL via the `virtual:dotlottie-wasm-url` virtual module.
+ *
+ * Without this plugin the WASM file is absent from the build output.
+ * DotLottie falls back to CDN, which our Content-Security-Policy blocks,
+ * causing all Lottie animations to silently fail in production.
+ */
+function dotLottieWasmPlugin(): Plugin {
+  const VIRTUAL_ID = "virtual:dotlottie-wasm-url";
+  const RESOLVED_ID = "\0" + VIRTUAL_ID;
+
+  return {
+    name: "dotlottie-wasm-asset",
+    resolveId(id) {
+      if (id === VIRTUAL_ID) return RESOLVED_ID;
+    },
+    load(id) {
+      if (id !== RESOLVED_ID) return;
+
+      // Resolve via Node module resolution so pnpm symlinks are followed correctly.
+      const pkgDir = path.dirname(
+        _require.resolve("@lottiefiles/dotlottie-web/package.json")
+      );
+      const wasmSrc = path.join(pkgDir, "dist/dotlottie-player.wasm");
+      const wasmBuffer = fs.readFileSync(wasmSrc);
+      const hash = createHash("sha256").update(wasmBuffer).digest("hex").slice(0, 8);
+      const assetFileName = `assets/dotlottie-player-${hash}.wasm`;
+
+      const refId = this.emitFile({
+        type: "asset",
+        fileName: assetFileName,
+        source: wasmBuffer,
+      });
+
+      return `export default import.meta.ROLLUP_FILE_URL_${refId}`;
+    },
+  };
+}
+
+const plugins = [dotLottieWasmPlugin(), react(), tsconfigPaths()];
 const generatedPagesDir = path.resolve(__dirname, "generated-pages");
 const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
   ? Object.fromEntries(

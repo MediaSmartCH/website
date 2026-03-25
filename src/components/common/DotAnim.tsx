@@ -1,5 +1,10 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
+import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
+
+// Use the locally-bundled WASM so DotLottie never fetches from CDN,
+// which our production Content-Security-Policy blocks.
+setWasmUrl(dotLottieWasmUrl);
 import { useAppSelector } from "services/hooks/hooks";
 import {
   getLottieAspectRatio,
