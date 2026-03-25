@@ -40,12 +40,12 @@ export default function VideoOverview() {
 
   return (
     <div id="services" className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto py-[40px] relative">
-      <p
+      <h2
         className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
           } w-full text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
       >
         {t.text("home.VideoOverviewTitle")}
-      </p>
+      </h2>
       <p
         className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
           } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}

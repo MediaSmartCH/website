@@ -21,11 +21,17 @@ type LocaleThemeControlsProps = {
     themeLight: string;
     themeDark: string;
     themeSystem: string;
+    animToggle?: string;
+    animOn?: string;
+    animOff?: string;
   };
   size?: "xs" | "sm" | "md";
   className?: string;
   menuAlign?: "left" | "right";
   themeDisabled?: boolean;
+  // Animation toggle — optional, forwarded into ThemeSelector pill.
+  animationsEnabled?: boolean;
+  onAnimationsToggle?: () => void;
 };
 
 const LocaleThemeControls: React.FC<LocaleThemeControlsProps> = ({
@@ -39,6 +45,8 @@ const LocaleThemeControls: React.FC<LocaleThemeControlsProps> = ({
   className,
   menuAlign = "right",
   themeDisabled = false,
+  animationsEnabled,
+  onAnimationsToggle,
 }) => (
   <div className={`flex items-center gap-2 ${className ?? ""}`}>
     <LanguageSelector
@@ -63,6 +71,11 @@ const LocaleThemeControls: React.FC<LocaleThemeControlsProps> = ({
           system: labels.themeSystem,
         }}
         size={size}
+        animationsEnabled={animationsEnabled}
+        onAnimationsToggle={onAnimationsToggle}
+        animToggleLabel={
+          animationsEnabled ? (labels.animOn ?? labels.animToggle) : (labels.animOff ?? labels.animToggle)
+        }
       />
     </div>
   </div>

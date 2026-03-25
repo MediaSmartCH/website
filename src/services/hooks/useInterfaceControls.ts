@@ -8,6 +8,7 @@ import {
 import { setLanguage } from "store/slices/common/languageSlice";
 import { setTheme } from "store/slices/common/themeSlice";
 import { ThemePreference } from "store/slices/common/themeUtils";
+import { toggleAnimations } from "store/slices/common/animationsSlice";
 
 import { useAppDispatch, useAppSelector } from "./hooks";
 
@@ -26,6 +27,7 @@ export const useInterfaceControls = (
   );
   const currentTheme = useAppSelector((state) => state.theme.currentTheme);
   const themePreference = useAppSelector((state) => state.theme.themePreference);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
 
   const t = useTranslations(currentLanguage);
 
@@ -74,19 +76,28 @@ export const useInterfaceControls = (
     dispatch(setTheme(nextTheme));
   };
 
+  const flipAnimations = () => {
+    dispatch(toggleAnimations());
+  };
+
   return {
     currentLanguage,
     currentTheme,
     themePreference,
+    animationsEnabled,
     changeLanguage,
     cycleLanguage,
     changeTheme,
+    flipAnimations,
     labels: {
       languageSelector: t.text("navbar.languageSelector"),
       themeSelector: t.text("navbar.themeSelector"),
       themeLight: t.text("navbar.themeLight"),
       themeDark: t.text("navbar.themeDark"),
       themeSystem: t.text("navbar.themeSystem"),
+      animToggle: t.text("navbar.animToggle"),
+      animOn: t.text("navbar.animOn"),
+      animOff: t.text("navbar.animOff"),
     },
   };
 };
