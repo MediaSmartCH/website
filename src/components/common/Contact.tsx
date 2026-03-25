@@ -298,7 +298,7 @@ const Contact = () => {
                     href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9"
                     className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     Valais – Vaud – Genève – Fribourg
                   </a>
@@ -331,7 +331,7 @@ const Contact = () => {
                   font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
                   href="https://www.instagram.com/MediaSmartCH"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   <span>
                     <img src={insta} alt="insta" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
@@ -346,7 +346,7 @@ const Contact = () => {
                   font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
                   href="https://www.linkedin.com/company/MediaSmartCH"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   <span>
                     <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
@@ -361,7 +361,7 @@ const Contact = () => {
                   font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
                   href="https://t.me/MediaSmartCH"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   <span>
                     <img src={telegram} alt="telegram" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
