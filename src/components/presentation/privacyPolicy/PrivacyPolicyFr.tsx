@@ -11,10 +11,9 @@ export default function PrivacyPolicyFr({
     themeReducer === "light" ? light : dark;
 
   return (
-    <div className="w-full relative mt-[73px] md:mt-[130px] lg:mt-[100px]">
-      {/* Hero Cover */}
-      <div className={`${tText("hero-bg", "hero-bg-dark")} px-[20px] h-[350px] md:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px] flex justify-center items-start`}>
-        <div className="mt-[70px] 2xl:mt-[100px]">
+    <div className="w-full pt-[73px] md:pt-[130px] lg:pt-[100px]">
+      <div className="relative z-10 px-[20px] pt-[28px] md:pt-[40px] lg:pt-[52px] xl:pt-[60px] 2xl:pt-[72px] flex justify-center items-start">
+        <div>
           <h1
             className={`${tText(
               "text-[#14172D]",
@@ -42,7 +41,7 @@ export default function PrivacyPolicyFr({
       </div>
 
       {/* Contenu */}
-      <div className="font-poppins font-light text-sm w-full flex justify-center homepage-container px-[25px] md:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[10px] md:pt-[50px] lg:pt-[30px] pb-[70px]">
+      <div className="relative z-10 font-poppins font-light text-sm w-full flex justify-center homepage-container px-[25px] md:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[18px] md:pt-[30px] lg:pt-[24px] pb-[70px]">
         <div className="max-w-3xl mx-auto">
           <p className={tText("text-[#413C58]", "text-[#E5E5E5]")}>
             Chez <span className="font-medium">MediaSmart</span>, nous attachons

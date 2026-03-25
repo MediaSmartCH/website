@@ -14,8 +14,11 @@ const Hero = () => {
   const t = useTranslations(languageReducer);
 
   return (
-    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="it-services-home">
-      <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[43px] relative">
+    <div
+      className="pt-[73px] md:pt-[130px] lg:pt-[100px]"
+      id="it-services-home"
+    >
+      <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[24px] lg:pt-[36px] xl:pt-[40px] pb-[43px] relative">
         <div
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}
