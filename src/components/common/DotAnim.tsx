@@ -1,10 +1,6 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
-import { DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
+import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
 import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
-
-// Use the locally-bundled WASM so DotLottie never fetches from CDN,
-// which our production Content-Security-Policy blocks.
-setWasmUrl(dotLottieWasmUrl);
 import { useAppSelector } from "services/hooks/hooks";
 import {
   getLottieAspectRatio,
@@ -13,6 +9,10 @@ import {
   preloadLottieSrc,
   readLottieSrc,
 } from "config/lotties";
+
+// Use the locally-bundled WASM so DotLottie never fetches from CDN,
+// which our production Content-Security-Policy blocks.
+setWasmUrl(dotLottieWasmUrl);
 
 type Base = {
   className?: string;
@@ -37,6 +37,7 @@ function selectSrc(theme: string, pair: { light: string; dark?: string }) {
 
 function DotAnim(props: DotAnimProps) {
   const theme = useAppSelector((state) => state.theme.currentTheme);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
   const animKey = hasAnim(props) ? props.anim : undefined;
   const staticPair = hasAnim(props)
     ? undefined
@@ -48,17 +49,20 @@ function DotAnim(props: DotAnimProps) {
   // player keeps rendering the current file instead of flashing a fallback.
   const [stableTheme, setStableTheme] = useState(theme);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [dotLottieInstance, setDotLottieInstance] = useState<DotLottie | null>(null);
 
   const {
     className,
     style,
-    autoplay = true,
+    autoplay: autoplayProp = true,
     loop = true,
     protect = false,
     // The SVG renderer is now the only code path we ship. Keep the prop so
     // existing call sites do not need to change.
     crisp: _crisp = true,
   } = props;
+
+  const autoplay = autoplayProp && animationsEnabled;
 
   const renderConfig = useMemo(() => {
     if (typeof window === "undefined") {
@@ -114,6 +118,17 @@ function DotAnim(props: DotAnimProps) {
       cancelled = true;
     };
   }, [animKey, stableTheme, theme]);
+
+  // Imperatively pause/play when the global animations toggle changes so the
+  // change takes effect immediately without remounting the player.
+  useEffect(() => {
+    if (!dotLottieInstance) return;
+    if (animationsEnabled && autoplayProp) {
+      dotLottieInstance.play();
+    } else {
+      dotLottieInstance.pause();
+    }
+  }, [animationsEnabled, autoplayProp, dotLottieInstance]);
 
   const src = animKey
     ? readLottieSrc(animKey, stableTheme)
@@ -179,6 +194,7 @@ function DotAnim(props: DotAnimProps) {
           align: presentation?.align ?? [0.5, 0.5],
         }}
         style={playerStyle}
+        dotLottieRefCallback={setDotLottieInstance}
       />
 
       {/* Transparent overlay that intercepts all pointer/touch events to prevent
