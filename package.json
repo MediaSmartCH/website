@@ -77,24 +77,27 @@
   },
   "devDependencies": {
     "@dotlottie/player-component": "^2.7.12",
-    "@netlify/functions": "^4.2.5",
     "@types/aos": "^3.0.7",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.20",
     "@types/react-lottie": "^1.2.10",
     "@types/react-slick": "^0.23.13",
-    "@vercel/node": "^5.3.23",
     "@vitejs/plugin-react": "^5.0.3",
-    "@vitejs/plugin-react-swc": "^4.1.0",
     "autoprefixer": "^10.4.16",
     "cross-env": "^10.0.0",
     "postcss": "^8.4.31",
     "rollup-plugin-visualizer": "^6.0.3",
     "tailwindcss": "^3.3.3",
-    "vite": "^7.1.7",
+    "vite": "^7.1.11",
     "vite-tsconfig-paths": "^5.1.4"
   },
-  "resolutions": {
-    "graceful-fs": "^4.2.11"
+  "pnpm": {
+    "overrides": {
+      "diff": "^4.0.4",
+      "glob": "^10.5.0",
+      "graceful-fs": "^4.2.11",
+      "minimatch": "^9.0.7",
+      "rollup": "^4.59.0"
+    }
   }
 }

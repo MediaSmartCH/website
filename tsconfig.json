@@ -47,6 +47,6 @@
   },
   "include": [
     "src",
-    "api/verify-recaptcha.ts"
+    "api/**/*"
   ]
 }
