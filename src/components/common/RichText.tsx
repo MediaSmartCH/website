@@ -1,4 +1,5 @@
 import React from "react";
+import DOMPurify from "dompurify";
 
 const ALLOWED_TAGS: Record<string, React.ElementType> = {
   b: "strong",
@@ -20,15 +21,18 @@ const getSafeClassName = (element: Element) => {
   return className?.trim() ? className.trim() : undefined;
 };
 
-const renderSafeNodes = (nodes: ChildNode[], keyPrefix: string): React.ReactNode[] =>
+const renderSafeNodes = (
+  nodes: ChildNode[],
+  keyPrefix: string
+): React.ReactNode[] =>
   nodes.flatMap((node, index) => {
     const key = `${keyPrefix}-${index}`;
 
-    if (node.nodeType === 3) {
+    if (node.nodeType === Node.TEXT_NODE) {
       return node.textContent ?? "";
     }
 
-    if (node.nodeType !== 1) {
+    if (node.nodeType !== Node.ELEMENT_NODE) {
       return [];
     }
 
@@ -52,18 +56,26 @@ const renderSafeNodes = (nodes: ChildNode[], keyPrefix: string): React.ReactNode
   });
 
 export const renderRichText = (html: string) => {
-  if (!html) return null;
+  if (!html?.trim()) return null;
+
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: Object.keys(ALLOWED_TAGS),
+    ALLOWED_ATTR: ["class"],
+  });
 
   if (typeof DOMParser === "undefined") {
-    return html.replace(/<[^>]+>/g, "");
+    return clean;
   }
 
   const documentFragment = new DOMParser().parseFromString(
-    `<body>${html}</body>`,
+    `<body>${clean}</body>`,
     "text/html"
   );
 
-  return renderSafeNodes(Array.from(documentFragment.body.childNodes), "rich-text");
+  return renderSafeNodes(
+    Array.from(documentFragment.body.childNodes),
+    "rich-text"
+  );
 };
 
 type RichTextProps<T extends React.ElementType = "div"> = {
