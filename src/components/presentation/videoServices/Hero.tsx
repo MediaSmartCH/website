@@ -23,7 +23,7 @@ const Hero = () => {
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}
         >
-          <p
+          <h1
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"}
     w-full lg:w-[70%] 2xl:w-[60%] mx-auto
     text-center mb-[15px] lg:mb-[22px]
@@ -38,7 +38,7 @@ const Hero = () => {
               {t.text("video.videoTitle")}
             </span>
             {t.text("video.videoSubitle")}
-          </p>
+          </h1>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"}
     w-full lg:w-[70%] 2xl:w-[60%] mx-auto

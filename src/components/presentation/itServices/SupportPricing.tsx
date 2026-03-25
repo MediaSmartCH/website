@@ -71,7 +71,7 @@ const SupportPricing = () => {
     <div id="support-pricing" className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[20px] pb-[40px] md:pb-[50px] mx-auto">
       <div className="mb-[30px]">
         <RichText
-          as="p"
+          as="h2"
           className={`${isLight ? "text-[#1F2326]" : "text-[#F6F6F6]"} w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
           html={t.text("it.supportPricingTitle")}
         />

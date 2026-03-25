@@ -117,13 +117,13 @@ const Faq: React.FC = () => {
     <div id="faq" className="relative overflow-hidden">
       <div className="relative z-10 w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
         <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl::px-[60px] flex flex-col items-start">
-          <p
+          <h2
             className={`${
               themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
             } w-full text-center font-helvetica font-bold text-[28px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mt-[40px] md:mt-[50px] lg:mt-[60px] 2xl:mt-[70px] mb-[100px] md:mb-[50px] lg:mb-[30px] xl:mb-[36px] 2xl:mb-[46px]`}
           >
             {t.text("home.faqTitle")}
-          </p>
+          </h2>
 
           <div
             className="w-full"

@@ -24,12 +24,12 @@ const About = () => {
           data-aos-duration="1200"
           data-aos-easing="ease-in-sine"
         >
-          <p
+          <h2
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px]`}
           >
             {t.text("video.videoServicesAbout")}
-          </p>
+          </h2>
           <p
             className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
               } w-full text-left lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}

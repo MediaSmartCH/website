@@ -38,8 +38,10 @@ const Navbar = () => {
     currentLanguage: languageReducer,
     currentTheme: themeReducer,
     themePreference,
+    animationsEnabled,
     changeLanguage,
     changeTheme,
+    flipAnimations,
     labels,
   } = useInterfaceControls({ preserveScroll: true });
 
@@ -239,6 +241,8 @@ const Navbar = () => {
                 onLanguageChange={changeLanguage}
                 onThemeChange={handleThemeChange}
                 labels={labels}
+                animationsEnabled={animationsEnabled}
+                onAnimationsToggle={flipAnimations}
               />
               <ConsentAwareCalendlyButton
                 className="custom-btn2 middle-out px-[15px] xl:px-[18px] lg:min-h-[40px] xl:min-h-[44px] py-[8px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
@@ -274,6 +278,8 @@ const Navbar = () => {
                 onThemeChange={handleThemeChange}
                 size="xs"
                 labels={labels}
+                animationsEnabled={animationsEnabled}
+                onAnimationsToggle={flipAnimations}
               />
               <div className="">
                 <button
