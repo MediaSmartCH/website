@@ -39,7 +39,11 @@ const Testimonials = () => {
           style={{ zIndex: 100 }}
         >
       <div className="px-[20px] mt-[60px] lg:mt-[80px] 2xl:mt-90px] lg:px-[90px] xl:px-[120px] 2xl:px-[160px]">
-        <a href="https://g.page/r/CXT73TDGfNv8EB0/review" target="_blank">
+        <a
+          href="https://g.page/r/CXT73TDGfNv8EB0/review"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
         <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
             <span className="custom-btn-inner">
               {t.text("home.review")}
