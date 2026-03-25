@@ -1,12 +1,12 @@
 import React, { useState, lazy, Suspense } from "react";
 import { Calendar } from "lucide-react";
 
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { getRecaptchaToken } from 'services/api/recaptcha';
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { getRecaptchaToken } from "services/api/recaptcha";
 import { fetchWithDeployment } from "services/api/fetchWithDeployment";
 
-import logo from "assets/images/logo-header.png";
-import logoDark from "assets/images/logo-footer.png";
+import logo from "assets/images/logo-header.webp";
+import logoDark from "assets/images/logo-footer.webp";
 import bookLine from "assets/icons/bookLine.svg";
 import contactEmail from "assets/icons/contactEmail.svg";
 import arrow from "assets/icons/rightArrow.svg";
@@ -15,11 +15,12 @@ import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
 import { useTranslations } from "services/locales/safe";
 import LocaleThemeControls from "components/common/LocaleThemeControls";
 import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
+import ScopedRecaptchaProvider from "components/common/ScopedRecaptchaProvider";
 import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
 import "./UnderConstruction.css";
 
-const UnderConstruction: React.FC = () => {
+const UnderConstructionInner: React.FC = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
   const { executeRecaptcha } = useGoogleReCaptcha();
   const {
@@ -135,6 +136,8 @@ const UnderConstruction: React.FC = () => {
             src={themeReducer === "light" ? logo : logoDark}
             alt="MediaSmart Logo"
             className="w-[300px] sm:w-[350px] md:w-[400px] xl:w-[420px] 2xl:w-[440px] mx-auto mb-8"
+            width="560"
+            height="72"
           />
           <img
             src={bookLine}
@@ -375,5 +378,11 @@ const UnderConstruction: React.FC = () => {
     </div>
   );
 };
+
+const UnderConstruction: React.FC = () => (
+  <ScopedRecaptchaProvider>
+    <UnderConstructionInner />
+  </ScopedRecaptchaProvider>
+);
 
 export default UnderConstruction;
