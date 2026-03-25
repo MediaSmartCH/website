@@ -9,11 +9,16 @@ import { useAppDispatch, useAppSelector } from "../src/services/hooks/hooks";
 import CookieConsent from "components/presentation/cookies/Cookies";
 import { getThemeMediaQuery } from "store/slices/common/themeUtils";
 import { syncSystemTheme } from "store/slices/common/themeSlice";
+import useCookieConsent from "services/hooks/useCookieConsent";
 
 function App() {
   const dispatch = useAppDispatch();
   const { currentTheme, themePreference } = useAppSelector((state) => state.theme);
+  const consent = useCookieConsent();
 
+  // Keep the theme in sync with the OS color-scheme when the user has not
+  // chosen a manual preference. Uses the modern addEventListener API and
+  // falls back to the deprecated addListener for older browsers.
   useEffect(() => {
     if (themePreference !== "system") return;
 
@@ -41,17 +46,11 @@ function App() {
     };
   }, [dispatch, themePreference]);
 
-  // // Reset scroll on mount to ensure scroll is never blocked
-  // useEffect(() => {
-  //   document.body.style.overflow = "";
-  //   document.documentElement.style.overflow = "";
-  // }, []);
-
   return (
     <div className={`${currentTheme === "light" ? "App" : "AppDark"} `}>
       <HelmetProvider>
-        {import.meta.env.NODE_ENV === "production" && <Analytics />}
-        {import.meta.env.NODE_ENV === "production" && <SpeedInsights />}
+        {import.meta.env.NODE_ENV === "production" && consent.googleAnalytics && <Analytics />}
+        {import.meta.env.NODE_ENV === "production" && consent.googleAnalytics && <SpeedInsights />}
         <CookieConsent />
         <Config />
       </HelmetProvider>

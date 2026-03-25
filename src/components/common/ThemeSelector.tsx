@@ -27,6 +27,8 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   size = "sm",
 }) => {
   const selectorRef = React.useRef<HTMLDivElement | null>(null);
+  // Prevents the click event that fires on pointer-up from being processed when
+  // the interaction was actually a drag gesture.
   const suppressClickRef = React.useRef(false);
   const dragStateRef = React.useRef({
     pointerId: null as number | null,
@@ -35,6 +37,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   });
   const [dragIndex, setDragIndex] = React.useState<number | null>(null);
 
+  // Size-variant token sets — keeps inline style logic out of JSX.
   const sizeConfig =
     size === "xs"
       ? {
@@ -85,8 +88,11 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     0,
     options.findIndex(({ value }) => value === themePreference)
   );
+  // During a drag, show a live preview index; fall back to the committed selection.
   const activeIndex = dragIndex ?? selectedIndex;
 
+  // Convert a clientX position into an option index by dividing the horizontal
+  // offset within the container by the per-button stride (button width + gap).
   const getIndexFromClientX = (clientX: number) => {
     const rect = selectorRef.current?.getBoundingClientRect();
     if (!rect) return selectedIndex;
@@ -119,6 +125,8 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     if (dragStateRef.current.pointerId !== event.pointerId) return;
 
     if (Math.abs(event.clientX - dragStateRef.current.startX) > 4) {
+      // Capture the pointer on the first significant move so the drag remains
+      // smooth even when the cursor leaves the element boundaries.
       if (!dragStateRef.current.hasMoved) {
         event.currentTarget.setPointerCapture(event.pointerId);
       }
@@ -137,6 +145,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     }
 
     if (dragStateRef.current.hasMoved && dragIndex !== null) {
+      // A drag just committed — suppress the click that will fire on pointer-up.
       suppressClickRef.current = true;
       onChange(options[dragIndex].value);
       window.setTimeout(() => {
@@ -168,6 +177,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
       onPointerUp={handlePointerEnd}
       onPointerCancel={handlePointerEnd}
     >
+      {/* Sliding thumb that animates to the active option via CSS translateX. */}
       <span
         aria-hidden="true"
         className={`absolute rounded-full transition-transform duration-200 ease-out ${thumbClasses}`}

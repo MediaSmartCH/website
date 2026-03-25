@@ -1,11 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-// import "./slick.css";
-// import "./slick-theme.css";
 
-import TicketCard from "../testimonials/TestimonialCard";
 import TestimonialCard from "../testimonials/TestimonialCard";
-import testimonial1 from "assets/images/testimonial1.png";
 import testimonial2 from "assets/images/testimonial2.png";
 import rating1 from "assets/icons/rating.svg";
 import { useTranslations } from "services/locales/safe";

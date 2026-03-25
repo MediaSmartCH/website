@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown } from "antd";
-import { PopupButton } from "react-calendly";
 
+import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
 import { useTranslations } from "services/locales/safe";
 import logo from "assets/images/logo-header.png";
 import logoDark from "assets/images/logo-footer.png";
 import toggler from "assets/icons/toggler.svg";
-// import dropdown from "assets/icons/dropdown.svg";
-// import dropdownDark from "assets/icons/dropdownDark.svg";
 
 import { useLangLink } from "services/router/langPath";
 import LocaleThemeControls from "./LocaleThemeControls";
@@ -20,11 +18,7 @@ import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
 import "components/preLoader/preLoader.css";
 
-// import { debounce } from 'lodash';
-
 const Navbar = () => {
-  // const navigate = useNavigate();
-  // const { pathname, search, hash } = useLocation();
   const { L, Lhash } = useLangLink();
 
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -39,7 +33,6 @@ const Navbar = () => {
   };
   const [isThemeChanging, setIsThemeChanging] = React.useState(false);
 
-  const rootElement = document.getElementById("root");
   const {
     currentLanguage: languageReducer,
     currentTheme: themeReducer,
@@ -55,6 +48,7 @@ const Navbar = () => {
     if (isThemeChanging || nextTheme === themePreference) return;
 
     const nextResolvedTheme = resolveThemePreference(nextTheme);
+    // Only show the loading overlay when the resolved (visual) theme actually changes.
     const shouldShowLoader = nextResolvedTheme !== themeReducer;
 
     if (shouldShowLoader) {
@@ -65,7 +59,7 @@ const Navbar = () => {
 
     if (!shouldShowLoader) return;
 
-    // Laisser le temps aux lotties de se charger
+    // Allow lottie assets time to swap before hiding the overlay.
     setTimeout(() => {
       setIsThemeChanging(false);
     }, 500);
@@ -102,6 +96,7 @@ const Navbar = () => {
     };
   }, []);
 
+  // Menu items used by the Ant Design Dropdown on mobile.
   const menuItems = [
     {
       key: 'home',
@@ -151,10 +146,9 @@ const Navbar = () => {
     {
       key: 'booking',
       label: (
-        <PopupButton
+        <ConsentAwareCalendlyButton
           className="navbar-btn px-[16px] min-h-[35px] py-[6px] rounded-[5px] text-[#fff] font-poppins font-medium text-[16px]"
-          url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
-          rootElement={rootElement as HTMLElement}
+          blockedTitle={t.text("cookies.manageCookies")}
           text={t.text("navbar.navbarButton")}
           pageSettings={{
             backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
@@ -171,7 +165,7 @@ const Navbar = () => {
 
   return (
     <>
-      {/* OVERLAY DE CHARGEMENT DU THÈME */}
+      {/* Full-screen overlay shown while lottie animations reload after a theme change. */}
       {isThemeChanging && (
         <div
           className={`fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-sm transition-all duration-300 ${themeReducer === 'light' ? 'bg-white/90' : 'bg-black/90'
@@ -181,7 +175,6 @@ const Navbar = () => {
             ? 'bg-white border-gray-200'
             : 'bg-gray-800 border-gray-700'
             }`}>
-            {/* Votre loader orbit personnalisé */}
             <div className="flex justify-center mb-6">
               <div className="preloader-orbit-loading">
                 <div className="cssload-inner cssload-one"></div>
@@ -206,7 +199,7 @@ const Navbar = () => {
           } navbar-shadow`}
       >
         <div className="w-full homepage-container mx-auto px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px]">
-          {/* laptop */}
+          {/* Desktop navigation (lg and up) */}
           <nav className="shift hidden lg:block lg:flex lg:items-center lg:justify-between h-[100px]">
             <Link to={L("/")}
               className="header-aos"
@@ -235,7 +228,7 @@ const Navbar = () => {
                       : "text-[#FFFFFF] hover:text-[#fff]"
                   }
                 >
-                  {/* {dictionary["navbar"][languageReducer]["navItem1"]} */} {t.text("navbar.navItem1")}
+                  {t.text("navbar.navItem1")}
                 </Link>
               </li>
               <li
@@ -253,7 +246,7 @@ const Navbar = () => {
                         : "text-[#FFFFFF] hover:text-[#fff]"
                     }
                   >
-                    {/* {dictionary["navbar"][languageReducer]["navItem2"]} */} {t.text("navbar.navItem2")}
+                    {t.text("navbar.navItem2")}
                   </Link>
                 </div>
               </li>
@@ -272,7 +265,7 @@ const Navbar = () => {
                         : "text-[#FFFFFF] hover:text-[#fff]"
                     }
                   >
-                    {/* {dictionary["navbar"][languageReducer]["navItem3"]} */} {t.text("navbar.navItem3")}
+                    {t.text("navbar.navItem3")}
                   </Link>
                 </div>
               </li>
@@ -292,30 +285,10 @@ const Navbar = () => {
                         : "text-[#FFFFFF] hover:text-[#fff]"
                     }
                   >
-                    {/* {dictionary["navbar"][languageReducer]["navItem4"]} */}
                     {t.text("navbar.navItem4")}
                   </Link>
                 </div>
               </li>
-              {/* <li
-                className=""
-                data-aos="fade-down"
-                data-aos-easing="ease-in-sine"
-                data-aos-duration="1700"
-              >
-                <div className="btn-test from-bottom">
-                  <Link
-                    to={Lhash("#testimonials")}
-                    className={
-                      themeReducer === "light"
-                        ? "text-[#14172D] hover:text-[#fff]"
-                        : "text-[#FFFFFF] hover:text-[#fff]"
-                    }
-                  >
-                    {t.text("navbar.navItem5")}
-                  </Link>
-                </div>
-              </li> */}
             </ul>
             <div
               className="flex justify-center items-center gap-x-[26px] xl:gap-x-[30px] 2xl:gap-x-[36px]"
@@ -331,10 +304,9 @@ const Navbar = () => {
                 onThemeChange={handleThemeChange}
                 labels={labels}
               />
-              <PopupButton
+              <ConsentAwareCalendlyButton
                 className="custom-btn2 middle-out px-[15px] xl:px-[18px] lg:min-h-[40px] xl:min-h-[44px] py-[8px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
-                url="https://calendly.com/mediasmartch/30min?hide_gdpr_banner=1"
-                rootElement={rootElement as HTMLElement}
+                blockedTitle={t.text("cookies.manageCookies")}
                 text={t.text("navbar.navbarButton")}
                 pageSettings={{
                   backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
@@ -346,7 +318,7 @@ const Navbar = () => {
               />
             </div>
           </nav>
-          {/* mobile */}
+          {/* Mobile navigation (below lg) */}
           <div className="block lg:hidden flex items-center justify-between h-[72px]">
             <Link to={L("/")} className="header-aos">
               <img
@@ -381,11 +353,11 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+        {/* Invisible button acts as a backdrop tap-to-close for the mobile dropdown. */}
         {mobileMenuOpen && (
           <button
-            aria-label="Fermer le menu"
+            aria-label="Close menu"
             onClick={() => setMobileMenuOpen(false)}
-          // className="fixed inset-0 lg:hidden z-[1500] bg-black/15 backdrop-blur-md"
           />
         )}
       </header>

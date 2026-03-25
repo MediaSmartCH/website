@@ -1,5 +1,4 @@
 const it = {
-    // Hero
     itServicesHeroTitle: `
         Smarter <span> IT Solutions </span> for Your Digital Needs:
         `,
@@ -7,7 +6,6 @@ const it = {
         "From website creation to cybersecurity, MediaSmart is your trusted IT partner in Switzerland.",
     itServicesHeroContactBtn: "Request a Quote",
 
-    // About
     itServicesAboutTitle: `Introduction to <span> IT Expertise </span>`,
     itServicesAboutDescription: `
         At MediaSmart, we believe IT should be <b> a strategic asset, not a source of frustration. </b>
@@ -17,7 +15,6 @@ const it = {
         Whether you are a small business, an association, a freelancer, or a private client, we bring <b> flexibility, expertise, and responsiveness </b> to every project.
         `,
 
-    // Services
     itServicesTitle: `<span> Our </span> IT Services`,
     itServicesDescription: "We offer tailored IT solutions designed to keep your business running without interruptions. Our services include:",
 
@@ -37,7 +34,7 @@ const it = {
         <li> Advanced sites with forms, blogs, or e-commerce features. </li>
         <li> SEO optimization to help you rank on Google. </li>
         </ul>
-            Each site is easy to manage daily while reflecting your image and values. 
+            Each site is easy to manage daily while reflecting your image and values.
         `,
     service2: "Windows & macOS Maintenance",
     description2: `
@@ -61,9 +58,9 @@ const it = {
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Hardware and software configuration improvements. </li>
         <li> Faster startup and application performance. </li>
-        <li> Removal of unnecessary files and background processes. </li> 
+        <li> Removal of unnecessary files and background processes. </li>
         </ul>
-        The result: faster, more efficient, and more enjoyable computers to use.  
+        The result: faster, more efficient, and more enjoyable computers to use.
         `,
     service4: "Cybersecurity & Audits",
     description4: `
@@ -73,30 +70,29 @@ const it = {
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Antivirus installation and configuration. </li>
         <li> Firewall setup and network security. </li>
-        <li> Security audits to spot vulnerabilities. </li> 
-        <li> Awareness and best practices for your team. </li> 
+        <li> Security audits to spot vulnerabilities. </li>
+        <li> Awareness and best practices for your team. </li>
         </ul>
-        Cybersecurity is not optional—it’s essential to maintain client trust and business continuity.  
+        Cybersecurity is not optional—it's essential to maintain client trust and business continuity.
         `,
     service5: "Data Backup & Recovery",
     description5: `
-        Your data is valuable. Whether it’s business documents, ongoing projects, or personal memories, losing them can be devastating. We implement <b> reliable backup strategies </b> (local and cloud) adapted to your needs.
+        Your data is valuable. Whether it's business documents, ongoing projects, or personal memories, losing them can be devastating. We implement <b> reliable backup strategies </b> (local and cloud) adapted to your needs.
         <br />
-        And if the worst happens, we provide recovery services to restore lost or damaged files whenever possible. 
+        And if the worst happens, we provide recovery services to restore lost or damaged files whenever possible.
         `,
     service6: "User Support & Training",
     description6: `
-        We know IT problems can be disruptive. That’s why we provide <b> responsive and accessible support </b>:
+        We know IT problems can be disruptive. That's why we provide <b> responsive and accessible support </b>:
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Fast troubleshooting, on-site or remotely. </li>
         <li> Clear answers without unnecessary jargon. </li>
-        <li> Personalized training (one-on-one or group) to help you get the most out of your tools (Windows, macOS, Office 365, cybersecurity, etc.). </li> 
+        <li> Personalized training (one-on-one or group) to help you get the most out of your tools (Windows, macOS, Office 365, cybersecurity, etc.). </li>
         </ul>
         Our mission: empower users to be more independent and productive, while always being there when support is needed.
         `,
 
-    // Project Estimates
     estimatesTitle: `Project <span>Cost Estimates</span>`,
     estimatesDescription: "Indicative ranges to help you plan your budget. Every project gets a detailed quote before work begins.",
     estimateFrom: "from",
@@ -152,7 +148,6 @@ const it = {
       "Detailed quote after scoping session",
     ],
 
-    // Practical Info
     practicalInfoTitle: `<span>Practical</span> Information`,
     practicalInfoDescription: "Key details about how we work together — before we get started.",
     hourlyRateTitle: "Standard Hourly Rate",
@@ -192,7 +187,6 @@ const it = {
       "Maintenance, updates and monitoring after go-live",
     ],
 
-    // Support Pricing
     supportPricingTitle: `<span>Support</span> Pricing`,
     supportPricingDescription: "Applicable to all projects — website, app, or other. One flat rate for all services.",
     supportPerYear: "year",
@@ -219,7 +213,6 @@ const it = {
     supportPremiumBeyond: "Beyond that:",
     supportPremiumNote: "After-hours and weekend rates apply beyond the included 2h/year.",
 
-    // Process
     itServicesProcessTitle: `Our Work <span> Process </span>`,
     itServicesProcessDescription: "We believe in a clear, structured approach that delivers results:",
     processData: [
@@ -244,7 +237,6 @@ const it = {
             description: "Updates, monitoring, and fast assistance whenever required.",
         },
     ],
-    // Support Contract Page
     supportPageTitle: `Support <span>Contract</span>`,
     supportPageSubtitle: "An optional annual subscription to protect your project with guaranteed response times and included hours.",
     supportPageIntro: "The support contract is separate from the creation project. It activates after go-live and covers technical interventions, fixes and improvement requests within the included hours.",
@@ -279,8 +271,8 @@ const it = {
     supportPageCtaDesc: "Contact us to choose the right plan for your needs or to request a quote.",
     supportPageBackLink: "← Back to IT services",
     supportPageMoreInfo: "More info",
+    supportMostPopular: "Most popular",
 
-    // FAQ IT
     itFaqTitle: "Frequently Asked Questions",
     itFaq1: {
         faqQuestion: "What types of IT projects do you handle?",

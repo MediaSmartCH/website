@@ -6,6 +6,7 @@ type HeroBlobBgProps = {
 };
 
 const HeroBlobBg: React.FC<HeroBlobBgProps> = ({ className = "", theme }) => {
+  // useId produces strings like ":r0:" — colons are invalid in SVG id attributes.
   const id = useId().replace(/:/g, "");
   const isLight = theme === "light";
   const gradientId = `hero-blob-${id}`;
@@ -22,7 +23,8 @@ const HeroBlobBg: React.FC<HeroBlobBgProps> = ({ className = "", theme }) => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Gradient goes top→bottom: opaque at top, fades at the wave edge */}
+          {/* Gradient runs top-to-bottom: fully opaque at the top, fading to
+              near-transparent at the organic wave edge. */}
           <linearGradient id={gradientId} x1="0" y1="0" x2="0.4" y2="1">
             <stop
               offset="0%"
@@ -41,11 +43,8 @@ const HeroBlobBg: React.FC<HeroBlobBgProps> = ({ className = "", theme }) => {
             />
           </linearGradient>
         </defs>
-        {/*
-          Reversed WaveBackdrop path:
-          fills from y=0 (top) DOWN to the organic wave line,
-          so the entire top of the hero is covered.
-        */}
+        {/* The path is the WaveBackdrop shape inverted: it fills from y=0 down to
+            the wave line so the entire top portion of the hero is covered. */}
         <path
           d="M-120 0 L1720 0 L1720 476
              C1580 542 1449 528 1332 437

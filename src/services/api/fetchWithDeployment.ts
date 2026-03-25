@@ -8,7 +8,7 @@ export const fetchWithDeployment = (input: string, init: RequestInit = {}) => {
 
   const headers = new Headers(init.headers ?? {});
 
-  // Pin API requests to the deployment that served the current client bundle.
+  // Pin API requests to the deployment that served the current client bundle to avoid version skew
   headers.set("x-deployment-id", deploymentId);
 
   return fetch(input, {

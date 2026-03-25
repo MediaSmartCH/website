@@ -1,19 +1,15 @@
 import React, { useEffect } from "react";
 import { Outlet, useParams, useLocation, Navigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
 import { setLanguage } from "store/slices/common/languageSlice";
+import RouteSeo from "components/seo/RouteSeo";
 import {
   buildLocalizedPath,
   DEFAULT_LANGUAGE,
   hasLanguagePrefix,
   isSupportedLanguage,
   normalizeLanguage,
-  stripLanguageFromPath,
-  SUPPORTED_LANGUAGES,
 } from "config/languages";
-
-const canonicalBase = "https://mediasmart.ch";
 
 const LangLayout: React.FC = () => {
   const { lang: rawLang } = useParams<{ lang?: string }>();
@@ -26,6 +22,7 @@ const LangLayout: React.FC = () => {
 
   const lang = normalizeLanguage(rawLang);
 
+  // Sync the <html lang> attribute and Redux state whenever the URL segment changes.
   useEffect(() => {
     if (rawLang && isSupportedLanguage(rawLang)) {
       document.documentElement.setAttribute("lang", lang);
@@ -33,11 +30,13 @@ const LangLayout: React.FC = () => {
     }
   }, [lang, dispatch, rawLang]);
 
+  // Unknown language segment: redirect to 404 under the currently active locale.
   if (rawLang && !isSupportedLanguage(rawLang)) {
     const targetLanguage = normalizeLanguage(currentInterfaceLanguage);
     return <Navigate to={`/${targetLanguage}/404`} replace />;
   }
 
+  // No language segment in URL: prepend the default locale and redirect.
   if (!rawLang) {
     const alreadyPrefixed = hasLanguagePrefix(pathname);
     const fixed = alreadyPrefixed
@@ -46,22 +45,9 @@ const LangLayout: React.FC = () => {
     return <Navigate to={fixed} replace />;
   }
 
-  const xdefPath = stripLanguageFromPath(pathname) || "/";
-
   return (
     <>
-      <Helmet>
-        {SUPPORTED_LANGUAGES.map((language) => (
-          <link
-            key={language.code}
-            rel="alternate"
-            href={`${canonicalBase}${buildLocalizedPath(language.code, pathname)}`}
-            hrefLang={language.code}
-          />
-        ))}
-        <link rel="alternate" href={`${canonicalBase}${xdefPath}`} hrefLang="x-default" />
-        <link rel="canonical" href={`${canonicalBase}${pathname}`} />
-      </Helmet>
+      <RouteSeo language={lang} pathname={pathname} />
       <Outlet />
     </>
   );

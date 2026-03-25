@@ -1,0 +1,40 @@
+@keyframes progressBar {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 85%;
+  }
+}
+
+.custom-contact-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-family: inherit;
+}
+
+.calendly-overlay {
+  padding: 15px !important;
+}
+
+.calendly-popup {
+  margin: 15px !important;
+  border-radius: 12px !important;
+  max-width: calc(100vw - 30px) !important;
+  max-height: calc(100vh - 30px) !important;
+}
+
+@media (max-width: 768px) {
+  .calendly-overlay {
+    padding: 10px !important;
+  }
+
+  .calendly-popup {
+    margin: 10px !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+  }
+}

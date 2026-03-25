@@ -20,14 +20,14 @@ const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicy"));
 const Error404Page = lazy(() => import("../pages/Error404"));
 const SupportContractPage = lazy(() => import("../pages/SupportContract"));
 
-/** Petit wrapper réutilisable : Suspense + ErrorBoundary */
+// Wraps a page node in an ErrorBoundary and a Suspense with a full-page loader fallback.
 const Wrap = (node: React.ReactNode) => (
   <ErrorBoundary>
     <Suspense fallback={<PreLoader />}>{node}</Suspense>
   </ErrorBoundary>
 );
 
-/** Layout qui encadre les pages (Navbar/Footer) + Outlet */
+// Renders the shared Navbar/Footer shell and delegates page content to the nested Outlet.
 const LayoutWrapper: React.FC = () => (
   <Layout>
     <ErrorBoundary>
@@ -39,6 +39,7 @@ const LayoutWrapper: React.FC = () => (
 );
 
 const routes: RouteObject[] = [
+  // Bare "/" immediately redirects to the default locale prefix.
   { path: "/", element: <Navigate to={`/${DEFAULT_LANGUAGE}`} replace /> },
 
   {
@@ -54,13 +55,14 @@ const routes: RouteObject[] = [
           { path: "privacy-policy", element: Wrap(<PrivacyPolicyPage />) },
           { path: "support-contract", element: Wrap(<SupportContractPage />) },
           { path: "404", element: Wrap(<Error404Page />) },
+          // Any unmatched sub-path falls through to the 404 page.
           { path: "*", element: <Navigate to="../404" replace /> },
         ],
       },
     ],
   },
 
-  // 404 global pour les URLs sans langue valide
+  // Catch-all for URLs with no valid language prefix.
   { path: "*", element: <Navigate to={`/${DEFAULT_LANGUAGE}/404`} replace /> },
 ];
 

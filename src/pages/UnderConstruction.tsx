@@ -1,11 +1,9 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
-import { PopupButton } from "react-calendly";
+import React, { useState, lazy, Suspense } from "react";
 import { Calendar } from "lucide-react";
-// import DotAnim from "components/common/DotAnim";
-import emailjs from "@emailjs/browser";
 
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { verifyRecaptchaToken } from 'services/api/recaptcha';
+import { getRecaptchaToken } from 'services/api/recaptcha';
+import { fetchWithDeployment } from "services/api/fetchWithDeployment";
 
 import logo from "assets/images/logo-header.png";
 import logoDark from "assets/images/logo-footer.png";
@@ -16,8 +14,10 @@ import arrow from "assets/icons/rightArrow.svg";
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
 import { useTranslations } from "services/locales/safe";
 import LocaleThemeControls from "components/common/LocaleThemeControls";
+import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
 import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
+import "./UnderConstruction.css";
 
 const UnderConstruction: React.FC = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
@@ -33,12 +33,6 @@ const UnderConstruction: React.FC = () => {
 
   const t = useTranslations(languageReducer);
 
-  const [rootEl, setRootEl] = useState<HTMLElement | null>(null);
-  useEffect(() => {
-    setRootEl(document.getElementById("root") as HTMLElement | null);
-  }, []);
-
-  // États pour la gestion du formulaire
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -56,6 +50,9 @@ const UnderConstruction: React.FC = () => {
     e.preventDefault();
     if (isSubmitting || loading) return;
 
+    const formElement = e.currentTarget as HTMLFormElement;
+    const honeypotValue = String(new FormData(formElement).get("website") ?? "");
+
     if (!email.trim()) {
       setError(t.text("UnderConstruction.errorEmailRequired"));
       return;
@@ -71,47 +68,39 @@ const UnderConstruction: React.FC = () => {
     setError("");
 
     try {
-      const isLocalHost =
-        ["localhost", "127.0.0.1"].includes(window.location.hostname) ||
-        /^192\.168\./.test(window.location.hostname) ||
-        window.location.hostname.endsWith(".local");
-
-      if (!isLocalHost) {
-        if (!executeRecaptcha) {
-          setError(t.text("UnderConstruction.sendErrorGeneric"));
-          setLoading(false);
-          setIsSubmitting(false);
-          return;
-        }
-        const token = await executeRecaptcha("uc_newsletter");
-        const verification = await verifyRecaptchaToken(token);
-        if (!verification?.success) {
-          setError(t.text("UnderConstruction.sendErrorGeneric"));
-          setLoading(false);
-          setIsSubmitting(false);
-          return;
-        }
-      } else {
-        // console.log("🏠 Localhost : ReCAPTCHA bypassed");
+      const recaptchaToken = await getRecaptchaToken(executeRecaptcha, "uc_newsletter");
+      if (recaptchaToken === null) {
+        setError(t.text("UnderConstruction.sendErrorGeneric"));
+        return;
       }
 
-      await emailjs.send(
-        "REMOVED_EMAILJS_SERVICE_ID",
-        "REMOVED_EMAILJS_TEMPLATE_ID",
-        {
-          name: "Inscription Newsletter",
-          email: email.trim(),
-          phone: "",
-          message: `Nouvelle inscription newsletter depuis la page en construction.\n\nEmail: ${email.trim()}\nDate: ${new Date().toLocaleString("fr-FR")}\nSource: Page en construction`,
-        },
-        "REMOVED_EMAILJS_PUBLIC_KEY"
-      );
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 10000);
+
+      try {
+        const response = await fetchWithDeployment("/api/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim(),
+            source: "under-construction",
+            recaptchaToken,
+            website: honeypotValue,
+          }),
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Newsletter signup failed with status ${response.status}`);
+        }
+      } finally {
+        window.clearTimeout(timeout);
+      }
 
       setDone(true);
       setEmail("");
       setTimeout(() => setDone(false), 3000);
     } catch (err) {
-      // console.log("FAILED...", err);
       setError(t.text("UnderConstruction.sendErrorGeneric"));
     } finally {
       setLoading(false);
@@ -128,7 +117,6 @@ const UnderConstruction: React.FC = () => {
         } min-h-screen relative overflow-hidden flex items-center justify-center px-6 sm:px-8 md:px-4 py-8`}
     >
 
-      {/* Boutons de contrôle discrets - positionnés différemment sur mobile */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-auto sm:right-6 sm:top-6 sm:translate-x-0 z-20 flex items-center gap-2 sm:gap-4">
         <LocaleThemeControls
           currentLanguage={languageReducer}
@@ -155,13 +143,11 @@ const UnderConstruction: React.FC = () => {
           />
         </div>
 
-        {/* Main title */}
         <h2 className={`${themeReducer === "light" ? "text-gray-800" : "text-[#F6F6F6]"
           } font-redDisplay font-bold text-3xl sm:text-4xl md:text-6xl mb-6 sm:mb-8 px-2`}>
           {t.text("UnderConstruction.title")}
         </h2>
 
-        {/* Subtitle */}
         <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
           } font-poppins font-normal text-lg sm:text-xl md:text-2xl mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4`}>
           {t.text("UnderConstruction.subtitle")}{" "}
@@ -171,7 +157,6 @@ const UnderConstruction: React.FC = () => {
           {t.text("UnderConstruction.tagline")}
         </p>
 
-        {/* Main Lottie animation */}
         <div className="relative mb-16 sm:mb-20">
           <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 mx-auto">
             <Suspense
@@ -191,7 +176,6 @@ const UnderConstruction: React.FC = () => {
           </div>
         </div>
 
-        {/* Services cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-3xl mx-auto px-4">
           <div className={`${themeReducer === "light"
             ? "bg-white/90 border-purple-100"
@@ -254,7 +238,6 @@ const UnderConstruction: React.FC = () => {
           </div>
         </div>
 
-        {/* Progress bar */}
         <div className="mb-10 sm:mb-12 px-4">
           <div className="flex items-center justify-between mb-4">
             <span className={`${themeReducer === "light" ? "text-gray-700" : "text-[#E5E5E5]"
@@ -277,7 +260,6 @@ const UnderConstruction: React.FC = () => {
           </div>
         </div>
 
-        {/* Subscription form */}
         <div className={`${themeReducer === "light"
           ? "bg-white/90 border-gray-100"
           : "bg-[#685A9C]/90 border-gray-700"
@@ -293,6 +275,17 @@ const UnderConstruction: React.FC = () => {
           </p>
 
           <form noValidate onSubmit={handleSubmit} className="max-w-lg mx-auto">
+            <div className="absolute left-[-9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+              <label htmlFor="uc-website">Website</label>
+              <input
+                id="uc-website"
+                type="text"
+                name="website"
+                autoComplete="off"
+                tabIndex={-1}
+              />
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
               <div className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"
                 } relative flex justify-between items-center border-2 border-[#C8CAE4] rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] flex-1`}>
@@ -337,7 +330,6 @@ const UnderConstruction: React.FC = () => {
               </button>
             </div>
 
-            {/* Error message */}
             {error && (
               <p id="uc-email-error" className="text-red-500 font-poppins font-light text-sm text-center" aria-live="polite">
                 {error}
@@ -346,7 +338,6 @@ const UnderConstruction: React.FC = () => {
           </form>
         </div>
 
-        {/* Emergency contact */}
         <div className="text-center px-4">
           <p className={`${themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]"
             } font-poppins font-normal text-base sm:text-lg mb-4`}>
@@ -366,67 +357,21 @@ const UnderConstruction: React.FC = () => {
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            {rootEl && (
-              <PopupButton
-                rootElement={rootEl}
-                className="font-helvetica font-light text-base sm:text-lg text-purple-600 hover:text-purple-700 font-semibold transition-colors duration-200 underline decoration-purple-600 hover:decoration-purple-700"
-                url="https://calendly.com/mediasmartch/30min&hide_gdpr_banner=1"
-                text={t.text("UnderConstruction.bookAppointment")}
-                pageSettings={{
-                  backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",
-                  hideEventTypeDetails: false,
-                  hideLandingPageDetails: false,
-                  primaryColor: themeReducer === "light" ? "#7c3aed" : "#F6F6F6",
-                  textColor: themeReducer === "light" ? "#1f2937" : "#F6F6F6",
-                }}
-              />
-            )}
+            <ConsentAwareCalendlyButton
+              className="font-helvetica font-light text-base sm:text-lg text-purple-600 hover:text-purple-700 font-semibold transition-colors duration-200 underline decoration-purple-600 hover:decoration-purple-700"
+              blockedTitle={t.text("cookies.manageCookies")}
+              text={t.text("UnderConstruction.bookAppointment")}
+              pageSettings={{
+                backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",
+                hideEventTypeDetails: false,
+                hideLandingPageDetails: false,
+                primaryColor: themeReducer === "light" ? "#7c3aed" : "#F6F6F6",
+                textColor: themeReducer === "light" ? "#1f2937" : "#F6F6F6",
+              }}
+            />
           </div>
         </div>
       </div>
-
-      {/* CSS styles */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-          @keyframes progressBar {
-            from { width: 0%; }
-            to { width: 85%; }
-          }
-
-.custom-contact-input {
-            background: transparent;
-            border: none;
-            outline: none;
-            width: 100%;
-            font-family: inherit;
-          }
-
-          .calendly-overlay {
-            padding: 15px !important;
-          }
-          
-          .calendly-popup {
-            margin: 15px !important;
-            border-radius: 12px !important;
-            max-width: calc(100vw - 30px) !important;
-            max-height: calc(100vh - 30px) !important;
-          }
-          
-          @media (max-width: 768px) {
-            .calendly-overlay {
-              padding: 10px !important;
-            }
-            
-            .calendly-popup {
-              margin: 10px !important;
-              max-width: calc(100vw - 20px) !important;
-              max-height: calc(100vh - 20px) !important;
-            }
-          }
-        `,
-        }}
-      />
     </div>
   );
 };

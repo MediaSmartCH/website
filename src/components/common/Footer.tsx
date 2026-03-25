@@ -2,15 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
 import logo from "assets/images/logo-footer.png";
 import linkedin from "assets/icons/linkedin.svg";
-// import twitter from "assets/icons/twitter.svg";
 import insta from "assets/icons/insta.svg";
 import telegram from "assets/icons/telegram.svg";
-// import fb from "assets/icons/fb.svg";
-import { useLangLink } from "services/router/langPath"; 
+import { useLangLink } from "services/router/langPath";
 
 const Footer = () => {
   const { L, Lhash } = useLangLink();
@@ -36,7 +33,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/")}
               >
-                {/* {dictionary["footer"][languageReducer]["navItem1"]} */} {t.text("footer.navItem1")}
+                {t.text("footer.navItem1")}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="900">
@@ -44,7 +41,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/it-services")}
               >
-                {/* {dictionary["footer"][languageReducer]["navItem2"]} */} {t.text("footer.navItem2")}
+                {t.text("footer.navItem2")}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="1000">
@@ -52,7 +49,7 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={L("/video-services")}
               >
-                {/* {dictionary["footer"][languageReducer]["navItem3"]} */} {t.text("footer.navItem3")}
+                {t.text("footer.navItem3")}
               </Link>
             </li>
             <li className="" data-aos="fade-down" data-aos-duration="1200">
@@ -60,23 +57,15 @@ const Footer = () => {
                 className="text-[#fff] hover:text-[#5f75f5]"
                 to={Lhash("#about")}
               >
-                {/* {dictionary["footer"][languageReducer]["navItem4"]} */} {t.text("footer.navItem4")}
+                {t.text("footer.navItem4")}
               </Link>
             </li>
-            {/* <li className="" data-aos="fade-down" data-aos-duration="1300">
-              <Link
-                className="text-[#fff] hover:text-[#5f75f5]"
-                to="{Lhash(#testimonials")}
-              >
-                {t.text("footer.navItem5")}
-              </Link>
-            </li> */}
             <li className="" data-aos="fade-down" data-aos-duration="1400">
               <Link
                 to={L("/privacy-policy")}
                 className="text-[#fff] hover:text-[#5f75f5]"
               >
-                {/* {dictionary["footer"][languageReducer]["navItem6"]} */} {t.text("footer.navItem6")}
+                {t.text("footer.navItem6")}
               </Link>
             </li>
           </ul>
@@ -96,7 +85,7 @@ const Footer = () => {
               data-aos-duration="1000"
               href="https://www.linkedin.com/company/MediaSmartCH"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <img
                 src={linkedin}
@@ -106,29 +95,13 @@ const Footer = () => {
                 data-aos-duration="1300"
               />
             </a>
-            {/* <a
-              className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
-              data-aos="fade-down"
-              data-aos-duration="1000"
-              href="https://twitter.com/MediaSmartCH"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img
-                src={twitter}
-                alt="twitter"
-                className="w-[17px] h-[17px]"
-                data-aos="fade-up"
-                data-aos-duration="1300"
-              />
-            </a> */}
             <a
               className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
               data-aos="fade-down"
               data-aos-duration="1000"
               href="https://www.instagram.com/MediaSmartCH"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <img
                 src={insta}
@@ -142,9 +115,9 @@ const Footer = () => {
               className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
               data-aos="fade-down"
               data-aos-duration="1000"
-              href="https:/t.me/MediaSmartCH"
+              href="https://t.me/MediaSmartCH"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <img
                 src={telegram}
@@ -154,22 +127,6 @@ const Footer = () => {
                 data-aos-duration="1300"
               />
             </a>
-            {/* <a
-              className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
-              data-aos="fade-down"
-              data-aos-duration="1000"
-              href="https://www.facebook.com/MediaSmartCH"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img
-                src={fb}
-                alt="fb"
-                className="w-[17px] h-[17px]"
-                data-aos="fade-up"
-                data-aos-duration="1300"
-              />
-            </a> */}
           </div>
         </div>
       </div>

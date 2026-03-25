@@ -2,6 +2,7 @@ import React from "react";
 import AOS from "aos";
 import { Link } from "react-router-dom";
 import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowRight, ArrowLeft } from "lucide-react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import { useLangLink } from "services/router/langPath";
@@ -16,6 +17,8 @@ export default function SupportContractPage() {
 
   const [hasAnimated, setHasAnimated] = React.useState(false);
   React.useEffect(() => { AOS.refresh(); setHasAnimated(true); }, []);
+
+  // Freeze AOS animations on theme change to prevent re-triggering entrance effects
   React.useEffect(() => {
     if (hasAnimated) {
       document.querySelectorAll('[data-aos]').forEach(el => {
@@ -110,7 +113,6 @@ export default function SupportContractPage() {
 
   return (
     <>
-      {/* Floating back button */}
       <div className="fixed top-[73px] md:top-[100px] left-0 right-0 z-40 pointer-events-none">
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto pt-[10px]">
           <Link
@@ -122,18 +124,19 @@ export default function SupportContractPage() {
               }`}
           >
             <ArrowLeft size={13} className="transition-transform duration-200 group-hover:-translate-x-0.5" />
+            {/* Strip any leading arrow character that may exist in the translation string */}
             {t.text("it.supportPageBackLink").replace(/^←\s*/, "")}
           </Link>
         </div>
       </div>
 
-      {/* Hero */}
-      {/* Hero + Priorities share the wave background */}
+      {/* Hero and priorities share the wave background so they fade together */}
       <div className={`${isLight ? "hero-bg" : "hero-bg-dark"} pt-[150px] pb-[50px]`}>
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto">
-          <p
+          <RichText
+            as="p"
             className={`${titleColor} font-redDisplay font-bold text-[32px] md:text-[40px] lg:text-[48px] xl:text-[56px] leading-tight mb-4`}
-            dangerouslySetInnerHTML={{ __html: t.text("it.supportPageTitle") }}
+            html={t.text("it.supportPageTitle")}
           />
           <p className={`${textColor} font-poppins font-light text-[15px] md:text-[16px] leading-7 max-w-[680px]`}>
             {t.text("it.supportPageSubtitle")}
@@ -144,7 +147,6 @@ export default function SupportContractPage() {
           </div>
         </div>
 
-        {/* Priorities — inside wave so it fades naturally */}
         <div className="pt-[30px]">
           <Section title={t.text("it.supportPagePriorityTitle")}>
             <div className="grid gap-4 sm:grid-cols-3 mb-4">
@@ -167,7 +169,6 @@ export default function SupportContractPage() {
         </div>
       </div>
 
-      {/* Plans */}
         <Section title={t.text("it.supportPagePlansTitle")}>
           <p className={`${textColor} font-poppins text-[14px] leading-6 mb-6 -mt-2`}>{t.text("it.supportPagePlansDescription")}</p>
           <div className="grid gap-6 lg:grid-cols-3">
@@ -181,7 +182,6 @@ export default function SupportContractPage() {
                   <h3 className={`${titleColor} font-redDisplay text-[20px] font-bold`}>{name}</h3>
                 </div>
 
-                {/* Price */}
                 <div className={`${innerCard} rounded-[16px] border p-4 mb-4`}>
                   <div className="flex items-baseline gap-1">
                     <span className={`${titleColor} font-redDisplay text-[36px] font-bold leading-none`}>{price}</span>
@@ -189,11 +189,11 @@ export default function SupportContractPage() {
                   </div>
                   <div className={`${subtitleColor} font-poppins text-[12px] mt-2`}>
                     <span className="font-semibold">{hours}h</span> {t.text("it.supportIncluded")} — {t.text("it.supportExtra")}: <span className="font-semibold">{extraRate} CHF/h</span>
+                    {/* Strikethrough shows the standard hourly rate before the contract discount */}
                     <span className={`${isLight ? "text-[#9B6B6B]" : "text-[#FFAAAA]"} line-through ml-1`}>140</span>
                   </div>
                 </div>
 
-                {/* SLA */}
                 <p className={`${subtitleColor} font-poppins text-[11px] uppercase tracking-[0.18em] mb-2`}>SLA</p>
                 <div className="space-y-1.5 mb-4">
                   {sla.map(({ priority, delay }) => (
@@ -204,7 +204,6 @@ export default function SupportContractPage() {
                   ))}
                 </div>
 
-                {/* After-hours */}
                 <div className={`${noteBox} rounded-[14px] border p-3 mb-3`}>
                   <p className={`${subtitleColor} font-poppins text-[11px] uppercase tracking-[0.15em] mb-1.5`}>{t.text("it.supportPageAfterHoursTitle")}</p>
                   {weekendIncluded && (
@@ -232,7 +231,6 @@ export default function SupportContractPage() {
           </div>
         </Section>
 
-        {/* Limitations */}
         <Section title={t.text("it.supportPageLimitTitle")}>
           <div className="grid gap-3 md:grid-cols-2">
             {limits.map((item) => (
@@ -244,7 +242,6 @@ export default function SupportContractPage() {
           </div>
         </Section>
 
-        {/* Terms */}
         <Section title={t.text("it.supportPageTermsTitle")}>
           <div className="grid gap-3 md:grid-cols-2">
             {terms.map((item) => (
@@ -255,25 +252,6 @@ export default function SupportContractPage() {
             ))}
           </div>
         </Section>
-
-        {/* CTA */}
-        {/* <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[20px] pb-[40px] mx-auto">
-          <div className={`${isLight ? "border-[#E8E4F7] bg-[linear-gradient(135deg,#FFFFFF_0%,#F7F5FF_50%,#EDF6FF_100%)]" : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]"} rounded-[24px] border p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4`}>
-            <div>
-              <h3 className={`${titleColor} font-redDisplay text-[22px] font-bold`}>{t.text("it.supportPageCtaTitle")}</h3>
-              <p className={`${textColor} font-poppins text-[14px] leading-6 mt-1`}>{t.text("it.supportPageCtaDesc")}</p>
-            </div>
-            <button
-              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-              className="custom-btn shrink-0 flex items-center gap-2 text-[13px] font-semibold px-6 py-3 rounded-full"
-            >
-              <span className="custom-btn-inner flex items-center gap-2">
-                {t.text("it.estimateCtaQuote")}
-                <ArrowRight size={15} />
-              </span>
-            </button>
-          </div>
-        </div> */}
 
       <Contact />
     </>

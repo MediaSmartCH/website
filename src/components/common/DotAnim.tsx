@@ -17,12 +17,13 @@ type ByKeyProps = Base & { anim: LottieKey; light?: never; dark?: never };
 type BySrcProps = Base & { light: string; dark?: string; anim?: never };
 export type DotAnimProps = ByKeyProps | BySrcProps;
 
-// Cache pour les assets préchargés
+// Module-level set shared across all DotAnim instances so each asset URL is
+// only prefetch-linked once, even when multiple components share the same animation.
 const preloadCache = new Set<string>();
 
 function preloadAsset(src: string) {
   if (preloadCache.has(src)) return;
-  
+
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = src;
@@ -40,9 +41,11 @@ function selectSrc(theme: string, pair: LottiePair) {
 
 function DotAnim(props: DotAnimProps) {
   const theme = useAppSelector((s) => s.theme.currentTheme);
+  // stableTheme lags behind theme by ~300 ms so the player receives the new src
+  // only after the opacity transition has started, preventing a raw asset swap flash.
   const [stableTheme, setStableTheme] = useState(theme);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
+
   const {
     className,
     style,
@@ -57,7 +60,8 @@ function DotAnim(props: DotAnimProps) {
     [props]
   );
 
-  // Précharger les deux assets au montage
+  // Prefetch both light and dark assets on mount so the dark variant is already
+  // in the browser cache when the user switches themes, avoiding a visible flicker.
   useEffect(() => {
     preloadAsset(pair.light);
     if (pair.dark) {
@@ -65,19 +69,20 @@ function DotAnim(props: DotAnimProps) {
     }
   }, [pair]);
 
-  // Stabiliser le changement de thème
+  // Delay committing the new theme to stableTheme until the fade-out transition
+  // is underway, then fade back in once the new src is active.
   useEffect(() => {
     if (theme !== stableTheme) {
       setIsTransitioning(true);
-      
+
       const timer = setTimeout(() => {
         setStableTheme(theme);
         setIsTransitioning(false);
       }, 300);
-      
+
       return () => clearTimeout(timer);
     }
-  }, [theme, stableTheme]); // Retirer stableTheme des dépendances comme suggéré par ESLint
+  }, [theme, stableTheme]);
 
   const src = selectSrc(stableTheme, pair);
 
@@ -102,6 +107,7 @@ function DotAnim(props: DotAnimProps) {
       draggable={protect ? false : undefined}
     >
       {crisp ? (
+        // dotlottie-player web component renders via SVG for pixel-perfect crispness.
         <dotlottie-player
           key={`${src}-${stableTheme}`}
           src={src}
@@ -121,6 +127,8 @@ function DotAnim(props: DotAnimProps) {
         />
       )}
 
+      {/* Transparent overlay that intercepts all pointer/touch events to prevent
+          right-click saving or dragging the animation when protect is enabled. */}
       {protect && (
         <div
           aria-hidden

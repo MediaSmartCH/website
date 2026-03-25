@@ -1,5 +1,4 @@
 const it = {
-    // Hero
     itServicesHeroTitle: `
         <span> Solutions informatiques </span> sur mesure pour vos besoins numériques
         `,
@@ -7,19 +6,17 @@ const it = {
         "De la création de sites web à la cybersécurité, MediaSmart est votre partenaire informatique en Suisse romande.",
     itServicesHeroContactBtn: "Demander un devis",
 
-    // About
-    itServicesAboutTitle: `Introduction à <span> l’expertise informatique </span>`,
+    itServicesAboutTitle: `Introduction à <span> l'expertise informatique </span>`,
     itServicesAboutDescription: `
-        Chez MediaSmart, nous croyons que l’informatique doit être un <b> allié stratégique, et non une source de frustration. </b> 
+        Chez MediaSmart, nous croyons que l'informatique doit être un <b> allié stratégique, et non une source de frustration. </b>
         <br />
         Notre mission est simple : vous permettre de travailler efficacement, en toute sécurité, grâce à des solutions modernes et adaptées à vos besoins spécifiques.
         <br />
-        Que vous soyez une PME, une association, un indépendant ou un particulier exigeant, nous apportons <b> souplesse, expertise et réactivité </b> à chaque projet. 
+        Que vous soyez une PME, une association, un indépendant ou un particulier exigeant, nous apportons <b> souplesse, expertise et réactivité </b> à chaque projet.
         `,
 
-    // Services
     itServicesTitle: `<span> Nos </span> services informatiques`,
-    itServicesDescription: "Nous proposons des solutions informatiques sur mesure conçues pour assurer le bon fonctionnement de votre entreprise. Nos services comprennent :",
+    itServicesDescription: "Nous proposons des solutions informatiques sur mesure conçues pour assurer le bon fonctionnement de votre entreprise. Nos services comprennent :",
 
     portfolioTxt: "Notre portfolio",
     portfolioBtn: "Voir plus de portfolio",
@@ -51,19 +48,19 @@ const it = {
         <li> Détection préventive des problèmes. </li>
         <li> Assistance rapide en cas de blocage. </li>
         </ul>
-        Notre objectif : vous offrir un parc informatique stable, fiable et toujours prêt à l’emploi.
+        Notre objectif : vous offrir un parc informatique stable, fiable et toujours prêt à l'emploi.
         `,
     service3: "Optimisation des performances",
     description3: `
-        Un poste de travail ou un serveur lent, c’est du temps perdu et de la productivité en moins.
+        Un poste de travail ou un serveur lent, c'est du temps perdu et de la productivité en moins.
         <br />
-        Nous analysons vos systèmes pour identifier les ralentissements, 
+        Nous analysons vos systèmes pour identifier les ralentissements,
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Amélioration de la configuration matérielle et logicielle. </li>
         <li> Optimisation du démarrage et des applications. </li>
-        <li> Suppression des fichiers inutiles et processus parasites. </li> 
+        <li> Suppression des fichiers inutiles et processus parasites. </li>
         </ul>
-        Résultat : des machines plus rapides, plus efficaces et plus agréables à utiliser. 
+        Résultat : des machines plus rapides, plus efficaces et plus agréables à utiliser.
         `,
     service4: "Cybersécurité & audits",
     description4: `
@@ -71,32 +68,31 @@ const it = {
         <br />
         Nous vous aidons à protéger vos données et vos équipements grâce à une approche complète :
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Installation et configuration d’antivirus performants. </li>
+        <li> Installation et configuration d'antivirus performants. </li>
         <li> Mise en place de pare-feu et sécurisation du réseau. </li>
-        <li> Audit de sécurité pour identifier vos points faibles. </li> 
-        <li> Sensibilisation et bonnes pratiques pour vos équipes. </li> 
+        <li> Audit de sécurité pour identifier vos points faibles. </li>
+        <li> Sensibilisation et bonnes pratiques pour vos équipes. </li>
         </ul>
-            La cybersécurité n’est pas une option : c’est la garantie de préserver la confiance de vos clients et la continuité de votre activité.
+            La cybersécurité n'est pas une option : c'est la garantie de préserver la confiance de vos clients et la continuité de votre activité.
         `,
     service5: "Sauvegarde & récupération de données",
     description5: `
-        Vos données sont précieuses. Qu’il s’agisse de documents professionnels, de projets en cours ou de souvenirs personnels, leur perte peut être dramatique.
+        Vos données sont précieuses. Qu'il s'agisse de documents professionnels, de projets en cours ou de souvenirs personnels, leur perte peut être dramatique.
         <br />
-        Nous mettons en place des <b> solutions de sauvegarde fiables </b> (locales et cloud) adaptées à votre activité. Et si le pire arrive ? Nous proposons également des services de récupération de données pour tenter de restaurer vos fichiers supprimés ou endommagés. 
+        Nous mettons en place des <b> solutions de sauvegarde fiables </b> (locales et cloud) adaptées à votre activité. Et si le pire arrive ? Nous proposons également des services de récupération de données pour tenter de restaurer vos fichiers supprimés ou endommagés.
         `,
     service6: "Support & formation utilisateurs",
     description6: `
-        Nous savons qu’un problème informatique peut vite devenir bloquant. C’est pourquoi nous proposons un <b> support réactif et accessible </b>:
+        Nous savons qu'un problème informatique peut vite devenir bloquant. C'est pourquoi nous proposons un <b> support réactif et accessible </b>:
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Dépannage rapide à distance ou sur site. </li>
         <li> Réponses claires, sans jargon inutile. </li>
-        <li> Formation personnalisée (individuelle ou en groupe) pour mieux utiliser vos outils (Windows, macOS, Office 365, cybersécurité, etc.). </li> 
+        <li> Formation personnalisée (individuelle ou en groupe) pour mieux utiliser vos outils (Windows, macOS, Office 365, cybersécurité, etc.). </li>
         </ul>
-        Notre mission : rendre vos utilisateurs plus autonomes et productifs, tout en restant disponibles quand vous avez besoin d’aide.
+        Notre mission : rendre vos utilisateurs plus autonomes et productifs, tout en restant disponibles quand vous avez besoin d'aide.
         `,
 
-    // Project Estimates
     estimatesTitle: `Estimations de <span>coût projet</span>`,
     estimatesDescription: "Fourchettes indicatives pour vous aider à planifier votre budget. Chaque projet fait l'objet d'un devis détaillé avant tout démarrage.",
     estimateFrom: "dès",
@@ -152,7 +148,6 @@ const it = {
       "Devis détaillé après analyse du besoin",
     ],
 
-    // Practical Info
     practicalInfoTitle: `<span>Informations</span> pratiques`,
     practicalInfoDescription: "Les points clés à connaître avant de démarrer votre projet.",
     hourlyRateTitle: "Tarif horaire standard",
@@ -192,7 +187,6 @@ const it = {
       "Maintenance, mises à jour et surveillance après mise en ligne",
     ],
 
-    // Support Pricing
     supportPricingTitle: `Tarifs de <span>support</span>`,
     supportPricingDescription: "Applicable à tous les projets — site web, application ou autre. Un tarif unique pour tous les services.",
     supportPerYear: "an",
@@ -219,7 +213,6 @@ const it = {
     supportPremiumBeyond: "Au-delà :",
     supportPremiumNote: "Les tarifs hors horaires et week-end s'appliquent au-delà des 2h/an incluses.",
 
-    // Process
     itServicesProcessTitle: `Notre <span> processus </span> de travail`,
     itServicesProcessDescription: "Chaque mission informatique suit une méthodologie simple et transparente :",
     processData: [
@@ -229,7 +222,7 @@ const it = {
         },
         {
             title: "Évaluation",
-            description: "Nous analysons vos systèmes pour identifier les risques et les opportunités d’amélioration.",
+            description: "Nous analysons vos systèmes pour identifier les risques et les opportunités d'amélioration.",
         },
         {
             title: "Solutions personnalisées",
@@ -237,14 +230,13 @@ const it = {
         },
         {
             title: "Mise en œuvre",
-            description: "Nos experts déploient les solutions avec un minimum d’interruption dans votre travail quotidien.",
+            description: "Nos experts déploient les solutions avec un minimum d'interruption dans votre travail quotidien.",
         },
         {
             title: "Support continu",
             description: "Nous restons à vos côtés grâce aux mises à jour, à la surveillance et à un support réactif dès que vous en avez besoin.",
         },
     ],
-    // Support Contract Page
     supportPageTitle: `Contrat de <span>support</span>`,
     supportPageSubtitle: "Un abonnement annuel optionnel pour protéger votre projet avec des délais de réponse garantis et des heures incluses.",
     supportPageIntro: "Le contrat de support est distinct du projet de création. Il s'active après la mise en ligne et couvre les interventions techniques, corrections et demandes d'évolution dans la limite des heures incluses.",
@@ -279,8 +271,8 @@ const it = {
     supportPageCtaDesc: "Contactez-nous pour choisir le niveau adapté à votre activité ou pour obtenir un devis.",
     supportPageBackLink: "← Retour aux services informatiques",
     supportPageMoreInfo: "Plus d'info",
+    supportMostPopular: "Le plus populaire",
 
-    // FAQ IT
     itFaqTitle: "Questions fréquentes",
     itFaq1: {
         faqQuestion: "Quels types de projets informatiques prenez-vous en charge ?",

@@ -1,3 +1,25 @@
+export const COOKIE_CONSENT_UPDATED_EVENT = "cookie-consent-updated";
+export const OPEN_COOKIE_SETTINGS_EVENT = "open-cookie-settings";
+
+export interface ConsentPreferences {
+  googleAnalytics: boolean;
+  calendlyFunctionality: boolean;
+  calendlyPerformance: boolean;
+  calendlyAdvertising: boolean;
+  themePreference: boolean;
+  languagePreference: boolean;
+  timestamp?: string;
+}
+
+export const DEFAULT_CONSENT_PREFERENCES: ConsentPreferences = {
+  googleAnalytics: false,
+  calendlyFunctionality: false,
+  calendlyPerformance: false,
+  calendlyAdvertising: false,
+  themePreference: false,
+  languagePreference: false,
+};
+
 export function setCookie(name: string, value: string, days: number) {
   let expires = "";
   if (Number.isFinite(days) && days > 0) {
@@ -5,7 +27,11 @@ export function setCookie(name: string, value: string, days: number) {
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = "; expires=" + date.toUTCString();
   }
-  document.cookie = `${name}=${encodeURIComponent(value || "")}${expires}; path=/`;
+  const secure =
+    typeof window !== "undefined" && window.location.protocol === "https:"
+      ? "; Secure"
+      : "";
+  document.cookie = `${name}=${encodeURIComponent(value || "")}${expires}; path=/; SameSite=Lax${secure}`;
 }
 
 export function getCookie(name: string): string | null {
@@ -27,7 +53,7 @@ export function getCookie(name: string): string | null {
   return null;
 }
 
-/** Parse JSON en sécurité avec fallback (ne jette jamais) */
+// Parses JSON safely with a fallback value; never throws
 export function safeJSONParse<T>(jsonString: unknown, fallback: T): T {
   if (typeof jsonString !== "string") return fallback;
   const trimmed = jsonString.trim();
@@ -42,7 +68,7 @@ export function safeJSONParse<T>(jsonString: unknown, fallback: T): T {
   }
 }
 
-/** Récupère et parse les données de consentement depuis localStorage (auto-clean si corrompu) */
+// Reads cookie consent from localStorage; removes the entry if it is corrupted
 export function getSafeConsentData(): Record<string, any> | null {
   try {
     const stored = localStorage.getItem("cookie_consent");
@@ -57,7 +83,37 @@ export function getSafeConsentData(): Record<string, any> | null {
   }
 }
 
-/** Sauvegarde sécurisée des données de consentement */
+export function getNormalizedConsentData(): ConsentPreferences {
+  const consent = getSafeConsentData();
+
+  return {
+    ...DEFAULT_CONSENT_PREFERENCES,
+    googleAnalytics: Boolean(consent?.googleAnalytics),
+    calendlyFunctionality: Boolean(consent?.calendlyFunctionality),
+    calendlyPerformance: Boolean(consent?.calendlyPerformance),
+    calendlyAdvertising: Boolean(consent?.calendlyAdvertising),
+    themePreference: Boolean(consent?.themePreference),
+    languagePreference: Boolean(consent?.languagePreference),
+    timestamp: typeof consent?.timestamp === "string" ? consent.timestamp : undefined,
+  };
+}
+
+export function canLoadEmbeddedCalendly(
+  consent: Partial<ConsentPreferences> | null | undefined
+) {
+  return Boolean(
+    consent?.calendlyFunctionality &&
+      consent?.calendlyPerformance &&
+      consent?.calendlyAdvertising
+  );
+}
+
+export function requestCookieSettingsOpen() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(OPEN_COOKIE_SETTINGS_EVENT));
+}
+
+// Persists consent data to localStorage, adding an ISO timestamp for auditing
 export function saveConsentData(consentData: Record<string, any>) {
   try {
     const dataWithTimestamp = {
@@ -65,6 +121,11 @@ export function saveConsentData(consentData: Record<string, any>) {
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem("cookie_consent", JSON.stringify(dataWithTimestamp));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent(COOKIE_CONSENT_UPDATED_EVENT, { detail: dataWithTimestamp })
+      );
+    }
     return true;
   } catch {
     return false;

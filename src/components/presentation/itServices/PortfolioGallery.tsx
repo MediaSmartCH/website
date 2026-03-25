@@ -25,6 +25,7 @@ interface PortfolioData {
 const PREVIEW_LIMIT = 4;
 const SCROLLABLE_GALLERY_THRESHOLD = 3;
 
+// Returns the resolved image paths for a portfolio item, preferring generated screenshot paths
 function getItemImages(item: PortfolioItem): string[] {
   if (item.screenshotUrls && item.screenshotUrls.length > 0) {
     return item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`);
@@ -33,19 +34,41 @@ function getItemImages(item: PortfolioItem): string[] {
   return item.images ?? [];
 }
 
-function resolveScreenshotUrl(screenshotUrl: string, baseUrl?: string): string {
-  if (screenshotUrl.startsWith("http://") || screenshotUrl.startsWith("https://")) {
-    return screenshotUrl;
+// Resolves a relative screenshot URL against the item's base URL
+function getSafeExternalUrl(value?: string): string | null {
+  if (!value) {
+    return null;
   }
+
   try {
-    const base = new URL(baseUrl ?? "");
-    const path = screenshotUrl.startsWith("/") ? screenshotUrl : `/${screenshotUrl}`;
-    return `${base.origin}${path}`;
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:"
+      ? url.toString()
+      : null;
   } catch {
-    return screenshotUrl;
+    return null;
   }
 }
 
+// Resolves a relative screenshot URL against the item's base URL
+function resolveScreenshotUrl(
+  screenshotUrl: string,
+  baseUrl?: string
+): string | null {
+  if (screenshotUrl.startsWith("http://") || screenshotUrl.startsWith("https://")) {
+    return getSafeExternalUrl(screenshotUrl);
+  }
+
+  try {
+    const base = new URL(baseUrl ?? "");
+    const path = screenshotUrl.startsWith("/") ? screenshotUrl : `/${screenshotUrl}`;
+    return getSafeExternalUrl(`${base.origin}${path}`);
+  } catch {
+    return null;
+  }
+}
+
+// Returns the string value for the current language, falling back to fr then en
 function resolveLocalizedField(
   field: LocalizedField,
   language: string
@@ -109,6 +132,7 @@ function formatRemainingProjectsCta(count: number, language: string): string {
   return `View ${count} more`;
 }
 
+// Returns Tailwind grid class based on how many images a card holds
 function getInlineGalleryClassName(imageCount: number): string {
   if (imageCount <= 1) {
     return "grid grid-cols-1 gap-3";
@@ -121,6 +145,7 @@ function getInlineGalleryClassName(imageCount: number): string {
   return "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3";
 }
 
+// Locks body scroll while the modal is open and restores original styles on cleanup
 function useBodyScrollLock(isLocked: boolean): void {
   useEffect(() => {
     if (!isLocked) {
@@ -133,6 +158,7 @@ function useBodyScrollLock(isLocked: boolean): void {
       paddingRight: document.body.style.paddingRight,
       touchAction: document.body.style.touchAction,
     };
+    // Add padding to compensate for the scrollbar disappearing and prevent layout shift
     const scrollbarWidth =
       window.innerWidth - document.documentElement.clientWidth;
 
@@ -169,6 +195,7 @@ const PortfolioGallery = () => {
 
   const t = useTranslations(languageReducer);
 
+  // Filter out items with no displayable images so empty cards never appear
   const portfolioItems = useMemo(() => {
     const data = portfolioContent as PortfolioData;
 
@@ -230,6 +257,7 @@ const PortfolioGallery = () => {
     : "text-[#E6E3FF]";
   const previewButtonText = t.text("it.portfolioBtn");
 
+  // Full modal rendered via portal so it escapes any overflow:hidden ancestors
   const modal = (
     <div
       className="fixed inset-0 z-[99999] flex items-center justify-center p-4 md:p-6"
@@ -313,6 +341,8 @@ const PortfolioGallery = () => {
                 languageReducer
               );
               const images = getItemImages(item);
+              const safeItemUrl = getSafeExternalUrl(item.url);
+              // Switch to a horizontally scrollable row when the image count exceeds the threshold
               const shouldScrollGallery =
                 images.length > SCROLLABLE_GALLERY_THRESHOLD;
 
@@ -335,11 +365,11 @@ const PortfolioGallery = () => {
                       </p>
                     </div>
 
-                    {item.url && (
+                    {safeItemUrl && (
                       <a
-                        href={item.url}
+                        href={safeItemUrl}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className={`shrink-0 rounded-full border px-3 py-2 text-[12px] font-medium transition duration-200 ${isLightTheme ? "border-[#D9DCF2] text-[#2C3A87] hover:bg-[#EEF0FF]" : "border-white/10 text-[#DAD7FF] hover:bg-white/10"}`}
                       >
                         {t.text("it.portfolioVisitSite")}
@@ -359,22 +389,36 @@ const PortfolioGallery = () => {
                         {images.map((image, index) => {
                           const targetUrl = item.screenshotUrls?.[index]
                             ? resolveScreenshotUrl(item.screenshotUrls[index], item.url)
-                            : item.url ?? "#";
+                            : safeItemUrl;
                           return (
-                            <a
-                              key={`${item.id}-${index}`}
-                              href={targetUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className={`group/img snap-start shrink-0 overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
-                            >
-                              <img
-                                src={image}
-                                alt={`${title} ${index + 1}`}
-                                className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
-                                loading="lazy"
-                              />
-                            </a>
+                            targetUrl ? (
+                              <a
+                                key={`${item.id}-${index}`}
+                                href={targetUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`group/img snap-start shrink-0 overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
+                              >
+                                <img
+                                  src={image}
+                                  alt={`${title} ${index + 1}`}
+                                  className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                                  loading="lazy"
+                                />
+                              </a>
+                            ) : (
+                              <div
+                                key={`${item.id}-${index}`}
+                                className={`snap-start shrink-0 overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
+                              >
+                                <img
+                                  src={image}
+                                  alt={`${title} ${index + 1}`}
+                                  className="aspect-[16/11] min-h-[140px] w-full object-cover"
+                                  loading="lazy"
+                                />
+                              </div>
+                            )
                           );
                         })}
                       </div>
@@ -383,22 +427,36 @@ const PortfolioGallery = () => {
                         {images.map((image, index) => {
                           const targetUrl = item.screenshotUrls?.[index]
                             ? resolveScreenshotUrl(item.screenshotUrls[index], item.url)
-                            : item.url ?? "#";
+                            : safeItemUrl;
                           return (
-                            <a
-                              key={`${item.id}-${index}`}
-                              href={targetUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className={`group/img overflow-hidden rounded-[18px] border ${imageShellClass}`}
-                            >
-                              <img
-                                src={image}
-                                alt={`${title} ${index + 1}`}
-                                className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
-                                loading="lazy"
-                              />
-                            </a>
+                            targetUrl ? (
+                              <a
+                                key={`${item.id}-${index}`}
+                                href={targetUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`group/img overflow-hidden rounded-[18px] border ${imageShellClass}`}
+                              >
+                                <img
+                                  src={image}
+                                  alt={`${title} ${index + 1}`}
+                                  className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                                  loading="lazy"
+                                />
+                              </a>
+                            ) : (
+                              <div
+                                key={`${item.id}-${index}`}
+                                className={`overflow-hidden rounded-[18px] border ${imageShellClass}`}
+                              >
+                                <img
+                                  src={image}
+                                  alt={`${title} ${index + 1}`}
+                                  className="aspect-[16/11] min-h-[140px] w-full object-cover"
+                                  loading="lazy"
+                                />
+                              </div>
+                            )
                           );
                         })}
                       </div>
@@ -454,18 +512,11 @@ const PortfolioGallery = () => {
               item.description,
               languageReducer
             );
-
+            const safeItemUrl = getSafeExternalUrl(item.url);
             const previewImages = getItemImages(item);
 
-            return (
-              <a
-                key={item.id}
-                href={item.url || "#"}
-                target="_blank"
-                rel="noreferrer"
-                className={`group relative flex w-full max-w-[260px] flex-col overflow-hidden rounded-[20px] border text-left transition duration-300 hover:-translate-y-1 ${cardSurfaceClass}`}
-                aria-label={`${t.text("it.portfolioVisitSite")} ${title}`}
-              >
+            const previewCard = (
+              <>
                 <div className={`aspect-[16/11] w-full overflow-hidden ${imageShellClass}`}>
                   <img
                     src={previewImages[0]}
@@ -495,7 +546,27 @@ const PortfolioGallery = () => {
                     {truncateText(description, 120)}
                   </p>
                 </div>
+              </>
+            );
+
+            return safeItemUrl ? (
+              <a
+                key={item.id}
+                href={safeItemUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group relative flex w-full max-w-[260px] flex-col overflow-hidden rounded-[20px] border text-left transition duration-300 hover:-translate-y-1 ${cardSurfaceClass}`}
+                aria-label={`${t.text("it.portfolioVisitSite")} ${title}`}
+              >
+                {previewCard}
               </a>
+            ) : (
+              <div
+                key={item.id}
+                className={`group relative flex w-full max-w-[260px] flex-col overflow-hidden rounded-[20px] border text-left ${cardSurfaceClass}`}
+              >
+                {previewCard}
+              </div>
             );
           })}
 

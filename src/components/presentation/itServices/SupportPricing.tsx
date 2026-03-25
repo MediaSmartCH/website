@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle2, Clock, Zap, Shield, Star } from "lucide-react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
@@ -68,11 +69,11 @@ const SupportPricing = () => {
 
   return (
     <div id="support-pricing" className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[20px] pb-[40px] md:pb-[50px] mx-auto">
-      {/* Title */}
       <div className="mb-[30px]">
-        <p
+        <RichText
+          as="p"
           className={`${isLight ? "text-[#1F2326]" : "text-[#F6F6F6]"} w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-          dangerouslySetInnerHTML={{ __html: t.text("it.supportPricingTitle") }}
+          html={t.text("it.supportPricingTitle")}
         />
         <p
           className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}
@@ -81,21 +82,33 @@ const SupportPricing = () => {
         </p>
       </div>
 
-      {/* Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {plans.map(({ key, icon: Icon, name, price, extraRate, hours, sla, note, weekendIncluded, afterHours }) => (
+        {plans.map(({ key, icon: Icon, name, price, extraRate, hours, sla, note, weekendIncluded, afterHours }) => {
+          const isBusiness = key === "business";
+          return (
           <div
             key={key}
-            className={`${isLight
-              ? "border-[#E8E4F7] bg-[linear-gradient(135deg,#FFFFFF_0%,#F7F5FF_50%,#EDF6FF_100%)]"
-              : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]"
+            className={`${isBusiness
+              ? isLight
+                ? "border-[#7A6BFF] bg-[linear-gradient(135deg,#FFFFFF_0%,#F4F2FF_50%,#EDF6FF_100%)] shadow-[0_0_40px_rgba(122,107,255,0.18)]"
+                : "border-[#7A6BFF]/70 bg-[linear-gradient(135deg,#211C42_0%,#2F2A56_52%,#1A223C_100%)] shadow-[0_0_40px_rgba(122,107,255,0.2)]"
+              : isLight
+                ? "border-[#E8E4F7] bg-[linear-gradient(135deg,#FFFFFF_0%,#F7F5FF_50%,#EDF6FF_100%)]"
+                : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]"
               } relative overflow-hidden rounded-[24px] border p-6 md:p-7`}
             data-aos="fade-up"
             data-aos-duration="1100"
           >
             <div className="absolute -top-10 right-0 h-32 w-32 rounded-full bg-[#7A6BFF]/10 blur-3xl" />
 
-            {/* Plan header */}
+            {isBusiness && (
+              <div className="absolute top-4 right-4">
+                <span className={`${isLight ? "bg-[#7A6BFF] text-white" : "bg-[#7A6BFF] text-white"} font-poppins text-[11px] font-semibold px-2.5 py-1 rounded-full`}>
+                  {t.text("it.supportMostPopular")}
+                </span>
+              </div>
+            )}
+
             <div className="flex items-center gap-3 mb-5">
               <div className={`${isLight ? "bg-[#EEF4FF] text-[#2E4D8D]" : "bg-white/10 text-[#A8E1FF]"} flex h-10 w-10 items-center justify-center rounded-full shrink-0`}>
                 <Icon size={18} />
@@ -105,7 +118,6 @@ const SupportPricing = () => {
               </h3>
             </div>
 
-            {/* Price */}
             <div className={`${isLight ? "border-[#E6ECFA] bg-white/80" : "border-white/10 bg-[#10162A]/40"} rounded-[18px] border p-4 mb-5`}>
               <div className="flex items-baseline gap-1">
                 <span className={`${isLight ? "text-[#14172D]" : "text-white"} font-redDisplay text-[40px] font-bold leading-none`}>
@@ -123,7 +135,6 @@ const SupportPricing = () => {
               </div>
             </div>
 
-            {/* SLA */}
             <div className="mb-4">
               <p className={`${isLight ? "text-[#677089]" : "text-[#AEB8D8]"} font-poppins text-[11px] uppercase tracking-[0.18em] mb-3`}>
                 SLA
@@ -142,12 +153,12 @@ const SupportPricing = () => {
               </div>
             </div>
 
-            {/* After-hours */}
             {afterHours && (
               <div className={`${isLight ? "border-[#D9E8FF] bg-[#F4F9FF]" : "border-white/10 bg-[#11182D]/65"} rounded-[16px] border p-4 mb-4`}>
                 <p className={`${isLight ? "text-[#677089]" : "text-[#AEB8D8]"} font-poppins text-[11px] uppercase tracking-[0.18em] mb-2`}>
                   {t.text("it.supportAfterHoursLabel")}
                 </p>
+                {/* Premium plan includes some weekend hours; show the notice before listing rates */}
                 {weekendIncluded && (
                   <div className="flex items-start gap-2 mb-2">
                     <CheckCircle2 size={14} className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} mt-0.5 shrink-0`} />
@@ -172,12 +183,11 @@ const SupportPricing = () => {
               </div>
             )}
 
-            {/* Note */}
             <p className={`${isLight ? "text-[#677089]" : "text-[#AEB8D8]"} font-poppins text-[12px] leading-5 italic`}>
               {note}
             </p>
           </div>
-        ))}
+        ); })}
       </div>
     </div>
   );

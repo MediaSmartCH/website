@@ -3,7 +3,7 @@
 Marketing website built with React, TypeScript, and Vite, deployed on Vercel with two serverless API endpoints:
 
 - `POST /api/send` for contact emails via Resend
-- `POST /api/verify-recaptcha` for reCAPTCHA verification
+- `POST /api/newsletter` for newsletter capture via Resend
 
 ## Stack
 
@@ -84,8 +84,8 @@ Application variables:
 
 - `VITE_RECAPTCHA_SITE_KEY`: preferred public key used by Vite builds
 - `REACT_APP_RECAPTCHA_SITE_KEY`: backward-compatible fallback while the Vercel project is still carrying the legacy CRA variable
-- `RECAPTCHA_SECRET_KEY`: server-side secret used by `/api/verify-recaptcha`
-- `RESEND_API_KEY`: server-side key used by `/api/send`
+- `RECAPTCHA_SECRET_KEY`: server-side secret used by `/api/send` and `/api/newsletter`
+- `RESEND_API_KEY`: server-side key used by `/api/send` and `/api/newsletter`
 
 Vercel project sync variables:
 
@@ -117,6 +117,12 @@ The sync script applies:
 - `resourceConfig.fluid`
 
 The client now pins API requests with `x-deployment-id`, so the code is already ready for Vercel skew protection. The dashboard-level toggle itself still requires a Pro or Enterprise plan.
+
+## Security Notes
+
+- reCAPTCHA is now enforced server-side on each form submission. The public client no longer performs a standalone `/api/verify-recaptcha` call.
+- The under-construction newsletter form now uses the server-side Resend flow instead of exposing a browser-side email delivery provider.
+- Public form endpoints add `Cache-Control: no-store`, hidden honeypot fields, and stricter payload length validation.
 
 The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.github/workflows/sync-vercel-project-settings.yml) re-applies those settings on `main` whenever the sync config changes.
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Clock, CreditCard, ShieldCheck, CalendarClock, Check, X } from "lucide-react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import { useLangLink } from "services/router/langPath";
@@ -15,6 +16,7 @@ const PracticalInfo = () => {
   const excludedItems = t.array<string>("it.practicalExcludedItems", []);
   const includedItems = t.array<string>("it.practicalIncludedItems", []);
 
+  // Shared class strings extracted to avoid repeating long conditional expressions
   const cardBase = isLight
     ? "border-[#E8E4F7] bg-[linear-gradient(135deg,#FFFFFF_0%,#F7F5FF_50%,#EDF6FF_100%)]"
     : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]";
@@ -31,21 +33,21 @@ const PracticalInfo = () => {
 
   return (
     <div id="practical-info" className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[20px] pb-[40px] md:pb-[50px] mx-auto">
-      {/* Title */}
       <div className="mb-[30px]">
-        <p
+        <RichText
+          as="p"
           className={`${isLight ? "text-[#1F2326]" : "text-[#F6F6F6]"} w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-          dangerouslySetInnerHTML={{ __html: t.text("it.practicalInfoTitle") }}
+          html={t.text("it.practicalInfoTitle")}
         />
         <p className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}>
           {t.text("it.practicalInfoDescription")}
         </p>
       </div>
 
-      {/* Row 1: 3 cards */}
+      {/* Row 1: hourly rate, payment conditions, warranty + hours */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
 
-        {/* Tarif horaire */}
+        {/* Hourly rate card */}
         <div className={`${cardBase} relative overflow-hidden rounded-[24px] border p-6 md:p-7`} data-aos="fade-up" data-aos-duration="1100">
           <div className="absolute -top-10 right-0 h-32 w-32 rounded-full bg-[#7A6BFF]/10 blur-3xl" />
           <div className="flex items-center gap-3 mb-5">
@@ -85,7 +87,7 @@ const PracticalInfo = () => {
           </div>
         </div>
 
-        {/* Conditions de paiement */}
+        {/* Payment conditions card */}
         <div className={`${cardBase} relative overflow-hidden rounded-[24px] border p-6 md:p-7`} data-aos="fade-up" data-aos-duration="1200">
           <div className="absolute -top-10 right-0 h-32 w-32 rounded-full bg-[#59C3FF]/10 blur-3xl" />
           <div className="flex items-center gap-3 mb-5">
@@ -119,11 +121,10 @@ const PracticalInfo = () => {
           </div>
         </div>
 
-        {/* Garantie + Horaires */}
+        {/* Warranty + business hours card — spans 2 columns on md, 1 on lg */}
         <div className={`${cardBase} relative overflow-hidden rounded-[24px] border p-6 md:p-7 md:col-span-2 lg:col-span-1`} data-aos="fade-up" data-aos-duration="1300">
           <div className="absolute -top-10 right-0 h-32 w-32 rounded-full bg-[#7A6BFF]/10 blur-3xl" />
 
-          {/* Garantie */}
           <div className="flex items-center gap-3 mb-4">
             <div className={`${iconBox} flex h-10 w-10 items-center justify-center rounded-full shrink-0`}>
               <ShieldCheck size={18} />
@@ -143,7 +144,6 @@ const PracticalInfo = () => {
             <p className={`${subtitleColor} font-poppins text-[12px] leading-5 italic`}>{t.text("it.warrantyExclusion")}</p>
           </div>
 
-          {/* Horaires ouvrés */}
           <div className="flex items-center gap-3 mb-4">
             <div className={`${iconBox} flex h-10 w-10 items-center justify-center rounded-full shrink-0`}>
               <CalendarClock size={18} />
@@ -159,14 +159,13 @@ const PracticalInfo = () => {
         </div>
       </div>
 
-      {/* Row 2: Inclus / Non inclus */}
+      {/* Row 2: included vs excluded scope */}
       <div className={`${cardBase} relative overflow-hidden rounded-[24px] border p-6 md:p-8`} data-aos="fade-up" data-aos-duration="1100">
         <div className="absolute -top-16 right-0 h-44 w-44 rounded-full bg-[#59C3FF]/10 blur-3xl" />
         <h3 className={`${titleColor} font-redDisplay text-[22px] font-bold mb-6`}>
           {t.text("it.scopeTitle")}
         </h3>
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Inclus */}
           <div>
             <p className={`${subtitleColor} font-poppins text-[11px] uppercase tracking-[0.18em] mb-3`}>
               {t.text("it.includedTitle")}
@@ -180,7 +179,6 @@ const PracticalInfo = () => {
               ))}
             </div>
           </div>
-          {/* Non inclus */}
           <div>
             <p className={`${subtitleColor} font-poppins text-[11px] uppercase tracking-[0.18em] mb-3`}>
               {t.text("it.excludedTitle")}

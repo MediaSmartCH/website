@@ -1,8 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
 import { useAppSelector } from "services/hooks/hooks";
-// import "./slick.css";
-// import "./slick-theme.css";
 
 import airbnb from "assets/images/Airbnb.png";
 import google from "assets/images/Google.png";
@@ -16,12 +14,8 @@ import olaDark from "assets/images/OLADark.png";
 import walmart from "assets/images/Walmart.png";
 import walmartDark from "assets/images/WalmartDark.png";
 
-// import { useTranslations } from "services/locales/safe";
-
 const PartnerSlider = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-
-  // const t = useTranslations(languageReducer);
 
   const settings = {
     infinite: true,
@@ -202,6 +196,7 @@ const PartnerSlider = () => {
               themeReducer === "light" ? "bg-[#F6F5FF]" : "bg-[#2B284C]"
             } w-[100px] md:w-[170px] h-[55px] md:h-[96px] rounded-[8px] lg:rounded-[12px] 2xl:rounded-[16px] flex justify-center items-center`}
           >
+            {/* Some logos need a theme-specific variant for contrast. */}
             <img
               src={themeReducer === "light" ? amazon : amazonDark}
               alt="airbnb"

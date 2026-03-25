@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Globe, ShoppingCart, Wrench, Code2, ArrowRight, Clock, Shield, Zap, Star } from "lucide-react";
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import { useLangLink } from "services/router/langPath";
@@ -12,6 +13,8 @@ const ProjectEstimates = () => {
   const { L } = useLangLink();
   const isLight = themeReducer === "light";
 
+  // Dispatches a custom event so the contact form can pre-select the intent tab,
+  // then scrolls to the section after a short delay to let the event be handled first
   const scrollToContact = (intent: "quote" | "question") => {
     window.dispatchEvent(new CustomEvent("contact-intent", { detail: { intent } }));
     setTimeout(() => {
@@ -66,6 +69,7 @@ const ProjectEstimates = () => {
     },
   ];
 
+  // Returns different border/background classes for the highlighted "business" card
   const cardBase = (highlighted: boolean) =>
     highlighted
       ? isLight
@@ -84,18 +88,17 @@ const ProjectEstimates = () => {
 
   return (
     <div id="project-estimates" className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[20px] pb-[40px] md:pb-[50px] mx-auto">
-      {/* Title */}
       <div className="mb-[30px]">
-        <p
+        <RichText
+          as="p"
           className={`${isLight ? "text-[#1F2326]" : "text-[#F6F6F6]"} w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-          dangerouslySetInnerHTML={{ __html: t.text("it.estimatesTitle") }}
+          html={t.text("it.estimatesTitle")}
         />
         <p className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}>
           {t.text("it.estimatesDescription")}
         </p>
       </div>
 
-      {/* Cards grid */}
       <div className="grid gap-6 md:grid-cols-2 mb-6">
         {tiers.map(({ key, icon: Icon, name, subtitle, price, priceMax, deliveryTime, badge, items }) => {
           const highlighted = key === "business";
@@ -126,7 +129,6 @@ const ProjectEstimates = () => {
                 </div>
               </div>
 
-              {/* Price + delivery */}
               <div className={`${innerCard} rounded-[16px] border p-4 mb-5`}>
                 {price ? (
                   <div className="flex items-baseline gap-1 flex-wrap">
@@ -149,7 +151,6 @@ const ProjectEstimates = () => {
                 </div>
               </div>
 
-              {/* Items */}
               <div className="space-y-2">
                 {items.map((item) => (
                   <div key={item} className={`${noteBox} flex items-start gap-2 rounded-[12px] border px-3 py-2`}>
@@ -163,13 +164,13 @@ const ProjectEstimates = () => {
         })}
       </div>
 
-      {/* Support plans compact band */}
+      {/* Compact support plans summary — links to the full support contract page */}
       <div className={`${isLight ? "border-[#E8E4F7] bg-[linear-gradient(135deg,#FFFFFF_0%,#F7F5FF_50%,#EDF6FF_100%)]" : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]"} rounded-[24px] border p-6 mb-6`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div>
             <p className={`${titleColor} font-redDisplay text-[18px] font-bold leading-tight`}>{t.text("it.supportBandTitle")}</p>
             <p className={`${subtitleColor} font-poppins text-[12px] mt-0.5`}>{t.text("it.supportBandSubtitle")}</p>
-            <Link to={L("/support-contract")} className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} font-poppins text-[12px] font-semibold underline hover:opacity-75 transition mt-1 inline-block`}>
+            <Link to={L("/support-contract")} className={`${isLight ? "bg-[#EEF4FF] text-[#2E4D8D] hover:bg-[#DDE8FF] border border-[#C8D8F8]" : "bg-white/10 text-[#9EDCFF] hover:bg-white/15 border border-white/20"} font-poppins text-[12px] font-semibold transition mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full`}>
               {t.text("it.supportPageMoreInfo")} →
             </Link>
           </div>
@@ -199,6 +200,7 @@ const ProjectEstimates = () => {
                 <span className={`${subtitleColor} font-poppins text-[11px]`}>{t.text("it.supportBandExtra")}</span>
                 <div className="flex items-center gap-1.5">
                   <span className={`${titleColor} font-poppins text-[12px] font-semibold`}>{extraRate} CHF/h</span>
+                  {/* Strikethrough shows the discounted rate vs the standard 140 CHF/h */}
                   <span className={`${isLight ? "text-[#9B6B6B] line-through" : "text-[#FFAAAA] line-through"} font-poppins text-[11px]`}>140</span>
                 </div>
               </div>
@@ -207,7 +209,7 @@ const ProjectEstimates = () => {
         </div>
       </div>
 
-      {/* Disclaimer + CTAs */}
+      {/* Disclaimer + CTA buttons */}
       <div className={`${noteBox} rounded-[20px] border p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4`}>
         <p className={`${textColor} font-poppins text-[13px] leading-6`}>
           {t.text("it.estimatesDisclaimer")}

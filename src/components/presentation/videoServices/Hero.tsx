@@ -1,13 +1,7 @@
 import React, { lazy, Suspense } from "react";
-// import Lottie from "react-lottie";
-// import DotAnim from "components/common/DotAnim";
 
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
-
-// import headerLight from "assets/images/lotties/headerLight.json";
-// import headerDark from "assets/images/lotties/headerDark.json";
 
 const Hero = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
@@ -18,15 +12,6 @@ const Hero = () => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
-
-  // const header = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? headerLight : headerDark,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet",
-  //   },
-  // };
 
   return (
     <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="video-services-home">
@@ -47,9 +32,9 @@ const Hero = () => {
             data-aos-easing="ease-in-sine"
           >
             <span className="pr-3 md:pr-0 gradient-text">
-              {/* {dictionary["video"][languageReducer]["videoTitle"]} */} {t.text("video.videoTitle")}
+              {t.text("video.videoTitle")}
             </span>
-            {/* {dictionary["video"][languageReducer]["videoSubitle"]} */} {t.text("video.videoSubitle")}
+            {t.text("video.videoSubitle")}
           </p>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"}
@@ -61,7 +46,7 @@ const Hero = () => {
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"
           >
-            {/* {dictionary["video"][languageReducer]["videoDescription"]} */} {t.text("video.videoDescription")}
+            {t.text("video.videoDescription")}
           </p>
           <div className="w-full justify-center flex px-[20px]"
             data-aos="fade-up"
@@ -84,9 +69,7 @@ const Hero = () => {
           data-aos-duration="1500"
           data-aos-easing="ease-in-sine"
         >
-          {/* <Lottie
-            options={header}
-          /> */}
+          {/* DotAnim is lazy-loaded; the spinner shows while the bundle chunk loads */}
           <Suspense
             fallback={
               <div className="h-[220px] flex items-center justify-center">

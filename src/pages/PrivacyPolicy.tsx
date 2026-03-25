@@ -3,9 +3,6 @@ import AOS from "aos";
 
 import { useAppSelector } from "services/hooks/hooks";
 
-// import Navbar from "components/common/Navbar";
-// import Footer from "components/common/Footer";
-// import Layout from "../components/Layout";
 import PrivacyPolicy from "components/presentation/privacyPolicy/index";
 
 
@@ -16,17 +13,12 @@ const PrivacyPolicyPage = () => {
 
   React.useEffect(() => {
       AOS.refresh();
-      // AOS.init({
-      //   once: true,
-      //   offset: 50,
-      // });
       setHasAnimated(true);
     }, []);
 
-  // Empêcher les re-animations lors du changement de thème
+  // Freeze AOS animations on theme change to prevent re-triggering entrance effects
   React.useEffect(() => {
     if (hasAnimated) {
-      // Désactiver temporairement AOS
       const elements = document.querySelectorAll('[data-aos]');
       elements.forEach(el => {
         el.classList.add('aos-animate');
@@ -37,13 +29,9 @@ const PrivacyPolicyPage = () => {
   }, [themeReducer, hasAnimated]);
 
   return (
-    // <div>
     <>
-      {/* <Navbar /> */}
       <PrivacyPolicy />
-      {/* <Footer /> */}
     </>
-    // </div>
   );
 };
 

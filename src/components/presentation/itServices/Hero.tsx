@@ -1,19 +1,7 @@
 import React, { lazy, Suspense } from "react";
-// import Lottie from "react-lottie";
-// import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-// import DotAnim from "components/common/DotAnim";
-
+import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
-// import { dictionary } from "services/locales";
 import { useTranslations } from "services/locales/safe";
-
-// import heroLight from "assets/images/lotties/itHeroLight.json";
-// import heroDark from "assets/images/lotties/itHeroDark.json";
-// import heroDot from "assets/Hero.lottie";
-
-// const DotLottie = React.lazy(() =>
-//   import("@lottiefiles/dotlottie-react").then(m => ({ default: m.DotLottieReact }))
-// );
 
 const Hero = () => {
   const DotAnim = lazy(() => import('components/common/DotAnim'));
@@ -25,18 +13,6 @@ const Hero = () => {
 
   const t = useTranslations(languageReducer);
 
-  // const heroLottie = {
-  //   loop: true,
-  //   autoplay: true,
-  //   animationData: themeReducer === "light" ? heroLight : heroDark,
-  //   rendererSettings: {
-  //     preserveAspectRatio: "xMidYMid meet",
-  //   },
-  // };
-
-  // const dotSrc =
-  //   themeReducer === "light" ? "/assets/IT_light.lottie" : "/assets/IT_dark.lottie";
-
   return (
     <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="it-services-home">
       <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[43px] relative">
@@ -44,12 +20,11 @@ const Hero = () => {
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}
         >
-          <p
+          <RichText
+            as="p"
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full lg:w-[70%] 2xl:w-[60%] it-service-hero-gradient mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] leading-[40px] lg:leading-[50px] xl:leading-[70px]`}
-            dangerouslySetInnerHTML={{
-              __html: t.text("it.itServicesHeroTitle"),
-            }}
+            html={t.text("it.itServicesHeroTitle")}
             data-aos="fade-up"
             data-aos-duration="900"
             data-aos-easing="ease-in-sine"
@@ -60,9 +35,8 @@ const Hero = () => {
             data-aos="fade-up"
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"
-
           >
-            {/* {dictionary["it"][languageReducer]["itServicesHeroDescription"]} */} {t.text("it.itServicesHeroDescription")}
+            {t.text("it.itServicesHeroDescription")}
           </p>
           <div className="w-full justify-center flex px-[20px]"
             data-aos="fade-up"
@@ -72,7 +46,7 @@ const Hero = () => {
             <a href="#contact">
               <button className="hero-btn custom-btn w-full md:min-w-[150px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2">
                 <span className="custom-btn-inner">
-                  {/* {dictionary["it"][languageReducer]["itServicesHeroContactBtn"]} */} {t.text("it.itServicesHeroContactBtn")}
+                  {t.text("it.itServicesHeroContactBtn")}
                 </span>
               </button>
             </a>
@@ -99,7 +73,6 @@ const Hero = () => {
               protect
             />
           </Suspense>
-          {/* <Lottie options={heroLottie} /> */}
         </div>
       </div>
     </div>

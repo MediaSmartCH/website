@@ -1,3 +1,6 @@
+// All Lottie animation assets must be imported before any other module-level
+// code in this file because some bundlers resolve side-effect order based on
+// import position.
 import Home_light from "../assets/lotties/home/Home_light.lottie";
 import Home_dark from "../assets/lotties/home/Home_dark.lottie";
 
@@ -51,11 +54,10 @@ import Video_dark from "../assets/lotties/video/Video_dark.lottie";
 
 import VideoHeader_light from "../assets/lotties/video/VideoHeader_light.lottie";
 import VideoHeader_dark from "../assets/lotties/video/VideoHeader_dark.lottie";
-// ---------------------------------------
 
-// Puis seulement ensuite le reste du module
 export type LottiePair = { light: string; dark?: string };
 
+// Keyed lookup used by DotAnim to resolve the correct asset pair for a given animation slot.
 export const LOTTIES = {
   "home.hero": { light: Home_light, dark: Home_dark },
   "home.about": { light: About_light, dark: About_dark },
