@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install --frozen-lockfile --prod=false",
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
   "fluid": true,
@@ -55,51 +55,51 @@
   "rewrites": [
     {
       "source": "/fr",
-      "destination": "/index.html"
+      "destination": "/generated-pages/fr.html"
     },
     {
       "source": "/en",
-      "destination": "/index.html"
+      "destination": "/generated-pages/en.html"
     },
     {
       "source": "/fr/it-services",
-      "destination": "/index.html"
+      "destination": "/generated-pages/fr-it-services.html"
     },
     {
       "source": "/en/it-services",
-      "destination": "/index.html"
+      "destination": "/generated-pages/en-it-services.html"
     },
     {
       "source": "/fr/video-services",
-      "destination": "/index.html"
+      "destination": "/generated-pages/fr-video-services.html"
     },
     {
       "source": "/en/video-services",
-      "destination": "/index.html"
+      "destination": "/generated-pages/en-video-services.html"
     },
     {
       "source": "/fr/privacy-policy",
-      "destination": "/index.html"
+      "destination": "/generated-pages/fr-privacy-policy.html"
     },
     {
       "source": "/en/privacy-policy",
-      "destination": "/index.html"
+      "destination": "/generated-pages/en-privacy-policy.html"
     },
     {
       "source": "/fr/support-contract",
-      "destination": "/index.html"
+      "destination": "/generated-pages/fr-support-contract.html"
     },
     {
       "source": "/en/support-contract",
-      "destination": "/index.html"
+      "destination": "/generated-pages/en-support-contract.html"
     },
     {
       "source": "/fr/404",
-      "destination": "/index.html"
+      "destination": "/generated-pages/fr-404.html"
     },
     {
       "source": "/en/404",
-      "destination": "/index.html"
+      "destination": "/generated-pages/en-404.html"
     }
   ]
 }

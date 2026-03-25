@@ -181,6 +181,8 @@ dist
 
 # build output
 build/
+generated-pages/
+.generated-pages/
 
 # logs & reports
 *.log

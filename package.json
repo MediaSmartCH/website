@@ -52,9 +52,9 @@
   "scripts": {
     "dev": "vite",
     "api": "node scripts/dev-api.mjs",
-    "build": "vite build",
+    "build": "node scripts/generate-localized-html.mjs && vite build",
     "preview": "vite preview",
-    "analyze": "cross-env ANALYZE=true vite build",
+    "analyze": "node scripts/generate-localized-html.mjs && cross-env ANALYZE=true vite build",
     "vercel:sync": "node scripts/sync-vercel-project-settings.mjs",
     "vercel:sync:dry-run": "node scripts/sync-vercel-project-settings.mjs --dry-run"
   },
