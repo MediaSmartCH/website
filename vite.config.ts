@@ -1,3 +1,4 @@
+import fs from "fs";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -5,6 +6,18 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { visualizer } from "rollup-plugin-visualizer";
 
 const plugins = [react(), tsconfigPaths()];
+const generatedPagesDir = path.resolve(__dirname, "generated-pages");
+const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
+  ? Object.fromEntries(
+      fs
+        .readdirSync(generatedPagesDir)
+        .filter((file) => file.endsWith(".html"))
+        .map((file) => [
+          path.basename(file, ".html"),
+          path.resolve(generatedPagesDir, file),
+        ])
+    )
+  : {};
 
 // Bundle analyzer is opt-in via ANALYZE=true environment variable
 if (process.env.ANALYZE === "true") {
@@ -46,6 +59,10 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
+      input: {
+        index: path.resolve(__dirname, "index.html"),
+        ...generatedHtmlInputs,
+      },
       onwarn(warning, warn) {
         // Suppress eval warnings originating from the @dotlottie third-party library
         if (warning.code === "EVAL" && warning.id?.includes("@dotlottie")) return;

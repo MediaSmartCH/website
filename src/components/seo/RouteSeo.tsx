@@ -34,9 +34,10 @@ const RouteSeo: React.FC<RouteSeoProps> = ({ language, pathname }) => {
       <meta property="og:description" content={seo.description} />
       <meta property="og:url" content={seo.canonicalUrl} />
       <meta property="og:image" content={seo.imageUrl} />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:image:alt" content={seo.shareImageAlt} />
-      <meta property="og:image:width" content="512" />
-      <meta property="og:image:height" content="512" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:locale" content={seo.openGraphLocale} />
       {seo.alternateLocales.map((locale) => (
         <meta
@@ -46,10 +47,11 @@ const RouteSeo: React.FC<RouteSeoProps> = ({ language, pathname }) => {
         />
       ))}
 
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={seo.title} />
       <meta name="twitter:description" content={seo.description} />
       <meta name="twitter:image" content={seo.imageUrl} />
+      <meta name="twitter:image:alt" content={seo.shareImageAlt} />
 
       {seo.indexable &&
         SUPPORTED_LANGUAGES.map((supportedLanguage) => (
