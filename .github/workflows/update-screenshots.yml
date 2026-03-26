@@ -3,7 +3,7 @@ name: Update portfolio screenshots
 on:
   schedule:
     - cron: '0 23 * * *'  # 23:00 UTC = minuit CET (UTC+1)
-  workflow_dispatch:       # Déclenchement manuel possible
+  workflow_dispatch:       # Déclenchement manuel possible
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           node-version: '20'
 
       - name: Install Puppeteer
-        run: pnpm add --no-save puppeteer@24.40.0
+        run: npm install --no-save puppeteer@24.40.0
 
       - name: Capture screenshots
         run: node scripts/capture-screenshots.mjs
