@@ -10,8 +10,8 @@ import {
   readLottieSrc,
 } from "config/lotties";
 
-// Use the locally-bundled WASM so DotLottie never fetches from CDN,
-// which our production Content-Security-Policy blocks.
+// Point the WASM runtime to the locally-bundled file so DotLottie never
+// fetches from an external CDN, which the production CSP would block.
 setWasmUrl(dotLottieWasmUrl);
 
 type Base = {
@@ -23,10 +23,17 @@ type Base = {
   crisp?: boolean;
 };
 
+// Two usage modes:
+// - ByKeyProps: pass a named key from LOTTIE_LOADERS and let DotAnim resolve
+//   the correct src + dimensions automatically (preferred for site animations).
+// - BySrcProps: pass raw file URLs directly. SECURITY: only pass URLs that
+//   come from bundled assets (import statements). Never pass user-controlled
+//   strings here — the DotLottie player executes the file content as code.
 type ByKeyProps = Base & { anim: LottieKey; light?: never; dark?: never };
 type BySrcProps = Base & { light: string; dark?: string; anim?: never };
 export type DotAnimProps = ByKeyProps | BySrcProps;
 
+// Type guard to distinguish between the two usage modes at runtime.
 function hasAnim(p: DotAnimProps): p is ByKeyProps {
   return (p as ByKeyProps).anim !== undefined;
 }
@@ -64,6 +71,8 @@ function DotAnim(props: DotAnimProps) {
 
   const autoplay = autoplayProp && animationsEnabled;
 
+  // Cap DPR at 2 to avoid excessive raster cost on high-density displays (e.g. 3x on some Android devices)
+  // without any noticeable quality loss. Falls back to 1 in SSR environments where window is undefined.
   const renderConfig = useMemo(() => {
     if (typeof window === "undefined") {
       return { autoResize: true, devicePixelRatio: 1 };
@@ -75,6 +84,10 @@ function DotAnim(props: DotAnimProps) {
     };
   }, []);
 
+  // When the global theme changes, preload the new animation variant before
+  // switching. This prevents the player from briefly showing a blank frame
+  // between the old and new file. A minimum 220ms opacity transition gives the
+  // fade-out time to complete even if the fetch resolves instantly.
   useEffect(() => {
     if (theme === stableTheme) {
       return;
@@ -91,6 +104,7 @@ function DotAnim(props: DotAnimProps) {
           await preloadLottieSrc(animKey, theme);
         }
 
+        // Ensure the fade-out has at least 220ms to complete.
         const elapsed = Date.now() - startTime;
         const remaining = Math.max(0, 220 - elapsed);
 
@@ -110,6 +124,8 @@ function DotAnim(props: DotAnimProps) {
 
     syncTheme();
 
+    // If the component unmounts or theme changes again before the transition
+    // completes, cancel the pending state updates to avoid stale setState calls.
     return () => {
       cancelled = true;
     };

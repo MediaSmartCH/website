@@ -1,5 +1,5 @@
 import React from "react";
-import "./preLoader.css";
+import "./preloader.css";
 
 const Preloader = () => {
   return (

@@ -4,7 +4,6 @@ import {
   Cookie,
   Shield,
   BarChart3,
-  Target,
   Settings,
   Zap
 } from "lucide-react";
@@ -80,13 +79,8 @@ const ModernCookieBanner = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const [googleAnalytics, setGoogleAnalytics] = useState(false);
-  const [calendlyFunctionality, setCalendlyFunctionality] = useState(false);
-  const [calendlyPerformance, setCalendlyPerformance] = useState(false);
-  const [calendlyAdvertising, setCalendlyAdvertising] = useState(false);
   const [themePreference, setThemePreference] = useState(false);
   const [languagePreference, setLanguagePreference] = useState(false);
-
-  const advertisingEnabled = calendlyAdvertising;
   const showCompactBanner = actuallyVisible && isMobile && !showCustomize;
 
   const handleThemeChange = (nextTheme: ThemePreference) => {
@@ -108,21 +102,14 @@ const ModernCookieBanner = () => {
 
   // Returns whether all, some, or none of a category's services are enabled
   const getFunctionalityToggleState = () => {
-    const services = [calendlyFunctionality, themePreference, languagePreference];
+    const services = [themePreference, languagePreference];
     const activeCount = services.filter(Boolean).length;
     if (activeCount === 0) return "inactive";
     if (activeCount === services.length) return "active";
     return "partial";
   };
   const getPerformanceToggleState = () => {
-    const services = [googleAnalytics, calendlyPerformance];
-    const activeCount = services.filter(Boolean).length;
-    if (activeCount === 0) return "inactive";
-    if (activeCount === services.length) return "active";
-    return "partial";
-  };
-  const getAdvertisingToggleState = () => {
-    if (calendlyAdvertising) return "active";
+    if (googleAnalytics) return "active";
     return "inactive";
   };
 
@@ -132,9 +119,7 @@ const ModernCookieBanner = () => {
     if (consent) {
       // Apply stored consent values safely; Boolean() guards against undefined entries
       setGoogleAnalytics(Boolean(consent.googleAnalytics));
-      setCalendlyFunctionality(Boolean(consent.calendlyFunctionality));
-      setCalendlyPerformance(Boolean(consent.calendlyPerformance));
-      setCalendlyAdvertising(Boolean(consent.calendlyAdvertising));
+      // calendlyFunctionality is always true — no state to restore.
       setThemePreference(Boolean(consent.themePreference));
       setLanguagePreference(Boolean(consent.languagePreference));
       setIsVisible(false);
@@ -243,17 +228,14 @@ const ModernCookieBanner = () => {
 
   const handleAcceptAll = () => {
     setGoogleAnalytics(true);
-    setCalendlyFunctionality(true);
-    setCalendlyPerformance(true);
-    setCalendlyAdvertising(true);
     setThemePreference(true);
     setLanguagePreference(true);
 
     saveConsentData({
       googleAnalytics: true,
       calendlyFunctionality: true,
-      calendlyPerformance: true,
-      calendlyAdvertising: true,
+      calendlyPerformance: false,
+      calendlyAdvertising: false,
       themePreference: true,
       languagePreference: true
     });
@@ -263,15 +245,12 @@ const ModernCookieBanner = () => {
 
   const handleRejectAll = () => {
     setGoogleAnalytics(false);
-    setCalendlyFunctionality(false);
-    setCalendlyPerformance(false);
-    setCalendlyAdvertising(false);
     setThemePreference(false);
     setLanguagePreference(false);
 
     saveConsentData({
       googleAnalytics: false,
-      calendlyFunctionality: false,
+      calendlyFunctionality: true,
       calendlyPerformance: false,
       calendlyAdvertising: false,
       themePreference: false,
@@ -284,9 +263,9 @@ const ModernCookieBanner = () => {
   const handleSavePreferences = () => {
     saveConsentData({
       googleAnalytics,
-      calendlyFunctionality,
-      calendlyPerformance,
-      calendlyAdvertising,
+      calendlyFunctionality: true,
+      calendlyPerformance: false,
+      calendlyAdvertising: false,
       themePreference,
       languagePreference
     });
@@ -298,11 +277,9 @@ const ModernCookieBanner = () => {
     const currentState = getFunctionalityToggleState();
 
     if (currentState === 'inactive' || currentState === 'partial') {
-      setCalendlyFunctionality(true);
       setThemePreference(true);
       setLanguagePreference(true);
     } else {
-      setCalendlyFunctionality(false);
       setThemePreference(false);
       setLanguagePreference(false);
     }
@@ -310,19 +287,9 @@ const ModernCookieBanner = () => {
 
   const handlePerformanceToggle = () => {
     const currentState = getPerformanceToggleState();
-    if (currentState === 'inactive' || currentState === 'partial') {
-      setGoogleAnalytics(true);
-      setCalendlyPerformance(true);
-    } else {
-      setGoogleAnalytics(false);
-      setCalendlyPerformance(false);
-    }
+    setGoogleAnalytics(currentState === 'inactive');
   };
 
-  const handleAdvertisingToggle = () => {
-    const newState = !advertisingEnabled;
-    setCalendlyAdvertising(newState);
-  };
 
   // Three-state toggle: active (all on), partial (some on), inactive (all off)
   const CategoryToggle = ({ state, onClick }: { state: 'active' | 'inactive' | 'partial', onClick: () => void }) => {
@@ -366,7 +333,7 @@ const ModernCookieBanner = () => {
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && actuallyVisible) {
-        handleRejectAll();
+        handleClose();
       }
     };
 
@@ -445,7 +412,7 @@ const ModernCookieBanner = () => {
               </div>
 
               <button
-                onClick={handleRejectAll}
+                onClick={handleClose}
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${themeClasses.bg} ${themeClasses.hover}`}
                 title={t.text("cookies.ariaCloseModal")}
                 aria-label={t.text("cookies.ariaCloseModal")}
@@ -486,7 +453,7 @@ const ModernCookieBanner = () => {
           className={`fixed inset-0 z-50 transition-all duration-300 ${isClosing ? 'opacity-0' : 'opacity-100'}`}
           style={{ zIndex: 999999 }}
         >
-          <div onClick={handleRejectAll} className={`absolute inset-0 backdrop-blur-sm ${themeReducer === "light" ? "bg-black/20" : "bg-black/40"
+          <div onClick={handleClose} className={`absolute inset-0 backdrop-blur-sm ${themeReducer === "light" ? "bg-black/20" : "bg-black/40"
             }`} />
 
           {/* Outer scroll container handles viewport overflow on very small screens */}
@@ -526,7 +493,7 @@ const ModernCookieBanner = () => {
                       />
 
                       <button
-                        onClick={handleRejectAll}
+                        onClick={handleClose}
                         className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
                         title={t.text("cookies.ariaCloseModal")}
                         aria-label={t.text("cookies.ariaCloseModal")}
@@ -551,7 +518,7 @@ const ModernCookieBanner = () => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
                     <div className="flex items-center gap-2 p-2 rounded-xl bg-green-50 border border-green-200">
                       <Shield className="w-3 h-3 text-green-600" />
                       <div>
@@ -571,13 +538,6 @@ const ModernCookieBanner = () => {
                       <div>
                         <p className="font-medium text-blue-900 text-xs">{t.text("cookies.performance")}</p>
                         <p className="text-xs text-blue-700">{t.text("cookies.yourChoice")}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-orange-50 border border-orange-200">
-                      <Target className="w-3 h-3 text-orange-600" />
-                      <div>
-                        <p className="font-medium text-orange-900 text-xs">{t.text("cookies.advertising")}</p>
-                        <p className="text-xs text-orange-700">{t.text("cookies.yourChoice")}</p>
                       </div>
                     </div>
                   </div>
@@ -700,27 +660,6 @@ const ModernCookieBanner = () => {
                             <div className="flex items-center justify-between">
                               <div>
                                 <div className="flex items-center gap-1 mb-1">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${calendlyFunctionality ? 'bg-purple-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.calendlyFunctionality")}</p>
-                                </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyFunctionalityDesc")}</p>
-                              </div>
-                              <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={calendlyFunctionality}
-                                  onChange={(e) => setCalendlyFunctionality(e.target.checked)}
-                                  className="sr-only peer"
-                                />
-                                <div className={`w-8 h-4 ${themeReducer === "light" ? "bg-gray-300" : "bg-gray-600"} peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-pink-500`}></div>
-                              </label>
-                            </div>
-                          </div>
-
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <div className="flex items-center gap-1 mb-1">
                                   <div className={`w-1.5 h-1.5 rounded-full ${themePreference ? 'bg-purple-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
                                   <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.themePreference")}</p>
                                 </div>
@@ -798,65 +737,9 @@ const ModernCookieBanner = () => {
                             </div>
                           </div>
 
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <div className="flex items-center gap-1 mb-1">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${calendlyPerformance ? 'bg-blue-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.calendlyPerformance")}</p>
-                                </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyPerformanceDesc")}</p>
-                              </div>
-                              <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={calendlyPerformance}
-                                  onChange={(e) => setCalendlyPerformance(e.target.checked)}
-                                  className="sr-only peer"
-                                />
-                                <div className={`w-8 h-4 ${themeReducer === "light" ? "bg-gray-300" : "bg-gray-600"} peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-pink-500`}></div>
-                              </label>
-                            </div>
-                          </div>
                         </div>
                       </div>
 
-                      <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <Target className="w-4 h-4 text-orange-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesAdvertising")}</h4>
-                          </div>
-                          <CategoryToggle
-                            state={getAdvertisingToggleState()}
-                            onClick={handleAdvertisingToggle}
-                          />
-                        </div>
-                        <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {t.text("cookies.advertisingDesc")}
-                        </p>
-
-                        <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <div className="flex items-center gap-1 mb-1">
-                                <div className={`w-1.5 h-1.5 rounded-full ${calendlyAdvertising ? 'bg-orange-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyTargeted")}</p>
-                              </div>
-                              <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.calendlyTargetedDesc")}</p>
-                            </div>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={calendlyAdvertising}
-                                onChange={(e) => setCalendlyAdvertising(e.target.checked)}
-                                className="sr-only peer"
-                              />
-                              <div className={`w-8 h-4 ${themeReducer === "light" ? "bg-gray-300" : "bg-gray-600"} peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-pink-500`}></div>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 

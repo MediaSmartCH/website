@@ -20,6 +20,10 @@ export const DEFAULT_CONSENT_PREFERENCES: ConsentPreferences = {
   languagePreference: false,
 };
 
+// Writes a cookie scoped to the entire site (path=/).
+// The Secure flag is added automatically when the page is served over HTTPS.
+// SameSite=Lax prevents the cookie from being sent on cross-site requests while
+// still allowing it on top-level navigations (e.g. OAuth redirects).
 export function setCookie(name: string, value: string, days: number) {
   let expires = "";
   if (Number.isFinite(days) && days > 0) {
@@ -98,16 +102,18 @@ export function getNormalizedConsentData(): ConsentPreferences {
   };
 }
 
+// Only the functionality cookie is required to open the Calendly popup.
+// Performance and advertising cookies are optional — Calendly works without
+// them, it just won't track analytics or show targeted ads.
 export function canLoadEmbeddedCalendly(
   consent: Partial<ConsentPreferences> | null | undefined
 ) {
-  return Boolean(
-    consent?.calendlyFunctionality &&
-      consent?.calendlyPerformance &&
-      consent?.calendlyAdvertising
-  );
+  return Boolean(consent?.calendlyFunctionality);
 }
 
+// Triggers the cookie settings modal by dispatching a custom window event.
+// Any component can listen for OPEN_COOKIE_SETTINGS_EVENT to show the modal
+// without needing a direct ref or prop-drilling.
 export function requestCookieSettingsOpen() {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent(OPEN_COOKIE_SETTINGS_EVENT));

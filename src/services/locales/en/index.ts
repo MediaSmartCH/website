@@ -7,3 +7,4 @@ export { default as error404 } from "./error404";
 export { default as cookies } from "./cookies";
 export { default as underconstruction } from "./underconstruction";
 export { default as booking } from "./booking"
+export { default as privacy } from "./privacy"

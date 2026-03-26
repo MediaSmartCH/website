@@ -66,6 +66,7 @@ const Footer = () => {
               <Link
                 to={L("/privacy-policy")}
                 className="text-[#fff] hover:text-[#5f75f5]"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
                 {t.text("footer.navItem6")}
               </Link>

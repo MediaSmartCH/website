@@ -16,6 +16,8 @@ type UseInterfaceControlsOptions = {
   preserveScroll?: boolean;
 };
 
+// Single hook that centralises all navbar-level controls: language, theme, and
+// animation toggle. Keeps UI components free of direct Redux and URL concerns.
 export const useInterfaceControls = (
   options: UseInterfaceControlsOptions = {}
 ) => {
@@ -42,6 +44,8 @@ export const useInterfaceControls = (
     dispatch(setLanguage(nextLanguage));
 
     try {
+      // Rewrite the URL without a full navigation so the SPA state is preserved.
+      // Dispatching a synthetic popstate event notifies the router of the change.
       const nextUrl = buildLocalizedPath(
         nextLanguage,
         window.location.pathname,
@@ -56,7 +60,9 @@ export const useInterfaceControls = (
         return;
       }
 
-      // Restore scroll position across multiple frames because layout may reflow after language change
+      // A language change can trigger a layout reflow. Restoring scroll across
+      // three timing points (rAF, 0ms, 50ms) covers the common reflow windows
+      // without relying on a MutationObserver.
       requestAnimationFrame(() => {
         window.scrollTo(scrollX, scrollY);
         setTimeout(() => window.scrollTo(scrollX, scrollY), 0);
