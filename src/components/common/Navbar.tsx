@@ -15,7 +15,7 @@ import {
 } from "store/slices/common/themeUtils";
 import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
-import "components/preLoader/preLoader.css";
+import "components/preloader/preloader.css";
 
 const Navbar = () => {
   const { L, Lhash } = useLangLink();

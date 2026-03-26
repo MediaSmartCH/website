@@ -247,6 +247,10 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
             type="button"
             onClick={onAnimationsToggle}
             aria-label={animToggleLabel}
+            // aria-pressed reflects the *current* state so screen readers can
+            // announce "Animations on, button" or "Animations off, button"
+            // regardless of the label wording.
+            aria-pressed={animationsEnabled}
             title={animToggleLabel}
             className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${animButtonClasses}`}
             style={{

@@ -8,6 +8,8 @@ export const isThemePreference = (
 ): value is ThemePreference =>
   value === "light" || value === "dark" || value === "system";
 
+// Returns null in SSR environments and in browsers that do not support matchMedia
+// (very old or non-standard), so callers must handle the null case.
 export const getThemeMediaQuery = (): MediaQueryList | null => {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
     return null;

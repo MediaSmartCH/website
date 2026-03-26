@@ -73,8 +73,11 @@ const LocaleThemeControls: React.FC<LocaleThemeControlsProps> = ({
         size={size}
         animationsEnabled={animationsEnabled}
         onAnimationsToggle={onAnimationsToggle}
+        // The label describes the *next* state (what will happen on click),
+        // not the current state — consistent with how aria-pressed works for
+        // screen readers announcing the action rather than the current value.
         animToggleLabel={
-          animationsEnabled ? (labels.animOn ?? labels.animToggle) : (labels.animOff ?? labels.animToggle)
+          animationsEnabled ? (labels.animOff ?? labels.animToggle) : (labels.animOn ?? labels.animToggle)
         }
       />
     </div>

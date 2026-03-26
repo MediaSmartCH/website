@@ -135,8 +135,14 @@ const LOTTIE_PRESENTATION: Record<LottieKey, LottiePresentation> = {
   "video.header": { width: 966, height: 516 },
 };
 
+// Module-level cache: once a variant is resolved it stays in memory for the
+// lifetime of the page. The key format is "<animKey>:<variant>" (e.g. "home.hero:dark").
 const resourceCache = new Map<string, LottieResource>();
 
+// Implements the React Suspense "render-as-you-fetch" pattern.
+// - While the promise is pending, read() throws the promise so Suspense can suspend the tree.
+// - Once resolved, read() returns the .lottie file URL synchronously.
+// - On rejection, read() re-throws so an ErrorBoundary can catch it.
 function createResource(loader: LottieVariantLoader): LottieResource {
   let status: ResourceStatus = "pending";
   let value = "";
@@ -157,11 +163,11 @@ function createResource(loader: LottieVariantLoader): LottieResource {
     preload: () => promise.then(() => undefined),
     read: () => {
       if (status === "pending") {
-        throw promise;
+        throw promise; // Suspense catches this and shows the fallback UI
       }
 
       if (status === "rejected") {
-        throw error;
+        throw error; // ErrorBoundary catches this
       }
 
       return value;
@@ -169,6 +175,8 @@ function createResource(loader: LottieVariantLoader): LottieResource {
   };
 }
 
+// Returns the cached resource if it already exists, otherwise creates and caches it.
+// This ensures each variant is only fetched once, even if multiple components request it.
 function getResource(cacheKey: string, loader: LottieVariantLoader) {
   const cached = resourceCache.get(cacheKey);
   if (cached) {
@@ -180,6 +188,7 @@ function getResource(cacheKey: string, loader: LottieVariantLoader) {
   return resource;
 }
 
+// Falls back to the light variant when no dark variant exists for a given key.
 function resolveLoader(key: LottieKey, theme: string) {
   const pair = LOTTIE_LOADERS[key];
   const variant = theme === "dark" && pair.dark ? "dark" : "light";

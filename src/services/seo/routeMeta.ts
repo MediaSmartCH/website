@@ -54,8 +54,10 @@ type RouteSeoDataFile = {
   routeSeoByLanguage: Record<AppLanguage, Record<RouteSeoKey, RouteSeoDefinition>>;
 };
 
+// Cast needed because JSON imports are typed as `any` by default in TypeScript.
 const typedRouteSeoData = routeSeoData as RouteSeoDataFile;
 
+// OG locale tags follow the Facebook convention: language_REGION (e.g. "fr_CH").
 const OPEN_GRAPH_LOCALE: Record<AppLanguage, string> = {
   fr: "fr_CH",
   en: "en_CH",
@@ -84,6 +86,10 @@ const buildBreadcrumbList = (
   ],
 });
 
+// Builds the JSON-LD @graph array for a given page.
+// Always includes Organization, WebSite, and WebPage nodes.
+// A Service node is added for pages that define a serviceType.
+// A BreadcrumbList node is added for all pages except the homepage.
 const buildStructuredData = (
   language: AppLanguage,
   seo: RouteSeoDefinition,
@@ -174,11 +180,16 @@ const buildStructuredData = (
   };
 };
 
+// Resolves the full SEO metadata for a given URL path and language.
+// Strips the language prefix before looking up the route key so that
+// "/fr/it-services" and "/en/it-services" both resolve to "it-services".
+// Structured data is omitted entirely for non-indexable pages (e.g. 404).
 export const resolveRouteSeo = (
   pathname: string,
   language: AppLanguage
 ): ResolvedRouteSeo => {
   const strippedPath = stripLanguageFromPath(pathname) || "/";
+  // Unknown paths fall back to "not-found" so missing routes never throw.
   const routeKey = typedRouteSeoData.routeKeyByPath[strippedPath] ?? "not-found";
   const seo = typedRouteSeoData.routeSeoByLanguage[language][routeKey];
   const canonicalUrl = `${SITE_URL}${buildLocalizedPath(language, strippedPath)}`;

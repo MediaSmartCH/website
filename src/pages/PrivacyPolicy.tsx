@@ -1,38 +1,8 @@
 import React from "react";
-
-import { useAppSelector } from "services/hooks/hooks";
-import { refreshAosAnimations } from "services/aos/timing";
-
-import PrivacyPolicy from "components/presentation/privacyPolicy/index";
-
+import PrivacyPolicy from "components/presentation/privacy-policy";
 
 const PrivacyPolicyPage = () => {
-
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-  const [hasAnimated, setHasAnimated] = React.useState(false);
-
-  React.useEffect(() => {
-      refreshAosAnimations();
-      setHasAnimated(true);
-    }, []);
-
-  // Freeze AOS animations on theme change to prevent re-triggering entrance effects
-  React.useEffect(() => {
-    if (hasAnimated) {
-      const elements = document.querySelectorAll('[data-aos]');
-      elements.forEach(el => {
-        el.classList.add('aos-animate');
-        (el as HTMLElement).style.opacity = '1';
-        (el as HTMLElement).style.transform = 'none';
-      });
-    }
-  }, [themeReducer, hasAnimated]);
-
-  return (
-    <>
-      <PrivacyPolicy />
-    </>
-  );
+  return <PrivacyPolicy />;
 };
 
 export default PrivacyPolicyPage;

@@ -6,7 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 
 import Config from "config/Config";
 import { useAppDispatch, useAppSelector } from "../src/services/hooks/hooks";
-import CookieConsent from "components/presentation/cookies/Cookies";
+import CookieConsent from "components/presentation/cookies";
 import { getThemeMediaQuery } from "store/slices/common/themeUtils";
 import { syncSystemTheme } from "store/slices/common/themeSlice";
 import useCookieConsent from "services/hooks/useCookieConsent";
