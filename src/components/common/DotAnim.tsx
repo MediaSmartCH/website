@@ -69,13 +69,9 @@ function DotAnim(props: DotAnimProps) {
       return { autoResize: true, devicePixelRatio: 1 };
     }
 
-    const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
-
     return {
       autoResize: true,
-      devicePixelRatio: isMobileViewport
-        ? 1
-        : Math.min(window.devicePixelRatio || 1, 1.5),
+      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
     };
   }, []);
 
