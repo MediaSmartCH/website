@@ -142,11 +142,11 @@ function DotAnim(props: DotAnimProps) {
     }
   }, [animationsEnabled, autoplayProp, dotLottieInstance]);
 
-  const safeStaticPair = staticPair ?? { light: "", dark: "" };
-
   const src = animKey
     ? readLottieSrc(animKey, stableTheme)
-    : selectSrc(stableTheme, safeStaticPair);
+    : staticPair
+      ? selectSrc(stableTheme, staticPair)
+      : undefined;
 
   const wrapperStyle = useMemo<React.CSSProperties>(() => {
     const nextStyle: React.CSSProperties = {
@@ -186,7 +186,7 @@ function DotAnim(props: DotAnimProps) {
         userSelect: protect ? "none" : undefined,
         WebkitUserSelect: protect ? "none" : undefined,
         WebkitTouchCallout: protect ? "none" : undefined,
-        touchAction: "pan-x pan-y",
+        touchAction: protect ? "pan-x pan-y" : undefined,
         transition: "opacity 0.3s ease",
         opacity: isTransitioning ? 0.7 : 1,
       }}
