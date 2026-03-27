@@ -2,7 +2,6 @@ import React from "react";
 import { Collapse } from "antd";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
-import WaveBackdrop from "components/common/WaveBackdrop";
 
 import "assets/styles/faqCss.css";
 
