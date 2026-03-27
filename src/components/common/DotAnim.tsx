@@ -142,9 +142,11 @@ function DotAnim(props: DotAnimProps) {
     }
   }, [animationsEnabled, autoplayProp, dotLottieInstance]);
 
+  const safeStaticPair = staticPair ?? { light: "", dark: "" };
+
   const src = animKey
     ? readLottieSrc(animKey, stableTheme)
-    : selectSrc(stableTheme, staticPair!);
+    : selectSrc(stableTheme, safeStaticPair);
 
   const wrapperStyle = useMemo<React.CSSProperties>(() => {
     const nextStyle: React.CSSProperties = {
@@ -214,7 +216,7 @@ function DotAnim(props: DotAnimProps) {
           right-click saving or dragging the animation when protect is enabled. */}
       {protect && (
         <div
-          aria-hidden
+          aria-hidden={true}
           className="absolute inset-0"
           onContextMenu={prevent}
           onDragStart={prevent}
