@@ -93,4 +93,16 @@ describe("makeTranslator — language fallback", () => {
     const t = makeTranslator("de");
     expect(t.text("navbar.languageSelector")).toBe("Language");
   });
+
+  it("falls back to 'en' for array() when the requested language has no section entry", () => {
+    // 'de' is not in the dictionary; array lookups should fall back to 'en'.
+    const t = makeTranslator("de");
+    expect(t.array("section.list")).toEqual(["x", "y", "z"]);
+  });
+
+  it("falls back to 'en' for object() when the requested language has no section entry", () => {
+    // 'de' is not in the dictionary; object lookups should fall back to 'en'.
+    const t = makeTranslator("de");
+    expect(t.object("section.obj")).toEqual({ foo: "baz" });
+  });
 });

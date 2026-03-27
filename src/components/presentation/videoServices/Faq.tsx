@@ -12,110 +12,35 @@ const Faq: React.FC = () => {
   const themeReducer = useAppSelector((s) => s.theme.currentTheme);
   const t = useTranslations(languageReducer);
 
+  const childTextClassName = `${
+    themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
+  } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`;
+
   // Each item is a Collapse panel; label is the question, children is the answer body.
-  const items = [
-    {
-      key: "1",
-      label: t.object<FaqTile>("home.tile1").faqQuestion,
+  const tileIds = ["tile1", "tile2", "tile3", "tile4", "tile5", "tile6"];
+
+  const items = tileIds.map((tileId, index) => {
+    const tileKey = `home.${tileId}`;
+    const tileContent = t.object<FaqTile>(tileKey);
+
+    return {
+      key: String(index + 1),
+      label: tileContent.faqQuestion,
       children: (
-        <div
-          className={`${
-            themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-          } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`}
-        >
-          {t.object<FaqTile>("home.tile1").faqAnswer}
+        <div className={childTextClassName}>
+          {tileContent.faqAnswer}
         </div>
       ),
       className: `${
         themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
       } mb-[13px] lg:mb-[17px] rounded-[10px]`,
-    },
-    {
-      key: "2",
-      label: t.object<FaqTile>("home.tile2").faqQuestion,
-      children: (
-        <div
-          className={`${
-            themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-          } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`}
-        >
-          {t.object<FaqTile>("home.tile2").faqAnswer}
-        </div>
-      ),
-      className: `${
-        themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-      } mb-[13px] lg:mb-[17px] rounded-[10px]`,
-    },
-    {
-      key: "3",
-      label: t.object<FaqTile>("home.tile3").faqQuestion,
-      children: (
-        <div
-          className={`${
-            themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-          } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`}
-        >
-          {t.object<FaqTile>("home.tile3").faqAnswer}
-        </div>
-      ),
-      className: `${
-        themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-      } mb-[13px] lg:mb-[17px] rounded-[10px]`,
-    },
-    {
-      key: "4",
-      label: t.object<FaqTile>("home.tile4").faqQuestion,
-      children: (
-        <div
-          className={`${
-            themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-          } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`}
-        >
-          {t.object<FaqTile>("home.tile4").faqAnswer}
-        </div>
-      ),
-      className: `${
-        themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-      } mb-[13px] lg:mb-[17px] rounded-[10px]`,
-    },
-    {
-      key: "5",
-      label: t.object<FaqTile>("home.tile5").faqQuestion,
-      children: (
-        <div
-          className={`${
-            themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-          } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`}
-        >
-          {t.object<FaqTile>("home.tile5").faqAnswer}
-        </div>
-      ),
-      className: `${
-        themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-      } mb-[13px] lg:mb-[17px] rounded-[10px]`,
-    },
-    {
-      key: "6",
-      label: t.object<FaqTile>("home.tile6").faqQuestion,
-      children: (
-        <div
-          className={`${
-            themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-          } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`}
-        >
-          {t.object<FaqTile>("home.tile6").faqAnswer}
-        </div>
-      ),
-      className: `${
-        themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
-      } mb-[13px] lg:mb-[17px] rounded-[10px]`,
-    },
-  ];
+    };
+  });
 
   return (
     <div id="faq" className="relative overflow-hidden">
       <div className="relative z-10 w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
-        <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl::px-[60px] flex flex-col items-start">
+        <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl:px-[60px] flex flex-col items-start">
           <h2
             className={`${
               themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"

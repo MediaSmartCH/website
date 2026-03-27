@@ -8,6 +8,8 @@ import { useTranslations } from "services/locales/safe";
 import { useLangLink } from "services/router/langPath";
 import Contact from "components/common/Contact";
 
+const STANDARD_HOURLY_RATE = 140;
+
 export default function SupportContractPage() {
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
@@ -189,7 +191,7 @@ export default function SupportContractPage() {
                   <div className={`${subtitleColor} font-poppins text-[12px] mt-2`}>
                     <span className="font-semibold">{hours}h</span> {t.text("it.supportIncluded")} — {t.text("it.supportExtra")}: <span className="font-semibold">{extraRate} CHF/h</span>
                     {/* Strikethrough shows the standard hourly rate before the contract discount */}
-                    <span className={`${isLight ? "text-[#9B6B6B]" : "text-[#FFAAAA]"} line-through ml-1`}>140</span>
+                    <span className={`${isLight ? "text-[#9B6B6B]" : "text-[#FFAAAA]"} line-through ml-1`}>{STANDARD_HOURLY_RATE}</span>
                   </div>
                 </div>
 
