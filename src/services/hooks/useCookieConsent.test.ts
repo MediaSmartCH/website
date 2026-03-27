@@ -46,7 +46,7 @@ describe("useCookieConsent", () => {
         JSON.stringify({ languagePreference: true })
       );
       // Simulate the browser's cross-tab storage event.
-      window.dispatchEvent(new StorageEvent("storage"));
+      window.dispatchEvent(new Event("storage"));
     });
 
     expect(result.current.languagePreference).toBe(true);
