@@ -184,6 +184,7 @@ function DotAnim(props: DotAnimProps) {
         userSelect: protect ? "none" : undefined,
         WebkitUserSelect: protect ? "none" : undefined,
         WebkitTouchCallout: protect ? "none" : undefined,
+        touchAction: "pan-x pan-y",
         transition: "opacity 0.3s ease",
         opacity: isTransitioning ? 0.7 : 1,
       }}

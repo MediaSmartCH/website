@@ -99,11 +99,16 @@
   },
   "pnpm": {
     "overrides": {
+      "anymatch>picomatch": "^2.3.2",
       "diff": "^4.0.4",
       "glob": "^10.5.0",
       "graceful-fs": "^4.2.11",
       "minimatch": "^9.0.7",
-      "rollup": "^4.59.0"
+      "micromatch>picomatch": "^2.3.2",
+      "readdirp>picomatch": "^2.3.2",
+      "rollup": "^4.59.0",
+      "postcss-load-config>yaml": "^2.8.3",
+      "vite>yaml": "^2.8.3"
     }
   }
 }
