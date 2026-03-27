@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowRight, ArrowLeft } from "lucide-react";
+import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowLeft } from "lucide-react";
 import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { refreshAosAnimations } from "services/aos/timing";
