@@ -7,7 +7,7 @@
   "fluid": true,
   "git": {
     "deploymentEnabled": {
-      "*": false,
+      "**": false,
       "main": true
     }
   },
@@ -52,20 +52,6 @@
     }
   ],
   "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "host",
-          "value": {
-            "suf": ".vercel.app"
-          }
-        }
-      ],
-      "destination": "https://mediasmart.ch/:path*",
-      "statusCode": 308
-    },
     {
       "source": "/",
       "destination": "/fr",

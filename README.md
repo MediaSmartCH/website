@@ -5,6 +5,10 @@ Marketing website built with React, TypeScript, and Vite, deployed on Vercel wit
 - `POST /api/send` for contact emails via Resend
 - `POST /api/newsletter` for newsletter capture via Resend
 
+## Release History
+
+See [`CHANGELOG.md`](CHANGELOG.md) for the milestone release history, version numbers, release dates, and major delivery highlights from `V1.0.0` onward.
+
 ## Stack
 
 - React 18
@@ -91,11 +95,9 @@ Application variables:
 
 Vercel project sync variables:
 
-- `VERCEL_PROJECT_ID`
-- `VERCEL_TEAM_ID`
-- `VERCEL_TOKEN`
+- `VERCEL_TOKEN` (optional, only for the manual GitHub sync workflow)
 
-`VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID` are optional locally if `.vercel/project.json` already exists. `VERCEL_TOKEN` is required in CI.
+The repository now versions its Vercel project context in [`config/vercel-project-context.json`](config/vercel-project-context.json), so `VERCEL_TOKEN` is the only secret needed when you run the GitHub sync workflow manually. It must be a long-lived Vercel access token created in the dashboard. `VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID` remain available as optional overrides.
 
 ## Vercel Configuration
 
@@ -106,7 +108,8 @@ Repo-controlled deployment settings live in [`vercel.json`](vercel.json):
 - `dist` output directory
 - `fluid: true`
 - automatic Git deployments disabled for every branch except `main`
-- `*.vercel.app` hosts redirected to `https://mediasmart.ch`
+- `*.vercel.app` hosts remain directly browsable for deployment fallback and debugging
+- GitHub deployment records still point to `https://mediasmart.ch`
 
 Dashboard-only project settings are versioned in [`config/vercel-project-settings.json`](config/vercel-project-settings.json).
 Custom-domain routing is versioned in [`config/vercel-domains.json`](config/vercel-domains.json).
@@ -132,7 +135,7 @@ The client now pins API requests with `x-deployment-id`, so the code is already 
 - The under-construction newsletter form now uses the server-side Resend flow instead of exposing a browser-side email delivery provider.
 - Public form endpoints add `Cache-Control: no-store`, hidden honeypot fields, and stricter payload length validation.
 
-The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.github/workflows/sync-vercel-project-settings.yml) re-applies those settings on `main` whenever the sync config changes.
+The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.github/workflows/sync-vercel-project-settings.yml) can re-apply those settings manually when you want GitHub to enforce the tracked Vercel configuration.
 
 ## GitHub Actions
 
@@ -140,8 +143,8 @@ Repository-managed workflows now follow a lighter trigger strategy:
 
 - `Security & Quality`: runs manually or on pull requests targeting `main`
 - `CodeQL`: runs manually, on pull requests targeting `main`, and on the weekly security schedule
-- `Sync Vercel Settings`: runs manually or automatically when the tracked Vercel config changes on `main`
-- `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, then opens or updates a pull request instead of pushing directly to `main`
+- `Sync Vercel Settings`: runs manually only
+- `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, pushes a dedicated automation branch, and opens or updates a pull request instead of pushing directly to `main` when the token is allowed to create pull requests
 
 This repository only defines the workflow files stored in `.github/workflows/`. Entries shown in the GitHub Actions UI such as Dependabot or other platform-managed features are managed by GitHub and are not controlled by these workflow files.
 
@@ -288,6 +291,6 @@ const { animationsEnabled, flipAnimations } = useInterfaceControls();
 
 - If the contact form fails in production, confirm that either `VITE_RECAPTCHA_SITE_KEY` or `REACT_APP_RECAPTCHA_SITE_KEY` exists in Vercel project env vars.
 - If `make vercel-sync` fails locally, run `vercel login` and confirm the project is linked.
-- If the sync GitHub workflow fails, verify `VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, and `VERCEL_TEAM_ID` in repository secrets.
+- If the sync GitHub workflow fails, verify that `VERCEL_TOKEN` is a dashboard-created Vercel access token. A local Vercel CLI session token is not sufficient for GitHub Actions.
 - If animations fail to load in production, verify that `wasm-unsafe-eval` is present in the `Content-Security-Policy` header defined in `vercel.json`. The DotLottie WASM runtime requires it.
 - If an animation plays in the wrong variant after a theme switch, check that both `light` and `dark` entries exist for its key in `LOTTIE_LOADERS` and that the corresponding `.lottie` files are present in `src/assets/lotties/`.

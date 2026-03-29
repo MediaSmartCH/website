@@ -10,6 +10,10 @@ const configPath = resolve(
   root,
   process.env.VERCEL_DOMAIN_SETTINGS_FILE || "config/vercel-domains.json"
 );
+const versionedProjectContextPath = resolve(
+  root,
+  process.env.VERCEL_PROJECT_CONTEXT_FILE || "config/vercel-project-context.json"
+);
 const localProjectPath = resolve(root, ".vercel/project.json");
 const isDryRun = process.argv.includes("--dry-run");
 
@@ -26,17 +30,26 @@ const parseJsonOutput = (output) => {
 };
 
 const getProjectContext = () => {
+  const versionedContext = existsSync(versionedProjectContextPath)
+    ? readJson(versionedProjectContextPath)
+    : {};
   const localContext = existsSync(localProjectPath) ? readJson(localProjectPath) : {};
 
-  const projectId = process.env.VERCEL_PROJECT_ID || localContext.projectId;
+  const projectId =
+    process.env.VERCEL_PROJECT_ID ||
+    localContext.projectId ||
+    versionedContext.projectId;
   const teamId =
     process.env.VERCEL_TEAM_ID ||
     process.env.VERCEL_ORG_ID ||
-    localContext.orgId;
+    localContext.orgId ||
+    localContext.teamId ||
+    versionedContext.orgId ||
+    versionedContext.teamId;
 
   if (!projectId) {
     throw new Error(
-      "Missing VERCEL_PROJECT_ID. Set it explicitly in CI or link the project locally with Vercel first."
+      "Missing VERCEL_PROJECT_ID. Set it explicitly in CI, link the project locally with Vercel, or commit config/vercel-project-context.json."
     );
   }
 

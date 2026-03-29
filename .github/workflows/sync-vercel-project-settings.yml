@@ -2,15 +2,6 @@ name: Sync Vercel Settings
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/sync-vercel-project-settings.yml
-      - config/vercel-domains.json
-      - config/vercel-project-settings.json
-      - scripts/sync-vercel-domain-settings.mjs
-      - scripts/sync-vercel-project-settings.mjs
 
 concurrency:
   group: sync-vercel-project-settings
@@ -35,16 +26,32 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Validate Vercel token
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "Missing GitHub Actions secret VERCEL_TOKEN."
+            echo "Create a long-lived Vercel access token in Account Settings -> Tokens before running this workflow."
+            exit 1
+          fi
+
+          status_code="$(curl -sS -o /tmp/vercel-user.json -w '%{http_code}' \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            https://api.vercel.com/v2/user)"
+
+          if [ "$status_code" != "200" ]; then
+            echo "VERCEL_TOKEN is invalid or expired."
+            cat /tmp/vercel-user.json
+            exit 1
+          fi
+
       - name: Sync Vercel project settings
         env:
-          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID || secrets.VERCEL_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID || vars.VERCEL_TEAM_ID || secrets.VERCEL_ORG_ID || secrets.VERCEL_TEAM_ID }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: node scripts/sync-vercel-project-settings.mjs
 
       - name: Sync Vercel domain settings
         env:
-          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID || secrets.VERCEL_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID || vars.VERCEL_TEAM_ID || secrets.VERCEL_ORG_ID || secrets.VERCEL_TEAM_ID }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: node scripts/sync-vercel-domain-settings.mjs
