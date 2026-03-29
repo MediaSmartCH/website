@@ -8,6 +8,7 @@ on:
     paths:
       - .github/workflows/sync-vercel-project-settings.yml
       - config/vercel-domains.json
+      - config/vercel-project-context.json
       - config/vercel-project-settings.json
       - scripts/sync-vercel-domain-settings.mjs
       - scripts/sync-vercel-project-settings.mjs
@@ -37,14 +38,10 @@ jobs:
 
       - name: Sync Vercel project settings
         env:
-          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID || secrets.VERCEL_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID || vars.VERCEL_TEAM_ID || secrets.VERCEL_ORG_ID || secrets.VERCEL_TEAM_ID }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: node scripts/sync-vercel-project-settings.mjs
 
       - name: Sync Vercel domain settings
         env:
-          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID || secrets.VERCEL_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID || vars.VERCEL_TEAM_ID || secrets.VERCEL_ORG_ID || secrets.VERCEL_TEAM_ID }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: node scripts/sync-vercel-domain-settings.mjs

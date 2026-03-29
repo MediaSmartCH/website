@@ -91,11 +91,9 @@ Application variables:
 
 Vercel project sync variables:
 
-- `VERCEL_PROJECT_ID`
-- `VERCEL_TEAM_ID`
 - `VERCEL_TOKEN`
 
-`VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID` are optional locally if `.vercel/project.json` already exists. `VERCEL_TOKEN` is required in CI.
+The repository now versions its Vercel project context in [`config/vercel-project-context.json`](config/vercel-project-context.json), so `VERCEL_TOKEN` is the only required variable in CI. `VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID` remain available as optional overrides.
 
 ## Vercel Configuration
 
