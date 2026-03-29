@@ -141,30 +141,6 @@ const home = {
     testimonialTitle: "Testimonials",
     testimonialTitleDescription:
         "Trusted by our clients",
-    author1: "John Doe",
-    author1title: "CEO, Company Name",
-    testimonial1:
-        "I'm very pleased with their work. When I need help with any aspect of development, I'm able to call on them to take care of it. They're professional and complete tasks in a timely manner.",
-    author2: "Jane Doe",
-    author2title: "CEO, Company Name",
-    testimonial2:
-        "Scopic has never let me down. I'm pleased with our partnership and they consistently develop reliable applications. They estimate a range of hours for each project and they manage it efficiently.",
-    author3: "John Doe",
-    author3title: "CEO, Company Name",
-    testimonial3:
-        "Scopic has been a reliable partner for us. They have a talented development team and we have been pleased with their work. They were very responsive and met deadlines.",
-    author4: "John Doe",
-    author4title: "CEO, Company Name",
-    testimonial4:
-        "Scopic has been a reliable partner for us. They have a talented development team and we have been pleased with their work. They were very responsive and met deadlines.",
-    author5: "John Doe",
-    author5title: "CEO, Company Name",
-    testimonial5:
-        "Scopic has been a reliable partner for us. They have a talented development team and we have been pleased with their work. They were very responsive and met deadlines.",
-    author6: "John Doe",
-    author6title: "CEO, Company Name",
-    testimonial6:
-        "Scopic has been a reliable partner for us. They have a talented development team and we have been pleased with their work. They were very responsive and met deadlines.",
     review: "Tell us your experience",
     noTestimonial: "No testimonials yet, be the first to leave a review on Google?",
 

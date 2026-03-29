@@ -1,12 +1,14 @@
 import React from "react";
-import AOS from "aos";
 import { Link } from "react-router-dom";
-import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowRight, ArrowLeft } from "lucide-react";
+import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowLeft } from "lucide-react";
 import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
+import { refreshAosAnimations } from "services/aos/timing";
 import { useTranslations } from "services/locales/safe";
 import { useLangLink } from "services/router/langPath";
 import Contact from "components/common/Contact";
+
+const STANDARD_HOURLY_RATE = 140;
 
 export default function SupportContractPage() {
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
@@ -16,7 +18,7 @@ export default function SupportContractPage() {
   const isLight = themeReducer === "light";
 
   const [hasAnimated, setHasAnimated] = React.useState(false);
-  React.useEffect(() => { AOS.refresh(); setHasAnimated(true); }, []);
+  React.useEffect(() => { refreshAosAnimations(); setHasAnimated(true); }, []);
 
   // Freeze AOS animations on theme change to prevent re-triggering entrance effects
   React.useEffect(() => {
@@ -130,8 +132,7 @@ export default function SupportContractPage() {
         </div>
       </div>
 
-      {/* Hero and priorities share the wave background so they fade together */}
-      <div className={`${isLight ? "hero-bg" : "hero-bg-dark"} pt-[150px] pb-[50px]`}>
+      <div className="pt-[150px] pb-[50px]">
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto">
           <RichText
             as="p"
@@ -190,7 +191,7 @@ export default function SupportContractPage() {
                   <div className={`${subtitleColor} font-poppins text-[12px] mt-2`}>
                     <span className="font-semibold">{hours}h</span> {t.text("it.supportIncluded")} — {t.text("it.supportExtra")}: <span className="font-semibold">{extraRate} CHF/h</span>
                     {/* Strikethrough shows the standard hourly rate before the contract discount */}
-                    <span className={`${isLight ? "text-[#9B6B6B]" : "text-[#FFAAAA]"} line-through ml-1`}>140</span>
+                    <span className={`${isLight ? "text-[#9B6B6B]" : "text-[#FFAAAA]"} line-through ml-1`}>{STANDARD_HOURLY_RATE}</span>
                   </div>
                 </div>
 

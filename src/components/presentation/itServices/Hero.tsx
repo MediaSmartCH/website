@@ -14,14 +14,17 @@ const Hero = () => {
   const t = useTranslations(languageReducer);
 
   return (
-    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="it-services-home">
-      <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[43px] relative">
+    <div
+      className="pt-[73px] md:pt-[130px] lg:pt-[100px]"
+      id="it-services-home"
+    >
+      <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[24px] lg:pt-[36px] xl:pt-[40px] pb-[43px] relative">
         <div
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}
         >
           <RichText
-            as="p"
+            as="h1"
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full lg:w-[70%] 2xl:w-[60%] it-service-hero-gradient mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] leading-[40px] lg:leading-[50px] xl:leading-[70px]`}
             html={t.text("it.itServicesHeroTitle")}

@@ -1,12 +1,15 @@
 name: CodeQL
 
 on:
-  push:
-    branches: ["main"]
+  workflow_dispatch:
   pull_request:
     branches: ["main"]
   schedule:
     - cron: '0 3 * * 1'
+
+concurrency:
+  group: codeql-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   analyze:
@@ -32,10 +35,6 @@ jobs:
         uses: github/codeql-action/init@ebcb5b36ded6beda4ceefea6a8bc4cc885255bb3
         with:
           languages: ${{ matrix.language }}
-
-      - name: Autobuild
-        # Pin the action to an immutable commit to reduce supply-chain risk.
-        uses: github/codeql-action/autobuild@ebcb5b36ded6beda4ceefea6a8bc4cc885255bb3
 
       - name: Analyze
         # Pin the action to an immutable commit to reduce supply-chain risk.

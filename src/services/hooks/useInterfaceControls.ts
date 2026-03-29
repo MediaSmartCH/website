@@ -8,6 +8,7 @@ import {
 import { setLanguage } from "store/slices/common/languageSlice";
 import { setTheme } from "store/slices/common/themeSlice";
 import { ThemePreference } from "store/slices/common/themeUtils";
+import { toggleAnimations } from "store/slices/common/animationsSlice";
 
 import { useAppDispatch, useAppSelector } from "./hooks";
 
@@ -15,6 +16,8 @@ type UseInterfaceControlsOptions = {
   preserveScroll?: boolean;
 };
 
+// Single hook that centralises all navbar-level controls: language, theme, and
+// animation toggle. Keeps UI components free of direct Redux and URL concerns.
 export const useInterfaceControls = (
   options: UseInterfaceControlsOptions = {}
 ) => {
@@ -26,6 +29,7 @@ export const useInterfaceControls = (
   );
   const currentTheme = useAppSelector((state) => state.theme.currentTheme);
   const themePreference = useAppSelector((state) => state.theme.themePreference);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
 
   const t = useTranslations(currentLanguage);
 
@@ -40,6 +44,8 @@ export const useInterfaceControls = (
     dispatch(setLanguage(nextLanguage));
 
     try {
+      // Rewrite the URL without a full navigation so the SPA state is preserved.
+      // Dispatching a synthetic popstate event notifies the router of the change.
       const nextUrl = buildLocalizedPath(
         nextLanguage,
         window.location.pathname,
@@ -54,7 +60,9 @@ export const useInterfaceControls = (
         return;
       }
 
-      // Restore scroll position across multiple frames because layout may reflow after language change
+      // A language change can trigger a layout reflow. Restoring scroll across
+      // three timing points (rAF, 0ms, 50ms) covers the common reflow windows
+      // without relying on a MutationObserver.
       requestAnimationFrame(() => {
         window.scrollTo(scrollX, scrollY);
         setTimeout(() => window.scrollTo(scrollX, scrollY), 0);
@@ -74,19 +82,28 @@ export const useInterfaceControls = (
     dispatch(setTheme(nextTheme));
   };
 
+  const flipAnimations = () => {
+    dispatch(toggleAnimations());
+  };
+
   return {
     currentLanguage,
     currentTheme,
     themePreference,
+    animationsEnabled,
     changeLanguage,
     cycleLanguage,
     changeTheme,
+    flipAnimations,
     labels: {
       languageSelector: t.text("navbar.languageSelector"),
       themeSelector: t.text("navbar.themeSelector"),
       themeLight: t.text("navbar.themeLight"),
       themeDark: t.text("navbar.themeDark"),
       themeSystem: t.text("navbar.themeSystem"),
+      animToggle: t.text("navbar.animToggle"),
+      animOn: t.text("navbar.animOn"),
+      animOff: t.text("navbar.animOff"),
     },
   };
 };

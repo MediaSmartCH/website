@@ -181,11 +181,14 @@ dist
 
 # build output
 build/
+generated-pages/
+.generated-pages/
 
 # logs & reports
 *.log
 *.map
 bundle-*.json
+bundle-*.html
 
 ### Node Patch ###
 # Serverless Webpack directories
@@ -220,3 +223,10 @@ package-lock.json
 # End of https://www.toptal.com/developers/gitignore/api/yarn,node,macos,linux
 .vercel
 config/vercel-project-context.json
+
+# Local dev notes
+TODO.md
+
+# Lock files from other package managers
+package-lock.json
+yarn.lock

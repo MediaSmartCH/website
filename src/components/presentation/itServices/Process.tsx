@@ -21,7 +21,7 @@ export default function Process() {
             >
                 <div>
                     <RichText
-                        as="p"
+                        as="h2"
                         className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
                             } w-full it-service-process-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
                         html={t.text("it.itServicesProcessTitle")}

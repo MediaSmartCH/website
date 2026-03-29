@@ -6,15 +6,17 @@ import { HelmetProvider } from "react-helmet-async";
 
 import Config from "config/Config";
 import { useAppDispatch, useAppSelector } from "../src/services/hooks/hooks";
-import CookieConsent from "components/presentation/cookies/Cookies";
+import CookieConsent from "components/presentation/cookies";
 import { getThemeMediaQuery } from "store/slices/common/themeUtils";
 import { syncSystemTheme } from "store/slices/common/themeSlice";
 import useCookieConsent from "services/hooks/useCookieConsent";
+import { usePreventZoom } from "services/hooks/usePreventZoom";
 
 function App() {
   const dispatch = useAppDispatch();
   const { currentTheme, themePreference } = useAppSelector((state) => state.theme);
   const consent = useCookieConsent();
+  usePreventZoom();
 
   // Keep the theme in sync with the OS color-scheme when the user has not
   // chosen a manual preference. Uses the modern addEventListener API and

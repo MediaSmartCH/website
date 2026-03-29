@@ -46,6 +46,11 @@ export const booking = {
   fr: FR.booking,
 }
 
+export const privacy = {
+  en: EN.privacy,
+  fr: FR.privacy,
+}
+
 export const dictionary: any = {
   navbar,
   footer,
@@ -56,6 +61,7 @@ export const dictionary: any = {
   cookies,
   UnderConstruction,
   booking,
+  privacy,
 };
 
 export const t = <T = string>(

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet, useParams, useLocation, Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "services/hooks/hooks";
 import { setLanguage } from "store/slices/common/languageSlice";
-import RouteSeo from "components/seo/RouteSeo";
+import RouteSeo from "components/layout/RouteSeo";
 import {
   buildLocalizedPath,
   DEFAULT_LANGUAGE,

@@ -8,16 +8,51 @@ function normalizeRecaptchaToken(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-function extractRemoteIp(forwardedFor) {
-  if (Array.isArray(forwardedFor)) {
-    return extractRemoteIp(forwardedFor[0]);
+function normalizeHeaderValue(value) {
+  if (Array.isArray(value)) {
+    return normalizeHeaderValue(value[0]);
   }
 
-  if (typeof forwardedFor !== 'string') {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function extractRemoteIp(forwardedFor) {
+  const normalizedForwardedFor = normalizeHeaderValue(forwardedFor);
+  if (!normalizedForwardedFor) {
     return '';
   }
 
-  return forwardedFor.split(',')[0]?.trim() ?? '';
+  return normalizedForwardedFor
+    .split(',')[0]
+    ?.trim()
+    .replace(/^for=/i, '')
+    .replace(/^"|"$/g, '')
+    .replace(/^\[?::ffff:/i, '')
+    .replace(/\]$/g, '') ?? '';
+}
+
+function extractClientIp(headers) {
+  if (!headers || typeof headers !== 'object') {
+    return '';
+  }
+
+  const candidates = [
+    headers['x-forwarded-for'],
+    headers['x-real-ip'],
+    headers['x-vercel-forwarded-for'],
+    headers['cf-connecting-ip'],
+    headers.forwarded,
+  ];
+
+  for (const candidate of candidates) {
+    const ip = extractRemoteIp(candidate);
+
+    if (ip) {
+      return ip;
+    }
+  }
+
+  return '';
 }
 
 async function verifyRecaptcha({
@@ -85,6 +120,7 @@ async function verifyRecaptcha({
 }
 
 module.exports = {
+  extractClientIp,
   extractRemoteIp,
   recaptchaErrors,
   verifyRecaptcha,

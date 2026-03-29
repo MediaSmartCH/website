@@ -2,21 +2,31 @@ name: Update portfolio screenshots
 
 on:
   schedule:
-    - cron: '0 23 * * *'  # 23:00 UTC = minuit CET (UTC+1)
-  workflow_dispatch:       # Déclenchement manuel possible
+    - cron: '0 23 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: update-portfolio-screenshots
+  cancel-in-progress: true
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   screenshot:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      BASE_BRANCH: ${{ github.event.repository.default_branch }}
+      SCREENSHOT_BRANCH: chore/update-portfolio-screenshots
 
     steps:
       - name: Checkout repository
         # Pin the action to an immutable commit to reduce supply-chain risk.
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         # Pin the action to an immutable commit to reduce supply-chain risk.
@@ -25,14 +35,60 @@ jobs:
           node-version: '20'
 
       - name: Install Puppeteer
-        run: pnpm add --no-save puppeteer@24.40.0
+        run: npm install --no-save puppeteer@24.40.0
 
       - name: Capture screenshots
         run: node scripts/capture-screenshots.mjs
 
       - name: Commit screenshots
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git switch -C "$SCREENSHOT_BRANCH"
           git add public/screenshots/
-          git diff --staged --quiet || (git commit -m "chore: update portfolio screenshots [skip ci]" && git push)
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "chore: update portfolio screenshots [skip ci]"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push screenshot branch
+        if: steps.commit.outputs.has_changes == 'true'
+        run: git push --force-with-lease --set-upstream origin "$SCREENSHOT_BRANCH"
+
+      - name: Open or update pull request
+        if: steps.commit.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing_pr_url="$(gh pr list \
+            --head "$SCREENSHOT_BRANCH" \
+            --base "$BASE_BRANCH" \
+            --state open \
+            --json url \
+            --jq '.[0].url')"
+
+          if [ -n "$existing_pr_url" ]; then
+            echo "Updated existing pull request: $existing_pr_url"
+            exit 0
+          fi
+
+          pr_body_file="$(mktemp)"
+          cat <<'EOF' > "$pr_body_file"
+          ## Summary
+
+          - refresh the generated portfolio screenshots
+
+          ## Notes
+
+          - created automatically by the screenshot workflow
+          EOF
+
+          gh pr create \
+            --base "$BASE_BRANCH" \
+            --head "$SCREENSHOT_BRANCH" \
+            --title "chore: update portfolio screenshots" \
+            --body-file "$pr_body_file"

@@ -48,7 +48,7 @@ const About = () => {
                 data-aos="fade-right"
                 data-aos-duration="1200"
               >
-                <p
+                <h2
                   className={`${isLight
                     ? "text-[#14172D]"
                     : "text-[#F6F6F6]"
@@ -59,7 +59,7 @@ const About = () => {
                     {t.text("home.aboutSubtitle")}
                   </span>
 
-                </p>
+                </h2>
                 <RichText
                   className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} about-description w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
                   html={t.text("home.aboutDescription")}

@@ -1,7 +1,7 @@
 import React from "react";
-import AOS from "aos";
 
 import { useAppSelector } from "services/hooks/hooks";
+import { refreshAosAnimations } from "services/aos/timing";
 
 import Hero from "components/presentation/itServices/Hero";
 import About from "components/presentation/itServices/About";
@@ -19,7 +19,7 @@ export default function ITServicesPage() {
   const [hasAnimated, setHasAnimated] = React.useState(false);
 
   React.useEffect(() => {
-    AOS.refresh();
+    refreshAosAnimations();
     setHasAnimated(true);
   }, []);
 

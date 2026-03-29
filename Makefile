@@ -4,7 +4,7 @@ SHELL := /bin/sh
 
 VERCEL_SYNC_SCRIPT := scripts/sync-vercel-project-settings.mjs
 
-.PHONY: help install update dev api start build preview analyze clean env check-env vercel-sync vercel-sync-dry-run
+.PHONY: help install update dev api start build preview analyze clean env check-env test test-watch test-coverage vercel-sync vercel-sync-dry-run
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-22s %s\n", $$1, $$2}'
@@ -31,6 +31,15 @@ preview: ## Preview the production build
 
 analyze: ## Generate the bundle analysis report
 	pnpm run analyze
+
+test: ## Run the test suite once
+	pnpm test
+
+test-watch: ## Run tests in watch mode (re-runs on file changes)
+	pnpm test:watch
+
+test-coverage: ## Run tests and generate a coverage report
+	pnpm test:coverage
 
 clean: ## Remove generated files
 	rm -rf dist node_modules/.vite bundle-report.html

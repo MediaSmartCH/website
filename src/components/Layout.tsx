@@ -1,31 +1,44 @@
 import React from "react";
-import AOS from "aos";
 import { useAppSelector } from "services/hooks/hooks";
+import { initAosAnimations, refreshAosAnimations, setAosEnabled, disableAosAnimations } from "services/aos/timing";
 import Navbar from "components/common/Navbar";
 import Footer from "components/common/Footer";
+import PageTopBackdrop from "components/common/PageTopBackdrop";
 import { useLocation } from "react-router-dom";
 
 interface LayoutProps { children: React.ReactNode; }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
   const { pathname, hash } = useLocation();
   const firstRenderRef = React.useRef(true);
+  const didInitRef = React.useRef(false);
 
-  // Defer AOS init until the window load event to avoid layout shifts (FOUC)
+  // Initialize AOS on first mount, respecting the animations preference.
   React.useEffect(() => {
-    const onLoad = () => {
-      AOS.init({
-        once: true,
-        offset: 50,
-        startEvent: "load",
-        disableMutationObserver: true,
-      });
-    };
-    if (document.readyState === "complete") onLoad();
-    else window.addEventListener("load", onLoad, { once: true });
-    return () => window.removeEventListener("load", onLoad);
+    if (didInitRef.current) return;
+    didInitRef.current = true;
+
+    setAosEnabled(animationsEnabled);
+    const rafId = window.requestAnimationFrame(() => {
+      initAosAnimations();
+    });
+
+    return () => window.cancelAnimationFrame(rafId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Respond to the user toggling animations on/off.
+  React.useEffect(() => {
+    if (!didInitRef.current) return;
+    setAosEnabled(animationsEnabled);
+    if (animationsEnabled) {
+      refreshAosAnimations();
+    } else {
+      disableAosAnimations();
+    }
+  }, [animationsEnabled]);
 
   // AOS animations can hide elements — force header visibility after a theme change
   React.useEffect(() => {
@@ -64,7 +77,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div>
       <Navbar />
-      <main>{children}</main>
+      <main className="relative">
+        <PageTopBackdrop />
+        <div className="relative z-10">{children}</div>
+      </main>
       <Footer />
     </div>
   );

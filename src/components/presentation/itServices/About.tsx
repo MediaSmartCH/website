@@ -45,7 +45,7 @@ const About = () => {
           data-aos-easing="ease-in-sine"
         >
           <RichText
-            as="p"
+            as="h2"
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
               } w-full it-service-about-title text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[65px]`}
             html={t.text("it.itServicesAboutTitle")}

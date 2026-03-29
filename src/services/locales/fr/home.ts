@@ -145,30 +145,6 @@ const home = {
     testimonialTitle: "Témoignages",
     testimonialTitleDescription:
         "Ils nous font confiance",
-    author1: "John Doe",
-    author1title: "PDG, Nom de l'entreprise",
-    testimonial1:
-        "Je suis très satisfait de leur travail. Lorsque j'ai besoin d'aide pour un aspect quelconque du développement, je peux faire appel à eux pour s'en occuper. Ce sont des professionnels et accomplissent leurs tâches en temps opportun.",
-    author2: "Jane Doe",
-    author2title: "PDG, Nom de l'entreprise",
-    testimonial2:
-        "Scopic ne m'a jamais laissé tomber. Je suis satisfait de notre partenariat et ils développent constamment des applications fiables. Ils estiment une fourchette d'heures pour chaque projet et le gèrent efficacement.",
-    author3: "John Doe",
-    author3title: "PDG, Nom de l'entreprise",
-    testimonial3:
-        "Scopic a été un partenaire fiable pour nous. Ils ont une équipe de développement talentueuse et nous avons été satisfaits de leur travail. Ils ont été très réactifs et ont respecté les délais.",
-    author4: "John Doe",
-    author4title: "PDG, Nom de l'entreprise",
-    testimonial4:
-        "Scopic a été un partenaire fiable pour nous. Ils ont une équipe de développement talentueuse et nous avons été satisfaits de leur travail. Ils ont été très réactifs et ont respecté les délais.",
-    author5: "John Doe",
-    author5title: "PDG, Nom de l'entreprise",
-    testimonial5:
-        "Scopic a été un partenaire fiable pour nous. Ils ont une équipe de développement talentueuse et nous avons été satisfaits de leur travail. Ils ont été très réactifs et ont respecté les délais.",
-    author6: "John Doe",
-    author6title: "PDG, Nom de l'entreprise",
-    testimonial6:
-        "Scopic a été un partenaire fiable pour nous. Ils ont une équipe de développement talentueuse et nous avons été satisfaits de leur travail. Ils ont été très réactifs et ont respecté les délais.",
     review: "Partagez votre expérience",
     noTestimonial: "Aucun témoignage pour l'instant, soyez le premier à laisser un avis sur Google ?",
 

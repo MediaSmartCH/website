@@ -1,5 +1,5 @@
 import React from "react";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { Monitor, Moon, Sun, Zap, ZapOff } from "lucide-react";
 
 import {
   ResolvedTheme,
@@ -17,6 +17,10 @@ type ThemeSelectorProps = {
     system: string;
   };
   size?: "xs" | "sm" | "md";
+  // Optional animation toggle — rendered as a 4th icon inside the pill.
+  animationsEnabled?: boolean;
+  onAnimationsToggle?: () => void;
+  animToggleLabel?: string;
 };
 
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({
@@ -25,8 +29,11 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   onChange,
   labels,
   size = "sm",
+  animationsEnabled,
+  onAnimationsToggle,
+  animToggleLabel,
 }) => {
-  const selectorRef = React.useRef<HTMLDivElement | null>(null);
+  const dragAreaRef = React.useRef<HTMLDivElement | null>(null);
   // Prevents the click event that fires on pointer-up from being processed when
   // the interaction was actually a drag gesture.
   const suppressClickRef = React.useRef(false);
@@ -78,6 +85,14 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   const activeButtonClasses =
     currentTheme === "light" ? "text-white" : "text-[#22263A]";
 
+  const animButtonClasses =
+    currentTheme === "light"
+      ? "text-[#6B7280] hover:text-[#14172D]"
+      : "text-[#D7DAE8] hover:text-white";
+
+  const separatorClass =
+    currentTheme === "light" ? "bg-black/15" : "bg-white/20";
+
   const options = [
     { value: "light" as ThemePreference, label: labels.light, Icon: Sun },
     { value: "dark" as ThemePreference, label: labels.dark, Icon: Moon },
@@ -92,15 +107,12 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   const activeIndex = dragIndex ?? selectedIndex;
 
   // Convert a clientX position into an option index by dividing the horizontal
-  // offset within the container by the per-button stride (button width + gap).
+  // offset within the drag area by the per-button stride (button width + gap).
   const getIndexFromClientX = (clientX: number) => {
-    const rect = selectorRef.current?.getBoundingClientRect();
+    const rect = dragAreaRef.current?.getBoundingClientRect();
     if (!rect) return selectedIndex;
 
-    const offsetX = Math.max(
-      0,
-      Math.min(clientX - rect.left - sizeConfig.padding, rect.width)
-    );
+    const offsetX = Math.max(0, Math.min(clientX - rect.left, rect.width));
     const step = sizeConfig.button + sizeConfig.gap;
     const nextIndex = Math.floor((offsetX + sizeConfig.gap / 2) / step);
 
@@ -125,8 +137,6 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     if (dragStateRef.current.pointerId !== event.pointerId) return;
 
     if (Math.abs(event.clientX - dragStateRef.current.startX) > 4) {
-      // Capture the pointer on the first significant move so the drag remains
-      // smooth even when the cursor leaves the element boundaries.
       if (!dragStateRef.current.hasMoved) {
         event.currentTarget.setPointerCapture(event.pointerId);
       }
@@ -145,7 +155,6 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     }
 
     if (dragStateRef.current.hasMoved && dragIndex !== null) {
-      // A drag just committed — suppress the click that will fire on pointer-up.
       suppressClickRef.current = true;
       onChange(options[dragIndex].value);
       window.setTimeout(() => {
@@ -162,63 +171,100 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   };
 
   return (
+    // Outer pill — provides the shared visual container for theme + anim buttons.
     <div
-      ref={selectorRef}
       role="group"
       aria-label={labels.selector}
-      className={`relative inline-flex cursor-grab select-none items-center rounded-full border backdrop-blur-md active:cursor-grabbing ${containerClasses}`}
+      className={`relative inline-flex select-none items-center rounded-full border backdrop-blur-md ${containerClasses}`}
       style={{
-        gap: `${sizeConfig.gap}px`,
         padding: `${sizeConfig.padding}px`,
-        touchAction: "none",
+        gap: `${sizeConfig.gap}px`,
       }}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerEnd}
-      onPointerCancel={handlePointerEnd}
     >
-      {/* Sliding thumb that animates to the active option via CSS translateX. */}
-      <span
-        aria-hidden="true"
-        className={`absolute rounded-full transition-transform duration-200 ease-out ${thumbClasses}`}
-        style={{
-          width: `${sizeConfig.button}px`,
-          height: `${sizeConfig.button}px`,
-          left: `${sizeConfig.padding}px`,
-          top: `${sizeConfig.padding}px`,
-          transform: `translateX(${activeIndex * (sizeConfig.button + sizeConfig.gap)}px)`,
-        }}
-      />
-      {options.map(({ value, label, Icon }, index) => {
-        const isCommitted = themePreference === value;
-        const isActive = activeIndex === index;
+      {/* Draggable area scoped to the 3 theme options only */}
+      <div
+        ref={dragAreaRef}
+        className="relative inline-flex cursor-grab items-center active:cursor-grabbing"
+        style={{ gap: `${sizeConfig.gap}px`, touchAction: "none" }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+      >
+        {/* Sliding thumb */}
+        <span
+          aria-hidden="true"
+          className={`absolute rounded-full transition-transform duration-200 ease-out ${thumbClasses}`}
+          style={{
+            width: `${sizeConfig.button}px`,
+            height: `${sizeConfig.button}px`,
+            left: 0,
+            top: 0,
+            transform: `translateX(${activeIndex * (sizeConfig.button + sizeConfig.gap)}px)`,
+          }}
+        />
+        {options.map(({ value, label, Icon }, index) => {
+          const isCommitted = themePreference === value;
+          const isActive = activeIndex === index;
 
-        return (
+          return (
+            <button
+              key={value}
+              type="button"
+              onClick={() => handleButtonClick(value)}
+              aria-label={label}
+              aria-pressed={isCommitted}
+              title={label}
+              className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${
+                isActive ? activeButtonClasses : inactiveButtonClasses
+              }`}
+              style={{
+                width: `${sizeConfig.button}px`,
+                height: `${sizeConfig.button}px`,
+              }}
+            >
+              <Icon
+                strokeWidth={1.9}
+                style={{
+                  width: `${sizeConfig.icon}px`,
+                  height: `${sizeConfig.icon}px`,
+                }}
+              />
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Animation toggle — inside the pill but outside the drag area */}
+      {onAnimationsToggle !== undefined && (
+        <>
+          <span
+            aria-hidden="true"
+            className={`shrink-0 rounded-full ${separatorClass}`}
+            style={{ width: 1, height: sizeConfig.button * 0.55 }}
+          />
           <button
-            key={value}
             type="button"
-            onClick={() => handleButtonClick(value)}
-            aria-label={label}
-            aria-pressed={isCommitted}
-            title={label}
-            className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${
-              isActive ? activeButtonClasses : inactiveButtonClasses
-            }`}
+            onClick={onAnimationsToggle}
+            aria-label={animToggleLabel}
+            // aria-pressed reflects the *current* state so screen readers can
+            // announce "Animations on, button" or "Animations off, button"
+            // regardless of the label wording.
+            aria-pressed={animationsEnabled}
+            title={animToggleLabel}
+            className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${animButtonClasses}`}
             style={{
               width: `${sizeConfig.button}px`,
               height: `${sizeConfig.button}px`,
             }}
           >
-            <Icon
-              strokeWidth={1.9}
-              style={{
-                width: `${sizeConfig.icon}px`,
-                height: `${sizeConfig.icon}px`,
-              }}
-            />
+            {animationsEnabled
+              ? <Zap strokeWidth={1.9} style={{ width: sizeConfig.icon, height: sizeConfig.icon }} />
+              : <ZapOff strokeWidth={1.9} style={{ width: sizeConfig.icon, height: sizeConfig.icon }} />
+            }
           </button>
-        );
-      })}
+        </>
+      )}
     </div>
   );
 };

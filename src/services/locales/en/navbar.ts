@@ -12,5 +12,8 @@ const navbar = {
   themeSystem: "System theme",
   themeChangingTitle: "Changing theme",
   themeChangingDescription: "Please wait...",
+  animToggle: "Toggle animations",
+  animOn: "Enable animations",
+  animOff: "Disable animations",
 };
 export default navbar;

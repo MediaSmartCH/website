@@ -1,8 +1,18 @@
-import React, { memo, useMemo, useEffect, useState } from "react";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import "@dotlottie/player-component";
+import React, { memo, useEffect, useMemo, useState } from "react";
+import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
+import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
 import { useAppSelector } from "services/hooks/hooks";
-import { LOTTIES, LottieKey, LottiePair } from "config/lotties";
+import {
+  getLottieAspectRatio,
+  getLottiePresentation,
+  LottieKey,
+  preloadLottieSrc,
+  readLottieSrc,
+} from "config/lotties";
+
+// Point the WASM runtime to the locally-bundled file so DotLottie never
+// fetches from an external CDN, which the production CSP would block.
+setWasmUrl(dotLottieWasmUrl);
 
 type Base = {
   className?: string;
@@ -13,125 +23,200 @@ type Base = {
   crisp?: boolean;
 };
 
+// Two usage modes:
+// - ByKeyProps: pass a named key from LOTTIE_LOADERS and let DotAnim resolve
+//   the correct src + dimensions automatically (preferred for site animations).
+// - BySrcProps: pass raw file URLs directly. SECURITY: only pass URLs that
+//   come from bundled assets (import statements). Never pass user-controlled
+//   strings here — the DotLottie player executes the file content as code.
 type ByKeyProps = Base & { anim: LottieKey; light?: never; dark?: never };
 type BySrcProps = Base & { light: string; dark?: string; anim?: never };
 export type DotAnimProps = ByKeyProps | BySrcProps;
 
-// Module-level set shared across all DotAnim instances so each asset URL is
-// only prefetch-linked once, even when multiple components share the same animation.
-const preloadCache = new Set<string>();
-
-function preloadAsset(src: string) {
-  if (preloadCache.has(src)) return;
-
-  const link = document.createElement('link');
-  link.rel = 'prefetch';
-  link.href = src;
-  document.head.appendChild(link);
-  preloadCache.add(src);
-}
-
+// Type guard to distinguish between the two usage modes at runtime.
 function hasAnim(p: DotAnimProps): p is ByKeyProps {
   return (p as ByKeyProps).anim !== undefined;
 }
 
-function selectSrc(theme: string, pair: LottiePair) {
+function selectSrc(theme: string, pair: { light: string; dark?: string }) {
   return theme === "dark" && pair.dark ? pair.dark : pair.light;
 }
 
 function DotAnim(props: DotAnimProps) {
-  const theme = useAppSelector((s) => s.theme.currentTheme);
-  // stableTheme lags behind theme by ~300 ms so the player receives the new src
-  // only after the opacity transition has started, preventing a raw asset swap flash.
+  const theme = useAppSelector((state) => state.theme.currentTheme);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
+  const animKey = hasAnim(props) ? props.anim : undefined;
+  const staticPair = hasAnim(props)
+    ? undefined
+    : { light: props.light, dark: props.dark };
+  const intrinsicAspectRatio = animKey ? getLottieAspectRatio(animKey) : undefined;
+  const presentation = animKey ? getLottiePresentation(animKey) : undefined;
+
+  // stableTheme only advances once the next animation source is ready, so the
+  // player keeps rendering the current file instead of flashing a fallback.
   const [stableTheme, setStableTheme] = useState(theme);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [dotLottieInstance, setDotLottieInstance] = useState<DotLottie | null>(null);
 
   const {
     className,
     style,
-    autoplay = true,
+    autoplay: autoplayProp = true,
     loop = true,
     protect = false,
-    crisp = true,
+    // The SVG renderer is now the only code path we ship. Keep the prop so
+    // existing call sites do not need to change.
+    crisp: _crisp = true,
   } = props;
 
-  const pair: LottiePair = useMemo(
-    () => (hasAnim(props) ? LOTTIES[props.anim] : { light: props.light, dark: props.dark }),
-    [props]
-  );
+  const autoplay = autoplayProp && animationsEnabled;
 
-  // Prefetch both light and dark assets on mount so the dark variant is already
-  // in the browser cache when the user switches themes, avoiding a visible flicker.
-  useEffect(() => {
-    preloadAsset(pair.light);
-    if (pair.dark) {
-      preloadAsset(pair.dark);
+  // Cap DPR at 2 to avoid excessive raster cost on high-density displays (e.g. 3x on some Android devices)
+  // without any noticeable quality loss. Falls back to 1 in SSR environments where window is undefined.
+  const renderConfig = useMemo(() => {
+    if (typeof window === "undefined") {
+      return { autoResize: true, devicePixelRatio: 1 };
     }
-  }, [pair]);
 
-  // Delay committing the new theme to stableTheme until the fade-out transition
-  // is underway, then fade back in once the new src is active.
+    return {
+      autoResize: true,
+      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+    };
+  }, []);
+
+  // When the global theme changes, preload the new animation variant before
+  // switching. This prevents the player from briefly showing a blank frame
+  // between the old and new file. A minimum 220ms opacity transition gives the
+  // fade-out time to complete even if the fetch resolves instantly.
   useEffect(() => {
-    if (theme !== stableTheme) {
+    if (theme === stableTheme) {
+      return;
+    }
+
+    let cancelled = false;
+    const startTime = Date.now();
+
+    const syncTheme = async () => {
       setIsTransitioning(true);
 
-      const timer = setTimeout(() => {
-        setStableTheme(theme);
-        setIsTransitioning(false);
-      }, 300);
+      try {
+        if (animKey) {
+          await preloadLottieSrc(animKey, theme);
+        }
 
-      return () => clearTimeout(timer);
+        // Ensure the fade-out has at least 220ms to complete.
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, 220 - elapsed);
+
+        if (remaining > 0) {
+          await new Promise((resolve) => setTimeout(resolve, remaining));
+        }
+
+        if (!cancelled) {
+          setStableTheme(theme);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsTransitioning(false);
+        }
+      }
+    };
+
+    syncTheme();
+
+    // If the component unmounts or theme changes again before the transition
+    // completes, cancel the pending state updates to avoid stale setState calls.
+    return () => {
+      cancelled = true;
+    };
+  }, [animKey, stableTheme, theme]);
+
+  // Imperatively pause/play when the global animations toggle changes so the
+  // change takes effect immediately without remounting the player.
+  useEffect(() => {
+    if (!dotLottieInstance) return;
+    if (animationsEnabled && autoplayProp) {
+      dotLottieInstance.play();
+    } else {
+      dotLottieInstance.pause();
     }
-  }, [theme, stableTheme]);
+  }, [animationsEnabled, autoplayProp, dotLottieInstance]);
 
-  const src = selectSrc(stableTheme, pair);
+  const src = animKey
+    ? readLottieSrc(animKey, stableTheme)
+    : staticPair
+      ? selectSrc(stableTheme, staticPair)
+      : undefined;
 
-  const prevent = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const wrapperStyle = useMemo<React.CSSProperties>(() => {
+    const nextStyle: React.CSSProperties = {
+      display: "block",
+      ...style,
+    };
+
+    if (intrinsicAspectRatio && nextStyle.aspectRatio === undefined) {
+      nextStyle.aspectRatio = `${intrinsicAspectRatio}`;
+    }
+
+    return nextStyle;
+  }, [intrinsicAspectRatio, style]);
+
+  const playerStyle = useMemo<React.CSSProperties>(() => {
+    const scale = presentation?.scale ?? 1;
+
+    return {
+      width: "100%",
+      height: "100%",
+      display: "block",
+      transform: scale === 1 ? undefined : `scale(${scale})`,
+      transformOrigin: "center center",
+    };
+  }, [presentation?.scale]);
+
+  const prevent = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   return (
     <div
       className={`relative ${className || ""}`}
       style={{
-        ...style,
+        ...wrapperStyle,
         userSelect: protect ? "none" : undefined,
         WebkitUserSelect: protect ? "none" : undefined,
         WebkitTouchCallout: protect ? "none" : undefined,
-        transition: 'opacity 0.3s ease',
+        touchAction: protect ? "pan-x pan-y" : undefined,
+        transition: "opacity 0.3s ease",
         opacity: isTransitioning ? 0.7 : 1,
       }}
       onContextMenu={protect ? prevent : undefined}
       onDragStart={protect ? prevent : undefined}
       draggable={protect ? false : undefined}
     >
-      {crisp ? (
-        // dotlottie-player web component renders via SVG for pixel-perfect crispness.
-        <dotlottie-player
-          key={`${src}-${stableTheme}`}
-          src={src}
-          autoplay={autoplay}
-          loop={loop}
-          renderer="svg"
-          preserveAspectRatio="xMidYMid meet"
-          style={{ width: "100%", height: "auto", display: "block" }}
-        />
-      ) : (
-        <DotLottieReact
-          key={`${src}-${stableTheme}`}
-          src={src}
-          autoplay={autoplay}
-          loop={loop}
-          style={{ width: "100%", height: "auto", display: "block" }}
-        />
-      )}
+      {/* dotLottie-react is the maintained React integration from LottieFiles.
+          We keep interpolation disabled and cap DPR a bit on mobile to reduce
+          raster cost without noticeably degrading the animation. */}
+      <DotLottieReact
+        key={`${src}-${stableTheme}`}
+        src={src}
+        autoplay={autoplay}
+        loop={loop}
+        useFrameInterpolation={false}
+        renderConfig={renderConfig}
+        layout={{
+          fit: presentation?.fit ?? "contain",
+          align: presentation?.align ?? [0.5, 0.5],
+        }}
+        style={playerStyle}
+        dotLottieRefCallback={setDotLottieInstance}
+      />
 
       {/* Transparent overlay that intercepts all pointer/touch events to prevent
           right-click saving or dragging the animation when protect is enabled. */}
       {protect && (
         <div
-          aria-hidden
+          aria-hidden={true}
           className="absolute inset-0"
           onContextMenu={prevent}
           onDragStart={prevent}

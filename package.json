@@ -7,12 +7,12 @@
     "node": "20.x"
   },
   "dependencies": {
-    "@lottiefiles/dotlottie-react": "^0.15.2",
+    "@lottiefiles/dotlottie-react": "^0.17.5",
     "@react-oauth/google": "^0.11.1",
     "@reduxjs/toolkit": "^2.0.0",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^27.0.1",
     "@types/node": "^22.12.0",
     "@types/react": "^18.0.0",
@@ -52,9 +52,12 @@
   "scripts": {
     "dev": "vite",
     "api": "node scripts/dev-api.mjs",
-    "build": "vite build",
+    "build": "node scripts/generate-localized-html.mjs && vite build",
     "preview": "vite preview",
-    "analyze": "cross-env ANALYZE=true vite build",
+    "analyze": "node scripts/generate-localized-html.mjs && cross-env ANALYZE=true vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "vercel:sync": "node scripts/sync-vercel-project-settings.mjs",
     "vercel:sync:dry-run": "node scripts/sync-vercel-project-settings.mjs --dry-run"
   },
@@ -77,28 +80,35 @@
     ]
   },
   "devDependencies": {
-    "@dotlottie/player-component": "^2.7.12",
     "@types/aos": "^3.0.7",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.20",
     "@types/react-lottie": "^1.2.10",
     "@types/react-slick": "^0.23.13",
     "@vitejs/plugin-react": "^5.0.3",
+    "@vitest/coverage-v8": "^4.1.1",
     "autoprefixer": "^10.4.16",
     "cross-env": "^10.0.0",
+    "jsdom": "^29.0.1",
     "postcss": "^8.4.31",
     "rollup-plugin-visualizer": "^6.0.3",
     "tailwindcss": "^3.3.3",
     "vite": "^7.1.11",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.1.1"
   },
   "pnpm": {
     "overrides": {
+      "anymatch>picomatch": "^2.3.2",
       "diff": "^4.0.4",
       "glob": "^10.5.0",
       "graceful-fs": "^4.2.11",
       "minimatch": "^9.0.7",
-      "rollup": "^4.59.0"
+      "micromatch>picomatch": "^2.3.2",
+      "readdirp>picomatch": "^2.3.2",
+      "rollup": "^4.59.0",
+      "postcss-load-config>yaml": "^2.8.3",
+      "vite>yaml": "^2.8.3"
     }
   }
 }

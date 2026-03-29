@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
-import logo from "assets/images/logo-footer.png";
+import logo from "assets/images/logo-footer.webp";
 import linkedin from "assets/icons/linkedin.svg";
 import insta from "assets/icons/insta.svg";
 import telegram from "assets/icons/telegram.svg";
@@ -23,8 +23,10 @@ const Footer = () => {
           <div className="" data-aos="fade-right" data-aos-duration="1200">
             <img
               src={logo}
-              alt="logo"
+              alt="MediaSmart"
               className="h-[36px] lg:h-[30px] xl:h-[36px] w-auto"
+              width="560"
+              height="72"
             />
           </div>
           <ul className="flex flex-wrap items-center justify-center gap-y-[17px] gap-x-[50px] xl:gap-x-[60px] 2xl:gap-x-[70px] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-[20px] lg:px-0">
@@ -64,6 +66,7 @@ const Footer = () => {
               <Link
                 to={L("/privacy-policy")}
                 className="text-[#fff] hover:text-[#5f75f5]"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
                 {t.text("footer.navItem6")}
               </Link>
@@ -76,7 +79,7 @@ const Footer = () => {
             data-aos="zoom-in"
             data-aos-duration="1200"
           >
-            © 2025 MediaSmart
+            © 2026 MediaSmart
           </p>
           <div className="flex flex-row flex-wrap items-center justify-center gap-[24px]">
             <a
@@ -89,7 +92,7 @@ const Footer = () => {
             >
               <img
                 src={linkedin}
-                alt="linkedin"
+                alt="Voir le profil LinkedIn de MediaSmart"
                 className="w-[14px] h-[14px]"
                 data-aos="fade-up"
                 data-aos-duration="1300"
@@ -105,7 +108,7 @@ const Footer = () => {
             >
               <img
                 src={insta}
-                alt="insta"
+                alt="Voir le profil Instagram de MediaSmart"
                 className="w-[17px] h-[17px]"
                 data-aos="fade-up"
                 data-aos-duration="1300"
@@ -121,7 +124,7 @@ const Footer = () => {
             >
               <img
                 src={telegram}
-                alt="telegram"
+                alt="Contacter MediaSmart sur Telegram"
                 className="w-[17px] h-[17px]"
                 data-aos="fade-up"
                 data-aos-duration="1300"

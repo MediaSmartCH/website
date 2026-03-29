@@ -14,13 +14,16 @@ const Hero = () => {
   const t = useTranslations(languageReducer);
 
   return (
-    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} mt-[73px] md:mt-[130px] lg:mt-[100px]`} id="video-services-home">
-      <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto pt-[50px] lg:pt-[75px] xl:pt-[75px] pb-[43px] relative">
+    <div
+      className="pt-[73px] md:pt-[130px] lg:pt-[100px]"
+      id="video-services-home"
+    >
+      <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto pt-[24px] lg:pt-[36px] xl:pt-[40px] pb-[43px] relative">
         <div
           className="w-full mx-auto text-center relative"
           style={{ zIndex: 100 }}
         >
-          <p
+          <h1
             className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"}
     w-full lg:w-[70%] 2xl:w-[60%] mx-auto
     text-center mb-[15px] lg:mb-[22px]
@@ -35,7 +38,7 @@ const Hero = () => {
               {t.text("video.videoTitle")}
             </span>
             {t.text("video.videoSubitle")}
-          </p>
+          </h1>
           <p
             className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"}
     w-full lg:w-[70%] 2xl:w-[60%] mx-auto

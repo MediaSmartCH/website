@@ -10,12 +10,17 @@ on:
       - config/vercel-project-settings.json
       - scripts/sync-vercel-project-settings.mjs
 
+concurrency:
+  group: sync-vercel-project-settings
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
