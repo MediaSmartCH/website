@@ -33,22 +33,28 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
+      - name: Audit production dependencies
+        # npm audit requires an npm lockfile, but pnpm's installed node_modules
+        # tree exposes link: entries that npm does not understand in Actions.
+        # Build an isolated audit workspace from package.json only so the audit
+        # gate stays enforced without mixing npm with pnpm's workspace layout.
+        run: |
+          audit_dir="$(mktemp -d "${RUNNER_TEMP}/npm-audit-XXXXXX")"
+          cp package.json "$audit_dir/package.json"
+
+          if [ -f .npmrc ]; then
+            cp .npmrc "$audit_dir/.npmrc"
+          fi
+
+          cd "$audit_dir"
+          npm install --package-lock-only --omit=dev --ignore-scripts --legacy-peer-deps
+          npm audit --omit=dev
+
       - name: Install dependencies
         # GitHub Actions currently sees this tracked lockfile as broken even
         # though the issue is not reproducible locally, so the security gate must
         # install without the frozen assertion to keep audit/build enforceable.
         run: pnpm install --no-frozen-lockfile
-
-      - name: Generate npm audit lockfile
-        # npm audit requires an npm lockfile, but the repository intentionally
-        # versions pnpm only. Generate the npm lockfile ephemerally in CI.
-        run: npm install --package-lock-only --omit=dev --ignore-scripts --legacy-peer-deps
-
-      - name: Audit production dependencies
-        # npm audit can evaluate the installed production dependency tree here
-        # without depending on pnpm's lockfile parser, while Dependabot remains
-        # the repository-level source of truth for ongoing vulnerability alerts.
-        run: npm audit --omit=dev
 
       - name: Build check
         run: pnpm build
