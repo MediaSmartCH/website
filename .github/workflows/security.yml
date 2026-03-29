@@ -39,6 +39,11 @@ jobs:
         # install without the frozen assertion to keep audit/build enforceable.
         run: pnpm install --no-frozen-lockfile
 
+      - name: Generate npm audit lockfile
+        # npm audit requires an npm lockfile, but the repository intentionally
+        # versions pnpm only. Generate the npm lockfile ephemerally in CI.
+        run: npm install --package-lock-only --omit=dev --ignore-scripts
+
       - name: Audit production dependencies
         # npm audit can evaluate the installed production dependency tree here
         # without depending on pnpm's lockfile parser, while Dependabot remains
