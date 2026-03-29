@@ -40,7 +40,10 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Audit production dependencies
-        run: pnpm audit --prod
+        # npm audit can evaluate the installed production dependency tree here
+        # without depending on pnpm's lockfile parser, while Dependabot remains
+        # the repository-level source of truth for ongoing vulnerability alerts.
+        run: npm audit --omit=dev
 
       - name: Build check
         run: pnpm build
