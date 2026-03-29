@@ -91,11 +91,9 @@ Application variables:
 
 Vercel project sync variables:
 
-- `VERCEL_PROJECT_ID`
-- `VERCEL_TEAM_ID`
 - `VERCEL_TOKEN`
 
-`VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID` are optional locally if `.vercel/project.json` already exists. `VERCEL_TOKEN` is required in CI.
+The repository now versions its Vercel project context in [`config/vercel-project-context.json`](config/vercel-project-context.json), so `VERCEL_TOKEN` is the only required variable in CI. `VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID` remain available as optional overrides.
 
 ## Vercel Configuration
 
@@ -105,18 +103,24 @@ Repo-controlled deployment settings live in [`vercel.json`](vercel.json):
 - pnpm install and build commands
 - `dist` output directory
 - `fluid: true`
+- automatic Git deployments disabled for every branch except `main`
+- `*.vercel.app` hosts redirected to `https://mediasmart.ch`
 
-Dashboard-only settings are versioned in [`config/vercel-project-settings.json`](config/vercel-project-settings.json) and synced with:
+Dashboard-only project settings are versioned in [`config/vercel-project-settings.json`](config/vercel-project-settings.json).
+Custom-domain routing is versioned in [`config/vercel-domains.json`](config/vercel-domains.json).
+Both are synced with:
 
 ```bash
 make vercel-sync-dry-run
 make vercel-sync
 ```
 
-The sync script applies:
+The sync scripts apply:
 
 - `productionDeploymentsFastLane`
 - `resourceConfig.fluid`
+- `mediasmart.ch` as the production origin
+- `www.mediasmart.ch` as a 308 redirect to `mediasmart.ch`
 
 The client now pins API requests with `x-deployment-id`, so the code is already ready for Vercel skew protection. The dashboard-level toggle itself still requires a Pro or Enterprise plan.
 
@@ -134,7 +138,7 @@ Repository-managed workflows now follow a lighter trigger strategy:
 
 - `Security & Quality`: runs manually or on pull requests targeting `main`
 - `CodeQL`: runs manually, on pull requests targeting `main`, and on the weekly security schedule
-- `Sync Vercel Project Settings`: runs manually or automatically when the tracked Vercel config changes on `main`
+- `Sync Vercel Settings`: runs manually or automatically when the tracked Vercel config changes on `main`
 - `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, then opens or updates a pull request instead of pushing directly to `main`
 
 This repository only defines the workflow files stored in `.github/workflows/`. Entries shown in the GitHub Actions UI such as Dependabot or other platform-managed features are managed by GitHub and are not controlled by these workflow files.
@@ -161,6 +165,10 @@ Main targets:
 - `make test-coverage`
 - `make vercel-sync-dry-run`
 - `make vercel-sync`
+- `make vercel-sync-project-dry-run`
+- `make vercel-sync-project`
+- `make vercel-sync-domains-dry-run`
+- `make vercel-sync-domains`
 
 ## Project Structure
 

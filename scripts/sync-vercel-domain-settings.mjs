@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "..");
 const configPath = resolve(
   root,
-  process.env.VERCEL_SETTINGS_FILE || "config/vercel-project-settings.json"
+  process.env.VERCEL_DOMAIN_SETTINGS_FILE || "config/vercel-domains.json"
 );
 const versionedProjectContextPath = resolve(
   root,
@@ -56,8 +56,13 @@ const getProjectContext = () => {
   return { projectId, teamId };
 };
 
-const getApiPath = (projectId, teamId) =>
-  `/v9/projects/${projectId}${teamId ? `?teamId=${teamId}` : ""}`;
+const withTeamId = (path, teamId) => `${path}${teamId ? `?teamId=${teamId}` : ""}`;
+
+const getDomainsApiPath = (projectId, teamId) =>
+  withTeamId(`/v9/projects/${projectId}/domains`, teamId);
+
+const getDomainApiPath = (projectId, teamId, domain) =>
+  withTeamId(`/v9/projects/${projectId}/domains/${encodeURIComponent(domain)}`, teamId);
 
 const requestWithCli = (path, method = "GET", body) => {
   const args = ["api", path, "--raw"];
@@ -69,7 +74,7 @@ const requestWithCli = (path, method = "GET", body) => {
   let tempDir;
 
   if (body) {
-    tempDir = mkdtempSync(join(tmpdir(), "vercel-settings-"));
+    tempDir = mkdtempSync(join(tmpdir(), "vercel-domain-settings-"));
     const inputPath = join(tempDir, "body.json");
     writeFileSync(inputPath, JSON.stringify(body, null, 2));
     args.push("--input", inputPath);
@@ -119,39 +124,87 @@ const request = async (path, method = "GET", body) => {
   return requestWithCli(path, method, body);
 };
 
-const pickCurrentSummary = (currentProject, desiredSettings) => {
-  const summary = {};
+const normalizeDomain = (domain) => ({
+  name: domain.name,
+  redirect: domain.redirect ?? null,
+  redirectStatusCode: domain.redirectStatusCode ?? null,
+  gitBranch: domain.gitBranch ?? null,
+});
 
-  for (const key of Object.keys(desiredSettings)) {
-    if (key === "resourceConfig") {
-      summary.resourceConfig = {
-        ...currentProject.defaultResourceConfig,
-        ...currentProject.resourceConfig,
-      };
-      continue;
-    }
-
-    summary[key] = currentProject[key] ?? null;
-  }
-
-  return summary;
-};
+const buildDomainPayload = (domain) => ({
+  name: domain.name,
+  redirect: domain.redirect ?? null,
+  redirectStatusCode: domain.redirectStatusCode ?? null,
+  gitBranch: domain.gitBranch ?? null,
+});
 
 if (!existsSync(configPath)) {
   throw new Error(`Missing settings file: ${configPath}`);
 }
 
-const desiredSettings = readJson(configPath);
-const { projectId, teamId } = getProjectContext();
-const apiPath = getApiPath(projectId, teamId);
-const currentProject = await request(apiPath);
-const patch = desiredSettings;
+const desiredConfig = readJson(configPath);
 
-console.log("Current project settings:");
-console.log(JSON.stringify(pickCurrentSummary(currentProject, desiredSettings), null, 2));
+if (!Array.isArray(desiredConfig.domains) || desiredConfig.domains.length === 0) {
+  throw new Error("config/vercel-domains.json must define a non-empty domains array.");
+}
+
+const { projectId, teamId } = getProjectContext();
+const currentDomainsResponse = await request(getDomainsApiPath(projectId, teamId));
+const currentDomains = new Map(
+  (currentDomainsResponse.domains ?? []).map((domain) => [domain.name, normalizeDomain(domain)])
+);
+
+const operations = desiredConfig.domains
+  .map((domain) => {
+    const desired = normalizeDomain(domain);
+    const current = currentDomains.get(domain.name);
+
+    if (!current) {
+      return {
+        type: "create",
+        current: null,
+        desired,
+      };
+    }
+
+    if (JSON.stringify(current) === JSON.stringify(desired)) {
+      return {
+        type: "noop",
+        current,
+        desired,
+      };
+    }
+
+    return {
+      type: "update",
+      current,
+      desired,
+    };
+  });
+
+console.log("Current managed domain settings:");
+console.log(
+  JSON.stringify(
+    operations.map(({ current, desired }) => ({
+      domain: desired.name,
+      current,
+    })),
+    null,
+    2
+  )
+);
 console.log("");
-console.log("Desired patch:");
-console.log(JSON.stringify(patch, null, 2));
+console.log("Planned domain operations:");
+console.log(
+  JSON.stringify(
+    operations.map(({ type, desired }) => ({
+      type,
+      desired,
+    })),
+    null,
+    2
+  )
+);
 
 if (isDryRun) {
   console.log("");
@@ -159,8 +212,41 @@ if (isDryRun) {
   process.exit(0);
 }
 
-const updatedProject = await request(apiPath, "PATCH", patch);
+for (const operation of operations) {
+  if (operation.type === "noop") {
+    continue;
+  }
+
+  if (operation.type === "create") {
+    await request(
+      getDomainsApiPath(projectId, teamId),
+      "POST",
+      buildDomainPayload(operation.desired)
+    );
+    continue;
+  }
+
+  await request(
+    getDomainApiPath(projectId, teamId, operation.desired.name),
+    "PATCH",
+    buildDomainPayload(operation.desired)
+  );
+}
+
+const updatedDomainsResponse = await request(getDomainsApiPath(projectId, teamId));
 
 console.log("");
-console.log("Updated project settings:");
-console.log(JSON.stringify(pickCurrentSummary(updatedProject, desiredSettings), null, 2));
+console.log("Updated managed domain settings:");
+console.log(
+  JSON.stringify(
+    desiredConfig.domains.map((domain) => ({
+      domain: domain.name,
+      current:
+        (updatedDomainsResponse.domains ?? [])
+          .map(normalizeDomain)
+          .find((currentDomain) => currentDomain.name === domain.name) ?? null,
+    })),
+    null,
+    2
+  )
+);

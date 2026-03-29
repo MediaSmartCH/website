@@ -5,6 +5,12 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
   "fluid": true,
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "main": true
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -46,6 +52,20 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "header",
+          "key": "host",
+          "value": {
+            "suf": ".vercel.app"
+          }
+        }
+      ],
+      "destination": "https://mediasmart.ch/:path*",
+      "statusCode": 308
+    },
     {
       "source": "/",
       "destination": "/fr",
