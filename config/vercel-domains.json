@@ -1,0 +1,16 @@
+{
+  "domains": [
+    {
+      "name": "mediasmart.ch",
+      "redirect": null,
+      "redirectStatusCode": null,
+      "gitBranch": null
+    },
+    {
+      "name": "www.mediasmart.ch",
+      "redirect": "mediasmart.ch",
+      "redirectStatusCode": 308,
+      "gitBranch": null
+    }
+  ]
+}

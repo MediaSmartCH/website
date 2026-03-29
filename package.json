@@ -58,8 +58,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "vercel:sync": "node scripts/sync-vercel-project-settings.mjs",
-    "vercel:sync:dry-run": "node scripts/sync-vercel-project-settings.mjs --dry-run"
+    "vercel:sync:project": "node scripts/sync-vercel-project-settings.mjs",
+    "vercel:sync:project:dry-run": "node scripts/sync-vercel-project-settings.mjs --dry-run",
+    "vercel:sync:domains": "node scripts/sync-vercel-domain-settings.mjs",
+    "vercel:sync:domains:dry-run": "node scripts/sync-vercel-domain-settings.mjs --dry-run",
+    "vercel:sync": "pnpm run vercel:sync:project && pnpm run vercel:sync:domains",
+    "vercel:sync:dry-run": "pnpm run vercel:sync:project:dry-run && pnpm run vercel:sync:domains:dry-run"
   },
   "eslintConfig": {
     "extends": [

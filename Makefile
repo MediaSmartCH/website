@@ -3,8 +3,9 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 VERCEL_SYNC_SCRIPT := scripts/sync-vercel-project-settings.mjs
+VERCEL_DOMAIN_SYNC_SCRIPT := scripts/sync-vercel-domain-settings.mjs
 
-.PHONY: help install update dev api start build preview analyze clean env check-env test test-watch test-coverage vercel-sync vercel-sync-dry-run
+.PHONY: help install update dev api start build preview analyze clean env check-env test test-watch test-coverage vercel-sync vercel-sync-dry-run vercel-sync-project vercel-sync-project-dry-run vercel-sync-domains vercel-sync-domains-dry-run
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-22s %s\n", $$1, $$2}'
@@ -53,8 +54,18 @@ check-env: ## Validate the local environment file
 	@grep -q '^RESEND_API_KEY=' .env.local || (echo "Missing RESEND_API_KEY in .env.local." && exit 1)
 	@echo "Local environment looks valid."
 
-vercel-sync-dry-run: ## Show the Vercel project patch without applying it
+vercel-sync-project-dry-run: ## Show the tracked Vercel project patch without applying it
 	node $(VERCEL_SYNC_SCRIPT) --dry-run
 
-vercel-sync: ## Apply tracked Vercel project settings
+vercel-sync-project: ## Apply tracked Vercel project settings
 	node $(VERCEL_SYNC_SCRIPT)
+
+vercel-sync-domains-dry-run: ## Show the tracked Vercel domain changes without applying them
+	node $(VERCEL_DOMAIN_SYNC_SCRIPT) --dry-run
+
+vercel-sync-domains: ## Apply tracked Vercel domain settings
+	node $(VERCEL_DOMAIN_SYNC_SCRIPT)
+
+vercel-sync-dry-run: vercel-sync-project-dry-run vercel-sync-domains-dry-run ## Show all tracked Vercel changes without applying them
+
+vercel-sync: vercel-sync-project vercel-sync-domains ## Apply all tracked Vercel settings
