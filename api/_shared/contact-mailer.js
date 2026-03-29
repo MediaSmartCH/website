@@ -248,7 +248,7 @@ ${projectTypeBlock}
 <tr><td style="background:#13112a;border-radius:0 0 16px 16px;padding:24px 40px;text-align:center;border-top:1px solid #2a2748;">
 <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#fff;">MediaSmart</p>
 <p style="margin:0 0 12px;font-size:12px;color:#5a5c7a;">Valais · Vaud · Genève · Fribourg</p>
-<p style="margin:0;font-size:11px;color:#3d3d5a;">${t.autoNote} <a href="https://mediasmart.ch" style="color:#7c3aed;text-decoration:none;">mediasmart.ch</a></p>
+<p style="margin:0;font-size:11px;color:#3d3d5a;">${t.autoNote} <a href="https://www.mediasmart.ch" style="color:#7c3aed;text-decoration:none;">mediasmart.ch</a></p>
 </td></tr>
 </table></td></tr></table></body></html>`;
 }
@@ -278,7 +278,7 @@ function buildConfirmHtml(payload) {
 <p style="margin:0;font-size:15px;color:#c8cae0;line-height:1.7;white-space:pre-wrap;">${safeMessage}</p>
 </td></tr></table>
 <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
-<a href="https://mediasmart.ch" style="display:inline-block;background:linear-gradient(135deg,#5b4fcf,#a855f7);color:#fff;font-size:14px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:50px;">mediasmart.ch</a>
+<a href="https://www.mediasmart.ch" style="display:inline-block;background:linear-gradient(135deg,#5b4fcf,#a855f7);color:#fff;font-size:14px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:50px;">www.mediasmart.ch</a>
 </td></tr></table>
 </td></tr>
 <tr><td style="background:#13112a;border-radius:0 0 16px 16px;padding:24px 40px;text-align:center;border-top:1px solid #2a2748;">

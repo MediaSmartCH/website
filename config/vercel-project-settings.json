@@ -3,6 +3,7 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
+  "previewDeploymentsDisabled": true,
   "productionDeploymentsFastLane": true,
   "resourceConfig": {
     "fluid": true,
