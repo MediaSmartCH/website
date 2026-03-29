@@ -30,8 +30,8 @@ jobs:
             -d '{
               "state": "success",
               "environment": "Production",
-              "environment_url": "https://mediasmart.ch",
-              "target_url": "https://mediasmart.ch",
-              "description": "Deployment available on mediasmart.ch",
+              "environment_url": "https://www.mediasmart.ch",
+              "target_url": "https://www.mediasmart.ch",
+              "description": "Deployment available on www.mediasmart.ch",
               "auto_inactive": false
             }'
