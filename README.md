@@ -104,7 +104,8 @@ Repo-controlled deployment settings live in [`vercel.json`](vercel.json):
 - `dist` output directory
 - `fluid: true`
 - automatic Git deployments disabled for every branch except `main`
-- `*.vercel.app` hosts redirected to `https://mediasmart.ch`
+- `*.vercel.app` hosts remain directly browsable for deployment fallback and debugging
+- GitHub deployment records still point to `https://mediasmart.ch`
 
 Dashboard-only project settings are versioned in [`config/vercel-project-settings.json`](config/vercel-project-settings.json).
 Custom-domain routing is versioned in [`config/vercel-domains.json`](config/vercel-domains.json).
