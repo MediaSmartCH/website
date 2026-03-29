@@ -128,9 +128,16 @@ The client now pins API requests with `x-deployment-id`, so the code is already 
 
 The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.github/workflows/sync-vercel-project-settings.yml) re-applies those settings on `main` whenever the sync config changes.
 
-## Screenshot Automation
+## GitHub Actions
 
-The scheduled screenshot refresh workflow now publishes updates through a pull request instead of pushing directly to `main`. This keeps the automation compatible with branch protection rules that require pull requests and status checks before merge.
+Repository-managed workflows now follow a lighter trigger strategy:
+
+- `Security & Quality`: runs manually or on pull requests targeting `main`
+- `CodeQL`: runs manually, on pull requests targeting `main`, and on the weekly security schedule
+- `Sync Vercel Project Settings`: runs manually or automatically when the tracked Vercel config changes on `main`
+- `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, then opens or updates a pull request instead of pushing directly to `main`
+
+This repository only defines the workflow files stored in `.github/workflows/`. Entries shown in the GitHub Actions UI such as Dependabot or other platform-managed features are managed by GitHub and are not controlled by these workflow files.
 
 ## Make Targets
 
