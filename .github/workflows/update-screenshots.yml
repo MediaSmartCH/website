@@ -62,7 +62,7 @@ jobs:
       - name: Open or update pull request
         if: steps.commit.outputs.has_changes == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SCREENSHOT_PR_TOKEN != '' && secrets.SCREENSHOT_PR_TOKEN || github.token }}
         run: |
           existing_pr_url="$(gh pr list \
             --head "$SCREENSHOT_BRANCH" \
@@ -87,12 +87,19 @@ jobs:
           - created automatically by the screenshot workflow
           EOF
 
-          gh pr create \
+          if gh pr create \
             --base "$BASE_BRANCH" \
             --head "$SCREENSHOT_BRANCH" \
             --title "chore: update portfolio screenshots" \
-            --body-file "$pr_body_file"
+            --body-file "$pr_body_file"; then
+            exit 0
+          fi
 
-      - name: Delete screenshot branch when pull request creation fails
-        if: failure() && steps.commit.outputs.has_changes == 'true'
-        run: git push origin --delete "$SCREENSHOT_BRANCH" || true
+          echo "::warning::GitHub Actions could not create the pull request. The screenshots were pushed to '$SCREENSHOT_BRANCH'."
+          {
+            echo "## Screenshot update pending"
+            echo
+            echo "- branch: \`$SCREENSHOT_BRANCH\`"
+            echo "- reason: GitHub Actions is not allowed to create pull requests in this repository with the current token"
+            echo "- next step: open a pull request manually, or add a \`SCREENSHOT_PR_TOKEN\` repository secret with a token that can create pull requests"
+          } >> "$GITHUB_STEP_SUMMARY"
