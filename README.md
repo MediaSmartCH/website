@@ -103,7 +103,7 @@ Repo-controlled deployment settings live in [`vercel.json`](vercel.json):
 - pnpm install and build commands
 - `dist` output directory
 - `fluid: true`
-- automatic Git deployments disabled for every branch except `main`
+- automatic Git deployments disabled for every branch except `production`
 - `*.vercel.app` hosts remain directly browsable for deployment fallback and debugging
 - GitHub deployment records still point to `https://mediasmart.ch`
 
@@ -137,10 +137,10 @@ The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.gith
 
 Repository-managed workflows now follow a lighter trigger strategy:
 
-- `Security & Quality`: runs manually or on pull requests targeting `main`
-- `CodeQL`: runs manually, on pull requests targeting `main`, and on the weekly security schedule
+- `Security & Quality`: runs manually or on pull requests targeting `production`
+- `CodeQL`: runs manually, on pull requests targeting `production`, and on the weekly security schedule
 - `Sync Vercel Settings`: runs manually only
-- `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, pushes a dedicated automation branch, and opens or updates a pull request instead of pushing directly to `main` when the token is allowed to create pull requests
+- `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, pushes a dedicated automation branch, and opens or updates a pull request instead of pushing directly to `production` when the token is allowed to create pull requests
 
 This repository only defines the workflow files stored in `.github/workflows/`. Entries shown in the GitHub Actions UI such as Dependabot or other platform-managed features are managed by GitHub and are not controlled by these workflow files.
 
