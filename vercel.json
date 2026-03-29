@@ -53,6 +53,20 @@
   ],
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "host",
+          "value": {
+            "suf": ".vercel.app"
+          }
+        }
+      ],
+      "destination": "https://mediasmart.ch/fr",
+      "statusCode": 308
+    },
+    {
       "source": "/:path*",
       "has": [
         {

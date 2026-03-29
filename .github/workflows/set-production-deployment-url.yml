@@ -1,0 +1,37 @@
+name: Set Production Deployment URL
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  set-url:
+    if: >
+      github.event.deployment.environment == 'Production' &&
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment_status.creator.login == 'vercel[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Point GitHub deployment URL to the canonical domain
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOYMENT_ID: ${{ github.event.deployment.id }}
+          REPO: ${{ github.repository }}
+        run: |
+          curl -sS -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/$REPO/deployments/$DEPLOYMENT_ID/statuses" \
+            -d '{
+              "state": "success",
+              "environment": "Production",
+              "environment_url": "https://mediasmart.ch",
+              "target_url": "https://mediasmart.ch",
+              "description": "Deployment available on mediasmart.ch",
+              "auto_inactive": false
+            }'
