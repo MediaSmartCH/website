@@ -42,7 +42,7 @@ jobs:
       - name: Generate npm audit lockfile
         # npm audit requires an npm lockfile, but the repository intentionally
         # versions pnpm only. Generate the npm lockfile ephemerally in CI.
-        run: npm install --package-lock-only --omit=dev --ignore-scripts
+        run: npm install --package-lock-only --omit=dev --ignore-scripts --legacy-peer-deps
 
       - name: Audit production dependencies
         # npm audit can evaluate the installed production dependency tree here
