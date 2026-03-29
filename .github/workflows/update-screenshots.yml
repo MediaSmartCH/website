@@ -2,8 +2,12 @@ name: Update portfolio screenshots
 
 on:
   schedule:
-    - cron: '0 23 * * *'  # 23:00 UTC = minuit CET (UTC+1)
-  workflow_dispatch:       # Déclenchement manuel possible
+    - cron: '0 23 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: update-portfolio-screenshots
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -72,14 +76,19 @@ jobs:
             exit 0
           fi
 
+          pr_body_file="$(mktemp)"
+          cat <<'EOF' > "$pr_body_file"
+          ## Summary
+
+          - refresh the generated portfolio screenshots
+
+          ## Notes
+
+          - created automatically by the screenshot workflow
+          EOF
+
           gh pr create \
             --base "$BASE_BRANCH" \
             --head "$SCREENSHOT_BRANCH" \
             --title "chore: update portfolio screenshots" \
-            --body "## Summary
-
-- refresh the generated portfolio screenshots
-
-## Notes
-
-- created automatically by the screenshot workflow"
+            --body-file "$pr_body_file"
