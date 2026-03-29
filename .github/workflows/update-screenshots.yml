@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 20
     env:
       BASE_BRANCH: ${{ github.event.repository.default_branch }}
-      SCREENSHOT_BRANCH: chore/update-portfolio-screenshots
+      SCREENSHOT_BRANCH: portfolio-screenshots-update
 
     steps:
       - name: Checkout repository
@@ -92,3 +92,7 @@ jobs:
             --head "$SCREENSHOT_BRANCH" \
             --title "chore: update portfolio screenshots" \
             --body-file "$pr_body_file"
+
+      - name: Delete screenshot branch when pull request creation fails
+        if: failure() && steps.commit.outputs.has_changes == 'true'
+        run: git push origin --delete "$SCREENSHOT_BRANCH" || true

@@ -7,7 +7,7 @@
   "fluid": true,
   "git": {
     "deploymentEnabled": {
-      "*": false,
+      "**": false,
       "main": true
     }
   },

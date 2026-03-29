@@ -139,7 +139,7 @@ Repository-managed workflows now follow a lighter trigger strategy:
 - `Security & Quality`: runs manually or on pull requests targeting `main`
 - `CodeQL`: runs manually, on pull requests targeting `main`, and on the weekly security schedule
 - `Sync Vercel Settings`: runs manually only
-- `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, then opens or updates a pull request instead of pushing directly to `main`
+- `Update portfolio screenshots`: runs manually or on the weekly screenshot refresh schedule, pushes a dedicated automation branch, and opens or updates a pull request instead of pushing directly to `main`
 
 This repository only defines the workflow files stored in `.github/workflows/`. Entries shown in the GitHub Actions UI such as Dependabot or other platform-managed features are managed by GitHub and are not controlled by these workflow files.
 
