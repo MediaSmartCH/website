@@ -52,15 +52,25 @@ function dotLottieWasmPlugin(): Plugin {
 
 const generatedPagesDir = path.resolve(__dirname, "generated-pages");
 const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
-  ? Object.fromEntries(
-      fs
-        .readdirSync(generatedPagesDir)
-        .filter((file) => file.endsWith(".html"))
-        .map((file) => [
-          path.basename(file, ".html"),
-          path.resolve(generatedPagesDir, file),
-        ])
-    )
+  ? (() => {
+      try {
+        return Object.fromEntries(
+          fs
+            .readdirSync(generatedPagesDir)
+            .filter((file) => file.endsWith(".html"))
+            .map((file) => [
+              path.basename(file, ".html"),
+              path.resolve(generatedPagesDir, file),
+            ])
+        );
+      } catch (error) {
+        console.error(
+          `Failed to scan generated pages directory "${generatedPagesDir}":`,
+          error
+        );
+        return {};
+      }
+    })()
   : {};
 
 export default defineConfig(async () => {
@@ -107,6 +117,8 @@ export default defineConfig(async () => {
     },
     assetsInclude: ["**/*.lottie"],
     build: {
+      // Raise the default 500KB limit to account for expected large vendor chunks
+      // while still surfacing bundles that are unusually large for this app.
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         input: {
