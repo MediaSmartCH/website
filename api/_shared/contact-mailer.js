@@ -12,7 +12,7 @@ const contactApiErrors = {
   invalidPayload: 'Champs invalides',
   sendFailed: 'Erreur lors de l\'envoi',
   serverError: 'Erreur serveur',
-  rateLimited: 'Trop de tentatives, veuillez reessayer plus tard',
+  rateLimited: 'Trop de tentatives, veuillez réessayer plus tard',
 };
 
 const i18n = {
@@ -326,10 +326,21 @@ async function sendContactEmails(resend, payload) {
     resend.emails.send(emails.confirm),
   ]);
 
+  const hasInternalError = internal && internal.error != null;
+  const hasConfirmError = confirm && confirm.error != null;
+
+  const combinedError =
+    !hasInternalError && !hasConfirmError
+      ? null
+      : {
+          internal: hasInternalError ? internal.error : null,
+          confirm: hasConfirmError ? confirm.error : null,
+        };
+
   return {
     internal,
     confirm,
-    error: internal.error ?? confirm.error ?? null,
+    error: combinedError,
   };
 }
 
