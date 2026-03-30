@@ -28,11 +28,13 @@ function dotLottieWasmPlugin(): Plugin {
     load(id) {
       if (id !== RESOLVED_ID) return;
 
-      // Resolve via Node module resolution so pnpm symlinks are followed correctly.
-      const pkgDir = path.dirname(
-        _require.resolve("@lottiefiles/dotlottie-web/package.json")
+      // Resolve via the package entrypoint so we stay compatible with package
+      // exports and pnpm's symlinked node_modules layout.
+      const dotLottieEntry = _require.resolve("@lottiefiles/dotlottie-web");
+      const wasmSrc = path.join(
+        path.dirname(dotLottieEntry),
+        "dotlottie-player.wasm"
       );
-      const wasmSrc = path.join(pkgDir, "dist/dotlottie-player.wasm");
       const wasmBuffer = fs.readFileSync(wasmSrc);
       const hash = createHash("sha256").update(wasmBuffer).digest("hex").slice(0, 8);
       const assetFileName = `assets/dotlottie-player-${hash}.wasm`;

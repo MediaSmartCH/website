@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import raphaelPhoto from "assets/images/raphael-rouiller.jpg";
-import { Briefcase, CheckCircle2, Linkedin, MapPin, User } from "lucide-react";
+import { Briefcase, CheckCircle2, ExternalLink, MapPin, User } from "lucide-react";
 import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
@@ -141,7 +141,7 @@ const About = () => {
                     rel="noopener noreferrer"
                     className={`${isLight ? "text-[#2E4D8D] hover:text-[#1a3a7a]" : "text-[#9EDCFF] hover:text-white"} mt-3 inline-flex items-center gap-1.5 font-poppins text-sm transition-colors`}
                   >
-                    <Linkedin size={15} />
+                    <ExternalLink size={15} />
                     linkedin.com/in/rphlr
                   </a>
                 </div>
