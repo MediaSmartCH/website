@@ -30,7 +30,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "antd": "^6.3.4",
     "aos": "^2.3.4",
-    "axios": "^1.14.0",
+    "axios": "^1.15.0",
     "dompurify": "^3.3.3",
     "esprima": "^4.0.1",
     "js-cookie": "^3.0.5",
