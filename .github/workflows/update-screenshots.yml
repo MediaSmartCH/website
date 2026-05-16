@@ -27,6 +27,13 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
+          # Authenticate git with the PR-creation PAT so the screenshot branch
+          # push isn't attributed to GITHUB_TOKEN — pushes authored by the
+          # default token are silently exempt from triggering required CI
+          # workflows, which leaves PRs stuck on "Expected — Waiting for
+          # status to be reported" forever. Falls back to GITHUB_TOKEN if the
+          # secret isn't configured yet.
+          token: ${{ secrets.SCREENSHOT_PR_TOKEN != '' && secrets.SCREENSHOT_PR_TOKEN || github.token }}
 
       - name: Setup Node.js
         # Pin the action to an immutable commit to reduce supply-chain risk.
