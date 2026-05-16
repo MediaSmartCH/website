@@ -23,6 +23,17 @@ function pressKeys(keys: string[]) {
   });
 }
 
+function makeURLConstructorMock() {
+  return vi.fn(function (this: URL, input: string, base?: string) {
+    const resolvedInput = String(input);
+    const protocol = resolvedInput.match(/^[a-zA-Z][a-zA-Z\d+.-]*:/)?.[0] ?? "https:";
+    return {
+      protocol,
+      toString: () => resolvedInput,
+    } as unknown as URL;
+  });
+}
+
 describe("useKonamiCode", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
@@ -33,52 +44,46 @@ describe("useKonamiCode", () => {
     vi.unstubAllGlobals();
   });
 
-  it("evaluates the target URL when the full sequence is entered", () => {
-    const urlMock = vi.fn(function (this: URL, input: string, base?: string) {
-      return {
-        protocol: "javascript:",
-        toString: () => String(input),
-      } as unknown as URL;
-    });
-    vi.stubGlobal("URL", urlMock as unknown as typeof URL);
-    renderHook(() => useKonamiCode("/secret"));
+  it("does not navigate for unsafe protocols", () => {
+    const initialHref = window.location.href;
+    renderHook(() => useKonamiCode("javascript:alert(1)"));
 
     pressKeys(KONAMI_SEQUENCE);
 
-    expect(urlMock).toHaveBeenCalledWith("/secret", window.location.origin);
+    expect(window.location.href).toBe(initialHref);
   });
 
   it("accepts uppercase letters in the sequence", () => {
-    const urlMock = vi.fn(function (this: URL, input: string, base?: string) {
-      return {
-        protocol: "javascript:",
-        toString: () => String(input),
-      } as unknown as URL;
-    });
-    vi.stubGlobal("URL", urlMock as unknown as typeof URL);
-    renderHook(() => useKonamiCode("/secret"));
+    const initialHref = window.location.href;
+    const URLConstructorMock = makeURLConstructorMock();
+    vi.stubGlobal("URL", URLConstructorMock as unknown as typeof URL);
+    renderHook(() => useKonamiCode("javascript:secret"));
 
     pressKeys([...KONAMI_SEQUENCE.slice(0, 8), "B", "A"]);
 
-    expect(urlMock).toHaveBeenCalledWith("/secret", window.location.origin);
+    expect(URLConstructorMock).toHaveBeenCalledWith(
+      "javascript:secret",
+      window.location.origin
+    );
+    expect(window.location.href).toBe(initialHref);
   });
 
   it("keeps sequence progress when targetUrl changes mid-sequence", () => {
-    const urlMock = vi.fn(function (this: URL, input: string, base?: string) {
-      return {
-        protocol: "javascript:",
-        toString: () => String(input),
-      } as unknown as URL;
-    });
-    vi.stubGlobal("URL", urlMock as unknown as typeof URL);
+    const initialHref = window.location.href;
+    const URLConstructorMock = makeURLConstructorMock();
+    vi.stubGlobal("URL", URLConstructorMock as unknown as typeof URL);
     const { rerender } = renderHook(({ targetUrl }) => useKonamiCode(targetUrl), {
-      initialProps: { targetUrl: "/first" },
+      initialProps: { targetUrl: "javascript:first" },
     });
 
     pressKeys(KONAMI_SEQUENCE.slice(0, 5));
-    rerender({ targetUrl: "/second" });
+    rerender({ targetUrl: "javascript:second" });
     pressKeys(KONAMI_SEQUENCE.slice(5));
 
-    expect(urlMock).toHaveBeenCalledWith("/second", window.location.origin);
+    expect(URLConstructorMock).toHaveBeenCalledWith(
+      "javascript:second",
+      window.location.origin
+    );
+    expect(window.location.href).toBe(initialHref);
   });
 });
