@@ -1,12 +1,14 @@
 import fs from "fs";
 import { createHash } from "crypto";
 import { createRequire } from "module";
+import { fileURLToPath } from "url";
 import { defineConfig, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const _require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Emits the DotLottie WASM binary as a content-hashed asset and exposes its
@@ -19,14 +21,16 @@ const _require = createRequire(import.meta.url);
 function dotLottieWasmPlugin(): Plugin {
   const VIRTUAL_ID = "virtual:dotlottie-wasm-url";
   const RESOLVED_ID = "\0" + VIRTUAL_ID;
+  const ASSET_HASH_LENGTH = 8;
 
   return {
     name: "dotlottie-wasm-asset",
     resolveId(id) {
       if (id === VIRTUAL_ID) return RESOLVED_ID;
+      return null;
     },
     load(id) {
-      if (id !== RESOLVED_ID) return;
+      if (id !== RESOLVED_ID) return null;
 
       // Resolve via the package entrypoint so we stay compatible with package
       // exports and pnpm's symlinked node_modules layout.
@@ -36,7 +40,10 @@ function dotLottieWasmPlugin(): Plugin {
         "dotlottie-player.wasm"
       );
       const wasmBuffer = fs.readFileSync(wasmSrc);
-      const hash = createHash("sha256").update(wasmBuffer).digest("hex").slice(0, 8);
+      const hash = createHash("sha256")
+        .update(wasmBuffer)
+        .digest("hex")
+        .slice(0, ASSET_HASH_LENGTH);
       const assetFileName = `assets/dotlottie-player-${hash}.wasm`;
 
       const refId = this.emitFile({
