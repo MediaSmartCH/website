@@ -280,7 +280,7 @@ function buildConfirmHtml(payload) {
 <p style="margin:0;font-size:15px;color:#c8cae0;line-height:1.7;white-space:pre-wrap;">${safeMessage}</p>
 </td></tr></table>
 <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
-<a href="${MEDIASMART_WEBSITE_URL}" style="display:inline-block;background:linear-gradient(135deg,#5b4fcf,#a855f7);color:#fff;font-size:14px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:50px;">www.mediasmart.ch</a>
+<a href="${MEDIASMART_WEBSITE_URL}" style="display:inline-block;background:linear-gradient(135deg,#5b4fcf,#a855f7);color:#fff;font-size:14px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:50px;">mediasmart.ch</a>
 </td></tr></table>
 </td></tr>
 <tr><td style="background:#13112a;border-radius:0 0 16px 16px;padding:24px 40px;text-align:center;border-top:1px solid #2a2748;">
