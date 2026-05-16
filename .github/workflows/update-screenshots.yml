@@ -71,13 +71,11 @@ jobs:
             --json url \
             --jq '.[0].url')"
 
-          if [ -n "$existing_pr_url" ]; then
-            echo "Updated existing pull request: $existing_pr_url"
-            exit 0
-          fi
+          pr_url="$existing_pr_url"
 
-          pr_body_file="$(mktemp)"
-          cat <<'EOF' > "$pr_body_file"
+          if [ -z "$pr_url" ]; then
+            pr_body_file="$(mktemp)"
+            cat <<'EOF' > "$pr_body_file"
           ## Summary
 
           - refresh the generated portfolio screenshots
@@ -87,19 +85,25 @@ jobs:
           - created automatically by the screenshot workflow
           EOF
 
-          if gh pr create \
-            --base "$BASE_BRANCH" \
-            --head "$SCREENSHOT_BRANCH" \
-            --title "chore: update portfolio screenshots" \
-            --body-file "$pr_body_file"; then
-            exit 0
+            if ! pr_url="$(gh pr create \
+              --base "$BASE_BRANCH" \
+              --head "$SCREENSHOT_BRANCH" \
+              --title "chore: update portfolio screenshots" \
+              --body-file "$pr_body_file")"; then
+              echo "::warning::GitHub Actions could not create the pull request. The screenshots were pushed to '$SCREENSHOT_BRANCH'."
+              {
+                echo "## Screenshot update pending"
+                echo
+                echo "- branch: \`$SCREENSHOT_BRANCH\`"
+                echo "- reason: GitHub Actions is not allowed to create pull requests in this repository with the current token"
+                echo "- next step: open a pull request manually, or add a \`SCREENSHOT_PR_TOKEN\` repository secret with a token that can create pull requests"
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
           fi
 
-          echo "::warning::GitHub Actions could not create the pull request. The screenshots were pushed to '$SCREENSHOT_BRANCH'."
-          {
-            echo "## Screenshot update pending"
-            echo
-            echo "- branch: \`$SCREENSHOT_BRANCH\`"
-            echo "- reason: GitHub Actions is not allowed to create pull requests in this repository with the current token"
-            echo "- next step: open a pull request manually, or add a \`SCREENSHOT_PR_TOKEN\` repository secret with a token that can create pull requests"
-          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Pull request: $pr_url"
+
+          if ! gh pr merge "$pr_url" --squash --delete-branch --auto; then
+            echo "::warning::Could not enable auto-merge on $pr_url — merge it manually once checks pass."
+          fi
