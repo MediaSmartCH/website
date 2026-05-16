@@ -69,12 +69,13 @@ jobs:
             --base "$BASE_BRANCH" \
             --state open \
             --json url \
-            --jq '.[0].url')"
+            --jq '.[0].url // ""')"
 
           pr_url="$existing_pr_url"
 
           if [ -z "$pr_url" ]; then
             pr_body_file="$(mktemp)"
+            trap 'rm -f "$pr_body_file"' EXIT
             cat <<'EOF' > "$pr_body_file"
           ## Summary
 
