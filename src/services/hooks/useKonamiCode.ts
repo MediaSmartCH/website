@@ -33,7 +33,7 @@ export function useKonamiCode(targetUrl: string): void {
         buffer.every((k, i) => k === KONAMI[i])
       ) {
         buffer = [];
-        window.location.href = targetUrl;
+        window.location.assign(targetUrl);
       }
     };
 
