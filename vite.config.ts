@@ -1,12 +1,14 @@
 import fs from "fs";
 import { createHash } from "crypto";
 import { createRequire } from "module";
+import { fileURLToPath } from "url";
 import { defineConfig, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const _require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Emits the DotLottie WASM binary as a content-hashed asset and exposes its
