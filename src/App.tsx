@@ -10,6 +10,7 @@ import CookieConsent from "components/presentation/cookies";
 import { getThemeMediaQuery } from "store/slices/common/themeUtils";
 import { syncSystemTheme } from "store/slices/common/themeSlice";
 import useCookieConsent from "services/hooks/useCookieConsent";
+import { useKonamiCode } from "services/hooks/useKonamiCode";
 import { usePreventZoom } from "services/hooks/usePreventZoom";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   const { currentTheme, themePreference } = useAppSelector((state) => state.theme);
   const consent = useCookieConsent();
   usePreventZoom();
+  useKonamiCode("https://apps.mediasmart.ch/CC-Voice/");
 
   // Keep the theme in sync with the OS color-scheme when the user has not
   // chosen a manual preference. Uses the modern addEventListener API and
