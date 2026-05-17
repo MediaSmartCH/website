@@ -25,7 +25,7 @@ const privacy = {
     s2aLegalLabel: "Base légale :",
     s2aLegal: "consentement (case à cocher obligatoire).",
 
-    s2bTitle: "b) Prise de rendez-vous (Calendly)",
+    s2bTitle: "b) Prise de rendez-vous",
     s2bItem1: "Nom et prénom",
     s2bItem2: "Adresse e-mail",
     s2bItem3: "Créneau choisi",
@@ -34,7 +34,8 @@ const privacy = {
     s2bPurpose: "gestion des rendez-vous.",
     s2bLegalLabel: "Base légale :",
     s2bLegal: "exécution du service (mesures précontractuelles/contractuelles).",
-    s2bCalendlyLabel: "Lien :",
+    s2bToolLabel: "Outil :",
+    s2bTool: "système de réservation interne MediaSmart, sans tiers. Une fois confirmé, l'événement est créé dans Google Calendar côté MediaSmart pour planifier la rencontre.",
 
     s2cTitle: "c) Google reCAPTCHA",
     s2cDesc:
@@ -58,7 +59,7 @@ const privacy = {
     s3Intro: "Nous utilisons trois catégories de cookies :",
     s3NecessaryLabel: "Cookies nécessaires :",
     s3Necessary:
-        "indispensables au fonctionnement du site (formulaire de contact, prise de rendez-vous via Calendly, protection anti-spam reCAPTCHA). Toujours actifs, ils ne nécessitent pas votre consentement.",
+        "indispensables au fonctionnement du site (formulaire de contact, prise de rendez-vous, protection anti-spam reCAPTCHA). Toujours actifs, ils ne nécessitent pas votre consentement.",
     s3FunctionalityLabel: "Cookies de fonctionnalité :",
     s3Functionality:
         "mémorisent vos préférences de thème (clair/sombre/système) et de langue (FR/EN). Activés uniquement avec votre accord.",
@@ -79,7 +80,7 @@ const privacy = {
     // 5. Conservation
     s5Title: "5. Durées de conservation",
     s5Item1: "Demandes de contact : jusqu'à 12 mois après le dernier échange.",
-    s5Item2: "Rendez-vous Calendly : selon la politique de Calendly.",
+    s5Item2: "Rendez-vous : conservés 24 mois dans notre base interne, puis supprimés. L'événement Google Calendar suit la politique de rétention de votre Workspace.",
     s5Item3: "Journaux techniques (sécurité, accès, logs) : 90 jours.",
     s5Item4: "Données statistiques (Analytics) : anonymisées et conservées 14 mois.",
 
@@ -91,7 +92,7 @@ const privacy = {
     // 7. Partage
     s7Title: "7. Partage des données",
     s7Desc:
-        "Nous ne vendons ni ne louons vos données personnelles. Certaines données peuvent être transmises à nos prestataires techniques (Vercel, Google, Calendly), uniquement pour fournir les services, et sous obligations contractuelles strictes de confidentialité et de sécurité.",
+        "Nous ne vendons ni ne louons vos données personnelles. Certaines données peuvent être transmises à nos prestataires techniques (Vercel, Cloudflare, Google), uniquement pour fournir les services, et sous obligations contractuelles strictes de confidentialité et de sécurité.",
 
     // 8. Droits
     s8Title: "8. Vos droits (LPD & RGPD)",

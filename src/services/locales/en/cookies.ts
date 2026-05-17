@@ -27,8 +27,6 @@ const cookies = {
     contactForm: "Contact form",
     contactFormDesc: "Enables message sending",
     antiSpamDesc: "Anti-spam protection",
-    calendlyBasic: "Calendly",
-    appointmentBooking: "Appointment booking",
     pagesVisited: "Pages visited, time spent, traffic source",
     themePreference: "Theme preferences",
     themePreferenceDesc: "Remembers your choice between light, dark or system theme",

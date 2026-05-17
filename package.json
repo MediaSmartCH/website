@@ -40,7 +40,6 @@
     "lucide-react": "^1.7.0",
     "moment": "^2.29.4",
     "react": "^19.2.4",
-    "react-calendly": "^4.3.0",
     "react-dom": "^19.2.4",
     "react-google-recaptcha-v3": "^1.11.0",
     "react-helmet-async": "^3.0.0",

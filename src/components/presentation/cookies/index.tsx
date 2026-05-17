@@ -119,7 +119,6 @@ const ModernCookieBanner = () => {
     if (consent) {
       // Apply stored consent values safely; Boolean() guards against undefined entries
       setGoogleAnalytics(Boolean(consent.googleAnalytics));
-      // calendlyFunctionality is always true — no state to restore.
       setThemePreference(Boolean(consent.themePreference));
       setLanguagePreference(Boolean(consent.languagePreference));
       setIsVisible(false);
@@ -233,9 +232,6 @@ const ModernCookieBanner = () => {
 
     saveConsentData({
       googleAnalytics: true,
-      calendlyFunctionality: true,
-      calendlyPerformance: false,
-      calendlyAdvertising: false,
       themePreference: true,
       languagePreference: true
     });
@@ -250,9 +246,6 @@ const ModernCookieBanner = () => {
 
     saveConsentData({
       googleAnalytics: false,
-      calendlyFunctionality: true,
-      calendlyPerformance: false,
-      calendlyAdvertising: false,
       themePreference: false,
       languagePreference: false
     });
@@ -263,9 +256,6 @@ const ModernCookieBanner = () => {
   const handleSavePreferences = () => {
     saveConsentData({
       googleAnalytics,
-      calendlyFunctionality: true,
-      calendlyPerformance: false,
-      calendlyAdvertising: false,
       themePreference,
       languagePreference
     });
@@ -615,7 +605,7 @@ const ModernCookieBanner = () => {
                         <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
                           {t.text("cookies.necessaryDesc")}
                         </p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                           <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
                             <div className="flex items-center gap-1 mb-1">
                               <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
@@ -629,13 +619,6 @@ const ModernCookieBanner = () => {
                               <p className={`font-medium text-xs ${themeClasses.text}`}>Google reCAPTCHA</p>
                             </div>
                             <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.antiSpamDesc")}</p>
-                          </div>
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center gap-1 mb-1">
-                              <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                              <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.calendlyBasic")}</p>
-                            </div>
-                            <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.appointmentBooking")}</p>
                           </div>
                         </div>
                       </div>

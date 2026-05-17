@@ -14,7 +14,7 @@ import arrow from "assets/icons/rightArrow.svg";
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
 import { useTranslations } from "services/locales/safe";
 import LocaleThemeControls from "components/common/LocaleThemeControls";
-import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
+import BookingButton from "components/booking/BookingButton";
 import ScopedRecaptchaProvider from "components/common/ScopedRecaptchaProvider";
 import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
@@ -360,17 +360,9 @@ const UnderConstructionInner: React.FC = () => {
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <ConsentAwareCalendlyButton
+            <BookingButton
               className="font-helvetica font-light text-base sm:text-lg text-purple-600 hover:text-purple-700 font-semibold transition-colors duration-200 underline decoration-purple-600 hover:decoration-purple-700"
-              blockedTitle={t.text("cookies.manageCookies")}
               text={t.text("UnderConstruction.bookAppointment")}
-              pageSettings={{
-                backgroundColor: themeReducer === "light" ? "#ffffff" : "#14172d",
-                hideEventTypeDetails: false,
-                hideLandingPageDetails: false,
-                primaryColor: themeReducer === "light" ? "#7c3aed" : "#F6F6F6",
-                textColor: themeReducer === "light" ? "#1f2937" : "#F6F6F6",
-              }}
             />
           </div>
         </div>

@@ -52,7 +52,6 @@ export default function PrivacyPolicy() {
   const ulClass = `list-disc list-inside mt-2 mb-4 ml-4 ${textBody}`;
   const linkClass = "text-blue-600 underline";
 
-  const calPrivacyUrl = "https://calendly.com/privacy";
   const googlePrivacyUrl = "https://policies.google.com/privacy";
   const recaptchaUrl = "https://www.google.com/recaptcha/about";
   const analyticsUrl =
@@ -152,12 +151,8 @@ export default function PrivacyPolicy() {
             <span className="font-medium">{t.text("privacy.s2bLegalLabel")}</span>{" "}
             {t.text("privacy.s2bLegal")}
             <br />
-            <span className="font-medium">{t.text("privacy.s2bCalendlyLabel")}</span>{" "}
-            <ExternalLink href={calPrivacyUrl}>
-              {t.text("privacy.s2bCalendlyLabel") === "Lien :"
-                ? "Politique de confidentialité Calendly"
-                : "Calendly Privacy Policy"}
-            </ExternalLink>
+            <span className="font-medium">{t.text("privacy.s2bToolLabel")}</span>{" "}
+            {t.text("privacy.s2bTool")}
           </p>
 
           <h3 className={h3Class}>{t.text("privacy.s2cTitle")}</h3>

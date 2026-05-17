@@ -5,7 +5,6 @@ import {
   safeJSONParse,
   getSafeConsentData,
   getNormalizedConsentData,
-  canLoadEmbeddedCalendly,
   saveConsentData,
   DEFAULT_CONSENT_PREFERENCES,
   COOKIE_CONSENT_UPDATED_EVENT,
@@ -122,34 +121,6 @@ describe("getNormalizedConsentData", () => {
   it("drops a non-string timestamp", () => {
     localStorage.setItem("cookie_consent", JSON.stringify({ timestamp: 12345 }));
     expect(getNormalizedConsentData().timestamp).toBeUndefined();
-  });
-});
-
-// ---------------------------------------------------------------------------
-// canLoadEmbeddedCalendly
-// ---------------------------------------------------------------------------
-
-describe("canLoadEmbeddedCalendly", () => {
-  it("returns true when calendlyFunctionality is true", () => {
-    expect(canLoadEmbeddedCalendly({ calendlyFunctionality: true })).toBe(true);
-  });
-
-  it("returns true even when performance and advertising are false", () => {
-    expect(
-      canLoadEmbeddedCalendly({
-        calendlyFunctionality: true,
-        calendlyPerformance: false,
-        calendlyAdvertising: false,
-      })
-    ).toBe(true);
-  });
-
-  it("returns false when calendlyFunctionality is false", () => {
-    expect(canLoadEmbeddedCalendly({ calendlyFunctionality: false })).toBe(false);
-  });
-
-  it("returns false for null input", () => {
-    expect(canLoadEmbeddedCalendly(null)).toBe(false);
   });
 });
 
