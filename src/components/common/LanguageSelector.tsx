@@ -131,7 +131,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           className={`${sizeConfig.flag} rounded-full object-cover`}
         />
         <span
-          className={`font-poppins font-medium uppercase leading-none ${sizeConfig.code}`}
+          className={`font-poppins font-semibold uppercase leading-none tracking-[0.04em] ${sizeConfig.code}`}
         >
           {activeLanguage.shortLabel}
         </span>

@@ -72,22 +72,30 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
       ? "border-black/10 bg-white/80 shadow-[0_6px_16px_rgba(15,23,42,0.08)]"
       : "border-white/10 bg-[#312D53]/72 shadow-[0_10px_24px_rgba(0,0,0,0.22)]";
 
-  const thumbClasses =
+  // Brand magenta→indigo thumb with violet glow. The light gradient
+  // mirrors the brand gradient hardcoded in App.css; the dark variant
+  // is brighter to stay visible against the dark pill background.
+  const thumbBackground =
     currentTheme === "light"
-      ? "bg-[#1F2430] shadow-[0_8px_16px_rgba(15,23,42,0.18)]"
-      : "bg-white shadow-[0_8px_18px_rgba(0,0,0,0.24)]";
+      ? "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)"
+      : "linear-gradient(90deg, #c044ff 0%, #7a8dff 100%)";
+  const thumbBoxShadow = "0 8px 18px -4px rgba(181, 20, 253, 0.55)";
 
+  // In light mode the moon is a thin crescent outline that disappears at
+  // #6B7280; bump to #4B5563 so it stays legible without darkening the
+  // sun/monitor icons too much.
   const inactiveButtonClasses =
     currentTheme === "light"
-      ? "text-[#6B7280] hover:text-[#14172D]"
+      ? "text-[#4B5563] hover:text-[#14172D]"
       : "text-[#D7DAE8] hover:text-white";
 
-  const activeButtonClasses =
-    currentTheme === "light" ? "text-white" : "text-[#22263A]";
+  // The violet thumb is dark enough that white icons read well on both
+  // themes, so the active color no longer flips with the theme.
+  const activeButtonClasses = "text-white";
 
   const animButtonClasses =
     currentTheme === "light"
-      ? "text-[#6B7280] hover:text-[#14172D]"
+      ? "text-[#4B5563] hover:text-[#14172D]"
       : "text-[#D7DAE8] hover:text-white";
 
   const separatorClass =
@@ -194,13 +202,15 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         {/* Sliding thumb */}
         <span
           aria-hidden="true"
-          className={`absolute rounded-full transition-transform duration-200 ease-out ${thumbClasses}`}
+          className="absolute rounded-full transition-transform duration-200 ease-out"
           style={{
             width: `${sizeConfig.button}px`,
             height: `${sizeConfig.button}px`,
             left: 0,
             top: 0,
             transform: `translateX(${activeIndex * (sizeConfig.button + sizeConfig.gap)}px)`,
+            background: thumbBackground,
+            boxShadow: thumbBoxShadow,
           }}
         />
         {options.map(({ value, label, Icon }, index) => {
