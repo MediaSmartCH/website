@@ -143,8 +143,11 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
 
   const cancelToken = generateToken(bookingId, 'cancel');
   const rescheduleToken = generateToken(bookingId, 'reschedule');
-  const manageUrl = `${env.siteOrigin}/booking/manage?id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(rescheduleToken)}`;
-  const cancelUrl = `${env.siteOrigin}/booking/manage?id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(cancelToken)}&action=cancel`;
+  // Manage links are language-prefixed so the visitor lands on the page in
+  // the language they used to book; the rest of the site is also localised.
+  const langPrefix = parsed.value.language;
+  const manageUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(rescheduleToken)}`;
+  const cancelUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(cancelToken)}&action=cancel`;
 
   try {
     await sendBookingConfirmation({

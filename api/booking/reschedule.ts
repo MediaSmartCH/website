@@ -141,8 +141,9 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   const env = getRuntimeEnv();
   const cancelToken = generateToken(id, 'cancel');
   const rescheduleToken = generateToken(id, 'reschedule');
-  const manageUrl = `${env.siteOrigin}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(rescheduleToken)}`;
-  const cancelUrl = `${env.siteOrigin}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(cancelToken)}&action=cancel`;
+  const langPrefix = row.attendee_language;
+  const manageUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(rescheduleToken)}`;
+  const cancelUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(cancelToken)}&action=cancel`;
 
   try {
     await sendBookingConfirmation({

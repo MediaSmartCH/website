@@ -80,3 +80,105 @@ export async function createBooking(
   }
   return data;
 }
+
+export interface BookingDetail {
+  id: string;
+  attendeeName: string;
+  attendeeEmail: string;
+  message: string | null;
+  language: 'fr' | 'en';
+  startUtc: string;
+  endUtc: string;
+  status: 'confirmed' | 'cancelled';
+}
+
+export interface LookupResponse {
+  success: boolean;
+  booking?: BookingDetail;
+  message?: string;
+  /** HTTP status if the request was rejected; 200/201 otherwise. */
+  status: number;
+}
+
+export async function lookupBooking(
+  id: string,
+  token: string,
+  signal?: AbortSignal,
+): Promise<LookupResponse> {
+  const params = new URLSearchParams({ id, token });
+  const response = await fetchWithDeployment(
+    `/api/booking/lookup?${params.toString()}`,
+    { signal },
+  );
+  const data = (await response.json().catch(() => ({}))) as {
+    success?: boolean;
+    booking?: BookingDetail;
+    message?: string;
+  };
+  return {
+    success: !!data.success,
+    booking: data.booking,
+    message: data.message,
+    status: response.status,
+  };
+}
+
+export interface MutationResponse {
+  success: boolean;
+  message?: string;
+  status: number;
+}
+
+export async function cancelBooking(
+  id: string,
+  token: string,
+  reason: string | null,
+): Promise<MutationResponse> {
+  const response = await fetchWithDeployment('/api/booking/cancel', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, token, reason }),
+  });
+  const data = (await response.json().catch(() => ({}))) as {
+    success?: boolean;
+    message?: string;
+  };
+  return {
+    success: !!data.success,
+    message: data.message,
+    status: response.status,
+  };
+}
+
+export interface RescheduleResponse extends MutationResponse {
+  booking?: {
+    id: string;
+    startUtc: string;
+    endUtc: string;
+    manageUrl: string;
+    cancelUrl: string;
+  };
+}
+
+export async function rescheduleBooking(
+  id: string,
+  token: string,
+  startUtc: string,
+): Promise<RescheduleResponse> {
+  const response = await fetchWithDeployment('/api/booking/reschedule', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, token, startUtc }),
+  });
+  const data = (await response.json().catch(() => ({}))) as {
+    success?: boolean;
+    booking?: RescheduleResponse['booking'];
+    message?: string;
+  };
+  return {
+    success: !!data.success,
+    booking: data.booking,
+    message: data.message,
+    status: response.status,
+  };
+}
