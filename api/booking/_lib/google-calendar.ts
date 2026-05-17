@@ -71,16 +71,29 @@ interface BusyInterval {
   end: Date;
 }
 
-// Wraps Calendar.freebusy.query to return busy intervals merged across
-// however many calendars we're checking. For now we only check one (the
-// booking owner's primary calendar), but the array shape keeps the door open
-// for multi-calendar setups without breaking callers.
+// Parses GOOGLE_FREEBUSY_CALENDAR_IDS into a deduped list. Empty entries are
+// dropped so a stray trailing comma in the env doesn't crash freeBusy.
+function resolveFreeBusyCalendarIds(): string[] {
+  const env = getRuntimeEnv();
+  const raw = env.googleFreeBusyCalendarIds.trim();
+  const ids = raw.length === 0
+    ? [env.googleCalendarId]
+    : raw
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+  return Array.from(new Set(ids));
+}
+
+// Wraps Calendar.freebusy.query to return busy intervals merged across every
+// configured calendar. Google's freeBusy endpoint accepts up to 50 calendars
+// in a single request, so we get the multi-calendar check in one round-trip.
 export async function getBusyIntervals(
   rangeStart: Date,
   rangeEnd: Date,
 ): Promise<BusyInterval[]> {
-  const env = getRuntimeEnv();
   const accessToken = await getAccessToken();
+  const calendarIds = resolveFreeBusyCalendarIds();
 
   const response = await fetch(
     'https://www.googleapis.com/calendar/v3/freeBusy',
@@ -94,7 +107,7 @@ export async function getBusyIntervals(
         timeMin: rangeStart.toISOString(),
         timeMax: rangeEnd.toISOString(),
         timeZone: 'UTC',
-        items: [{ id: env.googleCalendarId }],
+        items: calendarIds.map((id) => ({ id })),
       }),
     },
   );
@@ -108,11 +121,30 @@ export async function getBusyIntervals(
   }
 
   const data = (await response.json()) as {
-    calendars?: Record<string, { busy?: Array<{ start: string; end: string }> }>;
+    calendars?: Record<string, {
+      busy?: Array<{ start: string; end: string }>;
+      errors?: Array<{ domain: string; reason: string }>;
+    }>;
   };
 
-  const busy = data.calendars?.[env.googleCalendarId]?.busy ?? [];
-  return busy.map((b) => ({ start: new Date(b.start), end: new Date(b.end) }));
+  // Merge busy windows from every queried calendar. A booked slot in ANY of
+  // them blocks the time. Calendars that return per-calendar errors (e.g. an
+  // ID the token can't read) are logged but never fail the whole call so a
+  // single misconfigured calendar can't take the booking flow down.
+  const merged: BusyInterval[] = [];
+  for (const id of calendarIds) {
+    const entry = data.calendars?.[id];
+    if (entry?.errors?.length) {
+      console.error(
+        `freeBusy: calendar "${id}" returned errors`,
+        entry.errors,
+      );
+    }
+    for (const slot of entry?.busy ?? []) {
+      merged.push({ start: new Date(slot.start), end: new Date(slot.end) });
+    }
+  }
+  return merged;
 }
 
 export interface CreateEventInput {

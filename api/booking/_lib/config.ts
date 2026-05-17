@@ -42,6 +42,12 @@ const ENV_KEYS = {
   googleClientSecret: { envVar: 'GOOGLE_OAUTH_CLIENT_SECRET' },
   googleRefreshToken: { envVar: 'GOOGLE_OAUTH_REFRESH_TOKEN' },
   googleCalendarId: { envVar: 'GOOGLE_CALENDAR_ID', fallback: 'primary' },
+  // Comma-separated list of calendar IDs to query for conflicts. Falls back to
+  // googleCalendarId when unset so single-calendar setups keep working.
+  googleFreeBusyCalendarIds: {
+    envVar: 'GOOGLE_FREEBUSY_CALENDAR_IDS',
+    fallback: '',
+  },
   cfAccountId: { envVar: 'CLOUDFLARE_ACCOUNT_ID' },
   cfApiToken: { envVar: 'CLOUDFLARE_API_TOKEN' },
   d1DatabaseId: { envVar: 'CLOUDFLARE_D1_DATABASE_ID' },
