@@ -72,8 +72,9 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
       ? "border-black/10 bg-white/80 shadow-[0_6px_16px_rgba(15,23,42,0.08)]"
       : "border-white/10 bg-[#312D53]/72 shadow-[0_10px_24px_rgba(0,0,0,0.22)]";
 
-  // Brand magenta→indigo gradient thumb with violet glow — matches the
-  // shared --accent-grad token used elsewhere in the site.
+  // Brand magenta→indigo thumb with violet glow. The light gradient
+  // mirrors the brand gradient hardcoded in App.css; the dark variant
+  // is brighter to stay visible against the dark pill background.
   const thumbBackground =
     currentTheme === "light"
       ? "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)"
