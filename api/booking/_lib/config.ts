@@ -1,6 +1,7 @@
 // Single source of truth for booking-system constants and env-derived config.
-// Read once at import time; throw early in production so a misconfigured deploy
-// fails fast at the boundary instead of producing silently broken availability.
+// Env vars are resolved lazily per key so an endpoint that only needs Google
+// Calendar doesn't crash when an unrelated secret (e.g. the D1 token) is
+// missing locally.
 
 export const BOOKING_TIMEZONE = 'Europe/Zurich';
 
@@ -31,41 +32,52 @@ export const NOTIFICATION_EMAIL = 'booking@mediasmart.ch';
 // "From" header on outgoing mail. Friendly name + verified sender.
 export const MAIL_FROM = 'MediaSmart <booking@mediasmart.ch>';
 
-interface RuntimeEnv {
-  googleClientId: string;
-  googleClientSecret: string;
-  googleRefreshToken: string;
-  googleCalendarId: string;
-  cfAccountId: string;
-  cfApiToken: string;
-  d1DatabaseId: string;
-  resendApiKey: string;
-  bookingSecret: string;
-  siteOrigin: string;
+interface EnvSpec {
+  envVar: string;
+  fallback?: string;
 }
 
-function readEnv(name: string, fallback?: string): string {
-  const value = process.env[name];
+const ENV_KEYS = {
+  googleClientId: { envVar: 'GOOGLE_OAUTH_CLIENT_ID' },
+  googleClientSecret: { envVar: 'GOOGLE_OAUTH_CLIENT_SECRET' },
+  googleRefreshToken: { envVar: 'GOOGLE_OAUTH_REFRESH_TOKEN' },
+  googleCalendarId: { envVar: 'GOOGLE_CALENDAR_ID', fallback: 'primary' },
+  cfAccountId: { envVar: 'CLOUDFLARE_ACCOUNT_ID' },
+  cfApiToken: { envVar: 'CLOUDFLARE_API_TOKEN' },
+  d1DatabaseId: { envVar: 'CLOUDFLARE_D1_DATABASE_ID' },
+  resendApiKey: { envVar: 'RESEND_API_KEY' },
+  bookingSecret: { envVar: 'BOOKING_HMAC_SECRET' },
+  siteOrigin: { envVar: 'SITE_ORIGIN', fallback: 'https://mediasmart.ch' },
+} as const satisfies Record<string, EnvSpec>;
+
+type EnvKey = keyof typeof ENV_KEYS;
+
+function readEnv(spec: EnvSpec): string {
+  const value = process.env[spec.envVar];
   if (value && value.length > 0) return value;
-  if (fallback !== undefined) return fallback;
-  throw new Error(`Missing required env var: ${name}`);
+  if (spec.fallback !== undefined) return spec.fallback;
+  throw new Error(`Missing required env var: ${spec.envVar}`);
 }
 
-let cachedEnv: RuntimeEnv | null = null;
+// Backwards-compatible accessor: callers expecting the bundled-shape object
+// can still ask for all env vars in one go. Resolving lazily on access means
+// only the keys actually consumed for a given request need to be populated.
+type RuntimeEnv = Record<EnvKey, string>;
+
+let cachedProxy: RuntimeEnv | null = null;
 
 export function getRuntimeEnv(): RuntimeEnv {
-  if (cachedEnv) return cachedEnv;
-  cachedEnv = {
-    googleClientId: readEnv('GOOGLE_OAUTH_CLIENT_ID'),
-    googleClientSecret: readEnv('GOOGLE_OAUTH_CLIENT_SECRET'),
-    googleRefreshToken: readEnv('GOOGLE_OAUTH_REFRESH_TOKEN'),
-    googleCalendarId: readEnv('GOOGLE_CALENDAR_ID', 'primary'),
-    cfAccountId: readEnv('CLOUDFLARE_ACCOUNT_ID'),
-    cfApiToken: readEnv('CLOUDFLARE_API_TOKEN'),
-    d1DatabaseId: readEnv('CLOUDFLARE_D1_DATABASE_ID'),
-    resendApiKey: readEnv('RESEND_API_KEY'),
-    bookingSecret: readEnv('BOOKING_HMAC_SECRET'),
-    siteOrigin: readEnv('SITE_ORIGIN', 'https://mediasmart.ch'),
-  };
-  return cachedEnv;
+  if (cachedProxy) return cachedProxy;
+  const memo: Partial<RuntimeEnv> = {};
+  cachedProxy = new Proxy({} as RuntimeEnv, {
+    get(_target, prop: string) {
+      if (!(prop in ENV_KEYS)) return undefined;
+      const key = prop as EnvKey;
+      if (memo[key] === undefined) {
+        memo[key] = readEnv(ENV_KEYS[key]);
+      }
+      return memo[key];
+    },
+  });
+  return cachedProxy;
 }
