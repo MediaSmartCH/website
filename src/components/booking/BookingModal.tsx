@@ -227,21 +227,26 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
     }
   };
 
+  // Close when the backdrop is clicked. Previously this was implemented with
+  // a sibling absolute-positioned <button> overlay, but in some browsers the
+  // overlay's hit area intercepted clicks on child buttons (notably the
+  // calendar's prev/next-month chevrons that sit close to its edge). Using
+  // an onClick on the dialog div with a target===currentTarget guard avoids
+  // the overlap problem entirely while keeping backdrop dismissal.
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      handleClose();
+    }
+  };
+
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="booking-modal-title"
+      onClick={handleBackdropClick}
       className={`fixed inset-0 z-[100] flex items-stretch sm:items-center justify-center backdrop-blur-sm ${overlayClass}`}
     >
-      <button
-        type="button"
-        aria-hidden="true"
-        tabIndex={-1}
-        onClick={handleClose}
-        className="absolute inset-0 cursor-default"
-      />
-
       <div
         className={`relative w-full sm:max-w-[920px] sm:max-h-[90vh] sm:rounded-3xl overflow-y-auto ${panelClass}`}
       >
