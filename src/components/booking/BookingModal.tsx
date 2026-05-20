@@ -247,8 +247,10 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   };
 
   // Centralised header — same on every step so it doesn't jump around.
+  // `flex-none` keeps it pinned at the top of the flex column; only the
+  // sibling content region scrolls.
   const header = (
-    <div className="px-6 sm:px-10 pt-8 sm:pt-10 pb-2">
+    <div className="flex-none px-6 sm:px-10 pt-8 sm:pt-10 pb-2">
       <p
         id="booking-modal-title"
         className={`font-redDisplay font-bold text-[24px] sm:text-[28px] ${isLight ? 'text-[#14172D]' : 'text-[#F6F6F6]'}`}
@@ -287,12 +289,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
     >
       {/*
         Pin the modal envelope to a fixed sm+ size so navigating between
-        steps doesn't pop the box to a different height. The form is the
-        tallest step (~660px); we round to 680 to leave breathing room.
-        On mobile we leave height auto and rely on the page's own scroll.
+        steps doesn't pop the box to a different height. Layout is a flex
+        column so the header stays pinned while only the content area
+        scrolls when it overflows — the title and back button never get
+        scrolled out of view.
       */}
       <div
-        className={`relative w-full sm:w-[560px] sm:h-[680px] sm:max-h-[90vh] sm:rounded-3xl overflow-y-auto ${panelClass}`}
+        className={`relative w-full sm:w-[560px] sm:h-[680px] sm:max-h-[90vh] sm:rounded-3xl flex flex-col ${panelClass}`}
       >
         {/* Close button — pinned top-right */}
         <button
@@ -316,7 +319,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
         ) : (
           <>
             {header}
-            <div className="px-6 sm:px-10 pb-8 sm:pb-10">
+            {/*
+              Scrollable content region. `overscroll-contain` stops scroll
+              from "chaining" to the page underneath when the user hits the
+              top or bottom of this list, which felt jarring on long forms.
+            */}
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 sm:px-10 pb-8 sm:pb-10">
               {stage === 'date' && (
                 <div className="mt-6">
                   {loadingSlots ? (
