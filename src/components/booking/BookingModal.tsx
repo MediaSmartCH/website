@@ -285,8 +285,14 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
       onClick={handleBackdropClick}
       className={`fixed inset-0 z-[100] flex items-stretch sm:items-center justify-center backdrop-blur-sm ${overlayClass}`}
     >
+      {/*
+        Pin the modal envelope to a fixed sm+ size so navigating between
+        steps doesn't pop the box to a different height. The form is the
+        tallest step (~660px); we round to 680 to leave breathing room.
+        On mobile we leave height auto and rely on the page's own scroll.
+      */}
       <div
-        className={`relative w-full sm:max-w-[560px] sm:max-h-[90vh] sm:rounded-3xl overflow-y-auto ${panelClass}`}
+        className={`relative w-full sm:w-[560px] sm:h-[680px] sm:max-h-[90vh] sm:rounded-3xl overflow-y-auto ${panelClass}`}
       >
         {/* Close button — pinned top-right */}
         <button
