@@ -324,9 +324,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
               from "chaining" to the page underneath when the user hits the
               top or bottom of this list, which felt jarring on long forms.
             */}
-            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 sm:px-10 pb-8 sm:pb-10">
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 sm:px-10 pb-6 sm:pb-8">
               {stage === 'date' && (
-                <div className="mt-6">
+                <div className="mt-3">
                   {loadingSlots ? (
                     <div className={`flex flex-col items-center justify-center py-12 gap-3 ${subtleText}`}>
                       <Loader2 size={22} strokeWidth={2.2} className="animate-spin" />

@@ -82,7 +82,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
     : 'text-[#CFCDE0] hover:text-white';
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <button
         type="button"
         onClick={onBack}
@@ -148,7 +148,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder={t.text('booking.form.messagePlaceholder')}
-          rows={4}
+          rows={3}
           maxLength={2000}
           className={`w-full resize-none rounded-xl border px-4 py-3 text-[14px] font-poppins transition-colors outline-none ${inputClasses}`}
         />
