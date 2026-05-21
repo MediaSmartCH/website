@@ -16,6 +16,13 @@ interface PortfolioItem {
   url?: string;
   images?: string[];
   screenshotUrls?: string[];
+  /**
+   * Optional short note shown as a non-clickable badge when the project is
+   * not freely accessible (private / bespoke / restricted-access). Renders
+   * either alongside or instead of the Visit Site button depending on
+   * whether a public URL is also provided.
+   */
+  accessNote?: LocalizedField;
 }
 
 interface PortfolioData {
@@ -195,13 +202,12 @@ const PortfolioGallery = () => {
 
   const t = useTranslations(languageReducer);
 
-  // Filter out items with no displayable images so empty cards never appear
+  // All portfolio items, including those without screenshots (e.g. private
+  // bespoke projects shown with title + description + accessNote badge in
+  // the modal but not in the homepage preview tiles).
   const portfolioItems = useMemo(() => {
     const data = portfolioContent as PortfolioData;
-
-    return (data.items ?? []).filter(
-      (item) => getItemImages(item).length > 0
-    );
+    return data.items ?? [];
   }, []);
 
   useBodyScrollLock(isModalOpen);
@@ -228,7 +234,12 @@ const PortfolioGallery = () => {
     return null;
   }
 
-  const previewItems = portfolioItems.slice(0, PREVIEW_LIMIT);
+  // Preview tiles are image-driven, so we hide items that have no screenshot
+  // to show. They still appear in the full modal as text-only cards.
+  const previewCandidates = portfolioItems.filter(
+    (item) => getItemImages(item).length > 0
+  );
+  const previewItems = previewCandidates.slice(0, PREVIEW_LIMIT);
   const hiddenProjectsCount = Math.max(
     portfolioItems.length - previewItems.length,
     0
@@ -342,6 +353,9 @@ const PortfolioGallery = () => {
               );
               const images = getItemImages(item);
               const safeItemUrl = getSafeExternalUrl(item.url);
+              const accessNote = item.accessNote
+                ? resolveLocalizedField(item.accessNote, languageReducer)
+                : null;
               // Switch to a horizontally scrollable row when the image count exceeds the threshold
               const shouldScrollGallery =
                 images.length > SCROLLABLE_GALLERY_THRESHOLD;
@@ -358,14 +372,16 @@ const PortfolioGallery = () => {
                       >
                         {title}
                       </h3>
-                      <p
-                        className={`${mutedTextClass} mt-1 text-[12px] font-helvetica font-light uppercase tracking-[0.18em]`}
-                      >
-                        {formatImageCount(images.length, languageReducer)}
-                      </p>
+                      {images.length > 0 && (
+                        <p
+                          className={`${mutedTextClass} mt-1 text-[12px] font-helvetica font-light uppercase tracking-[0.18em]`}
+                        >
+                          {formatImageCount(images.length, languageReducer)}
+                        </p>
+                      )}
                     </div>
 
-                    {safeItemUrl && (
+                    {safeItemUrl ? (
                       <a
                         href={safeItemUrl}
                         target="_blank"
@@ -374,7 +390,13 @@ const PortfolioGallery = () => {
                       >
                         {t.text("it.portfolioVisitSite")}
                       </a>
-                    )}
+                    ) : accessNote ? (
+                      <span
+                        className={`shrink-0 rounded-full border px-3 py-2 text-[12px] font-medium ${isLightTheme ? "border-[#D9DCF2]/70 bg-[#EEF0FF]/40 text-[#2C3A87]/80" : "border-white/10 bg-white/5 text-[#DAD7FF]/85"}`}
+                      >
+                        {accessNote}
+                      </span>
+                    ) : null}
                   </div>
 
                   <p
@@ -383,8 +405,11 @@ const PortfolioGallery = () => {
                     {description}
                   </p>
 
-                  <div className="mt-auto pt-5">
-                    {shouldScrollGallery ? (
+                  {/* Image gallery: hidden for items with no screenshots
+                      (e.g. private bespoke solutions) so the card doesn't
+                      leave a confusing empty area at the bottom. */}
+                  <div className={`mt-auto ${images.length > 0 ? "pt-5" : ""}`}>
+                    {images.length === 0 ? null : shouldScrollGallery ? (
                       <div className="portfolio-scrollbar flex gap-3 overflow-x-auto overscroll-contain pb-2 pr-1 snap-x snap-mandatory">
                         {images.map((image, index) => {
                           const targetUrl = item.screenshotUrls?.[index]

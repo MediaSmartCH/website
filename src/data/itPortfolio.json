@@ -107,6 +107,66 @@
       },
       "url": "https://www.arml.ch",
       "screenshotUrls": ["https://www.arml.ch"]
+    },
+    {
+      "id": "mediasmart-games",
+      "title": {
+        "fr": "MediaSmart Lab – Mini-jeux Telegram",
+        "en": "MediaSmart Lab – Telegram mini-games"
+      },
+      "description": {
+        "fr": "Plateforme de mini-jeux en ligne gratuits, jouables directement dans le navigateur ou en tant que mini-app Telegram. Scores synchronisés via un bot Telegram dédié, classements en direct et expérience pensée mobile-first.",
+        "en": "A free mini-games platform playable directly in the browser or as a Telegram mini-app. Scores are synced via a dedicated Telegram bot, with live leaderboards and a mobile-first experience."
+      },
+      "url": "https://apps.mediasmart.ch",
+      "screenshotUrls": ["https://apps.mediasmart.ch"]
+    },
+    {
+      "id": "cc-voice",
+      "title": {
+        "fr": "CC-Voice – Clonage de voix Qwen3-TTS",
+        "en": "CC-Voice – Qwen3-TTS voice cloning"
+      },
+      "description": {
+        "fr": "Interface web pour un système de clonage vocal local basé sur Qwen3-TTS. Inférence GPU côté studio MediaSmart, frontend Vercel et accès strictement contrôlé. Une version grand public est en préparation.",
+        "en": "Web frontend for a local Qwen3-TTS voice cloning system. Inference runs on the MediaSmart studio GPU, the frontend is hosted on Vercel and access is strictly controlled. A public-facing version is in the works."
+      },
+      "url": "https://apps.mediasmart.ch/CC-Voice/",
+      "accessNote": {
+        "fr": "Accès restreint",
+        "en": "Restricted access"
+      },
+      "screenshotUrls": ["https://apps.mediasmart.ch/CC-Voice/"]
+    },
+    {
+      "id": "ged-mediasmart",
+      "title": {
+        "fr": "MediaSmart GED – Gestion documentaire privée",
+        "en": "MediaSmart GED – Private document management"
+      },
+      "description": {
+        "fr": "Gestion électronique de documents 100% locale, pensée pour les factures et documents sensibles. OCR automatique, extraction des champs (fournisseur, montant, échéance), interface web protégée par mot de passe et stockage chiffré sur le réseau interne. Solution proposée par MediaSmart sur devis.",
+        "en": "Fully on-prem document management system designed for invoices and sensitive paperwork. Automatic OCR, supplier/amount/due-date extraction, password-protected web UI and encrypted storage on the internal network. Offered by MediaSmart on quote."
+      },
+      "accessNote": {
+        "fr": "Solution sur mesure – démo sur demande",
+        "en": "Bespoke solution – demo on request"
+      }
+    },
+    {
+      "id": "cc-factures-dashboard",
+      "title": {
+        "fr": "Dashboard Factures Fournisseurs",
+        "en": "Supplier invoices dashboard"
+      },
+      "description": {
+        "fr": "Tableau de bord d’analyse des factures fournisseurs : KPIs mensuels, top fournisseurs, comparaison de périodes, drill-down par dossier et export CSV. Authentification Microsoft 365, ingestion depuis SharePoint, mode mock pour le développement. Une démo publique sera prochainement publiée sur dashboard-depenses.mediasmart.ch.",
+        "en": "Supplier-invoice analytics dashboard: monthly KPIs, top suppliers, period-over-period comparisons, per-file drill-down and CSV export. Microsoft 365 authentication, SharePoint ingestion and a built-in mock mode for development. A public demo will be published soon on dashboard-depenses.mediasmart.ch."
+      },
+      "accessNote": {
+        "fr": "Solution sur mesure – démo bientôt en ligne",
+        "en": "Bespoke solution – demo coming soon"
+      }
     }
   ]
 }
