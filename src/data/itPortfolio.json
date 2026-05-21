@@ -136,7 +136,7 @@
         "fr": "Accès restreint",
         "en": "Restricted access"
       },
-      "screenshotUrls": ["https://apps.mediasmart.ch/CC-Voice/"]
+      "images": ["/portfolio/cc-voice-0.jpg"]
     },
     {
       "id": "ged-mediasmart",
@@ -151,7 +151,11 @@
       "accessNote": {
         "fr": "Solution sur mesure – démo sur demande",
         "en": "Bespoke solution – demo on request"
-      }
+      },
+      "images": [
+        "/portfolio/ged-mediasmart-0.jpg",
+        "/portfolio/ged-mediasmart-1.jpg"
+      ]
     },
     {
       "id": "cc-factures-dashboard",
@@ -166,7 +170,12 @@
       "accessNote": {
         "fr": "Solution sur mesure – démo bientôt en ligne",
         "en": "Bespoke solution – demo coming soon"
-      }
+      },
+      "images": [
+        "/portfolio/cc-factures-dashboard-0.jpg",
+        "/portfolio/cc-factures-dashboard-1.jpg",
+        "/portfolio/cc-factures-dashboard-2.jpg"
+      ]
     }
   ]
 }

@@ -381,22 +381,25 @@ const PortfolioGallery = () => {
                       )}
                     </div>
 
-                    {safeItemUrl ? (
-                      <a
-                        href={safeItemUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`shrink-0 rounded-full border px-3 py-2 text-[12px] font-medium transition duration-200 ${isLightTheme ? "border-[#D9DCF2] text-[#2C3A87] hover:bg-[#EEF0FF]" : "border-white/10 text-[#DAD7FF] hover:bg-white/10"}`}
-                      >
-                        {t.text("it.portfolioVisitSite")}
-                      </a>
-                    ) : accessNote ? (
-                      <span
-                        className={`shrink-0 rounded-full border px-3 py-2 text-[12px] font-medium ${isLightTheme ? "border-[#D9DCF2]/70 bg-[#EEF0FF]/40 text-[#2C3A87]/80" : "border-white/10 bg-white/5 text-[#DAD7FF]/85"}`}
-                      >
-                        {accessNote}
-                      </span>
-                    ) : null}
+                    <div className="flex shrink-0 flex-col items-end gap-1.5">
+                      {safeItemUrl && (
+                        <a
+                          href={safeItemUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`rounded-full border px-3 py-2 text-[12px] font-medium transition duration-200 ${isLightTheme ? "border-[#D9DCF2] text-[#2C3A87] hover:bg-[#EEF0FF]" : "border-white/10 text-[#DAD7FF] hover:bg-white/10"}`}
+                        >
+                          {t.text("it.portfolioVisitSite")}
+                        </a>
+                      )}
+                      {accessNote && (
+                        <span
+                          className={`rounded-full border px-3 py-1 text-[11px] font-medium ${isLightTheme ? "border-[#D9DCF2]/70 bg-[#EEF0FF]/40 text-[#2C3A87]/80" : "border-white/10 bg-white/5 text-[#DAD7FF]/85"}`}
+                        >
+                          {accessNote}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <p
