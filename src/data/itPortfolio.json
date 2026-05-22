@@ -161,14 +161,19 @@
         "en": "Supplier invoices dashboard"
       },
       "description": {
-        "fr": "Tableau de bord d’analyse des factures fournisseurs : KPIs mensuels, top fournisseurs, comparaison de périodes, drill-down par dossier et export CSV. Authentification Microsoft 365, ingestion depuis SharePoint, mode mock pour le développement. Une démo publique sera prochainement publiée sur dashboard-depenses.mediasmart.ch.",
-        "en": "Supplier-invoice analytics dashboard: monthly KPIs, top suppliers, period-over-period comparisons, per-file drill-down and CSV export. Microsoft 365 authentication, SharePoint ingestion and a built-in mock mode for development. A public demo will be published soon on dashboard-depenses.mediasmart.ch."
+        "fr": "Tableau de bord d’analyse des factures fournisseurs : KPIs mensuels, top fournisseurs, comparaison de périodes, drill-down par dossier et export CSV. Authentification Microsoft 365, ingestion depuis SharePoint. Une démo gratuite est disponible en ligne sur dashboard-depenses.mediasmart.ch — clique sur « Visiter le site » pour explorer l’interface avec des données fictives.",
+        "en": "Supplier-invoice analytics dashboard: monthly KPIs, top suppliers, period-over-period comparisons, per-file drill-down and CSV export. Microsoft 365 authentication, SharePoint ingestion. A free demo is live at dashboard-depenses.mediasmart.ch — click 'Visit site' to explore the UI with synthetic data."
       },
+      "url": "https://dashboard-depenses.mediasmart.ch/mock",
       "accessNote": {
-        "fr": "Solution sur mesure – démo bientôt en ligne",
-        "en": "Bespoke solution – demo coming soon"
+        "fr": "Démo gratuite en ligne",
+        "en": "Free live demo"
       },
-      "images": ["/portfolio/cc-factures-dashboard-0.jpg"]
+      "screenshotUrls": [
+        "https://dashboard-depenses.mediasmart.ch/mock",
+        "https://dashboard-depenses.mediasmart.ch/factures",
+        "https://dashboard-depenses.mediasmart.ch/fournisseurs"
+      ]
     }
   ]
 }
