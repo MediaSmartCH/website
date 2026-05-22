@@ -124,12 +124,12 @@
     {
       "id": "cc-voice",
       "title": {
-        "fr": "CC-Voice – Clonage de voix Qwen3-TTS",
-        "en": "CC-Voice – Qwen3-TTS voice cloning"
+        "fr": "Voice Studio – Clonage de voix",
+        "en": "Voice Studio – Voice cloning"
       },
       "description": {
-        "fr": "Interface web pour un système de clonage vocal local basé sur Qwen3-TTS. Inférence GPU côté studio MediaSmart, frontend Vercel et accès strictement contrôlé. Une version grand public est en préparation.",
-        "en": "Web frontend for a local Qwen3-TTS voice cloning system. Inference runs on the MediaSmart studio GPU, the frontend is hosted on Vercel and access is strictly controlled. A public-facing version is in the works."
+        "fr": "Interface web pour un système de clonage vocal local. Inférence GPU côté studio MediaSmart, frontend Vercel et accès strictement contrôlé. Une version grand public est en préparation.",
+        "en": "Web frontend for a local voice-cloning system. Inference runs on the MediaSmart studio GPU, the frontend is hosted on Vercel and access is strictly controlled. A public-facing version is in the works."
       },
       "url": "https://apps.mediasmart.ch/CC-Voice/",
       "accessNote": {
