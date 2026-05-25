@@ -229,3 +229,4 @@ TODO.md
 # Lock files from other package managers
 package-lock.json
 yarn.lock
+.env*.local

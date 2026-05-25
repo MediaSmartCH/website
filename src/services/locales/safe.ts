@@ -73,4 +73,10 @@ export function makeTranslator(lang: Lang): SafeTranslator {
   };
 }
 
-export const useTranslations = (lang: Lang) => makeTranslator(lang);
+import { useMemo } from "react";
+
+// Memoize per language so callers can safely put `t` in effect / memo deps
+// without re-firing the effect on every parent render. The translator is
+// stateless; the only thing that matters for identity is the language.
+export const useTranslations = (lang: Lang) =>
+  useMemo(() => makeTranslator(lang), [lang]);

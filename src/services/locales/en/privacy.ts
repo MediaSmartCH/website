@@ -25,7 +25,7 @@ const privacy = {
     s2aLegalLabel: "Legal basis:",
     s2aLegal: "consent (mandatory checkbox).",
 
-    s2bTitle: "b) Appointment booking (Calendly)",
+    s2bTitle: "b) Appointment booking",
     s2bItem1: "Full name",
     s2bItem2: "Email address",
     s2bItem3: "Chosen time slot",
@@ -34,7 +34,8 @@ const privacy = {
     s2bPurpose: "appointment management.",
     s2bLegalLabel: "Legal basis:",
     s2bLegal: "service execution (pre-contractual/contractual).",
-    s2bCalendlyLabel: "Calendly Privacy Policy:",
+    s2bToolLabel: "Tool:",
+    s2bTool: "MediaSmart's in-house booking system, no third party involved. Once confirmed, the event is created in Google Calendar on the MediaSmart side to schedule the meeting.",
 
     s2cTitle: "c) Google reCAPTCHA",
     s2cDesc:
@@ -58,7 +59,7 @@ const privacy = {
     s3Intro: "We use three categories of cookies:",
     s3NecessaryLabel: "Necessary cookies:",
     s3Necessary:
-        "essential for the site's operation (contact form, appointment booking via Calendly, anti-spam protection via reCAPTCHA). Always active, they do not require your consent.",
+        "essential for the site's operation (contact form, appointment booking, anti-spam protection via reCAPTCHA). Always active, they do not require your consent.",
     s3FunctionalityLabel: "Functionality cookies:",
     s3Functionality:
         "remember your theme preference (light/dark/system) and language preference (FR/EN). Enabled only with your consent.",
@@ -79,7 +80,7 @@ const privacy = {
     // 5. Retention
     s5Title: "5. Data Retention",
     s5Item1: "Contact requests: up to 12 months after last interaction.",
-    s5Item2: "Calendly appointments: according to Calendly's policy.",
+    s5Item2: "Bookings: stored for 24 months in our internal database, then deleted. The Google Calendar event follows your Workspace retention policy.",
     s5Item3: "Technical logs (security/access): 90 days.",
     s5Item4: "Analytics data: anonymized and stored for 14 months.",
 
@@ -91,7 +92,7 @@ const privacy = {
     // 7. Data Sharing
     s7Title: "7. Data Sharing",
     s7Desc:
-        "We do not sell or rent your personal data. Some data may be transmitted to our technical providers (Vercel, Google, Calendly) strictly to provide the services, under binding confidentiality and security obligations.",
+        "We do not sell or rent your personal data. Some data may be transmitted to our technical providers (Vercel, Cloudflare, Google) strictly to provide the services, under binding confidentiality and security obligations.",
 
     // 8. Your Rights
     s8Title: "8. Your Rights",

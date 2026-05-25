@@ -19,6 +19,7 @@ const ITServicesPage = lazy(() => import("../pages/ITServices"));
 const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicy"));
 const Error404Page = lazy(() => import("../pages/Error404"));
 const SupportContractPage = lazy(() => import("../pages/SupportContract"));
+const BookingManagePage = lazy(() => import("../pages/BookingManage"));
 
 // Wraps a page node in an ErrorBoundary and a Suspense with a full-page loader fallback.
 const Wrap = (node: React.ReactNode) => (
@@ -54,6 +55,7 @@ const routes: RouteObject[] = [
           { path: "video-services", element: Wrap(<VideoServicesPage />) },
           { path: "privacy-policy", element: Wrap(<PrivacyPolicyPage />) },
           { path: "support-contract", element: Wrap(<SupportContractPage />) },
+          { path: "booking/manage", element: Wrap(<BookingManagePage />) },
           { path: "404", element: Wrap(<Error404Page />) },
           // Any unmatched sub-path falls through to the 404 page.
           { path: "*", element: <Navigate to="../404" replace /> },

@@ -3,9 +3,6 @@ export const OPEN_COOKIE_SETTINGS_EVENT = "open-cookie-settings";
 
 export interface ConsentPreferences {
   googleAnalytics: boolean;
-  calendlyFunctionality: boolean;
-  calendlyPerformance: boolean;
-  calendlyAdvertising: boolean;
   themePreference: boolean;
   languagePreference: boolean;
   timestamp?: string;
@@ -13,9 +10,6 @@ export interface ConsentPreferences {
 
 export const DEFAULT_CONSENT_PREFERENCES: ConsentPreferences = {
   googleAnalytics: false,
-  calendlyFunctionality: false,
-  calendlyPerformance: false,
-  calendlyAdvertising: false,
   themePreference: false,
   languagePreference: false,
 };
@@ -93,22 +87,10 @@ export function getNormalizedConsentData(): ConsentPreferences {
   return {
     ...DEFAULT_CONSENT_PREFERENCES,
     googleAnalytics: Boolean(consent?.googleAnalytics),
-    calendlyFunctionality: Boolean(consent?.calendlyFunctionality),
-    calendlyPerformance: Boolean(consent?.calendlyPerformance),
-    calendlyAdvertising: Boolean(consent?.calendlyAdvertising),
     themePreference: Boolean(consent?.themePreference),
     languagePreference: Boolean(consent?.languagePreference),
     timestamp: typeof consent?.timestamp === "string" ? consent.timestamp : undefined,
   };
-}
-
-// Only the functionality cookie is required to open the Calendly popup.
-// Performance and advertising cookies are optional — Calendly works without
-// them, it just won't track analytics or show targeted ads.
-export function canLoadEmbeddedCalendly(
-  consent: Partial<ConsentPreferences> | null | undefined
-) {
-  return Boolean(consent?.calendlyFunctionality);
 }
 
 // Triggers the cookie settings modal by dispatching a custom window event.

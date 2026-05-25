@@ -86,6 +86,46 @@ const booking = {
         selectDateFirst: "Please select a date first",
         bookingInProgress: "Booking in progress...",
         tryAgain: "Try again"
+    },
+
+    manage: {
+        title: "Your booking",
+        loading: "Loading your booking…",
+        notFound: "Booking not found",
+        notFoundDescription:
+            "The link may have expired or be invalid. If you think this is a mistake, drop us a line at booking@mediasmart.ch.",
+        backHome: "Back to home",
+        scheduledFor: "Scheduled for",
+        with: "with",
+        statusCancelled: "Booking cancelled",
+        statusCancelledDescription:
+            "This booking has already been cancelled. You can rebook any time.",
+        bookAgain: "Book again",
+        actions: {
+            reschedule: "Reschedule",
+            cancel: "Cancel this booking"
+        },
+        reschedule: {
+            title: "Pick a new time",
+            submit: "Confirm new time",
+            submitting: "Updating…",
+            successTitle: "Time updated",
+            successDescription:
+                "You'll receive an email with the new meeting details."
+        },
+        cancel: {
+            confirmTitle: "Cancel this booking?",
+            confirmDescription:
+                "This action is final. The event will be removed from the calendar and a cancellation email will be sent to you and to MediaSmart.",
+            reasonLabel: "Reason (optional)",
+            reasonPlaceholder: "Briefly tell us why if you'd like…",
+            confirmButton: "Yes, cancel",
+            keepButton: "Keep booking",
+            cancelling: "Cancelling…",
+            successTitle: "Booking cancelled",
+            successDescription:
+                "Done. You'll receive a cancellation email in a moment."
+        }
     }
 };
 

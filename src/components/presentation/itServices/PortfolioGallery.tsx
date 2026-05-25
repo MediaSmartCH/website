@@ -16,6 +16,13 @@ interface PortfolioItem {
   url?: string;
   images?: string[];
   screenshotUrls?: string[];
+  /**
+   * Optional short note shown as a non-clickable badge when the project is
+   * not freely accessible (private / bespoke / restricted-access). Renders
+   * either alongside or instead of the Visit Site button depending on
+   * whether a public URL is also provided.
+   */
+  accessNote?: LocalizedField;
 }
 
 interface PortfolioData {
@@ -180,9 +187,18 @@ function useBodyScrollLock(isLocked: boolean): void {
   }, [isLocked]);
 }
 
+interface LightboxImage {
+  src: string;
+  alt: string;
+}
+
 const PortfolioGallery = () => {
   const dialogTitleId = useId();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Lightbox is a fullscreen single-image overlay opened by clicking any
+  // screenshot. We pass src+alt so we can show the same content the user
+  // hovered on, full-size and inspectable.
+  const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
 
   const {
     currentLanguage: languageReducer,
@@ -195,16 +211,15 @@ const PortfolioGallery = () => {
 
   const t = useTranslations(languageReducer);
 
-  // Filter out items with no displayable images so empty cards never appear
+  // All portfolio items, including those without screenshots (e.g. private
+  // bespoke projects shown with title + description + accessNote badge in
+  // the modal but not in the homepage preview tiles).
   const portfolioItems = useMemo(() => {
     const data = portfolioContent as PortfolioData;
-
-    return (data.items ?? []).filter(
-      (item) => getItemImages(item).length > 0
-    );
+    return data.items ?? [];
   }, []);
 
-  useBodyScrollLock(isModalOpen);
+  useBodyScrollLock(isModalOpen || lightbox !== null);
 
   useEffect(() => {
     if (!isModalOpen) {
@@ -213,7 +228,13 @@ const PortfolioGallery = () => {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsModalOpen(false);
+        // Lightbox layers above the portfolio modal; close the topmost
+        // surface first instead of dismissing both at once.
+        if (lightbox) {
+          setLightbox(null);
+        } else {
+          setIsModalOpen(false);
+        }
       }
     };
 
@@ -222,13 +243,18 @@ const PortfolioGallery = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, lightbox]);
 
   if (!portfolioItems.length) {
     return null;
   }
 
-  const previewItems = portfolioItems.slice(0, PREVIEW_LIMIT);
+  // Preview tiles are image-driven, so we hide items that have no screenshot
+  // to show. They still appear in the full modal as text-only cards.
+  const previewCandidates = portfolioItems.filter(
+    (item) => getItemImages(item).length > 0
+  );
+  const previewItems = previewCandidates.slice(0, PREVIEW_LIMIT);
   const hiddenProjectsCount = Math.max(
     portfolioItems.length - previewItems.length,
     0
@@ -342,6 +368,9 @@ const PortfolioGallery = () => {
               );
               const images = getItemImages(item);
               const safeItemUrl = getSafeExternalUrl(item.url);
+              const accessNote = item.accessNote
+                ? resolveLocalizedField(item.accessNote, languageReducer)
+                : null;
               // Switch to a horizontally scrollable row when the image count exceeds the threshold
               const shouldScrollGallery =
                 images.length > SCROLLABLE_GALLERY_THRESHOLD;
@@ -358,11 +387,13 @@ const PortfolioGallery = () => {
                       >
                         {title}
                       </h3>
-                      <p
-                        className={`${mutedTextClass} mt-1 text-[12px] font-helvetica font-light uppercase tracking-[0.18em]`}
-                      >
-                        {formatImageCount(images.length, languageReducer)}
-                      </p>
+                      {images.length > 0 && (
+                        <p
+                          className={`${mutedTextClass} mt-1 text-[12px] font-helvetica font-light uppercase tracking-[0.18em]`}
+                        >
+                          {formatImageCount(images.length, languageReducer)}
+                        </p>
+                      )}
                     </div>
 
                     {safeItemUrl && (
@@ -377,88 +408,71 @@ const PortfolioGallery = () => {
                     )}
                   </div>
 
+                  {/* Access-note badge lives below the title row so a long
+                      label (e.g. "Solution sur mesure – démo bientôt en
+                      ligne") can wrap naturally without overlapping the
+                      project title above it. */}
+                  {accessNote && (
+                    <div className="mt-3">
+                      <span
+                        className={`inline-block max-w-full rounded-full border px-3 py-1 text-[11px] font-medium leading-tight ${isLightTheme ? "border-[#D9DCF2]/70 bg-[#EEF0FF]/40 text-[#2C3A87]/80" : "border-white/10 bg-white/5 text-[#DAD7FF]/85"}`}
+                      >
+                        {accessNote}
+                      </span>
+                    </div>
+                  )}
+
                   <p
                     className={`${mutedTextClass} mt-4 text-[14px] font-helvetica font-light leading-6`}
                   >
                     {description}
                   </p>
 
-                  <div className="mt-auto pt-5">
-                    {shouldScrollGallery ? (
+                  {/* Image gallery: hidden for items with no screenshots
+                      (e.g. private bespoke solutions) so the card doesn't
+                      leave a confusing empty area at the bottom.
+                      Clicking any image opens the lightbox at full size —
+                      this works uniformly for public and private projects
+                      (the "Visiter le site" button at the top stays the
+                      explicit path to open the actual website). */}
+                  <div className={`mt-auto ${images.length > 0 ? "pt-5" : ""}`}>
+                    {images.length === 0 ? null : shouldScrollGallery ? (
                       <div className="portfolio-scrollbar flex gap-3 overflow-x-auto overscroll-contain pb-2 pr-1 snap-x snap-mandatory">
-                        {images.map((image, index) => {
-                          const targetUrl = item.screenshotUrls?.[index]
-                            ? resolveScreenshotUrl(item.screenshotUrls[index], item.url)
-                            : safeItemUrl;
-                          return (
-                            targetUrl ? (
-                              <a
-                                key={`${item.id}-${index}`}
-                                href={targetUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`group/img snap-start shrink-0 overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
-                              >
-                                <img
-                                  src={image}
-                                  alt={`${title} ${index + 1}`}
-                                  className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
-                                  loading="lazy"
-                                />
-                              </a>
-                            ) : (
-                              <div
-                                key={`${item.id}-${index}`}
-                                className={`snap-start shrink-0 overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
-                              >
-                                <img
-                                  src={image}
-                                  alt={`${title} ${index + 1}`}
-                                  className="aspect-[16/11] min-h-[140px] w-full object-cover"
-                                  loading="lazy"
-                                />
-                              </div>
-                            )
-                          );
-                        })}
+                        {images.map((image, index) => (
+                          <button
+                            key={`${item.id}-${index}`}
+                            type="button"
+                            onClick={() => setLightbox({ src: image, alt: `${title} ${index + 1}` })}
+                            className={`group/img snap-start shrink-0 cursor-zoom-in overflow-hidden rounded-[18px] border ${imageShellClass} w-[250px] sm:w-[270px]`}
+                            aria-label={`${t.text("it.portfolioVisitSite")} ${title} ${index + 1}`}
+                          >
+                            <img
+                              src={image}
+                              alt={`${title} ${index + 1}`}
+                              className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                              loading="lazy"
+                            />
+                          </button>
+                        ))}
                       </div>
                     ) : (
                       <div className={getInlineGalleryClassName(images.length)}>
-                        {images.map((image, index) => {
-                          const targetUrl = item.screenshotUrls?.[index]
-                            ? resolveScreenshotUrl(item.screenshotUrls[index], item.url)
-                            : safeItemUrl;
-                          return (
-                            targetUrl ? (
-                              <a
-                                key={`${item.id}-${index}`}
-                                href={targetUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`group/img overflow-hidden rounded-[18px] border ${imageShellClass}`}
-                              >
-                                <img
-                                  src={image}
-                                  alt={`${title} ${index + 1}`}
-                                  className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
-                                  loading="lazy"
-                                />
-                              </a>
-                            ) : (
-                              <div
-                                key={`${item.id}-${index}`}
-                                className={`overflow-hidden rounded-[18px] border ${imageShellClass}`}
-                              >
-                                <img
-                                  src={image}
-                                  alt={`${title} ${index + 1}`}
-                                  className="aspect-[16/11] min-h-[140px] w-full object-cover"
-                                  loading="lazy"
-                                />
-                              </div>
-                            )
-                          );
-                        })}
+                        {images.map((image, index) => (
+                          <button
+                            key={`${item.id}-${index}`}
+                            type="button"
+                            onClick={() => setLightbox({ src: image, alt: `${title} ${index + 1}` })}
+                            className={`group/img cursor-zoom-in overflow-hidden rounded-[18px] border ${imageShellClass}`}
+                            aria-label={`${title} ${index + 1}`}
+                          >
+                            <img
+                              src={image}
+                              alt={`${title} ${index + 1}`}
+                              className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                              loading="lazy"
+                            />
+                          </button>
+                        ))}
                       </div>
                     )}
                   </div>
@@ -601,6 +615,40 @@ const PortfolioGallery = () => {
       </div>
 
       {isModalOpen && createPortal(modal, document.body)}
+      {lightbox &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={lightbox.alt}
+            onClick={(event) => {
+              // Click on backdrop = close. Clicks bubbled from the image
+              // itself are ignored thanks to the target===currentTarget check
+              // (same pattern as the booking modal).
+              if (event.target === event.currentTarget) {
+                setLightbox(null);
+              }
+            }}
+            className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 sm:p-8"
+          >
+            <button
+              type="button"
+              onClick={() => setLightbox(null)}
+              aria-label="Close"
+              className="absolute top-4 right-4 z-[100001] flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            >
+              <span aria-hidden="true" className="text-2xl leading-none">
+                ×
+              </span>
+            </button>
+            <img
+              src={lightbox.src}
+              alt={lightbox.alt}
+              className="max-h-full max-w-full rounded-2xl object-contain shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]"
+            />
+          </div>,
+          document.body,
+        )}
     </>
   );
 };

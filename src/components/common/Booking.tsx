@@ -1,6 +1,6 @@
 import React from "react";
 
-import ConsentAwareCalendlyButton from "components/common/ConsentAwareCalendlyButton";
+import BookingButton from "components/booking/BookingButton";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import bookLine from "assets/icons/bookLine.svg";
@@ -49,17 +49,9 @@ const Booking = () => {
             data-aos-duration="1500"
             data-aos-easing="ease-in-sine"
           >
-            <ConsentAwareCalendlyButton
+            <BookingButton
               className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
-              blockedTitle={t.text("cookies.manageCookies")}
               text={t.text("home.bookingBtn")}
-              pageSettings={{
-                backgroundColor: themeReducer === "light" ? "#fff" : "#14172d",
-                hideEventTypeDetails: false,
-                hideLandingPageDetails: false,
-                primaryColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
-                textColor: themeReducer === "light" ? "#14172D" : "#F6F6F6",
-              }}
             />
           </div>
         </div>
