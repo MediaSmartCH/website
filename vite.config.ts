@@ -33,8 +33,15 @@ function dotLottieWasmPlugin(): Plugin {
       if (id !== RESOLVED_ID) return null;
 
       // Resolve via the package entrypoint so we stay compatible with package
-      // exports and pnpm's symlinked node_modules layout.
-      const dotLottieEntry = _require.resolve("@lottiefiles/dotlottie-web");
+      // exports and pnpm's symlinked node_modules layout. dotlottie-web is a
+      // transitive dep of dotlottie-react, so resolve it from that package's
+      // location — pnpm does not expose transitive deps at the project root.
+      const dotLottieReactEntry = _require.resolve(
+        "@lottiefiles/dotlottie-react"
+      );
+      const dotLottieEntry = createRequire(dotLottieReactEntry).resolve(
+        "@lottiefiles/dotlottie-web"
+      );
       const wasmSrc = path.join(
         path.dirname(dotLottieEntry),
         "dotlottie-player.wasm"

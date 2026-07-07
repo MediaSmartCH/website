@@ -60,7 +60,16 @@ function formatIcsDate(date: Date): string {
 }
 
 function escapeIcs(value: string): string {
-  return value.replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n');
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/,/g, '\\,')
+    .replace(/;/g, '\\;')
+    .replace(/\r\n|\r|\n/g, '\\n');
+}
+
+function quoteIcsParam(value: string): string {
+  // RFC 5545 param values must be quoted to carry ':'/';'/',' and can never contain DQUOTE or control chars.
+  return `"${value.replace(/["\r\n]/g, '')}"`;
 }
 
 function buildIcs(input: SendInputs): string {
@@ -90,7 +99,7 @@ function buildIcs(input: SendInputs): string {
     ),
     input.meetLink ? `LOCATION:${escapeIcs(input.meetLink)}` : 'LOCATION:Online',
     `ORGANIZER;CN=MediaSmart:mailto:${NOTIFICATION_EMAIL}`,
-    `ATTENDEE;CN=${escapeIcs(input.attendeeName)};RSVP=TRUE:mailto:${input.attendeeEmail}`,
+    `ATTENDEE;CN=${quoteIcsParam(input.attendeeName)};RSVP=TRUE:mailto:${input.attendeeEmail}`,
     'END:VEVENT',
     'END:VCALENDAR',
   ];
