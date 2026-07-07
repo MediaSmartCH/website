@@ -1,8 +1,11 @@
 import React from 'react';
 import { ArrowLeft, CheckCircle2, Clock, Loader2, Video, X } from 'lucide-react';
 
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+
 import { useAppSelector } from 'services/hooks/hooks';
 import { useTranslations } from 'services/locales/safe';
+import { getRecaptchaToken } from 'services/api/recaptcha';
 import {
   BookingSlot,
   createBooking,
@@ -83,6 +86,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   const language = useAppSelector((state) => state.language.currentLanguage);
   const theme = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(language);
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   useBodyScrollLock(open);
 
@@ -211,6 +215,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
     setSubmitError(null);
 
     try {
+      // reCAPTCHA v3 token — the create endpoint requires it. null means the
+      // widget failed/was not ready; "" is the intentional local bypass.
+      const recaptchaToken = await getRecaptchaToken(executeRecaptcha, 'booking_create');
+      if (recaptchaToken === null) {
+        setSubmitError(t.text('booking.error'));
+        return;
+      }
       const response = await createBooking({
         name: input.name,
         email: input.email,
@@ -218,6 +229,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
         language,
         startUtc: selectedSlot.startUtc,
         website: input.website,
+        recaptchaToken,
       });
       if (!response.success || !response.booking) {
         setSubmitError(response.error?.message ?? response.message ?? t.text('booking.error'));

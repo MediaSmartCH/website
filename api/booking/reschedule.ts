@@ -10,7 +10,7 @@ import {
   MEETING_DURATION_MIN,
   getRuntimeEnv,
 } from './_lib/config';
-import { exec, queryFirst } from './_lib/d1';
+import { exec, isUniqueConstraintError, queryFirst } from './_lib/d1';
 import { getBusyIntervals, updateEventTime } from './_lib/google-calendar';
 import { sendBookingConfirmation } from './_lib/mailer';
 import { isSlotValid } from './_lib/slots';
@@ -31,6 +31,7 @@ interface BookingRow {
   end_at: number;
   status: string;
   calendar_event_id: string | null;
+  token_version: number;
 }
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
@@ -65,25 +66,24 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return res.status(400).json({ success: false, message: 'Missing id, token, or startUtc' });
   }
 
-  if (!verifyToken(id, 'reschedule', token)) {
-    return res.status(403).json({ success: false, message: 'Invalid token' });
-  }
-
   const newStart = new Date(startRaw);
   if (Number.isNaN(newStart.getTime())) {
     return res.status(400).json({ success: false, message: 'Invalid startUtc' });
   }
   const newEnd = new Date(newStart.getTime() + MEETING_DURATION_MIN * 60_000);
 
+  // Fetch the row first: the token is versioned, so verification needs the
+  // booking's current token_version. Missing row and bad/expired token collapse
+  // to the same 403 (no id enumeration).
   const row = await queryFirst<BookingRow>(
     `SELECT id, attendee_name, attendee_email, attendee_message, attendee_language,
-            start_at, end_at, status, calendar_event_id
+            start_at, end_at, status, calendar_event_id, token_version
      FROM bookings WHERE id = ?`,
     [id],
   );
 
-  if (!row) {
-    return res.status(404).json({ success: false, message: 'Booking not found' });
+  if (!row || !verifyToken(id, 'reschedule', row.token_version, token)) {
+    return res.status(403).json({ success: false, message: 'Invalid token' });
   }
   if (row.status !== 'confirmed') {
     return res.status(409).json({ success: false, message: 'Booking is not active' });
@@ -120,27 +120,57 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     });
   }
 
+  const nowMs = Math.floor(Date.now() / 1000);
+  const newVersion = row.token_version + 1;
+  const newStartSec = Math.floor(newStart.getTime() / 1000);
+  const newEndSec = Math.floor(newEnd.getTime() / 1000);
+
+  // 1. Claim the new slot in the DB first (partial unique index prevents two
+  //    confirmed bookings sharing a start_at) and rotate token_version in the
+  //    same write so previously-issued manage links stop working once the move
+  //    succeeds. A lost race returns 409 without ever touching the calendar.
+  let claimMeta;
+  try {
+    claimMeta = await exec(
+      `UPDATE bookings SET start_at = ?, end_at = ?, token_version = ?, updated_at = ?
+       WHERE id = ? AND status = 'confirmed'`,
+      [newStartSec, newEndSec, newVersion, nowMs, id],
+    );
+  } catch (err) {
+    if (isUniqueConstraintError(err)) {
+      return res
+        .status(409)
+        .json({ success: false, message: 'Slot is no longer available' });
+    }
+    console.error('booking/reschedule db claim failed', err);
+    return res.status(500).json({ success: false, message: 'Could not update booking' });
+  }
+  // D1 does not throw on a zero-row UPDATE: if the booking was cancelled between
+  // the SELECT and this claim, abort before touching the calendar or emailing.
+  if (claimMeta.changes === 0) {
+    return res.status(409).json({ success: false, message: 'Booking is not active' });
+  }
+
+  // 2. Move the calendar event. On failure, revert the DB claim (start/end AND
+  //    the token_version bump) so the booking and its still-valid links survive.
   try {
     await updateEventTime(row.calendar_event_id, newStart, newEnd, BOOKING_TIMEZONE);
   } catch (err) {
-    console.error('booking/reschedule calendar update failed', err);
+    console.error('booking/reschedule calendar update failed; reverting', err);
+    try {
+      await exec(
+        `UPDATE bookings SET start_at = ?, end_at = ?, token_version = ?, updated_at = ? WHERE id = ?`,
+        [row.start_at, row.end_at, row.token_version, nowMs, id],
+      );
+    } catch (revertErr) {
+      console.error('booking/reschedule revert failed', revertErr);
+    }
     return res.status(502).json({ success: false, message: 'Could not update event' });
   }
 
-  const nowMs = Math.floor(Date.now() / 1000);
-  await exec(
-    `UPDATE bookings SET start_at = ?, end_at = ?, updated_at = ? WHERE id = ?`,
-    [
-      Math.floor(newStart.getTime() / 1000),
-      Math.floor(newEnd.getTime() / 1000),
-      nowMs,
-      id,
-    ],
-  );
-
   const env = getRuntimeEnv();
-  const cancelToken = generateToken(id, 'cancel');
-  const rescheduleToken = generateToken(id, 'reschedule');
+  const cancelToken = generateToken(id, 'cancel', newVersion);
+  const rescheduleToken = generateToken(id, 'reschedule', newVersion);
   const langPrefix = row.attendee_language;
   const manageUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(rescheduleToken)}`;
   const cancelUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(cancelToken)}&action=cancel`;

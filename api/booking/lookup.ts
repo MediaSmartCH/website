@@ -23,6 +23,7 @@ interface BookingRow {
   end_at: number;
   status: string;
   calendar_event_id: string | null;
+  token_version: number;
 }
 
 // Read-only endpoint backing the `/booking/manage?id=&token=` page. The token
@@ -54,19 +55,22 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return res.status(400).json({ success: false, message: 'Missing id or token' });
   }
 
-  if (!verifyToken(id, 'cancel', token) && !verifyToken(id, 'reschedule', token)) {
-    return res.status(403).json({ success: false, message: 'Invalid token' });
-  }
-
+  // Fetch first so we can verify the versioned token against the booking's
+  // current token_version. A missing row and an invalid/expired token return an
+  // identical 403 so this endpoint cannot be used to enumerate booking ids.
   const row = await queryFirst<BookingRow>(
     `SELECT id, attendee_name, attendee_email, attendee_message, attendee_language,
-            start_at, end_at, status, calendar_event_id
+            start_at, end_at, status, calendar_event_id, token_version
      FROM bookings WHERE id = ?`,
     [id],
   );
 
-  if (!row) {
-    return res.status(404).json({ success: false, message: 'Booking not found' });
+  if (
+    !row ||
+    (!verifyToken(id, 'cancel', row.token_version, token) &&
+      !verifyToken(id, 'reschedule', row.token_version, token))
+  ) {
+    return res.status(403).json({ success: false, message: 'Invalid token' });
   }
 
   return res.status(200).json({

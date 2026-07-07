@@ -33,6 +33,14 @@ export class D1Error extends Error {
   }
 }
 
+// SQLite (D1) surfaces a partial-unique-index violation as a
+// "UNIQUE constraint failed: ..." error. Callers use this to turn a lost race
+// for a booking slot into a clean 409 instead of a 500.
+export function isUniqueConstraintError(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err);
+  return /UNIQUE constraint failed/i.test(message);
+}
+
 async function rawQuery<Row>(
   sql: string,
   params: Array<string | number | null>,
