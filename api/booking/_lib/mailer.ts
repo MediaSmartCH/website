@@ -68,8 +68,15 @@ function escapeIcs(value: string): string {
 }
 
 function quoteIcsParam(value: string): string {
-  // RFC 5545 param values must be quoted to carry ':'/';'/',' and can never contain DQUOTE or control chars.
-  return `"${value.replace(/["\r\n]/g, '')}"`;
+  // RFC 5545 param values are DQUOTE-wrapped and must not contain DQUOTE or any
+  // control character (C0 range + DEL).
+  const stripped = Array.from(value)
+    .filter((char) => {
+      const code = char.codePointAt(0) ?? 0;
+      return code >= 0x20 && code !== 0x7f && char !== String.fromCharCode(0x22);
+    })
+    .join("");
+  return `"${stripped}"`;
 }
 
 function buildIcs(input: SendInputs): string {

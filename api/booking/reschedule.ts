@@ -129,8 +129,9 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   //    confirmed bookings sharing a start_at) and rotate token_version in the
   //    same write so previously-issued manage links stop working once the move
   //    succeeds. A lost race returns 409 without ever touching the calendar.
+  let claimMeta;
   try {
-    await exec(
+    claimMeta = await exec(
       `UPDATE bookings SET start_at = ?, end_at = ?, token_version = ?, updated_at = ?
        WHERE id = ? AND status = 'confirmed'`,
       [newStartSec, newEndSec, newVersion, nowMs, id],
@@ -143,6 +144,11 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     }
     console.error('booking/reschedule db claim failed', err);
     return res.status(500).json({ success: false, message: 'Could not update booking' });
+  }
+  // D1 does not throw on a zero-row UPDATE: if the booking was cancelled between
+  // the SELECT and this claim, abort before touching the calendar or emailing.
+  if (claimMeta.changes === 0) {
+    return res.status(409).json({ success: false, message: 'Booking is not active' });
   }
 
   // 2. Move the calendar event. On failure, revert the DB claim (start/end AND

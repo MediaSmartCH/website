@@ -178,10 +178,15 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   //    without a matching calendar entry — the previous fire-and-forget rollback
   //    could be dropped when the serverless instance froze after responding.
   try {
-    await exec(
+    const updateMeta = await exec(
       `UPDATE bookings SET calendar_event_id = ?, updated_at = ? WHERE id = ?`,
       [event.id, Math.floor(Date.now() / 1000), bookingId],
     );
+    // D1 does not throw when the WHERE matches zero rows, so confirm the
+    // reserved row is still present before reporting success.
+    if (updateMeta.changes === 0) {
+      throw new Error(`reserved booking row ${bookingId} vanished before event link`);
+    }
   } catch (err) {
     console.error('booking/create db update failed; rolling back', err);
     await Promise.allSettled([

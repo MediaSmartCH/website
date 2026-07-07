@@ -103,6 +103,14 @@ const server = createServer(async (req, res) => {
     process.exit(1);
   }
 
+  if (!code) {
+    res.writeHead(400, { 'Content-Type': 'text/plain' }).end('Missing authorization code.');
+    console.error('\n❌ Callback hit without an authorization code — check the redirect URI.');
+    server.close();
+    setTimeout(() => process.exit(1), 250);
+    return;
+  }
+
   try {
     const tokens = await exchangeCode(code);
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }).end(
