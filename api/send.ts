@@ -1,11 +1,11 @@
 import { Resend } from 'resend';
-import type { ApiRequest, ApiResponse } from './_shared/http-types';
+import type { ApiRequest, ApiResponse } from './_shared/http-types.js';
 import contactMailer from './_shared/contact-mailer.js';
 import {
   applyRateLimitHeaders,
   checkRateLimit,
   getRateLimitIdentifier,
-} from './_shared/rate-limit';
+} from './_shared/rate-limit.js';
 import recaptcha from './_shared/recaptcha.js';
 
 const { contactApiErrors, sendContactEmails, validateContactPayload } = contactMailer;

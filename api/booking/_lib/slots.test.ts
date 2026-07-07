@@ -4,7 +4,7 @@ import {
   buildAvailableSlots,
   isSlotValid,
   type BusyInterval,
-} from './slots';
+} from './slots.js';
 
 // All test inputs are anchored in UTC. The slots module renders them against
 // Europe/Zurich (UTC+1 in winter, UTC+2 in summer), so the expected wall-clock

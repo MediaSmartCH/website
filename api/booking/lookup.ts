@@ -1,12 +1,12 @@
-import type { ApiRequest, ApiResponse } from '../_shared/http-types';
+import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
   checkRateLimit,
   getRateLimitIdentifier,
-} from '../_shared/rate-limit';
+} from '../_shared/rate-limit.js';
 
-import { queryFirst } from './_lib/d1';
-import { verifyToken } from './_lib/tokens';
+import { queryFirst } from './_lib/d1.js';
+import { verifyToken } from './_lib/tokens.js';
 
 const LOOKUP_RATE_LIMIT = {
   limit: 30,

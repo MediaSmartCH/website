@@ -1,6 +1,6 @@
 import type { IncomingHttpHeaders } from 'http';
 
-import type { ApiResponse } from './http-types';
+import type { ApiResponse } from './http-types.js';
 import recaptcha from './recaptcha.js';
 
 const { extractClientIp } = recaptcha;

@@ -5,7 +5,7 @@ import {
   MAIL_FROM,
   NOTIFICATION_EMAIL,
   getRuntimeEnv,
-} from './config';
+} from './config.js';
 
 // Render-side helpers are kept lean and inline: no template engine, no
 // per-locale dispatch table, just two functions per email kind (subject + html)

@@ -1,6 +1,6 @@
 import { createHmac, randomUUID, timingSafeEqual } from 'crypto';
 
-import { getRuntimeEnv } from './config';
+import { getRuntimeEnv } from './config.js';
 
 // Cancellation / reschedule links are stateless-ish: each booking gets a token
 // derived from `HMAC(secret, bookingId + ":" + purpose + ":" + exp + ":" + version)`.
