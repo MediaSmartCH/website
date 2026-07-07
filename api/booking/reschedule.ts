@@ -1,20 +1,20 @@
-import type { ApiRequest, ApiResponse } from '../_shared/http-types';
+import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
   checkRateLimit,
   getRateLimitIdentifier,
-} from '../_shared/rate-limit';
+} from '../_shared/rate-limit.js';
 
 import {
   BOOKING_TIMEZONE,
   MEETING_DURATION_MIN,
   getRuntimeEnv,
-} from './_lib/config';
-import { exec, isUniqueConstraintError, queryFirst } from './_lib/d1';
-import { getBusyIntervals, updateEventTime } from './_lib/google-calendar';
-import { sendBookingConfirmation } from './_lib/mailer';
-import { isSlotValid } from './_lib/slots';
-import { generateToken, verifyToken } from './_lib/tokens';
+} from './_lib/config.js';
+import { exec, isUniqueConstraintError, queryFirst } from './_lib/d1.js';
+import { getBusyIntervals, updateEventTime } from './_lib/google-calendar.js';
+import { sendBookingConfirmation } from './_lib/mailer.js';
+import { isSlotValid } from './_lib/slots.js';
+import { generateToken, verifyToken } from './_lib/tokens.js';
 
 const RESCHEDULE_RATE_LIMIT = {
   limit: 5,

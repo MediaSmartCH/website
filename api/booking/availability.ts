@@ -1,13 +1,13 @@
-import type { ApiRequest, ApiResponse } from '../_shared/http-types';
+import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
   checkRateLimit,
   getRateLimitIdentifier,
-} from '../_shared/rate-limit';
+} from '../_shared/rate-limit.js';
 
-import { getBusyIntervals } from './_lib/google-calendar';
-import { buildAvailableSlots } from './_lib/slots';
-import { parseAvailabilityRange } from './_lib/validators';
+import { getBusyIntervals } from './_lib/google-calendar.js';
+import { buildAvailableSlots } from './_lib/slots.js';
+import { parseAvailabilityRange } from './_lib/validators.js';
 
 const AVAILABILITY_RATE_LIMIT = {
   limit: 60,

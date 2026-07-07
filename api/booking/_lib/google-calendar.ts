@@ -1,4 +1,4 @@
-import { getRuntimeEnv } from './config';
+import { getRuntimeEnv } from './config.js';
 
 // Thin wrapper around the Google Calendar v3 REST API. We avoid pulling the
 // `googleapis` package (heavy, slow cold-start) and stay on direct `fetch`

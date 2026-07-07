@@ -1,4 +1,4 @@
-import { getRuntimeEnv } from './config';
+import { getRuntimeEnv } from './config.js';
 
 // We're on Vercel, not on Cloudflare, so we hit D1's HTTP query API rather
 // than binding the database. The API accepts a single SQL statement plus an

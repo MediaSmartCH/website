@@ -6,7 +6,7 @@ import {
   MEETING_DURATION_MIN,
   MIN_NOTICE_MS,
   SLOT_GRANULARITY_MIN,
-} from './config';
+} from './config.js';
 
 // All timestamps in this module are UTC. The "9-18 Europe/Zurich" window is
 // resolved per-day using Intl.DateTimeFormat in BOOKING_TIMEZONE because that

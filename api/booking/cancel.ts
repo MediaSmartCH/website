@@ -1,15 +1,15 @@
-import type { ApiRequest, ApiResponse } from '../_shared/http-types';
+import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
   checkRateLimit,
   getRateLimitIdentifier,
-} from '../_shared/rate-limit';
+} from '../_shared/rate-limit.js';
 
-import { getRuntimeEnv } from './_lib/config';
-import { exec, queryFirst } from './_lib/d1';
-import { deleteEvent } from './_lib/google-calendar';
-import { sendBookingCancellation } from './_lib/mailer';
-import { verifyToken } from './_lib/tokens';
+import { getRuntimeEnv } from './_lib/config.js';
+import { exec, queryFirst } from './_lib/d1.js';
+import { deleteEvent } from './_lib/google-calendar.js';
+import { sendBookingCancellation } from './_lib/mailer.js';
+import { verifyToken } from './_lib/tokens.js';
 
 const CANCEL_RATE_LIMIT = {
   limit: 10,

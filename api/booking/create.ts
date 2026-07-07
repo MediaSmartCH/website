@@ -1,22 +1,22 @@
-import type { ApiRequest, ApiResponse } from '../_shared/http-types';
+import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
   checkRateLimit,
   getRateLimitIdentifier,
-} from '../_shared/rate-limit';
+} from '../_shared/rate-limit.js';
 import recaptcha from '../_shared/recaptcha.js';
 
 import {
   BOOKING_TIMEZONE,
   MEETING_DURATION_MIN,
   getRuntimeEnv,
-} from './_lib/config';
-import { exec, isUniqueConstraintError, queryFirst } from './_lib/d1';
-import { createEvent, deleteEvent, getBusyIntervals } from './_lib/google-calendar';
-import { sendBookingConfirmation } from './_lib/mailer';
-import { isSlotValid } from './_lib/slots';
-import { generateToken, newBookingId } from './_lib/tokens';
-import { validateCreatePayload } from './_lib/validators';
+} from './_lib/config.js';
+import { exec, isUniqueConstraintError, queryFirst } from './_lib/d1.js';
+import { createEvent, deleteEvent, getBusyIntervals } from './_lib/google-calendar.js';
+import { sendBookingConfirmation } from './_lib/mailer.js';
+import { isSlotValid } from './_lib/slots.js';
+import { generateToken, newBookingId } from './_lib/tokens.js';
+import { validateCreatePayload } from './_lib/validators.js';
 
 const { extractClientIp, verifyRecaptcha } = recaptcha;
 
