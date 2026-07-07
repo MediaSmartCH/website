@@ -4,18 +4,31 @@ import {
   checkRateLimit,
   getRateLimitIdentifier,
 } from '../_shared/rate-limit';
+import recaptcha from '../_shared/recaptcha.js';
 
 import {
   BOOKING_TIMEZONE,
   MEETING_DURATION_MIN,
   getRuntimeEnv,
 } from './_lib/config';
-import { exec, queryFirst } from './_lib/d1';
-import { createEvent, getBusyIntervals } from './_lib/google-calendar';
+import { exec, isUniqueConstraintError, queryFirst } from './_lib/d1';
+import { createEvent, deleteEvent, getBusyIntervals } from './_lib/google-calendar';
 import { sendBookingConfirmation } from './_lib/mailer';
 import { isSlotValid } from './_lib/slots';
 import { generateToken, newBookingId } from './_lib/tokens';
 import { validateCreatePayload } from './_lib/validators';
+
+const { extractClientIp, verifyRecaptcha } = recaptcha;
+
+// Best-effort release of a reserved-but-not-finalised booking row. Awaited by
+// callers so the DELETE actually runs before the serverless response is flushed.
+async function releaseBookingRow(bookingId: string): Promise<void> {
+  try {
+    await exec('DELETE FROM bookings WHERE id = ?', [bookingId]);
+  } catch (err) {
+    console.error('booking/create failed to release reserved slot', bookingId, err);
+  }
+}
 
 const CREATE_RATE_LIMIT = {
   limit: 5,
@@ -50,6 +63,20 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   if (typeof parsed.value.honeypot === 'string' && parsed.value.honeypot.trim()) {
     console.warn('Booking honeypot triggered');
     return res.status(200).json({ success: true, bookingId: 'honeypot' });
+  }
+
+  // Anti-automation: create is the only unauthenticated booking endpoint (the
+  // others require a signed manage token), so it gets reCAPTCHA v3 like the
+  // contact form. The honeypot above stays as cheap defense-in-depth.
+  const recaptchaResult = await verifyRecaptcha({
+    token: (req.body as { recaptchaToken?: unknown } | undefined)?.recaptchaToken,
+    expectedAction: 'booking_create',
+    remoteIp: extractClientIp(req.headers),
+  });
+  if (!recaptchaResult.ok) {
+    return res
+      .status(recaptchaResult.status ?? 400)
+      .json({ success: false, message: recaptchaResult.message });
   }
 
   const start = parsed.value.startUtc;
@@ -89,6 +116,46 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     .filter(Boolean)
     .join('\n\n');
 
+  const nowMs = Math.floor(Date.now() / 1000);
+  const startSec = Math.floor(start.getTime() / 1000);
+  const endSec = Math.floor(end.getTime() / 1000);
+
+  // 1. Claim the slot in the database FIRST. The partial unique index
+  //    `(start_at) WHERE status='confirmed'` is the authoritative mutual-
+  //    exclusion guarantee: if a concurrent request already booked this slot the
+  //    insert fails and we return 409 instead of silently double-booking.
+  //    calendar_event_id is filled in once the event below is created.
+  try {
+    await exec(
+      `INSERT INTO bookings (
+        id, calendar_event_id, attendee_name, attendee_email, attendee_message,
+        attendee_language, start_at, end_at, status, token_version, created_at, updated_at
+      ) VALUES (?, NULL, ?, ?, ?, ?, ?, ?, 'confirmed', 0, ?, ?)`,
+      [
+        bookingId,
+        parsed.value.name,
+        parsed.value.email,
+        parsed.value.message,
+        parsed.value.language,
+        startSec,
+        endSec,
+        nowMs,
+        nowMs,
+      ],
+    );
+  } catch (err) {
+    if (isUniqueConstraintError(err)) {
+      return res
+        .status(409)
+        .json({ success: false, message: 'Slot is no longer available' });
+    }
+    console.error('booking/create db claim failed', err);
+    return res.status(500).json({ success: false, message: 'Could not save booking' });
+  }
+
+  // 2. Create the calendar event now that the slot is durably reserved. On
+  //    failure we release the claimed row (awaited) so it never lingers and the
+  //    slot is freed for someone else.
   let event;
   try {
     event = await createEvent({
@@ -101,48 +168,31 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       attendeeEmail: parsed.value.email,
     });
   } catch (err) {
-    console.error('booking/create calendar insert failed', err);
+    console.error('booking/create calendar insert failed; releasing slot', err);
+    await releaseBookingRow(bookingId);
     return res.status(502).json({ success: false, message: 'Could not create event' });
   }
 
-  // Persist after the calendar write so we never have a row pointing at a
-  // non-existent event. If the DB write fails after the event was created,
-  // we fall through to the catch and undo the event — better to lose a row
-  // than leave a phantom booking on the user's calendar.
-  const nowMs = Math.floor(Date.now() / 1000);
+  // 3. Attach the calendar event id to the reserved row. If this fails we undo
+  //    both the event and the row (awaited) so we never leave a confirmed slot
+  //    without a matching calendar entry — the previous fire-and-forget rollback
+  //    could be dropped when the serverless instance froze after responding.
   try {
     await exec(
-      `INSERT INTO bookings (
-        id, calendar_event_id, attendee_name, attendee_email, attendee_message,
-        attendee_language, start_at, end_at, status, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?)`,
-      [
-        bookingId,
-        event.id,
-        parsed.value.name,
-        parsed.value.email,
-        parsed.value.message,
-        parsed.value.language,
-        Math.floor(start.getTime() / 1000),
-        Math.floor(end.getTime() / 1000),
-        nowMs,
-        nowMs,
-      ],
+      `UPDATE bookings SET calendar_event_id = ?, updated_at = ? WHERE id = ?`,
+      [event.id, Math.floor(Date.now() / 1000), bookingId],
     );
   } catch (err) {
-    console.error('booking/create db write failed; rolling back event', err);
-    // Best-effort rollback — we don't await this because we want to respond
-    // quickly. A leftover event is a degraded state we'll log and recover.
-    void import('./_lib/google-calendar')
-      .then((mod) => mod.deleteEvent(event.id))
-      .catch((rollbackErr) =>
-        console.error('booking/create rollback failed', rollbackErr),
-      );
+    console.error('booking/create db update failed; rolling back', err);
+    await Promise.allSettled([
+      deleteEvent(event.id),
+      releaseBookingRow(bookingId),
+    ]);
     return res.status(500).json({ success: false, message: 'Could not save booking' });
   }
 
-  const cancelToken = generateToken(bookingId, 'cancel');
-  const rescheduleToken = generateToken(bookingId, 'reschedule');
+  const cancelToken = generateToken(bookingId, 'cancel', 0);
+  const rescheduleToken = generateToken(bookingId, 'reschedule', 0);
   // Manage links are language-prefixed so the visitor lands on the page in
   // the language they used to book; the rest of the site is also localised.
   const langPrefix = parsed.value.language;

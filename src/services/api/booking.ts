@@ -19,6 +19,8 @@ export interface CreateBookingPayload {
   startUtc: string;
   /** Honeypot: must be left empty by a real human. */
   website?: string;
+  /** reCAPTCHA v3 token (action `booking_create`); "" when bypassed locally. */
+  recaptchaToken?: string;
 }
 
 export interface CreateBookingResponse {

@@ -24,6 +24,7 @@ interface BookingRow {
   start_at: number;
   status: string;
   calendar_event_id: string | null;
+  token_version: number;
 }
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
@@ -59,18 +60,17 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return res.status(400).json({ success: false, message: 'Missing id or token' });
   }
 
-  if (!verifyToken(id, 'cancel', token)) {
-    return res.status(403).json({ success: false, message: 'Invalid token' });
-  }
-
+  // Fetch the row first: the token is versioned, so verification needs the
+  // booking's current token_version. A missing row and a bad token return the
+  // same 403 so an outsider cannot probe which booking ids exist.
   const row = await queryFirst<BookingRow>(
-    `SELECT id, attendee_name, attendee_email, attendee_language, start_at, status, calendar_event_id
+    `SELECT id, attendee_name, attendee_email, attendee_language, start_at, status, calendar_event_id, token_version
      FROM bookings WHERE id = ?`,
     [id],
   );
 
-  if (!row) {
-    return res.status(404).json({ success: false, message: 'Booking not found' });
+  if (!row || !verifyToken(id, 'cancel', row.token_version, token)) {
+    return res.status(403).json({ success: false, message: 'Invalid token' });
   }
 
   // Already cancelled = success (idempotent). Saves us reasoning about double

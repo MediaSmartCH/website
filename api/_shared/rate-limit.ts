@@ -38,15 +38,6 @@ const buckets =
   globalRateLimitState.__mediaSmartRateLimitBuckets ??
   (globalRateLimitState.__mediaSmartRateLimitBuckets = new Map());
 
-function normalizeUserAgent(headers: IncomingHttpHeaders) {
-  const userAgent = headers['user-agent'];
-  const raw = Array.isArray(userAgent) ? userAgent[0] : userAgent;
-
-  return typeof raw === 'string'
-    ? raw.trim().toLowerCase().slice(0, 160)
-    : '';
-}
-
 function maybeCleanupBuckets(now: number) {
   const lastCleanup = globalRateLimitState.__mediaSmartRateLimitLastCleanup ?? 0;
   const shouldCleanupByAge = now - lastCleanup >= CLEANUP_INTERVAL_MS;
@@ -77,14 +68,12 @@ function maybeCleanupBuckets(now: number) {
 }
 
 export function getRateLimitIdentifier(headers: IncomingHttpHeaders) {
-  const clientIp = extractClientIp(headers);
-  const userAgent = normalizeUserAgent(headers);
-
-  if (clientIp && userAgent) {
-    return `${clientIp}:${userAgent}`;
-  }
-
-  return clientIp || userAgent || 'anonymous';
+  // Key on the client IP only. On Vercel `x-forwarded-for` is overwritten with
+  // the real client IP and client-supplied values are not forwarded, so the IP
+  // is trustworthy. We deliberately do NOT fold in the User-Agent: it is fully
+  // client-controlled, so mixing it into the key let an attacker mint a fresh
+  // rate-limit bucket on every request just by rotating the header.
+  return extractClientIp(headers) || 'anonymous';
 }
 
 export function checkRateLimit({
