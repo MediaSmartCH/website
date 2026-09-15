@@ -5,8 +5,11 @@ import BookingButton from "components/booking/BookingButton";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
+// Hoisted to module scope: declaring lazy() inside the component body creates a
+// new component type on every render, which remounts the Lottie player.
+const DotAnim = lazy(() => import("components/common/DotAnim"));
+
 const Error404Page: React.FC = () => {
-  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const navigate = useNavigate();
   const { lang } = useParams<{ lang?: string }>();
   const currentLang = lang || 'fr';

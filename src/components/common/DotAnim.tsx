@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
 import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
 import { useAppSelector } from "services/hooks/hooks";
@@ -42,7 +42,7 @@ function selectSrc(theme: string, pair: { light: string; dark?: string }) {
   return theme === "dark" && pair.dark ? pair.dark : pair.light;
 }
 
-function DotAnim(props: DotAnimProps) {
+function DotAnimPlayer(props: DotAnimProps) {
   const theme = useAppSelector((state) => state.theme.currentTheme);
   const animationsEnabled = useAppSelector((state) => state.animations.enabled);
   const animKey = hasAnim(props) ? props.anim : undefined;
@@ -228,6 +228,85 @@ function DotAnim(props: DotAnimProps) {
         />
       )}
     </div>
+  );
+}
+
+const MemoizedPlayer = memo(DotAnimPlayer);
+
+// How early (in px) before entering the viewport an animation starts loading.
+const PRELOAD_MARGIN = "400px 0px";
+
+/**
+ * Viewport gate around the player.
+ *
+ * Mounting DotLottie triggers the ~1.7MB WASM runtime plus the .lottie file for
+ * that animation. Pages stack several animations, so mounting them all up front
+ * saturates the network during the first paint. This renders a zero-cost
+ * placeholder with the exact same box until the animation is close to the
+ * viewport, which keeps layout stable and leaves the above-the-fold animation
+ * loading immediately (it intersects on mount).
+ */
+function DotAnim(props: DotAnimProps) {
+  const { className, style } = props;
+  const animKey = hasAnim(props) ? props.anim : undefined;
+  const intrinsicAspectRatio = animKey ? getLottieAspectRatio(animKey) : undefined;
+
+  const placeholderRef = useRef<HTMLDivElement | null>(null);
+  // Browsers without IntersectionObserver render the player straight away.
+  const [inView, setInView] = useState(
+    () => typeof IntersectionObserver === "undefined"
+  );
+
+  useEffect(() => {
+    if (inView) return;
+
+    const element = placeholderRef.current;
+    if (!element) return;
+
+    // A zero-area target can never report a meaningful intersection, so mount
+    // straight away rather than risk an animation that never appears.
+    const { width, height } = element.getBoundingClientRect();
+    if (width === 0 && height === 0) {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: PRELOAD_MARGIN }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [inView]);
+
+  const placeholderStyle = useMemo<React.CSSProperties>(() => {
+    const nextStyle: React.CSSProperties = { display: "block", ...style };
+
+    if (intrinsicAspectRatio && nextStyle.aspectRatio === undefined) {
+      nextStyle.aspectRatio = `${intrinsicAspectRatio}`;
+    }
+
+    return nextStyle;
+  }, [intrinsicAspectRatio, style]);
+
+  if (inView) {
+    return <MemoizedPlayer {...props} />;
+  }
+
+  return (
+    <div
+      ref={placeholderRef}
+      aria-hidden={true}
+      className={`relative ${className || ""}`}
+      style={placeholderStyle}
+    />
   );
 }
 

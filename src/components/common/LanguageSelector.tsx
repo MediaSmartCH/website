@@ -6,6 +6,7 @@ import {
   getLanguageConfig,
   SUPPORTED_LANGUAGES,
 } from "config/languages";
+import { prefetchLocale } from "services/locales/registry";
 import { ResolvedTheme } from "store/slices/common/themeUtils";
 
 type LanguageSelectorProps = {
@@ -96,6 +97,17 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     };
   }, [isOpen]);
 
+  // Dictionaries ship as one chunk per language, so warm them on intent: by the
+  // time a language is picked the switch is already a synchronous re-render.
+  const warmLanguages = () => {
+    SUPPORTED_LANGUAGES.forEach(({ code }) => prefetchLocale(code));
+  };
+
+  const openPicker = () => {
+    warmLanguages();
+    setIsOpen((open) => !open);
+  };
+
   const triggerClasses = isLightTheme
     ? "border-black/10 bg-white/80 text-[#14172D] hover:bg-white shadow-[0_6px_16px_rgba(15,23,42,0.08)]"
     : "border-white/10 bg-[#312D53]/72 text-[#F6F6F6] hover:bg-[#3A3560] shadow-[0_10px_24px_rgba(0,0,0,0.22)]";
@@ -118,7 +130,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     <div ref={containerRef} className="relative z-20">
       <button
         type="button"
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={openPicker}
+        onPointerEnter={warmLanguages}
+        onFocus={warmLanguages}
         aria-label={ariaLabel}
         title={ariaLabel}
         aria-haspopup="listbox"
@@ -128,6 +142,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         <img
           src={activeLanguage.flagSrc}
           alt={activeLanguage.nativeLabel}
+          decoding="async"
           className={`${sizeConfig.flag} rounded-full object-cover`}
         />
         <span
@@ -170,6 +185,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                   <img
                     src={language.flagSrc}
                     alt={language.nativeLabel}
+                    loading="lazy"
+                    decoding="async"
                     className={`${sizeConfig.flag} rounded-full object-cover`}
                   />
                   <div className="min-w-0 flex-1 text-left">

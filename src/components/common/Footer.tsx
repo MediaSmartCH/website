@@ -27,6 +27,8 @@ const Footer = () => {
               className="h-[36px] lg:h-[30px] xl:h-[36px] w-auto"
               width="560"
               height="72"
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <ul className="flex flex-wrap items-center justify-center gap-y-[17px] gap-x-[50px] xl:gap-x-[60px] 2xl:gap-x-[70px] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-[20px] lg:px-0">
@@ -94,6 +96,10 @@ const Footer = () => {
                 src={linkedin}
                 alt="Voir le profil LinkedIn de MediaSmart"
                 className="w-[14px] h-[14px]"
+                width="14"
+                height="14"
+                loading="lazy"
+                decoding="async"
                 data-aos="fade-up"
                 data-aos-duration="1300"
               />
@@ -110,6 +116,10 @@ const Footer = () => {
                 src={insta}
                 alt="Voir le profil Instagram de MediaSmart"
                 className="w-[17px] h-[17px]"
+                width="17"
+                height="17"
+                loading="lazy"
+                decoding="async"
                 data-aos="fade-up"
                 data-aos-duration="1300"
               />
@@ -126,6 +136,10 @@ const Footer = () => {
                 src={telegram}
                 alt="Contacter MediaSmart sur Telegram"
                 className="w-[17px] h-[17px]"
+                width="17"
+                height="17"
+                loading="lazy"
+                decoding="async"
                 data-aos="fade-up"
                 data-aos-duration="1300"
               />

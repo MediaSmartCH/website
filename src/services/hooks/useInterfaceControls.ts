@@ -1,4 +1,5 @@
 import { useTranslations } from "services/locales/safe";
+import { ensureLocale } from "services/locales/registry";
 import {
   AppLanguage,
   buildLocalizedPath,
@@ -33,13 +34,18 @@ export const useInterfaceControls = (
 
   const t = useTranslations(currentLanguage);
 
-  const changeLanguage = (nextLanguage: AppLanguage) => {
+  const changeLanguage = async (nextLanguage: AppLanguage) => {
     if (nextLanguage === currentLanguage) {
       return;
     }
 
     const scrollX = window.scrollX;
     const scrollY = window.scrollY;
+
+    // Each dictionary is its own chunk. Awaiting it here means the swap still
+    // happens in a single render, with no half-translated frame in between.
+    // prefetchLanguage() normally has it in memory already.
+    await ensureLocale(nextLanguage);
 
     dispatch(setLanguage(nextLanguage));
 
@@ -75,7 +81,7 @@ export const useInterfaceControls = (
   };
 
   const cycleLanguage = () => {
-    changeLanguage(getNextLanguage(currentLanguage));
+    void changeLanguage(getNextLanguage(currentLanguage));
   };
 
   const changeTheme = (nextTheme: ThemePreference) => {

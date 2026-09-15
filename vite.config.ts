@@ -71,7 +71,9 @@ const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
         return Object.fromEntries(
           fs
             .readdirSync(generatedPagesDir)
-            .filter((file) => file.endsWith(".html"))
+            // Skip macOS AppleDouble sidecars ("._name.html"), which appear when
+            // the repo lives on a non-APFS volume and are not valid UTF-8 HTML.
+            .filter((file) => file.endsWith(".html") && !file.startsWith("._"))
             .map((file) => [
               path.basename(file, ".html"),
               path.resolve(generatedPagesDir, file),
@@ -145,39 +147,16 @@ export default defineConfig(async () => {
           warn(warning);
         },
         output: {
-          // Group major libraries into stable vendor chunks to improve cache hit
-          // rates and keep the Lottie runtime isolated from route code.
+          // Keep the React runtime in its own long-lived chunk so app deploys do
+          // not invalidate it. Everything else is left to Rolldown's own chunker:
+          // hand-grouping the remaining vendors measurably inflated the entry.
           manualChunks(id) {
-            if (id.includes("@lottiefiles") || id.includes("@dotlottie")) {
-              return "lottie-vendor";
-            }
-
             if (
               id.includes("/node_modules/react/") ||
               id.includes("/node_modules/react-dom/") ||
-              id.includes("/node_modules/react-router-dom/")
+              id.includes("/node_modules/scheduler/")
             ) {
               return "react-vendor";
-            }
-
-            if (
-              id.includes("/node_modules/redux/") ||
-              id.includes("/node_modules/react-redux/") ||
-              id.includes("/node_modules/@reduxjs/toolkit/") ||
-              id.includes("/node_modules/redux-persist/")
-            ) {
-              return "redux-vendor";
-            }
-
-            if (id.includes("/node_modules/antd/")) {
-              return "antd-vendor";
-            }
-
-            if (
-              id.includes("/node_modules/lucide-react/") ||
-              id.includes("/node_modules/aos/")
-            ) {
-              return "ui-vendor";
             }
 
             return undefined;

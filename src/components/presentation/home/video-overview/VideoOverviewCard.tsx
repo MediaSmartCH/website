@@ -1,6 +1,10 @@
 import { lazy, Suspense } from "react";
 import { LottieKey } from "config/lotties";
 
+// Hoisted to module scope: declaring lazy() inside the component body creates a
+// new component type on every render, which remounts the Lottie player.
+const DotAnim = lazy(() => import("components/common/DotAnim"));
+
 interface OverviewCardProps {
     themeReducer: string;
     anim: LottieKey;
@@ -9,7 +13,6 @@ interface OverviewCardProps {
 }
 
 export default function VideoOverviewCard({ themeReducer, anim, title, description }: OverviewCardProps) {
-    const DotAnim = lazy(() => import('components/common/DotAnim'));
     return (
         <div
             className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"

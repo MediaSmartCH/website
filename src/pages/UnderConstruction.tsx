@@ -20,8 +20,11 @@ import { useInterfaceControls } from "services/hooks/useInterfaceControls";
 
 import "./UnderConstruction.css";
 
+// Hoisted to module scope: declaring lazy() inside the component body creates a
+// new component type on every render, which remounts the Lottie player.
+const DotAnim = lazy(() => import("components/common/DotAnim"));
+
 const UnderConstructionInner: React.FC = () => {
-  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const { executeRecaptcha } = useGoogleReCaptcha();
   const {
     currentLanguage: languageReducer,

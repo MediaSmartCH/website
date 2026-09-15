@@ -4,8 +4,11 @@ import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 import PortfolioGallery from "./PortfolioGallery";
 
+// Hoisted to module scope: declaring lazy() inside the component body creates a
+// new component type on every render, which remounts the Lottie player.
+const DotAnim = lazy(() => import("components/common/DotAnim"));
+
 const Services = () => {
-  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );

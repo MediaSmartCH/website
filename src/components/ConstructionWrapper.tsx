@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { CONSTRUCTION_CONFIG } from "config/constructionConfig";
-import UnderConstruction from "pages/UnderConstruction";
+
+// Construction mode is off in normal operation, so this page must not be part
+// of the entry chunk — a static import drags the booking + reCAPTCHA subtree
+// into the critical path on every visit.
+const UnderConstruction = lazy(() => import("pages/UnderConstruction"));
 
 interface ConstructionWrapperProps {
   children: React.ReactNode;
@@ -52,7 +56,11 @@ const ConstructionWrapper: React.FC<ConstructionWrapperProps> = ({ children }) =
   };
 
   if (CONSTRUCTION_CONFIG.isUnderConstruction && !isAllowedRoute()) {
-    return <UnderConstruction />;
+    return (
+      <Suspense fallback={null}>
+        <UnderConstruction />
+      </Suspense>
+    );
   }
 
   return <>{children}</>;

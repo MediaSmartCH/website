@@ -31,6 +31,8 @@ const Booking = () => {
             src={bookLine}
             alt="book-line"
             className="w-[70%] md:w-auto"
+            loading="lazy"
+            decoding="async"
             data-aos="zoom-out"
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"

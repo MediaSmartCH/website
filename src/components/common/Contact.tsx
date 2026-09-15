@@ -281,7 +281,7 @@ const ContactInner = () => {
           >
             <div className="w-full lg:w-[50%]" data-aos="fade-right" data-aos-duration="1000">
               <div className="flex items-center gap-x-[18px]">
-                <img src={email} alt="email" />
+                <img src={email} alt="email"  loading="lazy" decoding="async" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
                     href="mailto:hello@mediasmart.ch"
@@ -293,7 +293,7 @@ const ContactInner = () => {
               </div>
 
               <div className="flex items-center gap-x-[18px] my-[15px] lg:my-[31px]">
-                <img src={address} alt="address" />
+                <img src={address} alt="address"  loading="lazy" decoding="async" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
                     href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9"
@@ -307,7 +307,7 @@ const ContactInner = () => {
               </div>
 
               <div className="flex items-center gap-x-[18px]">
-                <img src={phone} alt="phone" />
+                <img src={phone} alt="phone"  loading="lazy" decoding="async" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
                     href="tel:+41796578612"
@@ -335,7 +335,7 @@ const ContactInner = () => {
                   rel="noopener noreferrer"
                 >
                   <span>
-                    <img src={insta} alt="insta" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
+                    <img src={insta} alt="insta" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
                   </span>
                   <span>Instagram</span>
                 </a>
@@ -350,7 +350,7 @@ const ContactInner = () => {
                   rel="noopener noreferrer"
                 >
                   <span>
-                    <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
+                    <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
                   </span>
                   <span>Linkedin</span>
                 </a>
@@ -365,7 +365,7 @@ const ContactInner = () => {
                   rel="noopener noreferrer"
                 >
                   <span>
-                    <img src={telegram} alt="telegram" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]" />
+                    <img src={telegram} alt="telegram" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
                   </span>
                   <span>Telegram</span>
                 </a>
@@ -578,7 +578,7 @@ const ContactInner = () => {
                   value={contact.name}
                   required
                 />
-                <img src={contactUser} alt="User" />
+                <img src={contactUser} alt="User"  loading="lazy" decoding="async" />
               </div>
 
               <div
@@ -598,7 +598,7 @@ const ContactInner = () => {
                   value={contact.email}
                   required
                 />
-                <img src={contactEmail} alt="Email" />
+                <img src={contactEmail} alt="Email"  loading="lazy" decoding="async" />
               </div>
 
               <div
@@ -657,7 +657,7 @@ const ContactInner = () => {
                       {t.text("home.contactMobile")}
                     </span>
                   )}
-                  <img src={contactPhone} alt="Phone" />
+                  <img src={contactPhone} alt="Phone"  loading="lazy" decoding="async" />
                 </div>
               </div>
 
@@ -701,7 +701,7 @@ const ContactInner = () => {
                   value={contact.message}
                   required
                 />
-                <img src={contactMessage} alt="help" className="absolute right-[24px] top-[24px]" />
+                <img src={contactMessage} alt="help" className="absolute right-[24px] top-[24px]"  loading="lazy" decoding="async" />
               </div>
 
               <div className="contact-checkbox">
@@ -741,7 +741,7 @@ const ContactInner = () => {
                     <span className="flex items-center gap-x-[10px] lg:gap-x-[24px] custom-btn-inner">
                       {t.text("home.contactBtn")}
                       <span>
-                        <img src={arrow} alt="arrow" />
+                        <img src={arrow} alt="arrow"  loading="lazy" decoding="async" />
                       </span>
                     </span>
                   )}

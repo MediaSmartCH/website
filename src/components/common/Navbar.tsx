@@ -149,6 +149,8 @@ const Navbar = () => {
                 className="w-[170px] xl:w-[190px] 2xl:w-[206px]"
                 width="412"
                 height="53"
+                fetchPriority="high"
+                decoding="async"
               />
             </Link>
             <ul className="nav-list flex items-center justify-center lg:gap-x-[0px] xl:gap-x-[10px] 2xl:gap-x-[20px] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] lg:ml-[50px] lg:mr-[34px] xl:ml-[75px] xl:mr-[44px]">
@@ -259,6 +261,8 @@ const Navbar = () => {
                 className="w-[130px]"
                 width="412"
                 height="53"
+                fetchPriority="high"
+                decoding="async"
               />
             </Link>
             <div className="flex justify-center items-center gap-x-[12px] sm:gap-x-[20px]">
@@ -281,7 +285,7 @@ const Navbar = () => {
                   aria-label="Toggle menu"
                   className="flex items-center justify-center"
                 >
-                  <img src={toggler} alt="Menu" className="w-[28px] h-[24px]" />
+                  <img src={toggler} alt="Menu" className="w-[28px] h-[24px]" width="28" height="24" decoding="async" />
                 </button>
               </div>
             </div>

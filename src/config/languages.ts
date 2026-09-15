@@ -90,6 +90,15 @@ export const stripLanguageFromPath = (pathname: string): string =>
 export const hasLanguagePrefix = (pathname: string): boolean =>
   LANGUAGE_PREFIX_REGEX.test(pathname);
 
+// Returns the language carried by a "/fr/..." style path, or null when the path
+// has no language prefix.
+export const getLanguageFromPath = (
+  pathname: string
+): AppLanguage | null => {
+  const match = LANGUAGE_PREFIX_REGEX.exec(pathname);
+  return match ? (match[1] as AppLanguage) : null;
+};
+
 export const buildLocalizedPath = (
   language: string,
   pathname: string,

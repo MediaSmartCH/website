@@ -1,12 +1,15 @@
 import React, { lazy, Suspense } from "react";
-import raphaelPhoto from "assets/images/raphael-rouiller.jpg";
+import raphaelPhoto from "assets/images/raphael-rouiller.webp";
 import { Briefcase, CheckCircle2, ExternalLink, MapPin, User } from "lucide-react";
 import RichText from "components/common/RichText";
 import { useAppSelector } from "services/hooks/hooks";
 import { useTranslations } from "services/locales/safe";
 
+// Hoisted to module scope: declaring lazy() inside the component body creates a
+// new component type on every render, which remounts the Lottie player.
+const DotAnim = lazy(() => import("components/common/DotAnim"));
+
 const About = () => {
-  const DotAnim = lazy(() => import('components/common/DotAnim'));
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -114,6 +117,10 @@ const About = () => {
                     <img
                       src={raphaelPhoto}
                       alt="Raphael Rouiller"
+                      width={640}
+                      height={640}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full rounded-[31px] object-cover object-top select-none"
                       draggable={false}
                       onContextMenu={(e) => e.preventDefault()}
