@@ -14,6 +14,16 @@ import {
 
 import BookingCalendar from '@features/booking/components/booking-calendar';
 import BookingForm from '@features/booking/components/booking-form';
+import BookingSuccess from '@features/booking/components/booking-success';
+import TimeStep from '@features/booking/components/booking-time-step';
+import { useBookingScrollLock } from '@features/booking/hooks/use-booking-scroll-lock';
+import {
+  HORIZON_DAYS,
+  dateKeyInBookingTz,
+  formatDayHuman,
+  formatHumanDate,
+  formatTimeOnly,
+} from '@features/booking/lib/booking-formatting';
 
 interface BookingModalProps {
   open: boolean;
@@ -25,62 +35,7 @@ interface BookingModalProps {
 // via the explicit "back" button on every non-initial step (or the close X).
 type Stage = 'date' | 'time' | 'form' | 'success';
 
-const BOOKING_TIMEZONE = 'Europe/Zurich';
 
-// 28 days of horizon matches the backend constant. Kept identical client-side
-// so the calendar never offers anything the server would later refuse.
-const HORIZON_DAYS = 28;
-
-function dateKeyInBookingTz(date: Date): string {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: BOOKING_TIMEZONE,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(date);
-}
-
-function formatSlotForUser(date: Date, language: 'fr' | 'en'): string {
-  return new Intl.DateTimeFormat(language === 'fr' ? 'fr-CH' : 'en-GB', {
-    timeZone: BOOKING_TIMEZONE,
-    weekday: 'long',
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
-}
-
-function formatDayHuman(dateKey: string, language: 'fr' | 'en'): string {
-  return new Intl.DateTimeFormat(language === 'fr' ? 'fr-CH' : 'en-GB', {
-    timeZone: BOOKING_TIMEZONE,
-    weekday: 'long',
-    day: '2-digit',
-    month: 'long',
-  }).format(new Date(`${dateKey}T12:00:00Z`));
-}
-
-function formatTimeOnly(date: Date, language: 'fr' | 'en'): string {
-  return new Intl.DateTimeFormat(language === 'fr' ? 'fr-CH' : 'en-GB', {
-    timeZone: BOOKING_TIMEZONE,
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
-}
-
-// Locks body scroll while the modal is open so the underlying page doesn't
-// drift on iOS Safari and on desktop scroll wheels.
-function useBodyScrollLock(active: boolean): void {
-  React.useEffect(() => {
-    if (!active) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [active]);
-}
 
 const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   const language = useAppSelector((state) => state.language.currentLanguage);
@@ -88,7 +43,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   const t = useTranslations(language);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
-  useBodyScrollLock(open);
+  useBookingScrollLock(open);
 
   // Availability state ------------------------------------------------------
   const [slots, setSlots] = React.useState<BookingSlot[]>([]);
@@ -394,7 +349,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
                   {/* BookingForm renders its own back button at the top — no
                       need to duplicate it from the parent. */}
                   <BookingForm
-                    formattedSlot={formatSlotForUser(new Date(selectedSlot.startUtc), language)}
+                    formattedSlot={formatHumanDate(new Date(selectedSlot.startUtc), language)}
                     language={language}
                     theme={theme}
                     t={t}
@@ -408,146 +363,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
             </div>
           </>
         )}
-      </div>
-    </div>
-  );
-};
-
-// ----------------------------------------------------------------------------
-// Sub-component: time-picking step. Shown after a date is chosen.
-// Single-pane (no calendar visible) so the user can only act on one thing.
-// ----------------------------------------------------------------------------
-
-interface TimeStepProps {
-  slots: BookingSlot[];
-  selectedDateKey: string;
-  language: 'fr' | 'en';
-  theme: 'light' | 'dark';
-  t: ReturnType<typeof useTranslations>;
-  onBack: () => void;
-  onPickSlot: (slot: BookingSlot) => void;
-  backRow: (onBack: () => void, label?: string) => React.ReactElement;
-}
-
-const TimeStep: React.FC<TimeStepProps> = ({
-  slots,
-  selectedDateKey,
-  language,
-  theme,
-  t,
-  onBack,
-  onPickSlot,
-  backRow,
-}) => {
-  const isLight = theme === 'light';
-  const headingClass = isLight ? 'text-[#14172D]' : 'text-[#F6F6F6]';
-  const subtleText = isLight ? 'text-[#6B7280]' : 'text-[#CFCDE0]';
-  const slotInactive = isLight
-    ? 'border-black/10 text-[#14172D] hover:border-[#b514fd] hover:bg-[#b514fd]/5'
-    : 'border-white/10 text-[#F6F6F6] hover:border-[#b514fd] hover:bg-[#b514fd]/15';
-
-  return (
-    <div className="mt-6">
-      {backRow(onBack)}
-
-      <p className={`mt-5 font-redDisplay font-semibold text-[20px] ${headingClass}`}>
-        {t.text('booking.selectTime')}
-      </p>
-      <p className={`mt-1 text-[13px] font-poppins capitalize ${subtleText}`}>
-        {formatDayHuman(selectedDateKey, language)}
-      </p>
-
-      <div className="mt-5">
-        {slots.length === 0 ? (
-          <p className={`text-[13px] font-poppins ${subtleText}`}>
-            {t.text('booking.info.noSlotsAvailable')}
-          </p>
-        ) : (
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-            {slots.map((slot) => (
-              <button
-                key={slot.startUtc}
-                type="button"
-                onClick={() => onPickSlot(slot)}
-                className={`rounded-xl border px-3 py-2.5 text-[13px] font-poppins font-medium transition-colors ${slotInactive}`}
-              >
-                {formatTimeOnly(new Date(slot.startUtc), language)}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// ----------------------------------------------------------------------------
-// Sub-component: success state shown after a successful create.
-// ----------------------------------------------------------------------------
-
-interface BookingSuccessProps {
-  confirmation: {
-    start: Date;
-    end: Date;
-    meetLink: string | null;
-    manageUrl: string;
-  };
-  language: 'fr' | 'en';
-  theme: 'light' | 'dark';
-  t: ReturnType<typeof useTranslations>;
-  onClose: () => void;
-}
-
-const BookingSuccess: React.FC<BookingSuccessProps> = ({
-  confirmation,
-  language,
-  theme,
-  t,
-  onClose,
-}) => {
-  const isLight = theme === 'light';
-  const headingClass = isLight ? 'text-[#14172D]' : 'text-[#F6F6F6]';
-  const subtleText = isLight ? 'text-[#6B7280]' : 'text-[#CFCDE0]';
-  const buttonClass = isLight
-    ? 'bg-[#14172D] text-white hover:opacity-90'
-    : 'bg-white text-[#14172D] hover:opacity-90';
-  const meetButtonClass = 'bg-[linear-gradient(135deg,#b514fd,#5f75f5)] text-white shadow-[0_10px_24px_-6px_rgba(181,20,253,0.55)] hover:opacity-90';
-
-  const whenLabel = formatSlotForUser(confirmation.start, language);
-
-  return (
-    <div className="flex flex-col items-center text-center px-6 py-12 sm:px-12 sm:py-16">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(135deg,#b514fd,#5f75f5)] shadow-[0_18px_36px_-10px_rgba(181,20,253,0.5)]">
-        <CheckCircle2 size={32} strokeWidth={2.4} className="text-white" />
-      </div>
-      <p className={`mt-6 font-redDisplay font-bold text-[24px] sm:text-[28px] ${headingClass}`}>
-        {t.text('booking.confirmation.title')}
-      </p>
-      <p className={`mt-2 text-[14px] sm:text-[15px] font-poppins ${subtleText}`}>
-        {t.text('booking.confirmation.scheduledFor')} <span className={`font-medium ${isLight ? 'text-[#14172D]' : 'text-[#F6F6F6]'}`}>{whenLabel}</span>.
-      </p>
-      <p className={`mt-3 text-[13px] font-poppins ${subtleText}`}>
-        {t.text('booking.confirmation.emailSent')}
-      </p>
-
-      <div className="mt-8 flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-        {confirmation.meetLink && (
-          <a
-            href={confirmation.meetLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[14px] font-poppins font-semibold transition-opacity ${meetButtonClass}`}
-          >
-            <Video size={16} strokeWidth={2.2} /> Google Meet
-          </a>
-        )}
-        <button
-          type="button"
-          onClick={onClose}
-          className={`inline-flex items-center justify-center rounded-full px-6 py-3 text-[14px] font-poppins font-semibold transition-opacity ${buttonClass}`}
-        >
-          {t.text('booking.navigation.back')}
-        </button>
       </div>
     </div>
   );
