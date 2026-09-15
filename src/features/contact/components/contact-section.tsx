@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronDown, Check } from "lucide-react";
 import { Checkbox } from "antd";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
@@ -158,8 +159,8 @@ const ContactInner = () => {
   };
 
 
-  const onCheckboxChange = (e: any) => {
-    setIsChecked(e.target.checked);
+  const onCheckboxChange = (event: CheckboxChangeEvent) => {
+    setIsChecked(event.target.checked);
     setError("");
   };
 

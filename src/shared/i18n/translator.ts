@@ -1,31 +1,45 @@
 import { dictionary } from "@shared/i18n";
+
+type SectionDict = Record<string, unknown>;
 type Lang = string;
 const DEFAULT_LANG: Lang = "en";
 
-// Traverses a nested object using a dot-separated path string.
-// Returns undefined (not throws) if any segment along the path is missing.
-function getIn(obj: any, path: string): any {
-  return path.split(".").reduce((acc, k) => (acc == null ? acc : acc[k]), obj);
+/**
+ * Traverses a nested object along a dot-separated path.
+ *
+ * Returns undefined rather than throwing when a segment is missing: the whole
+ * point of this module is that a translation gap degrades to a fallback instead
+ * of taking the page down.
+ */
+function getIn(obj: unknown, path: string): unknown {
+  return path.split(".").reduce<unknown>(
+    (acc, key) =>
+      acc == null ? acc : (acc as Record<string, unknown>)[key],
+    obj
+  );
 }
 
 // Resolves the translation bucket for a top-level section (e.g. "navbar").
 // Falls back to DEFAULT_LANG when the requested language has no entry for
 // that section, so the site always renders something readable.
 function pickLang(section: string, lang: Lang) {
-  const sec = (dictionary as any)[section];
+  const sec = dictionary[section];
   if (!sec) return undefined;
-  return sec[lang] ?? sec[DEFAULT_LANG];
+  // `lang` is a plain string on purpose: it arrives from Redux and from the URL,
+  // and an unrecognised value has to fall back rather than fail to compile.
+  const byLang = sec as Record<string, SectionDict | undefined>;
+  return byLang[lang] ?? byLang[DEFAULT_LANG];
 }
 
-function coerceArray<T = unknown>(val: any, fallback: T[]): T[] {
+function coerceArray<T = unknown>(val: unknown, fallback: T[]): T[] {
   return Array.isArray(val) ? (val as T[]) : fallback;
 }
 
-function coerceObject<T = Record<string, unknown>>(val: any, fallback: T): T {
+function coerceObject<T = Record<string, unknown>>(val: unknown, fallback: T): T {
   return (val && typeof val === "object" && !Array.isArray(val)) ? (val as T) : fallback;
 }
 
-function coerceString(val: any, fallback: string): string {
+function coerceString(val: unknown, fallback: string): string {
   return typeof val === "string" ? val : fallback;
 }
 
@@ -46,7 +60,7 @@ export function makeTranslator(lang: Lang): SafeTranslator {
 
   // Splits "section.key.subkey" into the top-level section and the remaining
   // dot path, then delegates deep access to getIn.
-  const resolve = (path: string): any => {
+  const resolve = (path: string): unknown => {
     const [section, ...rest] = path.split(".");
     const bucket = pickLang(section, lang);
     if (!bucket) {
