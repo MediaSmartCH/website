@@ -79,6 +79,14 @@ async function fingerprintPage() {
     el.style.transform = 'none';
     el.style.transition = 'none';
   });
+
+  // Wait for the webfonts AFTER the scroll pass, not before: below-the-fold text
+  // only requests its face once it renders, so an earlier `fonts.ready` resolves
+  // too soon. Text laid out in the fallback face measures differently, and that
+  // race made one button oscillate between 120px and 143px.
+  if (document.fonts?.ready) {
+    await document.fonts.ready;
+  }
   await sleep(400);
 
   const normalise = (value) => value.replace(/\s+/g, ' ').trim();

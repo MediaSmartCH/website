@@ -37,6 +37,8 @@ import { Link } from "react-router-dom";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import ScopedRecaptchaProvider from "@shared/components/scoped-recaptcha-provider";
 import ProjectTypeDropdown from "@features/contact/components/project-type-dropdown";
+import ContactInfoPanel from "@features/contact/components/contact-info-panel";
+import ContactSuccess from "@features/contact/components/contact-success";
 import {
   CONTACT_EMAIL,
   CONTACT_EMAIL_DISPLAY,
@@ -174,121 +176,14 @@ const ContactInner = () => {
           <div
             className={`text-body-on-surface flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-y-[35px] `}
           >
-            <div className="w-full lg:w-[50%]" data-aos="fade-right" data-aos-duration="1000">
-              <div className="flex items-center gap-x-[18px]">
-                <img src={email} alt="email"  loading="lazy" decoding="async" />
-                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
-                  <a
-                    href={`mailto:${CONTACT_EMAIL}`}
-                    className={`text-ink`}
-                  >
-                    {CONTACT_EMAIL_DISPLAY}
-                  </a>
-                </p>
-              </div>
-
-              <div className="flex items-center gap-x-[18px] my-[15px] lg:my-[31px]">
-                <img src={address} alt="address"  loading="lazy" decoding="async" />
-                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
-                  <a
-                    href={OFFICE_MAP_URL}
-                    className={`text-ink`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Valais – Vaud – Genève – Fribourg
-                  </a>
-                </p>
-              </div>
-
-              <div className="flex items-center gap-x-[18px]">
-                <img src={phone} alt="phone"  loading="lazy" decoding="async" />
-                <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
-                  <a
-                    href={`tel:${CONTACT_PHONE}`}
-                    className={`text-ink`}
-                  >
-                    {CONTACT_PHONE_DISPLAY}
-                  </a>
-                </p>
-              </div>
-
-              <div className="
-                flex flex-wrap
-                justify-center lg:justify-start
-                gap-x-[13px] gap-y-[12px]
-                mt-[25px] lg:mt-[45px]
-              ">
-                <a
-                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
-                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
-                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
-                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
-                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
-                  href={SOCIAL_LINKS.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>
-                    <img src={insta} alt="insta" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
-                  </span>
-                  <span>Instagram</span>
-                </a>
-                <a
-                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
-                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
-                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
-                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
-                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
-                  href={SOCIAL_LINKS.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>
-                    <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
-                  </span>
-                  <span>Linkedin</span>
-                </a>
-                <a
-                  className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
-                  shrink-0 h-[58px] lg:h-[65px] xl:h-[71px] px-[24px] lg:px-[29px]
-                  border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
-                  rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
-                  font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
-                  href={SOCIAL_LINKS.telegram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>
-                    <img src={telegram} alt="telegram" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
-                  </span>
-                  <span>Telegram</span>
-                </a>
-              </div>
-            </div>
+            <ContactInfoPanel language={languageReducer} theme={themeReducer} />
 
             {done ? (
-              <div className="w-full lg:w-[50%] flex flex-col items-center justify-center text-center gap-y-[20px] py-[40px]">
-                <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center"
-                  style={{ background: "linear-gradient(135deg, #5b4fcf, #a855f7)" }}>
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                <h3 className={`font-redDisplay font-bold text-[22px] md:text-[26px] text-ink`}>
-                  {t.text("home.contactSuccessTitle")}
-                </h3>
-                <p className={`font-poppins font-light text-[14px] md:text-[16px] max-w-[380px] leading-relaxed ${themeReducer === "light" ? "text-[#555555]" : "text-[#C8CADE]"}`}>
-                  {t.text("home.contactSuccessBody")}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setDone(false)}
-                  className="custom-btn rounded-[80px] text-white px-[40px] py-[11px] lg:py-[14px] mt-[8px]"
-                >
-                  <span className="custom-btn-inner">{t.text("home.contactSuccessNew")}</span>
-                </button>
-              </div>
+              <ContactSuccess
+                language={languageReducer}
+                theme={themeReducer}
+                onSendAnother={() => setDone(false)}
+              />
             ) : (
             <form
               noValidate
