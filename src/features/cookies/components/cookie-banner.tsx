@@ -9,6 +9,11 @@ import {
 } from "lucide-react";
 import { OPEN_COOKIE_SETTINGS_EVENT } from "@store/slices/common/cookieUtils";
 import CategoryToggle from "@features/cookies/components/category-toggle";
+import CompactConsentBar from "@features/cookies/components/compact-consent-bar";
+import ConsentPreferencesPanel from "@features/cookies/components/consent-preferences-panel";
+import ConsentSummaryPanel from "@features/cookies/components/consent-summary-panel";
+import ThemeSwitchOverlay from "@features/cookies/components/theme-switch-overlay";
+import { getConsentThemeClasses } from "@features/cookies/lib/consent-theme-classes";
 import { useConsentScrollLock } from "@features/cookies/hooks/use-consent-scroll-lock";
 import { useConsentPreferences } from "@features/cookies/hooks/use-consent-preferences";
 import { useLocationPath } from "@shared/hooks/use-location-path";
@@ -28,6 +33,7 @@ const ModernCookieBanner = () => {
   // Rendered above RouterProvider, so the path has to come from the History API.
   const currentPath = useLocationPath("");
 
+  const consent = useConsentPreferences();
   const {
     currentLanguage: languageReducer,
     currentTheme: themeReducer,
@@ -67,7 +73,7 @@ const ModernCookieBanner = () => {
     acceptAll,
     rejectAll,
     saveCurrent,
-  } = useConsentPreferences();
+  } = consent;
   const showCompactBanner = actuallyVisible && isMobile && !showCustomize;
 
   const handleThemeChange = (nextTheme: ThemePreference) => {
@@ -170,20 +176,18 @@ const ModernCookieBanner = () => {
 
 
 
-  const getThemeClasses = () => ({
-    modal: themeReducer === "light" ? "bg-white" : "bg-[#2B284C]",
-    text: themeReducer === "light" ? "text-gray-900" : "text-[#F6F6F6]",
-    textSecondary: themeReducer === "light" ? "text-gray-600" : "text-[#E5E5E5]",
-    textMuted: themeReducer === "light" ? "text-gray-500" : "text-[#B8B8B8]",
-    border: themeReducer === "light" ? "border-gray-100" : "border-gray-600",
-    borderSecondary: themeReducer === "light" ? "border-gray-200" : "border-gray-500",
-    bg: themeReducer === "light" ? "bg-gray-50" : "bg-[#1a1a2e]",
-    bgSecondary: themeReducer === "light" ? "bg-white" : "bg-[#16213e]",
-    hover: themeReducer === "light" ? "hover:bg-gray-200" : "hover:bg-gray-600",
-    buttonSecondary: themeReducer === "light" ? "bg-gray-100 text-gray-700 hover:bg-gray-200" : "bg-gray-600 text-gray-200 hover:bg-gray-500"
-  });
+  const themeClasses = getConsentThemeClasses(themeReducer);
 
-  const themeClasses = getThemeClasses();
+  // Both panels render the same header control with the same props.
+  const localeControls = {
+    language: languageReducer,
+    theme: themeReducer,
+    themePreference: themeModePreference,
+    onLanguageChange: changeLanguage,
+    onThemeChange: handleThemeChange,
+    labels,
+    themeDisabled: isThemeChanging,
+  };
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -199,108 +203,20 @@ const ModernCookieBanner = () => {
   return (
     <>
       {isThemeChanging && (
-        <div
-          className={`fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-sm transition-all duration-300 ${themeReducer === 'light' ? 'bg-white/90' : 'bg-black/90'
-            }`}
-        >
-          <div className={`text-center p-8 rounded-lg border shadow-2xl ${themeReducer === 'light'
-            ? 'bg-white border-gray-200'
-            : 'bg-gray-800 border-gray-700'
-            }`}>
-            <div className="flex justify-center mb-6">
-              <div className="preloader-orbit-loading">
-                <div className="cssload-inner cssload-one"></div>
-                <div className="cssload-inner cssload-two"></div>
-                <div className="cssload-inner cssload-three"></div>
-              </div>
-            </div>
-            <h3 className={`font-medium text-xl mb-2 ${themeReducer === 'light' ? 'text-gray-800' : 'text-white'
-              }`}>
-              {t.text("navbar.themeChangingTitle")}
-            </h3>
-            <p className={`text-sm ${themeReducer === 'light' ? 'text-gray-600' : 'text-gray-300'
-              }`}>
-              {t.text("navbar.themeChangingDescription")}
-            </p>
-          </div>
-        </div>
+        <ThemeSwitchOverlay theme={themeReducer} language={languageReducer} />
       )}
 
       {showCompactBanner && (
-        <div
-          className={`fixed inset-x-0 bottom-0 z-50 p-3 transition-all duration-300 ${isClosing ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"
-            }`}
-          style={{ zIndex: 999999 }}
-        >
-          <div
-            className={`mx-auto w-full max-w-md rounded-[26px] border p-4 shadow-[0_30px_80px_-40px_rgba(20,23,45,0.55)] ${themeClasses.modal} ${themeClasses.border}`}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex min-w-0 items-start gap-3">
-                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500">
-                  <Cookie className="h-5 w-5 text-white" />
-                </div>
-
-                <div className="min-w-0">
-                  <h3 className={`text-base font-bold ${themeClasses.text}`}>
-                    {t.text("cookies.title")}
-                  </h3>
-                  <p className={`mt-1 text-sm leading-5 ${themeClasses.textSecondary}`}>
-                    {t.text("cookies.subtitle")}
-                  </p>
-                  {inRouter ? (
-                    <Link
-                      to={privacyPath}
-                      className="mt-2 inline-block text-xs underline text-purple-600 hover:text-purple-800"
-                    >
-                      {t.text("cookies.privacyLinkText")}
-                    </Link>
-                  ) : (
-                    <a
-                      href={privacyPath}
-                      className="mt-2 inline-block text-xs underline text-purple-600 hover:text-purple-800"
-                    >
-                      {t.text("cookies.privacyLinkText")}
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              <button
-                onClick={handleClose}
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${themeClasses.bg} ${themeClasses.hover}`}
-                title={t.text("cookies.ariaCloseModal")}
-                aria-label={t.text("cookies.ariaCloseModal")}
-              >
-                <X className={`h-4 w-4 ${themeClasses.textSecondary}`} />
-              </button>
-            </div>
-
-            <div className="mt-4 grid grid-cols-1 gap-2">
-              <button
-                onClick={handleAcceptAll}
-                className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-3 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:from-purple-700 hover:to-pink-700"
-              >
-                {t.text("cookies.acceptAll")}
-              </button>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={handleRejectAll}
-                  className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${themeClasses.buttonSecondary}`}
-                >
-                  {t.text("cookies.refuse")}
-                </button>
-                <button
-                  onClick={() => setShowCustomize(true)}
-                  className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${themeClasses.bgSecondary} ${themeClasses.borderSecondary} ${themeClasses.text}`}
-                >
-                  <Settings className="h-4 w-4" />
-                  {t.text("cookies.customize")}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <CompactConsentBar
+          language={languageReducer}
+          themeClasses={themeClasses}
+          isClosing={isClosing}
+          privacyPath={privacyPath}
+          onAcceptAll={handleAcceptAll}
+          onRejectAll={handleRejectAll}
+          onClose={handleClose}
+          onCustomize={() => setShowCustomize(true)}
+        />
       )}
 
       {actuallyVisible && !showCompactBanner && (
@@ -318,296 +234,29 @@ const ModernCookieBanner = () => {
                 }`}
             >
               {!showCustomize ? (
-                <div className="p-6 md:p-8">
-                  <div className="mb-4 flex flex-wrap items-start justify-between gap-3 px-3 lg:px-6">
-                    <div className="flex min-w-[180px] flex-1 items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shrink-0">
-                        <Cookie className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className={`text-xl sm:text-2xl font-bold ${themeClasses.text}`}>
-                          {t.text("cookies.title")}
-                        </h3>
-                        <p className={`text-sm sm:text-base ${themeClasses.textMuted}`}>
-                          {t.text("cookies.subtitle")}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2 sm:flex-nowrap sm:gap-3 shrink-0">
-                      <LocaleThemeControls
-                        currentLanguage={languageReducer}
-                        currentTheme={themeReducer}
-                        themePreference={themeModePreference}
-                        onLanguageChange={changeLanguage}
-                        onThemeChange={handleThemeChange}
-                        size="xs"
-                        labels={labels}
-                        themeDisabled={isThemeChanging}
-                        className="max-w-full flex-wrap justify-end sm:flex-nowrap"
-                      />
-
-                      <button
-                        onClick={handleClose}
-                        className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
-                        title={t.text("cookies.ariaCloseModal")}
-                        aria-label={t.text("cookies.ariaCloseModal")}
-                      >
-                        <X className={`w-3 h-3 sm:w-4 sm:h-4 ${themeClasses.textSecondary}`} />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="mb-6">
-                    <p className={`${themeClasses.textSecondary} leading-relaxed`}>
-                      {t.text("cookies.description")}
-                    </p>
-                    {inRouter ? (
-                      <Link to={privacyPath} className="block mt-2 text-sm underline text-purple-600 hover:text-purple-800">
-                        {t.text("cookies.privacyLinkText")}
-                      </Link>
-                    ) : (
-                      <a href={privacyPath} className="block mt-2 text-sm underline text-purple-600 hover:text-purple-800">
-                        {t.text("cookies.privacyLinkText")}
-                      </a>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-green-50 border border-green-200">
-                      <Shield className="w-3 h-3 text-green-600" />
-                      <div>
-                        <p className="font-medium text-green-900 text-xs">{t.text("cookies.necessary")}</p>
-                        <p className="text-xs text-green-700">{t.text("cookies.alwaysActive")}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-purple-50 border border-purple-200">
-                      <Zap className="w-3 h-3 text-purple-600" />
-                      <div>
-                        <p className="font-medium text-purple-900 text-xs">{t.text("cookies.functionality")}</p>
-                        <p className="text-xs text-purple-700">{t.text("cookies.yourChoice")}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-blue-50 border border-blue-200">
-                      <BarChart3 className="w-3 h-3 text-blue-600" />
-                      <div>
-                        <p className="font-medium text-blue-900 text-xs">{t.text("cookies.performance")}</p>
-                        <p className="text-xs text-blue-700">{t.text("cookies.yourChoice")}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col lg:flex-row flex-wrap gap-2 lg:gap-3 w-full">
-                    <button
-                      onClick={handleAcceptAll}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 md:px-6 py-3 rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    >
-                      {t.text("cookies.acceptAll")}
-                    </button>
-                    <button
-                      onClick={handleRejectAll}
-                      className={`flex-1 px-4 md:px-6 py-3 rounded-xl font-medium transition-colors ${themeClasses.buttonSecondary}`}
-                    >
-                      {t.text("cookies.refuse")}
-                    </button>
-                    <button
-                      onClick={() => setShowCustomize(true)}
-                      className={`flex-1 flex items-center justify-center gap-2 ${themeClasses.bgSecondary} border-2 ${themeClasses.borderSecondary} ${themeClasses.text} px-4 md:px-6 py-3 rounded-xl font-medium hover:${themeClasses.border} ${themeClasses.hover} transition-colors`}
-                    >
-                      <Settings className="w-4 h-4" />
-                      {t.text("cookies.customize")}
-                    </button>
-                  </div>
-                </div>
+                <ConsentSummaryPanel
+                  language={languageReducer}
+                  theme={themeReducer}
+                  themeClasses={themeClasses}
+                  localeControls={localeControls}
+                  privacyPath={privacyPath}
+                  inRouter={inRouter}
+                  onAcceptAll={handleAcceptAll}
+                  onRejectAll={handleRejectAll}
+                  onClose={handleClose}
+                  onCustomize={() => setShowCustomize(true)}
+                />
               ) : (
-                <div className="flex flex-col max-h-[95vh]">
-                  <div className={`flex-shrink-0 border-b ${themeClasses.border}`}>
-                    <div className="flex flex-wrap items-start justify-between gap-3 p-4 md:p-6 pb-3">
-                      <h3
-                        className={`min-w-[140px] flex-1 text-lg sm:text-xl font-bold ${themeClasses.text}`}
-                      >
-                        {t.text("cookies.detailedPrefs")}
-                      </h3>
-
-                      <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2 sm:flex-nowrap sm:gap-3 shrink-0">
-                        <LocaleThemeControls
-                          currentLanguage={languageReducer}
-                          currentTheme={themeReducer}
-                          themePreference={themeModePreference}
-                          onLanguageChange={changeLanguage}
-                          onThemeChange={handleThemeChange}
-                          size="xs"
-                          labels={labels}
-                          themeDisabled={isThemeChanging}
-                          className="max-w-full flex-wrap justify-end sm:flex-nowrap"
-                        />
-
-                        <button
-                          onClick={handleClose}
-                          className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
-                          title={t.text("cookies.ariaCloseModal")}
-                          aria-label={t.text("cookies.ariaCloseModal")}
-                        >
-                          <X className={`w-3 h-3 sm:w-4 sm:h-4 ${themeClasses.textSecondary}`} />
-                        </button>
-
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex-1 overflow-y-auto px-4 md:px-6 py-3" style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
-                    <div className="space-y-3">
-                      <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <Shield className="w-4 h-4 text-green-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesNecessary")}</h4>
-                          </div>
-                          <div className="w-10 h-5 bg-green-500 rounded-full flex items-center justify-end pr-1">
-                            <div className="w-3 h-3 bg-white rounded-full" />
-                          </div>
-                        </div>
-                        <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {t.text("cookies.necessaryDesc")}
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center gap-1 mb-1">
-                              <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                              <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.contactForm")}</p>
-                            </div>
-                            <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.contactFormDesc")}</p>
-                          </div>
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center gap-1 mb-1">
-                              <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                              <p className={`font-medium text-xs ${themeClasses.text}`}>Google reCAPTCHA</p>
-                            </div>
-                            <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.antiSpamDesc")}</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <Zap className="w-4 h-4 text-purple-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesFunctionality")}</h4>
-                          </div>
-                          <CategoryToggle
-                            state={functionalityState}
-                            onClick={toggleFunctionality}
-                          />
-                        </div>
-                        <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {t.text("cookies.functionalityDesc")}
-                        </p>
-
-                        <div className="space-y-2">
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <div className="flex items-center gap-1 mb-1">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${themePreference ? 'bg-purple-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.themePreference")}</p>
-                                </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.themePreferenceDesc")}</p>
-                              </div>
-                              <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={themePreference}
-                                  onChange={(e) => setThemePreference(e.target.checked)}
-                                  className="sr-only peer"
-                                />
-                                <div className={`w-8 h-4 ${themeReducer === "light" ? "bg-gray-300" : "bg-gray-600"} peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-pink-500`}></div>
-                              </label>
-                            </div>
-                          </div>
-
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <div className="flex items-center gap-1 mb-1">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${languagePreference ? 'bg-purple-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.languagePreference")}</p>
-                                </div>
-                                <p className={`text-xs ${themeClasses.textSecondary}`}>{t.text("cookies.languagePreferenceDesc")}</p>
-                              </div>
-                              <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={languagePreference}
-                                  onChange={(e) => setLanguagePreference(e.target.checked)}
-                                  className="sr-only peer"
-                                />
-                                <div className={`w-8 h-4 ${themeReducer === "light" ? "bg-gray-300" : "bg-gray-600"} peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-pink-500`}></div>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <BarChart3 className="w-4 h-4 text-blue-600" />
-                            <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesPerformance")}</h4>
-                          </div>
-                          <CategoryToggle
-                            state={performanceState}
-                            onClick={togglePerformance}
-                          />
-                        </div>
-                        <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
-                          {t.text("cookies.performanceDesc")}
-                        </p>
-
-                        <div className="space-y-2">
-                          <div className={`p-2 ${themeClasses.bgSecondary} rounded-lg border ${themeClasses.borderSecondary}`}>
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <div className="flex items-center gap-1 mb-1">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${googleAnalytics ? 'bg-blue-500' : themeReducer === "light" ? 'bg-gray-300' : 'bg-gray-500'}`}></div>
-                                  <p className={`font-medium text-xs ${themeClasses.text}`}>Google Analytics</p>
-                                </div>
-                                <p className={`font-medium text-xs ${themeClasses.text}`}>{t.text("cookies.pagesVisited")}</p>
-                              </div>
-                              <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={googleAnalytics}
-                                  onChange={(e) => setGoogleAnalytics(e.target.checked)}
-                                  className="sr-only peer"
-                                />
-                                <div className={`w-8 h-4 ${themeReducer === "light" ? "bg-gray-300" : "bg-gray-600"} peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-pink-500`}></div>
-                              </label>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div className={`flex-shrink-0 p-4 md:p-6 pt-3 border-t ${themeClasses.border}`}>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <button
-                        onClick={handleSavePreferences}
-                        className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2.5 rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
-                      >
-                        {t.text("cookies.confirmChoices")}
-                      </button>
-                      <button
-                        onClick={() => setShowCustomize(false)}
-                        className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors text-sm ${themeClasses.buttonSecondary}`}
-                      >
-                        {t.text("cookies.back")}
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ConsentPreferencesPanel
+                  language={languageReducer}
+                  theme={themeReducer}
+                  themeClasses={themeClasses}
+                  localeControls={localeControls}
+                  consent={consent}
+                  onSave={handleSavePreferences}
+                  onClose={handleClose}
+                  onBack={() => setShowCustomize(false)}
+                />
               )}
             </div>
           </div>
