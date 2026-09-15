@@ -36,6 +36,10 @@
   /* Night — dark surfaces */
   --palette-night-900: #2b284c;
 
+  /* Neutral greys, matching Tailwind's scale so migrated values stay identical */
+  --palette-grey-300: #d1d5db;
+  --palette-grey-600: #4b5563;
+
   /* Accent — links and highlights */
   --palette-accent-600: #2e4d8d;
   --palette-accent-300: #9edcff;
@@ -55,6 +59,7 @@
   --color-muted: var(--palette-ink-400);
   --color-surface: var(--palette-paper-300);
   --color-accent: var(--palette-accent-600);
+  --color-toggle-track: var(--palette-grey-300);
 }
 
 /* Dark theme ------------------------------------------------------------- */
@@ -70,4 +75,5 @@
   --color-muted: var(--palette-accent-200);
   --color-surface: var(--palette-night-900);
   --color-accent: var(--palette-accent-300);
+  --color-toggle-track: var(--palette-grey-600);
 }

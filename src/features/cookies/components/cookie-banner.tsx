@@ -7,11 +7,11 @@ import {
   Settings,
   Zap
 } from "lucide-react";
-import {
-  getSafeConsentData,
-  OPEN_COOKIE_SETTINGS_EVENT,
-  saveConsentData,
-} from "@store/slices/common/cookieUtils";
+import { OPEN_COOKIE_SETTINGS_EVENT } from "@store/slices/common/cookieUtils";
+import CategoryToggle from "@features/cookies/components/category-toggle";
+import { useBodyScrollLock } from "@features/cookies/hooks/use-body-scroll-lock";
+import { useConsentPreferences } from "@features/cookies/hooks/use-consent-preferences";
+import { useLocationPath } from "@shared/hooks/use-location-path";
 import { useTranslations } from "@shared/i18n/translator";
 import { Link, useInRouterContext } from "react-router-dom";
 import { CONSTRUCTION_CONFIG } from "@shared/config/construction";
@@ -25,34 +25,8 @@ import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
 const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
 
-  const [currentPath, setCurrentPath] = useState(
-    typeof window !== "undefined" && window.location ? window.location.pathname : ""
-  );
-
-  // Patch history methods to detect SPA navigation without a router context
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const update = () => setCurrentPath(window.location.pathname);
-    const origPush = window.history.pushState.bind(window.history);
-    const origReplace = window.history.replaceState.bind(window.history);
-    window.history.pushState = ((d, u, url) => {
-      origPush(d, u, url as any);
-      update();
-    }) as History["pushState"];
-    window.history.replaceState = ((d, u, url) => {
-      origReplace(d, u, url as any);
-      update();
-    }) as History["replaceState"];
-    window.addEventListener("popstate", update);
-    window.addEventListener("hashchange", update);
-    update();
-    return () => {
-      window.history.pushState = origPush as History["pushState"];
-      window.history.replaceState = origReplace as History["replaceState"];
-      window.removeEventListener("popstate", update);
-      window.removeEventListener("hashchange", update);
-    };
-  }, []);
+  // Rendered above RouterProvider, so the path has to come from the History API.
+  const currentPath = useLocationPath("");
 
   const {
     currentLanguage: languageReducer,
@@ -78,9 +52,19 @@ const ModernCookieBanner = () => {
   const [isThemeChanging, setIsThemeChanging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const [googleAnalytics, setGoogleAnalytics] = useState(false);
-  const [themePreference, setThemePreference] = useState(false);
-  const [languagePreference, setLanguagePreference] = useState(false);
+  const {
+    googleAnalytics,
+    themePreference,
+    languagePreference,
+    hasStoredConsent,
+    functionalityState,
+    performanceState,
+    toggleFunctionality,
+    togglePerformance,
+    acceptAll,
+    rejectAll,
+    saveCurrent,
+  } = useConsentPreferences();
   const showCompactBanner = actuallyVisible && isMobile && !showCustomize;
 
   const handleThemeChange = (nextTheme: ThemePreference) => {
@@ -100,38 +84,20 @@ const ModernCookieBanner = () => {
     setTimeout(() => setIsThemeChanging(false), 300);
   };
 
-  // Returns whether all, some, or none of a category's services are enabled
-  const getFunctionalityToggleState = () => {
-    const services = [themePreference, languagePreference];
-    const activeCount = services.filter(Boolean).length;
-    if (activeCount === 0) return "inactive";
-    if (activeCount === services.length) return "active";
-    return "partial";
-  };
-  const getPerformanceToggleState = () => {
-    if (googleAnalytics) return "active";
-    return "inactive";
-  };
 
+  // The hook reads the stored record; this only decides what to show for it.
   useEffect(() => {
-    const consent = getSafeConsentData();
+    if (hasStoredConsent === null) return;
 
-    if (consent) {
-      // Apply stored consent values safely; Boolean() guards against undefined entries
-      setGoogleAnalytics(Boolean(consent.googleAnalytics));
-      setThemePreference(Boolean(consent.themePreference));
-      setLanguagePreference(Boolean(consent.languagePreference));
+    if (hasStoredConsent) {
       setIsVisible(false);
       setShowSettingsButton(true);
-    } else {
-      if (shouldHide) {
-        setIsVisible(false);
-        setShowSettingsButton(true);
-      } else {
-        setIsVisible(true);
-      }
+      return;
     }
-  }, [currentPath, shouldHide]);
+
+    setIsVisible(!shouldHide);
+    setShowSettingsButton(shouldHide);
+  }, [currentPath, shouldHide, hasStoredConsent]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -145,48 +111,7 @@ const ModernCookieBanner = () => {
     return () => mediaQuery.removeEventListener("change", syncViewport);
   }, []);
 
-  useEffect(() => {
-    if (actuallyVisible && !showCompactBanner) {
-      // Some browser extensions hide cookie banners by setting display:none or opacity:0.
-      // If that is detected, unblock scroll so the page remains usable.
-      const checkVisibility = () => {
-        const banner = document.querySelector('[style*="z-index: 999999"]') ||
-                       document.querySelector('.fixed.inset-0.z-50');
-
-        if (banner) {
-          const computedStyle = window.getComputedStyle(banner as Element);
-          const isHiddenByExtension =
-            computedStyle.display === 'none' ||
-            computedStyle.visibility === 'hidden' ||
-            computedStyle.opacity === '0';
-
-          if (isHiddenByExtension) {
-            document.body.style.overflow = "";
-            document.documentElement.style.overflow = "";
-            return;
-          }
-        }
-
-        document.body.style.overflow = "hidden";
-        document.documentElement.style.overflow = "hidden";
-      };
-
-      checkVisibility();
-
-      // Re-check after a short delay in case the extension acts asynchronously
-      const timer = setTimeout(checkVisibility, 100);
-
-      return () => clearTimeout(timer);
-    } else {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-    };
-  }, [actuallyVisible, showCompactBanner]);
+  useBodyScrollLock(actuallyVisible && !showCompactBanner);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -226,84 +151,21 @@ const ModernCookieBanner = () => {
   }, [currentPath, shouldHide]);
 
   const handleAcceptAll = () => {
-    setGoogleAnalytics(true);
-    setThemePreference(true);
-    setLanguagePreference(true);
-
-    saveConsentData({
-      googleAnalytics: true,
-      themePreference: true,
-      languagePreference: true
-    });
-
+    acceptAll();
     handleClose();
   };
 
   const handleRejectAll = () => {
-    setGoogleAnalytics(false);
-    setThemePreference(false);
-    setLanguagePreference(false);
-
-    saveConsentData({
-      googleAnalytics: false,
-      themePreference: false,
-      languagePreference: false
-    });
-
+    rejectAll();
     handleClose();
   };
 
   const handleSavePreferences = () => {
-    saveConsentData({
-      googleAnalytics,
-      themePreference,
-      languagePreference
-    });
-
+    saveCurrent();
     handleClose();
   };
 
-  const handleFunctionalityToggle = () => {
-    const currentState = getFunctionalityToggleState();
 
-    if (currentState === 'inactive' || currentState === 'partial') {
-      setThemePreference(true);
-      setLanguagePreference(true);
-    } else {
-      setThemePreference(false);
-      setLanguagePreference(false);
-    }
-  };
-
-  const handlePerformanceToggle = () => {
-    const currentState = getPerformanceToggleState();
-    setGoogleAnalytics(currentState === 'inactive');
-  };
-
-
-  // Three-state toggle: active (all on), partial (some on), inactive (all off)
-  const CategoryToggle = ({ state, onClick }: { state: 'active' | 'inactive' | 'partial', onClick: () => void }) => {
-    const getToggleClasses = () => {
-      switch (state) {
-        case 'active':
-          return 'bg-gradient-to-r from-purple-500 to-pink-500 justify-end pr-1';
-        case 'partial':
-          return 'bg-gradient-to-r from-purple-300 to-pink-300 justify-center';
-        case 'inactive':
-        default:
-          return `${themeReducer === "light" ? "bg-gray-300" : "bg-gray-600"} justify-start pl-1`;
-      }
-    };
-
-    return (
-      <button
-        onClick={onClick}
-        className={`w-10 h-5 rounded-full flex items-center transition-all duration-200 ${getToggleClasses()}`}
-      >
-        <div className="w-3 h-3 bg-white rounded-full transition-all duration-200" />
-      </button>
-    );
-  };
 
   const getThemeClasses = () => ({
     modal: themeReducer === "light" ? "bg-white" : "bg-[#2B284C]",
@@ -630,8 +492,8 @@ const ModernCookieBanner = () => {
                             <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesFunctionality")}</h4>
                           </div>
                           <CategoryToggle
-                            state={getFunctionalityToggleState()}
-                            onClick={handleFunctionalityToggle}
+                            state={functionalityState}
+                            onClick={toggleFunctionality}
                           />
                         </div>
                         <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>
@@ -690,8 +552,8 @@ const ModernCookieBanner = () => {
                             <h4 className={`font-semibold ${themeClasses.text} text-sm`}>{t.text("cookies.cookiesPerformance")}</h4>
                           </div>
                           <CategoryToggle
-                            state={getPerformanceToggleState()}
-                            onClick={handlePerformanceToggle}
+                            state={performanceState}
+                            onClick={togglePerformance}
                           />
                         </div>
                         <p className={`text-xs ${themeClasses.textSecondary} mb-3`}>

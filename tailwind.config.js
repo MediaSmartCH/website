@@ -18,6 +18,7 @@ module.exports = {
         muted: "var(--color-muted)",
         surface: "var(--color-surface)",
         accent: "var(--color-accent)",
+        "toggle-track": "var(--color-toggle-track)",
       },
       fontFamily: {
         montserrat: "Montserrat",
