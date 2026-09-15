@@ -1,4 +1,5 @@
 import { dictionary } from "@shared/i18n";
+import { logger } from "@shared/lib/logger";
 
 type SectionDict = Record<string, unknown>;
 type Lang = string;
@@ -50,12 +51,10 @@ export type SafeTranslator = {
 };
 
 export function makeTranslator(lang: Lang): SafeTranslator {
-  // Warns in development only so translation gaps are caught during development
-  // without cluttering the production console.
+  // Developer-facing only, so translation gaps surface while working without
+  // cluttering a visitor's console.
   const warn = (path: string, why: string) => {
-    if (import.meta.env.DEV) {
-      console.warn(`[i18n] ${why} at "${path}" (lang=${lang})`);
-    }
+    logger.debug(`[i18n] ${why} at "${path}" (lang=${lang})`);
   };
 
   // Splits "section.key.subkey" into the top-level section and the remaining

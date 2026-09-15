@@ -24,6 +24,7 @@ import {
   formatHumanDate,
   formatTimeOnly,
 } from '@features/booking/lib/booking-formatting';
+import { logger } from '@shared/lib/logger';
 
 interface BookingModalProps {
   open: boolean;
@@ -100,7 +101,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
       })
       .catch((err) => {
         if (err?.name === 'AbortError') return;
-        console.error('fetchAvailability failed', err);
+        logger.error('fetchAvailability failed', err);
         setSlotsError(t.text('booking.error'));
       })
       .finally(() => setLoadingSlots(false));
@@ -198,7 +199,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
       });
       setStage('success');
     } catch (err) {
-      console.error('createBooking failed', err);
+      logger.error('createBooking failed', err);
       setSubmitError(t.text('booking.error'));
     } finally {
       setSubmitting(false);

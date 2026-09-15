@@ -12,6 +12,7 @@ import { ThemePreference } from "@store/slices/common/themeUtils";
 import { toggleAnimations } from "@store/slices/common/animationsSlice";
 
 import { useAppDispatch, useAppSelector } from "@shared/hooks/store-hooks";
+import { logger } from "@shared/lib/logger";
 
 type UseInterfaceControlsOptions = {
   preserveScroll?: boolean;
@@ -75,7 +76,7 @@ export const useInterfaceControls = (
         setTimeout(() => window.scrollTo(scrollX, scrollY), 50);
       });
     } catch (error) {
-      console.warn("Language change URL swap failed:", error);
+      logger.warn("Language change URL swap failed:", error);
       dispatch(setLanguage(nextLanguage));
     }
   };

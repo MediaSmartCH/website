@@ -1,3 +1,5 @@
+import { logger } from "@shared/lib/logger";
+
 type ExecuteRecaptcha = ((action: string) => Promise<string>) | undefined;
 
 const privateNetworkPattern =
@@ -35,7 +37,7 @@ export const getRecaptchaToken = async (
     const token = await executeRecaptcha(action);
     return typeof token === "string" && token.trim() ? token : null;
   } catch (error) {
-    console.error("Unable to generate a reCAPTCHA token:", error);
+    logger.error("Unable to generate a reCAPTCHA token:", error);
     return null;
   }
 };

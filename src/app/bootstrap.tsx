@@ -10,7 +10,12 @@ import "antd/dist/reset.css";
 import 'aos/dist/aos.css';
 import '@styles/index.css';
 
-// Silence noisy console output during development
+// Silence noisy console output during development.
+//
+// NOTE: this also swallows logger.debug(), which is the channel the i18n layer
+// uses to report missing translation keys — they are dev-only by design, so in
+// practice they never appear. Left as-is because removing the silencing would
+// change what a developer sees; worth revisiting together.
 if (import.meta.env.DEV) {
   console.info = () => {};
   console.warn = () => {};

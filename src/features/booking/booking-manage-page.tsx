@@ -31,6 +31,7 @@ import {
   formatHumanDate,
   formatTimeOnly,
 } from '@features/booking/lib/booking-formatting';
+import { logger } from '@shared/lib/logger';
 
 
 type ViewMode = 'overview' | 'reschedule' | 'cancel';
@@ -83,7 +84,7 @@ const BookingManagePage: React.FC = () => {
       })
       .catch((err) => {
         if (err?.name === 'AbortError') return;
-        console.error('lookupBooking failed', err);
+        logger.error('lookupBooking failed', err);
         setErrorStatus(500);
       })
       .finally(() => setLoading(false));

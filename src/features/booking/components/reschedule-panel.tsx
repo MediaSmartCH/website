@@ -22,6 +22,7 @@ import {
   formatTimeOnly,
 } from '@features/booking/lib/booking-formatting';
 import { useTranslations } from '@shared/i18n/translator';
+import { logger } from '@shared/lib/logger';
 
 interface ReschedulePanelProps {
   booking: BookingDetail;
@@ -70,7 +71,7 @@ const ReschedulePanel: React.FC<ReschedulePanelProps> = ({
       })
       .catch((err) => {
         if (err?.name === 'AbortError') return;
-        console.error('reschedule fetchAvailability failed', err);
+        logger.error('reschedule fetchAvailability failed', err);
         setSlotsError(t.text('booking.error'));
       })
       .finally(() => setLoadingSlots(false));
@@ -122,7 +123,7 @@ const ReschedulePanel: React.FC<ReschedulePanelProps> = ({
       }
       onSuccess(res.booking?.startUtc ?? selectedSlot.startUtc);
     } catch (err) {
-      console.error('rescheduleBooking failed', err);
+      logger.error('rescheduleBooking failed', err);
       setSubmitError(t.text('booking.error'));
     } finally {
       setSubmitting(false);

@@ -7,6 +7,7 @@
  */
 
 import { fetchWithDeployment } from "@shared/lib/fetch-with-deployment";
+import { logger } from "@shared/lib/logger";
 
 /** Aborts a submission that has not answered in time, so the button unsticks. */
 const REQUEST_TIMEOUT_MS = 10_000;
@@ -63,7 +64,7 @@ export async function submitContactForm(
       ? { status: "security-rejected" }
       : { status: "failed" };
   } catch (error) {
-    console.error("Send error:", error);
+    logger.error("Send error:", error);
     return { status: "failed" };
   } finally {
     window.clearTimeout(timeout);

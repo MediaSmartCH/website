@@ -48,6 +48,7 @@ import {
   OFFICE_MAP_URL,
   SOCIAL_LINKS,
 } from "@shared/constants/contact";
+import { logger } from "@shared/lib/logger";
 
 const ContactInner = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -274,7 +275,7 @@ const ContactInner = () => {
                 } catch (error) {
                   // submitContactForm and getRecaptchaToken both swallow their own
                   // failures, so this only catches the genuinely unexpected.
-                  console.error('Send error:', error);
+                  logger.error('Send error:', error);
                   setError('An error occurred while sending the message, please try again later.');
                 } finally {
                   setLoading(false);
