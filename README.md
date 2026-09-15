@@ -80,6 +80,37 @@ Generate a bundle report:
 make analyze
 ```
 
+## Quality Checks
+
+```bash
+make typecheck   # tsc over src (tsconfig.json) and over api + scripts (tsconfig.api.json)
+make test        # vitest
+```
+
+Both run on every pull request, in the `audit` job of `.github/workflows/security.yml`,
+before the build check.
+
+The two tsconfigs exist because `src` is browser code and `api` is Node: the API
+needs `process` and `Buffer` in scope, and the browser code must not have them.
+
+### Visual non-regression
+
+`scripts/capture-style-snapshot.mjs` fingerprints every route in both languages
+and both themes by resolved colour, typography and box size, keyed on visible
+text so it survives class and DOM churn. Two captures of unchanged code are
+byte-identical, so any reported difference is real.
+
+```bash
+pnpm dev
+node scripts/capture-style-snapshot.mjs --out .snapshots/before.json
+# ... make changes ...
+node scripts/capture-style-snapshot.mjs --out .snapshots/after.json
+node scripts/diff-style-snapshot.mjs .snapshots/before.json .snapshots/after.json
+```
+
+Puppeteer is not a dependency of this repo; the header of the capture script
+explains how to provide it.
+
 ## Environment Variables
 
 Application variables:
@@ -161,6 +192,7 @@ Main targets:
 - `make analyze`
 - `make clean`
 - `make check-env`
+- `make typecheck`
 - `make test`
 - `make test-watch`
 - `make test-coverage`
@@ -197,6 +229,7 @@ src/features/                     One folder per product area, self-contained
 src/shared/                       Reusable across features, owns no product logic
   components/                     navbar, footer, selectors, dot-anim, rich-text, backdrops
   config/                         languages, lotties, construction flag
+  constants/                      contact details, social links
   hooks/                          store-hooks, use-cookie-consent, use-interface-controls, …
   i18n/                           Translation bundles (en/, fr/), registry and translator
   lib/                            fetch-with-deployment, recaptcha, scroll-animations
@@ -205,8 +238,35 @@ src/shared/                       Reusable across features, owns no product logi
 src/store/                        Redux store
   slices/common/                  animationsSlice, themeSlice, languageSlice, cookieUtils
 src/styles/                       Global stylesheets
+  tokens.css                      Design tokens: raw palette + per-theme roles
+  app.css                         Barrel; import order is the cascade order
+  base.css · sections.css · responsive.css
+  components/                     buttons, forms, phone-input, faq, preloader
 src/test/                         Vitest setup and module mocks
 ```
+
+## Styling
+
+Colours go through design tokens, never a hex value in the JSX.
+
+`src/styles/tokens.css` has two layers. `--palette-*` on `:root` holds the raw
+colours, named after what they look like. `--color-*` on `.App` and `.AppDark`
+assigns them to semantic roles, named after what they are for. `.App` /
+`.AppDark` already wrapped the whole tree, so the theme switch needs no extra
+markup.
+
+`tailwind.config.js` exposes the roles as utilities, so a component writes
+`text-heading` or `bg-surface` and gets the right colour in either theme —
+instead of the `isLight ? "text-[#14172D]" : "text-[#F6F6F6]"` ternaries this
+replaced.
+
+To add a colour: add the raw value to `--palette-*`, assign it to a role in both
+theme blocks, register the role in `tailwind.config.js`, then use the class.
+
+Some roles resolve to the same colour in one theme and differ in the other —
+`heading`, `heading-strong` and `ink` are all `#F6F6F6` in dark mode. They stay
+separate because merging them would change the light theme. That is a design
+inconsistency worth resolving deliberately, not a refactoring one.
 
 ## Internationalization (i18n)
 
