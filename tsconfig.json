@@ -25,23 +25,26 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "components/*": [
-        "src/components/*"
+      "@app/*": [
+        "src/app/*"
       ],
-      "services/*": [
-        "src/services/*"
+      "@features/*": [
+        "src/features/*"
       ],
-      "config/*": [
-        "src/config/*"
+      "@shared/*": [
+        "src/shared/*"
       ],
-      "assets/*": [
-        "src/assets/*"
-      ],
-      "store/*": [
+      "@store/*": [
         "src/store/*"
       ],
-      "pages/*": [
-        "src/pages/*"
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@test/*": [
+        "src/test/*"
       ]
     }
   },

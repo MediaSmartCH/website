@@ -1,0 +1,115 @@
+import { useTranslations } from "@shared/i18n/translator";
+import { ensureLocale } from "@shared/i18n/registry";
+import {
+  AppLanguage,
+  buildLocalizedPath,
+  getNextLanguage,
+  normalizeLanguage,
+} from "@shared/config/languages";
+import { setLanguage } from "@store/slices/common/languageSlice";
+import { setTheme } from "@store/slices/common/themeSlice";
+import { ThemePreference } from "@store/slices/common/themeUtils";
+import { toggleAnimations } from "@store/slices/common/animationsSlice";
+
+import { useAppDispatch, useAppSelector } from "@shared/hooks/store-hooks";
+
+type UseInterfaceControlsOptions = {
+  preserveScroll?: boolean;
+};
+
+// Single hook that centralises all navbar-level controls: language, theme, and
+// animation toggle. Keeps UI components free of direct Redux and URL concerns.
+export const useInterfaceControls = (
+  options: UseInterfaceControlsOptions = {}
+) => {
+  const { preserveScroll = false } = options;
+  const dispatch = useAppDispatch();
+
+  const currentLanguage = normalizeLanguage(
+    useAppSelector((state) => state.language.currentLanguage)
+  );
+  const currentTheme = useAppSelector((state) => state.theme.currentTheme);
+  const themePreference = useAppSelector((state) => state.theme.themePreference);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
+
+  const t = useTranslations(currentLanguage);
+
+  const changeLanguage = async (nextLanguage: AppLanguage) => {
+    if (nextLanguage === currentLanguage) {
+      return;
+    }
+
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+
+    // Each dictionary is its own chunk. Awaiting it here means the swap still
+    // happens in a single render, with no half-translated frame in between.
+    // prefetchLanguage() normally has it in memory already.
+    await ensureLocale(nextLanguage);
+
+    dispatch(setLanguage(nextLanguage));
+
+    try {
+      // Rewrite the URL without a full navigation so the SPA state is preserved.
+      // Dispatching a synthetic popstate event notifies the router of the change.
+      const nextUrl = buildLocalizedPath(
+        nextLanguage,
+        window.location.pathname,
+        window.location.search,
+        window.location.hash
+      );
+
+      window.history.replaceState(null, "", nextUrl);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+
+      if (!preserveScroll) {
+        return;
+      }
+
+      // A language change can trigger a layout reflow. Restoring scroll across
+      // three timing points (rAF, 0ms, 50ms) covers the common reflow windows
+      // without relying on a MutationObserver.
+      requestAnimationFrame(() => {
+        window.scrollTo(scrollX, scrollY);
+        setTimeout(() => window.scrollTo(scrollX, scrollY), 0);
+        setTimeout(() => window.scrollTo(scrollX, scrollY), 50);
+      });
+    } catch (error) {
+      console.warn("Language change URL swap failed:", error);
+      dispatch(setLanguage(nextLanguage));
+    }
+  };
+
+  const cycleLanguage = () => {
+    void changeLanguage(getNextLanguage(currentLanguage));
+  };
+
+  const changeTheme = (nextTheme: ThemePreference) => {
+    dispatch(setTheme(nextTheme));
+  };
+
+  const flipAnimations = () => {
+    dispatch(toggleAnimations());
+  };
+
+  return {
+    currentLanguage,
+    currentTheme,
+    themePreference,
+    animationsEnabled,
+    changeLanguage,
+    cycleLanguage,
+    changeTheme,
+    flipAnimations,
+    labels: {
+      languageSelector: t.text("navbar.languageSelector"),
+      themeSelector: t.text("navbar.themeSelector"),
+      themeLight: t.text("navbar.themeLight"),
+      themeDark: t.text("navbar.themeDark"),
+      themeSystem: t.text("navbar.themeSystem"),
+      animToggle: t.text("navbar.animToggle"),
+      animOn: t.text("navbar.animOn"),
+      animOff: t.text("navbar.animOff"),
+    },
+  };
+};

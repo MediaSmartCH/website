@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getCookie, setCookie } from "./cookieUtils";
+import { getCookie, setCookie } from "@store/slices/common/cookieUtils";
 
 type NavigatorWithExtras = Navigator & {
   deviceMemory?: number;

@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import languageSlice from "store/slices/common/languageSlice";
-import themeSlice from "store/slices/common/themeSlice";
-import animationsSlice from "store/slices/common/animationsSlice";
+import languageSlice from "@store/slices/common/languageSlice";
+import themeSlice from "@store/slices/common/themeSlice";
+import animationsSlice from "@store/slices/common/animationsSlice";
 
 const rootReducer = combineReducers({
   theme: themeSlice,

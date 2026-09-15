@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./rootReducer/rootReducer";
+import rootReducer from "@store/rootReducer/rootReducer";
 
 // Enable Redux DevTools only in development
 const devTools =

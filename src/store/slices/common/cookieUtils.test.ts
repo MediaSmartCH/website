@@ -8,7 +8,7 @@ import {
   saveConsentData,
   DEFAULT_CONSENT_PREFERENCES,
   COOKIE_CONSENT_UPDATED_EVENT,
-} from "./cookieUtils";
+} from "@store/slices/common/cookieUtils";
 
 // ---------------------------------------------------------------------------
 // setCookie / getCookie

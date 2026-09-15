@@ -4,7 +4,7 @@ import {
   getSystemTheme,
   resolveThemePreference,
   getThemeMediaQuery,
-} from "./themeUtils";
+} from "@store/slices/common/themeUtils";
 
 function mockMatchMedia(prefersDark: boolean) {
   Object.defineProperty(window, "matchMedia", {

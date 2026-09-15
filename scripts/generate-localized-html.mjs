@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const outputDir = path.join(rootDir, "generated-pages");
-const seoDataPath = path.join(rootDir, "src", "services", "seo", "routeSeoData.json");
+const seoDataPath = path.join(rootDir, "src", "shared", "seo", "route-seo-data.json");
 
 const SITE_NAME = "MediaSmart";
 const SITE_URL = "https://mediasmart.ch";
@@ -131,7 +131,7 @@ ${alternateLinks}${canonicalLink}  <link rel="preconnect" href="https://fonts.go
 
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/entries/${language}.tsx"></script>
+  <script type="module" src="/src/app/entries/${language}.tsx"></script>
 </body>
 
 </html>
