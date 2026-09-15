@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
@@ -21,6 +21,10 @@ export default defineConfig({
     },
   },
   test: {
+    // macOS writes AppleDouble sidecars ("._name.test.ts") when the repo lives
+    // on a non-APFS volume. They are not valid UTF-8 and would be collected as
+    // empty, failing suites.
+    exclude: [...configDefaults.exclude, "**/._*"],
     environment: "jsdom",
     globals: true,
     setupFiles: ["src/setupTests.ts"],
