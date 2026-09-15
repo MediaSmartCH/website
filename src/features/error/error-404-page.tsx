@@ -4,6 +4,9 @@ import { Mail } from "lucide-react";
 import BookingButton from "@features/booking/components/booking-button";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
+import {
+  SUPPORT_EMAIL,
+} from "@shared/constants/contact";
 
 // Hoisted to module scope: declaring lazy() inside the component body creates a
 // new component type on every render, which remounts the Lottie player.
@@ -23,7 +26,7 @@ const Error404Page: React.FC = () => {
   const t = useTranslations(languageReducer);
 
   const handleContact = () => {
-    window.location.href = 'mailto:contact@mediasmart.ch';
+    window.location.href = `mailto:${SUPPORT_EMAIL}`;
   };
 
   const handleITServices = () => {

@@ -8,6 +8,9 @@ import linkedin from "@assets/icons/linkedin.svg";
 import insta from "@assets/icons/insta.svg";
 import telegram from "@assets/icons/telegram.svg";
 import { useLangLink } from "@shared/hooks/use-localized-path";
+import {
+  SOCIAL_LINKS,
+} from "@shared/constants/contact";
 
 const Footer = () => {
   const { L, Lhash } = useLangLink();
@@ -88,7 +91,7 @@ const Footer = () => {
               className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
               data-aos="fade-down"
               data-aos-duration="1000"
-              href="https://www.linkedin.com/company/MediaSmartCH"
+              href={SOCIAL_LINKS.linkedin}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -108,7 +111,7 @@ const Footer = () => {
               className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
               data-aos="fade-down"
               data-aos-duration="1000"
-              href="https://www.instagram.com/MediaSmartCH"
+              href={SOCIAL_LINKS.instagram}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -128,7 +131,7 @@ const Footer = () => {
               className="bg-[#F6F3FD] rounded-full w-[40px] h-[40px] flex justify-center items-center"
               data-aos="fade-down"
               data-aos-duration="1000"
-              href="https://t.me/MediaSmartCH"
+              href={SOCIAL_LINKS.telegram}
               target="_blank"
               rel="noopener noreferrer"
             >

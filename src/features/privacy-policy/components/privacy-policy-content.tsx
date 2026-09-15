@@ -3,6 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
+import {
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_DISPLAY,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DISPLAY,
+  PRIVACY_EMAIL,
+  PRIVACY_EMAIL_DISPLAY,
+} from "@shared/constants/contact";
 
 export default function PrivacyPolicy() {
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
@@ -109,13 +117,13 @@ export default function PrivacyPolicy() {
             {t.text("privacy.s1Address")}
             <br />
             {t.text("privacy.s1Email")}{" "}
-            <a href="mailto:hello@mediasmart.ch" className={linkClass}>
-              hello[at]mediasmart.ch
+            <a href={`mailto:${CONTACT_EMAIL}`} className={linkClass}>
+              {CONTACT_EMAIL_DISPLAY}
             </a>
             <br />
             {t.text("privacy.s1Phone")}{" "}
-            <a href="tel:+41796578612" className={linkClass}>
-              +41 79 657 86 12
+            <a href={`tel:${CONTACT_PHONE}`} className={linkClass}>
+              {CONTACT_PHONE_DISPLAY}
             </a>
           </p>
 
@@ -291,8 +299,8 @@ export default function PrivacyPolicy() {
           </p>
           <p className={`${pClass} mt-2`}>
             {t.text("privacy.s8Contact")}{" "}
-            <a href="mailto:privacy@mediasmart.ch" className={linkClass}>
-              privacy[at]mediasmart.ch
+            <a href={`mailto:${PRIVACY_EMAIL}`} className={linkClass}>
+              {PRIVACY_EMAIL_DISPLAY}
             </a>
             {". "}
             {t.text("privacy.s8Complaint")}{" "}

@@ -58,5 +58,14 @@ jobs:
         # install without the frozen assertion to keep audit/build enforceable.
         run: pnpm install --no-frozen-lockfile
 
+      - name: Type check
+        # tsc silently checked nothing for a long time: it aborted on config
+        # deprecations and no script ever invoked it. Gate it here so that
+        # cannot happen again unnoticed.
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
       - name: Build check
         run: pnpm build

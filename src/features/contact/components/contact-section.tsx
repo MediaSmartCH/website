@@ -36,80 +36,15 @@ import arrow from "@assets/icons/rightArrow.svg";
 import { Link } from "react-router-dom";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import ScopedRecaptchaProvider from "@shared/components/scoped-recaptcha-provider";
-
-const ProjectTypeDropdown = ({
-  options,
-  value,
-  onChange,
-  placeholder,
-  selectedLabel,
-  isLight,
-  isValid,
-}: {
-  options: { value: string; label: string }[];
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-  selectedLabel: string | undefined;
-  isLight: boolean;
-  isValid: boolean;
-}) => {
-  const [open, setOpen] = React.useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  // Close the dropdown when clicking outside its container.
-  React.useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative mb-[16px] lg:mb-[22px]">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className={`w-full flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] transition-all
-          ${isLight ? "bg-white" : "bg-[#685A9C]"}
-          ${isValid ? "border-[#C8CAE4]" : "border-red-500"}`}
-      >
-        <span className={`custom-contact-input !w-auto text-body-on-surface`}>
-          {selectedLabel ?? placeholder}
-        </span>
-        <ChevronDown
-          size={16}
-          className={`shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""} ${isLight ? "text-[#8B8FA8]" : "text-[#C8CADE]"}`}
-        />
-      </button>
-
-      {open && (
-        <div className={`absolute z-50 w-full mt-[6px] rounded-[11px] border-2 overflow-hidden shadow-lg
-          ${isLight ? "bg-white border-[#C8CAE4]" : "bg-[#3D2E6B] border-[#677DFF33]"}`}
-        >
-          {options.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => { onChange(opt.value); setOpen(false); }}
-              className={`w-full flex items-center justify-between px-[24px] py-[13px] custom-contact-input transition-colors
-                ${isLight
-                  ? "text-[#222222] hover:bg-[#F4F4FF]"
-                  : "text-[#E5E5E5] hover:bg-[#4D3D80]"
-                }`}
-            >
-              {opt.label}
-              {value === opt.value && (
-                <Check size={14} className={isLight ? "text-[#677DFF]" : "text-[#A89FFF]"} />
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+import ProjectTypeDropdown from "@features/contact/components/project-type-dropdown";
+import {
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_DISPLAY,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DISPLAY,
+  OFFICE_MAP_URL,
+  SOCIAL_LINKS,
+} from "@shared/constants/contact";
 
 const ContactInner = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -244,10 +179,10 @@ const ContactInner = () => {
                 <img src={email} alt="email"  loading="lazy" decoding="async" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
-                    href="mailto:hello@mediasmart.ch"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className={`text-ink`}
                   >
-                    hello[at]mediasmart.ch
+                    {CONTACT_EMAIL_DISPLAY}
                   </a>
                 </p>
               </div>
@@ -256,7 +191,7 @@ const ContactInner = () => {
                 <img src={address} alt="address"  loading="lazy" decoding="async" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
-                    href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9"
+                    href={OFFICE_MAP_URL}
                     className={`text-ink`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -270,10 +205,10 @@ const ContactInner = () => {
                 <img src={phone} alt="phone"  loading="lazy" decoding="async" />
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
-                    href="tel:+41796578612"
+                    href={`tel:${CONTACT_PHONE}`}
                     className={`text-ink`}
                   >
-                    +41 79 657 86 12
+                    {CONTACT_PHONE_DISPLAY}
                   </a>
                 </p>
               </div>
@@ -290,7 +225,7 @@ const ContactInner = () => {
                   border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
                   rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
                   font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
-                  href="https://www.instagram.com/MediaSmartCH"
+                  href={SOCIAL_LINKS.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -305,7 +240,7 @@ const ContactInner = () => {
                   border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
                   rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
                   font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
-                  href="https://www.linkedin.com/company/MediaSmartCH"
+                  href={SOCIAL_LINKS.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -320,7 +255,7 @@ const ContactInner = () => {
                   border-2 border-[#677DFF33] hover:border-[#5f75f5] transition
                   rounded-[11px] flex items-center justify-center gap-x-[8px] lg:gap-x-[13px]
                   font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
-                  href="https://t.me/MediaSmartCH"
+                  href={SOCIAL_LINKS.telegram}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
