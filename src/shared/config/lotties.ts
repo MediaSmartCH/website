@@ -190,7 +190,10 @@ function getResource(cacheKey: string, loader: LottieVariantLoader) {
 
 // Falls back to the light variant when no dark variant exists for a given key.
 function resolveLoader(key: LottieKey, theme: string) {
-  const pair = LOTTIE_LOADERS[key];
+  // Widened on purpose: `as const` tells TypeScript every current entry has a
+  // dark variant, which makes the fallback below look dead. The catalogue is
+  // allowed to hold light-only animations, so the guard has to stay meaningful.
+  const pair: LottiePairLoader = LOTTIE_LOADERS[key];
   const variant = theme === "dark" && pair.dark ? "dark" : "light";
   const loader = variant === "dark" && pair.dark ? pair.dark : pair.light;
 

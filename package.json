@@ -49,6 +49,7 @@
     "dev": "vite",
     "api": "node scripts/dev-api.mjs",
     "build": "node scripts/generate-localized-html.mjs && vite build",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.api.json",
     "preview": "vite preview",
     "analyze": "node scripts/generate-localized-html.mjs && cross-env ANALYZE=true vite build",
     "test": "vitest run",

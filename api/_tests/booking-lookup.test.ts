@@ -36,8 +36,12 @@ const ROW = {
   token_version: 0,
 };
 
-function getLookup(query: Record<string, string | string[]>) {
-  return createRequest({ method: 'GET', headers: uniqueClientHeaders(), query });
+function getLookup(query: Record<string, string | string[] | undefined>) {
+  return createRequest({
+    method: 'GET',
+    headers: uniqueClientHeaders(),
+    query: query as Record<string, string | string[]>,
+  });
 }
 
 beforeEach(() => {

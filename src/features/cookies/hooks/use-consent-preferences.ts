@@ -80,6 +80,11 @@ export function useConsentPreferences() {
     googleAnalytics,
     themePreference,
     languagePreference,
+    // The customise panel toggles each service individually, below the
+    // category-level switches.
+    setGoogleAnalytics,
+    setThemePreference,
+    setLanguagePreference,
     hasStoredConsent,
     functionalityState,
     performanceState,
