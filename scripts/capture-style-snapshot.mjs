@@ -8,12 +8,23 @@
  * we record the resolved colours, typography and box size, plus a page-wide
  * histogram of every colour in use.
  *
- * Usage:
- *   pnpm dev                                   # dev server on :3000
- *   npm install --no-save puppeteer@24.40.0    # same pin as update-screenshots.yml
- *   node scripts/capture-style-snapshot.mjs --out .snapshots/before.json
+ * Puppeteer is deliberately not a dependency of this repo — update-screenshots.yml
+ * provisions it the same way. `npm install --no-save` cannot run here (npm does
+ * not understand the pnpm `workspace:` protocol in the lockfile), so install it
+ * outside the project and link it in:
  *
- * Compare two captures with scripts/diff-style-snapshot.mjs.
+ *   mkdir -p /tmp/pptr && cd /tmp/pptr && npm init -y
+ *   npm install puppeteer@24.40.0
+ *   cd <repo> && ln -sfn /tmp/pptr/node_modules/puppeteer node_modules/puppeteer
+ *
+ * Then, with the dev server running:
+ *
+ *   pnpm dev
+ *   node scripts/capture-style-snapshot.mjs --out .snapshots/before.json
+ *   node scripts/diff-style-snapshot.mjs .snapshots/before.json .snapshots/after.json
+ *
+ * Two captures of identical code produce byte-identical fingerprints, so any
+ * reported difference is a real rendering change.
  */
 
 import { mkdirSync, writeFileSync } from 'fs';

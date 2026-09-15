@@ -1,7 +1,5 @@
 module.exports = {
-  // src/_archive holds retired components that nothing imports; scanning them
-  // only emits utility classes the site never renders.
-  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}", "!./src/_archive/**"],
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {

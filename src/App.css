@@ -57,13 +57,6 @@
   line-height: normal;
 }
 
-.center-child {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 /* navbar */
 
 .navbar-btn {
@@ -97,19 +90,6 @@ header {
 .shrink {
   height: 80px;
   z-index: 999;
-}
-
-.header-dropdown {
-  backdrop-filter: blur(40px) !important;
-  background: #c4c4c44d !important;
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
-}
-
-.mobile-menu-dropdown {
-  z-index: 99999 !important;
 }
 
 .mobile-menu-dropdown .ant-dropdown-menu {
@@ -188,13 +168,6 @@ nav.shift ul li a:hover:after {
   height: 100%;
 }
 
-.menu-text-light {
-  color: #14172d !important;
-}
-.menu-text-dark {
-  color: #f6f6f6 !important;
-}
-
 .calendly-overlay .calendly-close-overlay {
   backdrop-filter: blur(4px);
 }
@@ -215,51 +188,13 @@ nav.shift ul li a:hover:after {
   background-position: top center;
 }
 
-
 .hero-btn {
   box-shadow: 0px 4px 4px 0px #00000040;
 }
 
-.hero-title-animation {
-  animation: slideFromLeft 5s ease-in-out 1;
-}
-
-@keyframes slideFromLeft {
-  0% {
-    transform: translateX(-1000px);
-  }
-  50% {
-    transform: translateX(200px);
-  }
-  75% {
-    transform: translateX(-50px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.hero-subtitle-animation {
-  animation: slideFromRight 5s ease-in-out 1;
-}
-
-@keyframes slideFromRight {
-  0% {
-    transform: translateX(1000px);
-  }
-  50% {
-    transform: translateX(-200px);
-  }
-  75% {
-    transform: translateX(50px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
 /* Shorter travel distance makes the entrance animations feel much faster,
    even when a component still carries an explicit AOS duration attribute. */
+
 [data-aos="fade-up"] {
   transform: translate3d(0, 40px, 0);
 }
@@ -324,14 +259,6 @@ nav.shift ul li a:hover:after {
 
 /* booking */
 
-.booking-bg {
-  background: linear-gradient(
-    72.47deg,
-    rgba(35, 0, 191, 0.06) -44.32%,
-    rgba(218, 148, 255, 0.06) 144.14%
-  );
-}
-
 .custom-btn2 {
   overflow: hidden;
   position: relative;
@@ -352,7 +279,6 @@ nav.shift ul li a:hover:after {
   font-family: "Poppins", sans-serif;
 }
 
-.responsive-img,
 img {
   max-width: 100%;
   height: auto;
@@ -382,16 +308,6 @@ img {
 .custom-btn2:active {
   transform: translateY(0px) scale(0.97);
   box-shadow: 0 3px 8px rgba(181, 20, 253, 0.25);
-}
-
-.testimonial1-bg {
-  border: 1px solid #f2f3f8;
-}
-.testimonial2-bg {
-  box-shadow: 0px 20px 60px -20px #16161629;
-}
-.testimonail-card-vh {
-  min-height: 250px;
 }
 
 /* contact */
@@ -450,6 +366,7 @@ img {
   margin-bottom: 0.5rem;
   line-height: 1.6;
 }
+
 .about-description strong {
   font-weight: 600;
 }
@@ -619,9 +536,8 @@ img {
   }
 }
 
-/* ======= PHONE INPUT - FULL THEME OVERRIDE ======= */
-
 /* === THÈME CLAIR === */
+
 .rip-light .react-international-phone-country-selector {
   background-color: transparent !important;
   border: none !important;
@@ -643,6 +559,7 @@ img {
 }
 
 /* Dropdown thème clair */
+
 .rip-light .react-international-phone-country-selector-dropdown {
   background-color: #ffffff !important;
   color: #222222 !important;
@@ -671,6 +588,7 @@ img {
 }
 
 /* === THÈME SOMBRE === */
+
 .rip-dark .react-international-phone-country-selector {
   background-color: transparent !important;
   border: none !important;
@@ -697,6 +615,7 @@ img {
 }
 
 /* Validation invalide */
+
 .invalid-phone .react-international-phone-input {
   color: #ef4444 !important;
 }
@@ -707,6 +626,7 @@ img {
 }
 
 /* Dropdown thème sombre - FIX PRINCIPAL */
+
 .rip-dark .react-international-phone-country-selector-dropdown {
   background-color: #2b284c !important;
   color: #e5e5e5 !important;
@@ -718,6 +638,7 @@ img {
 }
 
 /* Items du dropdown */
+
 .rip-dark .react-international-phone-country-selector-dropdown__list-item {
   background-color: #2b284c !important;
   color: #e5e5e5 !important;
@@ -732,6 +653,7 @@ img {
 }
 
 /* Item sélectionné */
+
 .rip-dark
   .react-international-phone-country-selector-dropdown__list-item--selected,
 .rip-dark
@@ -743,6 +665,7 @@ img {
 }
 
 /* Barre de recherche */
+
 .rip-dark
   .react-international-phone-country-selector-dropdown__search-container {
   background: #2b284c !important;
@@ -772,25 +695,30 @@ img {
 }
 
 /* Scrollbar personnalisée */
+
 .rip-dark
   .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar {
   width: 8px;
 }
+
 .rip-dark
   .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-track {
   background: #1b1730;
 }
+
 .rip-dark
   .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb {
   background: #4a4478;
   border-radius: 8px;
 }
+
 .rip-dark
   .react-international-phone-country-selector-dropdown__list::-webkit-scrollbar-thumb:hover {
   background: #5a5488;
 }
 
 /* Indicateur de pays préférés (séparateur) */
+
 .rip-dark
   .react-international-phone-country-selector-dropdown__preferred-divider {
   border-top: 1px solid #4a4478 !important;
@@ -798,24 +726,29 @@ img {
 }
 
 /* Bouton dropdown */
+
 .rip-dark .react-international-phone-country-selector-button {
   background-color: transparent !important;
   border: none !important;
   color: #e5e5e5 !important;
 }
+
 .rip-dark .react-international-phone-country-selector-button:hover {
   background-color: rgba(103, 125, 255, 0.1) !important;
 }
+
 .rip-light .react-international-phone-country-selector-button {
   background-color: transparent !important;
   border: none !important;
   color: #222222 !important;
 }
+
 .rip-light .react-international-phone-country-selector-button:hover {
   background-color: rgba(103, 125, 255, 0.05) !important;
 }
 
 /* Fix scroll interne du dropdown */
+
 .rip-dark .react-international-phone-country-selector-dropdown,
 .rip-light .react-international-phone-country-selector-dropdown {
   max-height: 300px !important;
@@ -831,23 +764,28 @@ img {
 }
 
 /* Empêche le body de scroller quand le dropdown est ouvert */
+
 .react-international-phone-country-selector-dropdown {
   touch-action: pan-y !important;
 }
 
 /* reCAPTCHA v3 */
+
 .grecaptcha-badge {
   visibility: hidden !important;
 }
 
 /* Calendly */
+
 .calendly-overlay .max-h-\[90vh\] {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .calendly-overlay .max-h-\[90vh\]::-webkit-scrollbar {
   display: none;
 }
+
 .calendly-overlay .calendly-close-overlay {
   backdrop-filter: blur(8px);
 }

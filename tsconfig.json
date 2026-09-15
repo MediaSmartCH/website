@@ -48,8 +48,5 @@
   "include": [
     "src",
     "api/**/*"
-  ],
-  "exclude": [
-    "src/_archive"
   ]
 }
