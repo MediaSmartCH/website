@@ -15,8 +15,7 @@ interface OverviewCardProps {
 export default function VideoOverviewCard({ themeReducer, anim, title, description }: OverviewCardProps) {
     return (
         <div
-            className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
-                } rounded-[15px] lg:rounded-[15px] xl:rounded-[20px] 2xl:rounded-[25px] px-5 py-6 md:py-8 2xl:py-10`}
+            className={`bg-surface rounded-[15px] lg:rounded-[15px] xl:rounded-[20px] 2xl:rounded-[25px] px-5 py-6 md:py-8 2xl:py-10`}
         >
             {/* Fixed aspect ratio container keeps animation size consistent across card widths */}
             <div className="relative w-full aspect-[4/3] lg:aspect-[16/11] xl:aspect-[5/4]">
@@ -37,7 +36,7 @@ export default function VideoOverviewCard({ themeReducer, anim, title, descripti
                     </Suspense>
                 </div>
             </div>
-            <div className={`mt-4 ${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"}`}>
+            <div className={`mt-4 text-heading-strong`}>
                 <p className="w-full xl:w-[90%] 2xl:w-[75%] mx-auto text-center font-redDisplay font-bold text-[20px] md:text-[20px] lg:text-[20px] xl:text-[22px] 2xl:text-[24px] mb-3"
                     data-aos="zoom-in"
                     data-aos-duration="1300"

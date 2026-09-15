@@ -12,7 +12,6 @@ const Hero = () => {
     (state) => state.language.currentLanguage
   );
 
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
 
@@ -28,16 +27,14 @@ const Hero = () => {
         >
           <RichText
             as="h1"
-            className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-              } w-full lg:w-[70%] 2xl:w-[60%] it-service-hero-gradient mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] leading-[40px] lg:leading-[50px] xl:leading-[70px]`}
+            className={`text-heading w-full lg:w-[70%] 2xl:w-[60%] it-service-hero-gradient mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] leading-[40px] lg:leading-[50px] xl:leading-[70px]`}
             html={t.text("it.itServicesHeroTitle")}
             data-aos="fade-up"
             data-aos-duration="900"
             data-aos-easing="ease-in-sine"
           />
           <p
-            className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"
-              } w-full lg:w-[70%] 2xl:w-[60%] mx-auto text-center mb-[20px] lg:mb-[32px] font-poppins font-normal text-[12px] md:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
+            className={`text-body-alt w-full lg:w-[70%] 2xl:w-[60%] mx-auto text-center mb-[20px] lg:mb-[32px] font-poppins font-normal text-[12px] md:text-[16px] xl:text-[17px] 2xl:text-[18px]`}
             data-aos="fade-up"
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"

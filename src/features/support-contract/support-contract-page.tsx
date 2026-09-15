@@ -143,7 +143,7 @@ export default function SupportContractPage() {
             {t.text("it.supportPageSubtitle")}
           </p>
           <div className={`${noteBox} rounded-[16px] border p-4 mt-6 max-w-[680px] flex gap-3`}>
-            <Info size={16} className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} shrink-0 mt-0.5`} />
+            <Info size={16} className={`text-accent shrink-0 mt-0.5`} />
             <p className={`${textColor} font-poppins text-[13px] leading-6`}>{t.text("it.supportPageIntro")}</p>
           </div>
         </div>
@@ -159,7 +159,7 @@ export default function SupportContractPage() {
               ))}
             </div>
             <div className={`${innerCard} rounded-[16px] border p-4 flex gap-3 items-start`}>
-              <Clock size={15} className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} shrink-0 mt-0.5`} />
+              <Clock size={15} className={`text-accent shrink-0 mt-0.5`} />
               <div>
                 <p className={`${titleColor} font-poppins text-[13px] font-semibold`}>{t.text("it.supportPageHoursTitle")}</p>
                 <p className={`${textColor} font-poppins text-[13px] leading-5 mt-1`}>{t.text("it.supportPageHoursDesc")}</p>
@@ -209,7 +209,7 @@ export default function SupportContractPage() {
                   <p className={`${subtitleColor} font-poppins text-[11px] uppercase tracking-[0.15em] mb-1.5`}>{t.text("it.supportPageAfterHoursTitle")}</p>
                   {weekendIncluded && (
                     <div className="flex items-start gap-2 mb-1">
-                      <CheckCircle2 size={13} className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} mt-0.5 shrink-0`} />
+                      <CheckCircle2 size={13} className={`text-accent mt-0.5 shrink-0`} />
                       <p className={`${textColor} font-poppins text-[12px] leading-5`}>{weekendIncluded}</p>
                     </div>
                   )}
@@ -247,7 +247,7 @@ export default function SupportContractPage() {
           <div className="grid gap-3 md:grid-cols-2">
             {terms.map((item) => (
               <div key={item} className={`${innerCard} flex items-start gap-3 rounded-[16px] border p-4`} data-aos="fade-up" data-aos-duration="1100">
-                <CheckCircle2 size={15} className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} shrink-0 mt-0.5`} />
+                <CheckCircle2 size={15} className={`text-accent shrink-0 mt-0.5`} />
                 <p className={`${textColor} font-poppins text-[13px] leading-5`}>{item}</p>
               </div>
             ))}

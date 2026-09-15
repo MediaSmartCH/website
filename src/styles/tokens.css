@@ -1,0 +1,73 @@
+/**
+ * Design tokens.
+ *
+ * Two layers, on purpose:
+ *   1. `--palette-*` on :root — the raw colours, named after what they look
+ *      like. Nothing outside this file should reference a raw hex value.
+ *   2. `--color-*` on .App / .AppDark — semantic roles, named after what the
+ *      colour is *for*. Components only ever use these, through the Tailwind
+ *      classes declared in tailwind.config.js (text-heading, bg-surface, …).
+ *
+ * .App and .AppDark already wrapped the whole tree before this file existed,
+ * so the theme switch needed no new markup.
+ *
+ * Every value below is lifted verbatim from the component it replaced. Where
+ * two roles resolve to the same colour in one theme but differ in the other
+ * (heading vs heading-strong vs ink in dark mode, all #F6F6F6), they are kept
+ * as separate tokens: merging them would change the light theme.
+ */
+
+:root {
+  /* Ink — dark text on light surfaces */
+  --palette-ink-900: #14172d;
+  --palette-ink-800: #1f2326;
+  --palette-ink-700: #222222;
+  --palette-ink-600: #413c58;
+  --palette-ink-500: #5e5e5e;
+  --palette-ink-400: #677089;
+
+  /* Paper — light text and surfaces */
+  --palette-paper-100: #ffffff;
+  --palette-paper-200: #f6f6f6;
+  --palette-paper-300: #f4f4ff;
+  --palette-paper-400: #e5e5e5;
+  --palette-paper-500: #d8d8e9;
+
+  /* Night — dark surfaces */
+  --palette-night-900: #2b284c;
+
+  /* Accent — links and highlights */
+  --palette-accent-600: #2e4d8d;
+  --palette-accent-300: #9edcff;
+  --palette-accent-200: #aeb8d8;
+}
+
+/* Light theme ------------------------------------------------------------ */
+.App {
+  --color-heading: var(--palette-ink-900);
+  --color-heading-strong: var(--palette-ink-800);
+  --color-heading-invert: var(--palette-ink-900);
+  --color-ink: var(--palette-ink-700);
+  --color-body: var(--palette-ink-600);
+  --color-body-soft: var(--palette-ink-600);
+  --color-body-alt: var(--palette-ink-500);
+  --color-body-on-surface: var(--palette-ink-700);
+  --color-muted: var(--palette-ink-400);
+  --color-surface: var(--palette-paper-300);
+  --color-accent: var(--palette-accent-600);
+}
+
+/* Dark theme ------------------------------------------------------------- */
+.AppDark {
+  --color-heading: var(--palette-paper-200);
+  --color-heading-strong: var(--palette-paper-200);
+  --color-heading-invert: var(--palette-paper-100);
+  --color-ink: var(--palette-paper-200);
+  --color-body: var(--palette-paper-400);
+  --color-body-soft: var(--palette-paper-500);
+  --color-body-alt: var(--palette-paper-400);
+  --color-body-on-surface: var(--palette-paper-400);
+  --color-muted: var(--palette-accent-200);
+  --color-surface: var(--palette-night-900);
+  --color-accent: var(--palette-accent-300);
+}

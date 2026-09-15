@@ -66,7 +66,7 @@ const ProjectTypeDropdown = ({
           ${isLight ? "bg-white" : "bg-[#685A9C]"}
           ${isValid ? "border-[#C8CAE4]" : "border-red-500"}`}
       >
-        <span className={`custom-contact-input !w-auto ${isLight ? "text-[#222222]" : "text-[#E5E5E5]"}`}>
+        <span className={`custom-contact-input !w-auto text-body-on-surface`}>
           {selectedLabel ?? placeholder}
         </span>
         <ChevronDown
@@ -269,15 +269,13 @@ const ContactInner = () => {
       <div className="md:px-[20px] lg:px-[40px] xl:px-[60px] 2xl:px-[90px] mt-[32px] lg:mt-[42px] 2xl:mt-[54px]">
         <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto pt-[32px] pb-[45px] lg:pt-[62px] lg:pb-[75px] 2xl:pt-[87px] 2xl:pb-[103px]">
           <p
-            className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"
-              } w-full mx-auto text-center mb-[18px] lg:mb-[32px] 2xl:mb-[47px] leading-[36px] lg:leading-[46px] xl:leading-[72px] font-redDisplay font-bold text-[24px] md:text-[28px] lg:text-[32px] xl:text-[34px] 2xl:text-[36px] `}
+            className={`text-ink w-full mx-auto text-center mb-[18px] lg:mb-[32px] 2xl:mb-[47px] leading-[36px] lg:leading-[46px] xl:leading-[72px] font-redDisplay font-bold text-[24px] md:text-[28px] lg:text-[32px] xl:text-[34px] 2xl:text-[36px] `}
           >
             {t.text("home.contactTitle")}
           </p>
 
           <div
-            className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
-              } flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-y-[35px] `}
+            className={`text-body-on-surface flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-y-[35px] `}
           >
             <div className="w-full lg:w-[50%]" data-aos="fade-right" data-aos-duration="1000">
               <div className="flex items-center gap-x-[18px]">
@@ -285,7 +283,7 @@ const ContactInner = () => {
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
                     href="mailto:hello@mediasmart.ch"
-                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                    className={`text-ink`}
                   >
                     hello[at]mediasmart.ch
                   </a>
@@ -297,7 +295,7 @@ const ContactInner = () => {
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
                     href="https://maps.app.goo.gl/CthoJ9r99naTzbTA9"
-                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                    className={`text-ink`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -311,7 +309,7 @@ const ContactInner = () => {
                 <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
                   <a
                     href="tel:+41796578612"
-                    className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}
+                    className={`text-ink`}
                   >
                     +41 79 657 86 12
                   </a>
@@ -380,7 +378,7 @@ const ContactInner = () => {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
-                <h3 className={`font-redDisplay font-bold text-[22px] md:text-[26px] ${themeReducer === "light" ? "text-[#222222]" : "text-[#F6F6F6]"}`}>
+                <h3 className={`font-redDisplay font-bold text-[22px] md:text-[26px] text-ink`}>
                   {t.text("home.contactSuccessTitle")}
                 </h3>
                 <p className={`font-poppins font-light text-[14px] md:text-[16px] max-w-[380px] leading-relaxed ${themeReducer === "light" ? "text-[#555555]" : "text-[#C8CADE]"}`}>
@@ -706,7 +704,7 @@ const ContactInner = () => {
 
               <div className="contact-checkbox">
                 <Checkbox onChange={onCheckboxChange} checked={isChecked}>
-                  <p className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"} font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}>
+                  <p className={`text-body-on-surface font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] ml-[6px]`}>
                     {t.text("home.contactCheckboxTxt")}{" "}
                     <Link
                       to={L("/privacy-policy")}
@@ -721,8 +719,7 @@ const ContactInner = () => {
 
               <div className="required-text mt-[16px] lg:mt-[22px]">
                 <p
-                  className={`${themeReducer === "light" ? "text-[#222222]" : "text-[#E5E5E5]"
-                    } font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] `}
+                  className={`text-body-on-surface font-poppins font-light text-[14px] md:text-[15px] 2xl:text-[16px] `}
                 >
                   {t.text("home.contactRequired")}
                 </p>

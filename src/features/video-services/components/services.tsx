@@ -12,7 +12,6 @@ const Services = () => {
     (state) => state.language.currentLanguage
   );
 
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
 
@@ -20,12 +19,10 @@ const Services = () => {
     <div>
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] pt-[40px] pb-[40px] md:pt-[50px] md:pb-[50px] mx-auto">
         <div
-          className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
-            } rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] pt-[37px] lg:pt-[50px] 2xl:pt-[60px] pb-[37px] lg:pb-[60px] 2xl:pb-[80px]`}
+          className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] pt-[37px] lg:pt-[50px] 2xl:pt-[60px] pb-[37px] lg:pb-[60px] 2xl:pb-[80px]`}
         >
           <h2
-            className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-              } w-full mx-auto text-center font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] 2xl:text-[48px]`}
+            className={`text-heading w-full mx-auto text-center font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] 2xl:text-[48px]`}
           >
             <span className="mr-3 gradient-text">
               {t.text("video.videoServicesMainTitle1")}
@@ -64,18 +61,12 @@ const Services = () => {
               <div className="w-full lg:w-[50%]">
                 <div className="mx-auto md:w-[90%] lg:w-[85%] 2xl:w-[65%]">
                   <h3
-                    className={`${themeReducer === "light"
-                      ? "text-[#14172D]"
-                      : "text-[#F6F6F6]"
-                      } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {t.text("video.videoServicesTitle1")}
                   </h3>
                   <p
-                    className={`${themeReducer === "light"
-                      ? "text-[#413C58]"
-                      : "text-[#E5E5E5]"
-                      } w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+                    className={`text-body w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
                   >
                     {t.text("video.videoServicesDescription1")}
                   </p>
@@ -99,18 +90,12 @@ const Services = () => {
                   className="mx-auto  md:w-[90%] lg:w-[85%] 2xl:w-[65%]"
                 >
                   <h3
-                    className={`${themeReducer === "light"
-                      ? "text-[#14172D]"
-                      : "text-[#F6F6F6]"
-                      } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {t.text("video.videoServicesTitle2")}
                   </h3>
                   <p
-                    className={`${themeReducer === "light"
-                      ? "text-[#413C58]"
-                      : "text-[#E5E5E5]"
-                      } w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
+                    className={`text-body w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
                     {t.text("video.videoServicesDescription2")}
                   </p>
@@ -178,18 +163,12 @@ const Services = () => {
                   className="mx-auto md:w-[90%] lg:w-[85%] 2xl:w-[65%]"
                 >
                   <h3
-                    className={`${themeReducer === "light"
-                      ? "text-[#14172D]"
-                      : "text-[#F6F6F6]"
-                      } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {t.text("video.videoServicesTitle3")}
                   </h3>
                   <p
-                    className={`${themeReducer === "light"
-                      ? "text-[#413C58]"
-                      : "text-[#E5E5E5]"
-                      } w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
+                    className={`text-body w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
                     {t.text("video.videoServicesDescription3")}
                   </p>
@@ -211,18 +190,12 @@ const Services = () => {
                   className="mx-auto md:w-[90%] lg:w-[85%] 2xl:w-[65%]"
                 >
                   <h3
-                    className={`${themeReducer === "light"
-                      ? "text-[#14172D]"
-                      : "text-[#F6F6F6]"
-                      } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {t.text("video.videoServicesTitle4")}
                   </h3>
                   <p
-                    className={`${themeReducer === "light"
-                      ? "text-[#413C58]"
-                      : "text-[#E5E5E5]"
-                      } w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
+                    className={`text-body w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
                     {t.text("video.videoServicesDescription4")}
                   </p>
@@ -288,18 +261,12 @@ const Services = () => {
               <div className="w-full lg:w-[50%]">
                 <div className="mx-auto md:w-[90%] lg:w-[85%] 2xl:w-[65%]">
                   <h3
-                    className={`${themeReducer === "light"
-                      ? "text-[#14172D]"
-                      : "text-[#F6F6F6]"
-                      } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                    className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                   >
                     {t.text("video.videoServicesTitle5")}
                   </h3>
                   <p
-                    className={`${themeReducer === "light"
-                      ? "text-[#413C58]"
-                      : "text-[#E5E5E5]"
-                      } w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
+                    className={`text-body w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto `}
                   >
                     {t.text("video.videoServicesDescription5")}
                   </p>

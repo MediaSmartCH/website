@@ -12,7 +12,6 @@ const About = () => {
     (state) => state.language.currentLanguage
   );
 
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
 
@@ -28,14 +27,12 @@ const About = () => {
           data-aos-easing="ease-in-sine"
         >
           <h2
-            className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-              } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px]`}
+            className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold leading-[72px] text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px]`}
           >
             {t.text("video.videoServicesAbout")}
           </h2>
           <p
-            className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-              } w-full text-left lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+            className={`text-body w-full text-left lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
           >
             {t.text("video.videoServicesAboutDescription")}
           </p>

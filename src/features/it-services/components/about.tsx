@@ -12,7 +12,6 @@ const About = () => {
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
 
@@ -49,14 +48,12 @@ const About = () => {
         >
           <RichText
             as="h2"
-            className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-              } w-full it-service-about-title text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[65px]`}
+            className={`text-heading w-full it-service-about-title text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[65px]`}
             html={t.text("it.itServicesAboutTitle")}
           />
           <RichText
             as="div"
-            className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-              } w-full it-service-about-description text-justify lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+            className={`text-body w-full it-service-about-description text-justify lg:text-left font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
             html={t.text("it.itServicesAboutDescription")}
           />
         </div>

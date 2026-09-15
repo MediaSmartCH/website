@@ -12,7 +12,6 @@ const Hero = () => {
     (state) => state.language.currentLanguage
   );
 
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
 
@@ -27,7 +26,7 @@ const Hero = () => {
           style={{ zIndex: 100 }}
         >
           <h1
-            className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"}
+            className={`text-heading
     w-full lg:w-[70%] 2xl:w-[60%] mx-auto
     text-center mb-[15px] lg:mb-[22px]
     font-redDisplay font-bold
@@ -43,7 +42,7 @@ const Hero = () => {
             {t.text("video.videoSubitle")}
           </h1>
           <p
-            className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"}
+            className={`text-body-alt
     w-full lg:w-[70%] 2xl:w-[60%] mx-auto
     text-center mb-[20px] lg:mb-[32px]
     font-poppins font-normal

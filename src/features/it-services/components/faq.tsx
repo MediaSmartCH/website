@@ -12,9 +12,7 @@ const FaqIT: React.FC = () => {
   const themeReducer = useAppSelector((s) => s.theme.currentTheme);
   const t = useTranslations(languageReducer);
 
-  const answerClass = `${
-    themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-  } pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`;
+  const answerClass = `text-body pt-[0px] pb-[15px] lg:pb-[33px] text-[12px] lg:text-[14px] xl:text-[16px] 2xl:text-[18px] font-helvetica font-light`;
 
   const itemClass = `${
     themeReducer === "light" ? "bg-[#F6F6F6]" : "bg-[#2B284C]"
@@ -39,9 +37,7 @@ const FaqIT: React.FC = () => {
       <div className="relative z-10 w-full flex flex-row justify-center homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] mx-auto">
         <div className="w-full md:w-[90%] lg:w-full lg:px-[40px] xl:px-[50px] 2xl:px-[60px] flex flex-col items-start">
           <h2
-            className={`${
-              themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-            } w-full text-center font-helvetica font-bold text-[28px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mt-[40px] md:mt-[50px] lg:mt-[60px] 2xl:mt-[70px] mb-[100px] md:mb-[50px] lg:mb-[30px] xl:mb-[36px] 2xl:mb-[46px]`}
+            className={`text-heading w-full text-center font-helvetica font-bold text-[28px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mt-[40px] md:mt-[50px] lg:mt-[60px] 2xl:mt-[70px] mb-[100px] md:mb-[50px] lg:mb-[30px] xl:mb-[36px] 2xl:mb-[46px]`}
           >
             {t.text("it.itFaqTitle")}
           </h2>

@@ -301,32 +301,28 @@ const Navbar = () => {
               <Link
                 to={Lhash("#home")}
                 onClick={closeMobileMenu}
-                className={`${themeReducer === "light" ? "text-[#14172D]" : "text-white"
-                  } rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
+                className={`text-heading-invert rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
               >
                 {t.text("navbar.navItem1")}
               </Link>
               <Link
                 to={L("/it-services")}
                 onClick={closeMobileMenu}
-                className={`${themeReducer === "light" ? "text-[#14172D]" : "text-white"
-                  } rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
+                className={`text-heading-invert rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
               >
                 {t.text("navbar.navItem2")}
               </Link>
               <Link
                 to={L("/video-services")}
                 onClick={closeMobileMenu}
-                className={`${themeReducer === "light" ? "text-[#14172D]" : "text-white"
-                  } rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
+                className={`text-heading-invert rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
               >
                 {t.text("navbar.navItem3")}
               </Link>
               <Link
                 to={Lhash("#about")}
                 onClick={(e) => scrollToSection("about", e)}
-                className={`${themeReducer === "light" ? "text-[#14172D]" : "text-white"
-                  } rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
+                className={`text-heading-invert rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
               >
                 {t.text("navbar.navItem4")}
               </Link>

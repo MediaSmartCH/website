@@ -41,8 +41,7 @@ const About = () => {
     <div id="about" className="scroll-mt-[120px]">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] py-[40px] mx-auto">
         <div
-          className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
-            } rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] pt-[35px] lg:pt-[50px] 2xl:pt-[50px] pb-[35px] lg:pb-[50px] 2xl:pb-[50px]`}
+          className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] pt-[35px] lg:pt-[50px] 2xl:pt-[50px] pb-[35px] lg:pb-[50px] 2xl:pb-[50px]`}
         >
           <div className="flex flex-col lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-[30px] lg:gap-[50px] pl-[30px] 2xl:pl-[80px] pr-[30px] 2xl:pr-[50px]">
             <div className="w-full lg:w-[50%]">
@@ -52,10 +51,7 @@ const About = () => {
                 data-aos-duration="1200"
               >
                 <h2
-                  className={`${isLight
-                    ? "text-[#14172D]"
-                    : "text-[#F6F6F6]"
-                    } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+                  className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[0px] lg:mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
                 >
                   {t.text("home.aboutTitle")}
                   <span className="gradient-text">
@@ -64,7 +60,7 @@ const About = () => {
 
                 </h2>
                 <RichText
-                  className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} about-description w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
+                  className={`text-body about-description w-full text-center lg:text-left font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mx-auto`}
                   html={t.text("home.aboutDescription")}
                 />
               </div>
@@ -132,7 +128,7 @@ const About = () => {
 
                 <div className="text-center sm:text-left">
                   <h3
-                    className={`${isLight ? "text-[#14172D]" : "text-[#F6F6F6]"} font-redDisplay text-[28px] font-bold leading-tight md:text-[34px]`}
+                    className={`text-heading font-redDisplay text-[28px] font-bold leading-tight md:text-[34px]`}
                   >
                     {t.text("home.soloName")}
                   </h3>
@@ -172,10 +168,10 @@ const About = () => {
                     <div className={`${isLight ? "bg-[#EEF4FF] text-[#2E4D8D]" : "bg-white/10 text-[#A8E1FF]"} mb-4 flex h-9 w-9 items-center justify-center rounded-full`}>
                       <Icon size={17} />
                     </div>
-                    <p className={`${isLight ? "text-[#677089]" : "text-[#AEB8D8]"} font-poppins text-[11px] uppercase tracking-[0.18em]`}>
+                    <p className={`text-muted font-poppins text-[11px] uppercase tracking-[0.18em]`}>
                       {label}
                     </p>
-                    <p className={`${isLight ? "text-[#14172D]" : "text-white"} mt-2 font-redDisplay text-lg font-bold leading-6`}>
+                    <p className={`text-heading-invert mt-2 font-redDisplay text-lg font-bold leading-6`}>
                       {value}
                     </p>
                   </div>
@@ -192,7 +188,7 @@ const About = () => {
                 <div className={`${isLight ? "bg-[#EEF4FF] text-[#2E4D8D]" : "bg-white/10 text-[#A8E1FF]"} flex h-10 w-10 items-center justify-center rounded-full`}>
                   <Briefcase size={18} />
                 </div>
-                <h4 className={`${isLight ? "text-[#14172D]" : "text-[#F6F6F6]"} font-redDisplay text-[24px] font-bold leading-tight`}>
+                <h4 className={`text-heading font-redDisplay text-[24px] font-bold leading-tight`}>
                   {t.text("home.soloWorkingTitle")}
                 </h4>
               </div>
@@ -203,8 +199,8 @@ const About = () => {
                     key={highlight}
                     className={`${isLight ? "border-[#E9EDF8] bg-white/80" : "border-white/10 bg-white/5"} flex items-start gap-3 rounded-[18px] border p-4`}
                   >
-                    <CheckCircle2 className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} mt-0.5 shrink-0`} size={18} />
-                    <p className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} font-poppins text-sm md:text-[15px] leading-6`}>
+                    <CheckCircle2 className={`text-accent mt-0.5 shrink-0`} size={18} />
+                    <p className={`text-body font-poppins text-sm md:text-[15px] leading-6`}>
                       {highlight}
                     </p>
                   </div>

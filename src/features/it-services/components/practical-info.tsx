@@ -36,10 +36,10 @@ const PracticalInfo = () => {
       <div className="mb-[30px]">
         <RichText
           as="p"
-          className={`${isLight ? "text-[#1F2326]" : "text-[#F6F6F6]"} w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
+          className={`text-heading-strong w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
           html={t.text("it.practicalInfoTitle")}
         />
-        <p className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}>
+        <p className={`text-body w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}>
           {t.text("it.practicalInfoDescription")}
         </p>
       </div>
@@ -78,7 +78,7 @@ const PracticalInfo = () => {
             </p>
           </div>
           <div className={`${isLight ? "border-[#D9E8FF] bg-[#EEF4FF]" : "border-white/10 bg-[#10162A]/40"} rounded-[14px] border p-3 mt-3`}>
-            <p className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} font-poppins text-[12px] leading-5`}>
+            <p className={`text-accent font-poppins text-[12px] leading-5`}>
               {t.text("it.hourlyRateContractNote")}{" "}
               <Link to={L("/support-contract")} className="underline hover:opacity-75 transition font-semibold">
                 {t.text("it.supportPageMoreInfo")}
@@ -173,7 +173,7 @@ const PracticalInfo = () => {
             <div className="space-y-2">
               {includedItems.map((item) => (
                 <div key={item} className={`${innerCard} flex items-start gap-3 rounded-[14px] border p-3`}>
-                  <Check size={15} className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} mt-0.5 shrink-0`} />
+                  <Check size={15} className={`text-accent mt-0.5 shrink-0`} />
                   <span className={`${textColor} font-poppins text-[13px] leading-5`}>{item}</span>
                 </div>
               ))}

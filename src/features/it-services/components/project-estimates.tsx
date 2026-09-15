@@ -91,10 +91,10 @@ const ProjectEstimates = () => {
       <div className="mb-[30px]">
         <RichText
           as="p"
-          className={`${isLight ? "text-[#1F2326]" : "text-[#F6F6F6]"} w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
+          className={`text-heading-strong w-full text-center font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
           html={t.text("it.estimatesTitle")}
         />
-        <p className={`${isLight ? "text-[#413C58]" : "text-[#E5E5E5]"} w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}>
+        <p className={`text-body w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] mt-2`}>
           {t.text("it.estimatesDescription")}
         </p>
       </div>
@@ -154,7 +154,7 @@ const ProjectEstimates = () => {
               <div className="space-y-2">
                 {items.map((item) => (
                   <div key={item} className={`${noteBox} flex items-start gap-2 rounded-[12px] border px-3 py-2`}>
-                    <span className={`${isLight ? "text-[#2E4D8D]" : "text-[#9EDCFF]"} font-bold text-[14px] leading-5 shrink-0`}>·</span>
+                    <span className={`text-accent font-bold text-[14px] leading-5 shrink-0`}>·</span>
                     <span className={`${textColor} font-poppins text-[13px] leading-5`}>{item}</span>
                   </div>
                 ))}

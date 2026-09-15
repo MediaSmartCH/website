@@ -71,8 +71,7 @@ const Hero = () => {
           style={{ zIndex: 100 }}
         >
           <h1
-            className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-              } w-full mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] md:w-[75%] lg:w-[80%] 2xl:w-[70%]`}
+            className={`text-heading w-full mx-auto text-center mb-[15px] lg:mb-[22px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] md:w-[75%] lg:w-[80%] 2xl:w-[70%]`}
           >
             <span className="mr-3 gradient-text">
               {t.text("home.heroTitle")}
@@ -80,8 +79,7 @@ const Hero = () => {
             {t.text("home.heroSubtitle")}
           </h1>
           <p
-            className={`${themeReducer === "light" ? "text-[#5E5E5E]" : "text-[#E5E5E5]"
-              } w-full mx-auto text-center mb-[20px] lg:mb-[32px] font-poppins font-normal text-[12px] md:text-[16px] xl:text-[17px] 2xl:text-[18px] lg:w-[80%] 2xl:w-[65%]`}
+            className={`text-body-alt w-full mx-auto text-center mb-[20px] lg:mb-[32px] font-poppins font-normal text-[12px] md:text-[16px] xl:text-[17px] 2xl:text-[18px] lg:w-[80%] 2xl:w-[65%]`}
           >
             {t.text("home.heroDescription")}
           </p>

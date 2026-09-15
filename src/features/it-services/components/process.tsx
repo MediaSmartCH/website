@@ -19,19 +19,16 @@ export default function Process() {
     return (
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[50px] mx-auto">
             <div
-                className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
-                    } rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px] px-[30px] md:px-[100px] lg:px-[50px] 2xl:px-[100px]`}
+                className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px] px-[30px] md:px-[100px] lg:px-[50px] 2xl:px-[100px]`}
             >
                 <div>
                     <RichText
                         as="h2"
-                        className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
-                            } w-full it-service-process-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
+                        className={`text-heading-strong w-full it-service-process-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
                         html={t.text("it.itServicesProcessTitle")}
                     />
                     <p
-                        className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                            } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
+                        className={`text-body w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
                     >
                         {t.text("it.itServicesProcessDescription")}
                     </p>
@@ -73,8 +70,7 @@ export default function Process() {
                         </div>
                         {t.array<ProcessItem>("it.processData").map((step, i) => {
                             return (
-                                <div key={i} className={`flex items-start space-x-8 ${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
-                                    }`}
+                                <div key={i} className={`flex items-start space-x-8 text-heading-strong`}
                                 >
                                     {/* Step number badge sits above the dashed line (z-50) */}
                                     <div className={`relative z-50 flex-shrink-0 w-[68px] h-[52px] md:w-[68px] md:h-[52px] 2xl:w-[88px] 2xl:h-[72px] rounded-[48px] flex items-center justify-center font-poppins font-normal text-[20px] md:text-[24px] 2xl:text-[28px] ${themeReducer === "light" ? "process-bg-light" : "process-bg-dark"
@@ -87,12 +83,10 @@ export default function Process() {
                                         data-aos-easing="ease-in-sine"
                                         data-aos-duration={`${900 + (i * 200)}`}
                                     >
-                                        <h3 className={`font-redDisplay font-medium text-[24px] md:text-[28px] lg:text-[32px] 2xl:text-[40px] mb-4 ${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-                                            }`}>
+                                        <h3 className={`font-redDisplay font-medium text-[24px] md:text-[28px] lg:text-[32px] 2xl:text-[40px] mb-4 text-heading`}>
                                             {step.title}
                                         </h3>
-                                        <p className={`w-[95%] xl:w-[75%] font-poppins font-light text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] leading-relaxed ${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-                                            }`}>
+                                        <p className={`w-[95%] xl:w-[75%] font-poppins font-light text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] leading-relaxed text-body`}>
                                             {step.description}
                                         </p>
                                     </div>

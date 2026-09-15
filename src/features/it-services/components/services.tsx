@@ -13,7 +13,6 @@ const Services = () => {
     (state) => state.language.currentLanguage
   );
 
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
 
   const t = useTranslations(languageReducer);
 
@@ -23,13 +22,11 @@ const Services = () => {
         <div>
           <RichText
             as="h2"
-            className={`${themeReducer === "light" ? "text-[#1F2326]" : "text-[#F6F6F6]"
-              } w-full it-service-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
+            className={`text-heading-strong w-full it-service-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
             html={t.text("it.itServicesTitle")}
           />
           <p
-            className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"
-              } w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
+            className={`text-body w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
           >
             {t.text("it.itServicesDescription")}
           </p>
@@ -37,20 +34,18 @@ const Services = () => {
 
         {/* Service 1 — Website creation, includes the portfolio gallery */}
         <div
-          className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
-            } my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
+          className={`bg-surface my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
           <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] pt-[30px] px-[20px] md:px-[30px] lg:px-0">
             <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
               <h3
-                className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-                  } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+                className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
               >
                 {t.text("it.service1")}
               </h3>
               <RichText
                 as="div"
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                className={`text-body
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -110,14 +105,13 @@ const Services = () => {
           </div>
           <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
             <h3
-              className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-                } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+              className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
             >
               {t.text("it.service2")}
             </h3>
             <RichText
               as="div"
-              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+              className={`text-body
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -131,20 +125,18 @@ const Services = () => {
 
         {/* Service 3 — Optimization */}
         <div
-          className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
-            } my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
+          className={`bg-surface my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
           <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px] px-[20px] md:px-[30px] lg:px-0">
             <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
               <h3
-                className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-                  } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+                className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
               >
                 {t.text("it.service3")}
               </h3>
               <RichText
                 as="div"
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                className={`text-body
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -203,14 +195,13 @@ const Services = () => {
           </div>
           <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
             <h3
-              className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-                } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+              className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
             >
               {t.text("it.service4")}
             </h3>
             <RichText
               as="div"
-              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+              className={`text-body
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -224,20 +215,18 @@ const Services = () => {
 
         {/* Service 5 — Backup */}
         <div
-          className={`${themeReducer === "light" ? "bg-[#F4F4FF]" : "bg-[#2B284C]"
-            } my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
+          className={`bg-surface my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
           <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px] px-[20px] md:px-[30px] lg:px-0">
             <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
               <h3
-                className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-                  } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+                className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
               >
                 {t.text("it.service5")}
               </h3>
               <RichText
                 as="div"
-                className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+                className={`text-body
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
@@ -296,14 +285,13 @@ const Services = () => {
           </div>
           <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
             <h3
-              className={`${themeReducer === "light" ? "text-[#14172D]" : "text-[#F6F6F6]"
-                } w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+              className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
             >
               {t.text("it.service6")}
             </h3>
             <RichText
               as="div"
-              className={`${themeReducer === "light" ? "text-[#413C58]" : "text-[#E5E5E5]"}
+              className={`text-body
                   it-service-description
                   text-justify lg:text-left
                   font-helvetica font-light leading-8
