@@ -1,9 +1,10 @@
 import React from 'react';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
-import { ResolvedTheme } from '@store/slices/common/themeUtils';
 import { AppLanguage } from '@shared/config/languages';
 import { SafeTranslator } from '@shared/i18n/translator';
+
+import { ResolvedTheme } from '@store/slices/common/themeUtils';
 
 interface BookingFormProps {
   formattedSlot: string;

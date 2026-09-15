@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowLeft } from "lucide-react";
+
+import Contact from "@features/contact/components/contact-section";
+
 import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 import { useTranslations } from "@shared/i18n/translator";
 import { useLangLink } from "@shared/hooks/use-localized-path";
-import Contact from "@features/contact/components/contact-section";
 
 const STANDARD_HOURLY_RATE = 140;
 

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
+
 import { useKonamiCode } from "@shared/hooks/use-konami-code";
 
 const KONAMI_SEQUENCE = [

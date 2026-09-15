@@ -1,13 +1,13 @@
 import React from "react";
 
 import { AppLanguage } from "@shared/config/languages";
+import LanguageSelector from "@shared/components/language-selector";
+import ThemeSelector from "@shared/components/theme-selector";
+
 import {
   ResolvedTheme,
   ThemePreference,
 } from "@store/slices/common/themeUtils";
-
-import LanguageSelector from "@shared/components/language-selector";
-import ThemeSelector from "@shared/components/theme-selector";
 
 type LocaleThemeControlsProps = {
   currentLanguage: AppLanguage;

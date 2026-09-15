@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
+
 import { useCookieConsent } from "@shared/hooks/use-cookie-consent";
+
 import {
   DEFAULT_CONSENT_PREFERENCES,
   saveConsentData,

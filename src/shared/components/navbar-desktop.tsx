@@ -7,10 +7,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import BookingButton from "@features/booking/components/booking-button";
+
 import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import type { AppLanguage } from "@shared/config/languages";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { useTranslations } from "@shared/i18n/translator";
+
 import type { ResolvedTheme } from "@store/slices/common/themeUtils";
 
 import logo from "@assets/images/logo-header.webp";

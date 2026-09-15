@@ -6,6 +6,7 @@ import React from 'react';
 import { CheckCircle2, Video } from 'lucide-react';
 
 import { formatHumanDate } from '@features/booking/lib/booking-formatting';
+
 import { useTranslations } from '@shared/i18n/translator';
 
 // ----------------------------------------------------------------------------

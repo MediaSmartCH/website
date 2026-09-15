@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useParams, useLocation, Navigate } from "react-router-dom";
+
+import RouteSeo from "@app/layout/route-seo";
+
 import { useAppDispatch, useAppSelector } from "@shared/hooks/store-hooks";
-import { setLanguage } from "@store/slices/common/languageSlice";
 import { ensureLocale, isLocaleReady } from "@shared/i18n/registry";
 import PreLoader from "@shared/components/preloader";
-import RouteSeo from "@app/layout/route-seo";
 import {
   buildLocalizedPath,
   DEFAULT_LANGUAGE,
@@ -12,6 +13,8 @@ import {
   isSupportedLanguage,
   normalizeLanguage,
 } from "@shared/config/languages";
+
+import { setLanguage } from "@store/slices/common/languageSlice";
 
 const LangLayout: React.FC = () => {
   const { lang: rawLang } = useParams<{ lang?: string }>();

@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getCookie, setCookie } from "@store/slices/common/cookieUtils";
+
 import {
   AppLanguage,
   getLanguageFromPath,
   getSystemLanguage,
   normalizeLanguage,
 } from "@shared/config/languages";
+
+import { getCookie, setCookie } from "@store/slices/common/cookieUtils";
 
 type LanguageState = {
   currentLanguage: AppLanguage;

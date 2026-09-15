@@ -6,13 +6,13 @@ import {
   getNextLanguage,
   normalizeLanguage,
 } from "@shared/config/languages";
+import { useAppDispatch, useAppSelector } from "@shared/hooks/store-hooks";
+import { logger } from "@shared/lib/logger";
+
 import { setLanguage } from "@store/slices/common/languageSlice";
 import { setTheme } from "@store/slices/common/themeSlice";
 import { ThemePreference } from "@store/slices/common/themeUtils";
 import { toggleAnimations } from "@store/slices/common/animationsSlice";
-
-import { useAppDispatch, useAppSelector } from "@shared/hooks/store-hooks";
-import { logger } from "@shared/lib/logger";
 
 type UseInterfaceControlsOptions = {
   preserveScroll?: boolean;

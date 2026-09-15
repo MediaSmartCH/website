@@ -13,6 +13,7 @@ import ConsentLocaleControls, {
 } from "@features/cookies/components/consent-locale-controls";
 import type { ConsentThemeClasses } from "@features/cookies/lib/consent-theme-classes";
 import type { useConsentPreferences } from "@features/cookies/hooks/use-consent-preferences";
+
 import { useTranslations } from "@shared/i18n/translator";
 
 export interface ConsentPreferencesPanelProps {

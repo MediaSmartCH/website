@@ -12,7 +12,6 @@ const Services = () => {
     (state) => state.language.currentLanguage
   );
 
-
   const t = useTranslations(languageReducer);
 
   return (

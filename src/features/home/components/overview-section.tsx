@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import OverviewCard from "@features/home/components/overview-card";
+
 import { LottieKey } from "@shared/config/lotties";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";

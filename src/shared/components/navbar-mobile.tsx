@@ -10,17 +10,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import BookingButton from "@features/booking/components/booking-button";
+
 import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import type { AppLanguage } from "@shared/config/languages";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { useTranslations } from "@shared/i18n/translator";
+import type { NavbarSectionProps } from "@shared/components/navbar-desktop";
+
 import type { ResolvedTheme } from "@store/slices/common/themeUtils";
 
 import logo from "@assets/images/logo-header.webp";
 import logoDark from "@assets/images/logo-footer.webp";
 import toggler from "@assets/icons/toggler.svg";
-
-import type { NavbarSectionProps } from "@shared/components/navbar-desktop";
 
 export interface NavbarMobileProps extends NavbarSectionProps {
   isMenuOpen: boolean;

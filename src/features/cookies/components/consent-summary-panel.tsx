@@ -10,6 +10,7 @@ import ConsentLocaleControls, {
   type ConsentLocaleControlsProps,
 } from "@features/cookies/components/consent-locale-controls";
 import type { ConsentThemeClasses } from "@features/cookies/lib/consent-theme-classes";
+
 import { useTranslations } from "@shared/i18n/translator";
 
 export interface ConsentSummaryPanelProps {

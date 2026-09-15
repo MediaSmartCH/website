@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
+
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import { useLangLink } from "@shared/hooks/use-localized-path";

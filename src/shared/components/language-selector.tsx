@@ -7,6 +7,7 @@ import {
   SUPPORTED_LANGUAGES,
 } from "@shared/config/languages";
 import { prefetchLocale } from "@shared/i18n/registry";
+
 import { ResolvedTheme } from "@store/slices/common/themeUtils";
 
 type LanguageSelectorProps = {

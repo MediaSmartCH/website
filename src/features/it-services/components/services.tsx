@@ -1,8 +1,10 @@
 import React, { lazy, Suspense } from "react";
+
+import PortfolioGallery from "@features/it-services/components/portfolio-gallery";
+
 import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
-import PortfolioGallery from "@features/it-services/components/portfolio-gallery";
 
 // Hoisted to module scope: declaring lazy() inside the component body creates a
 // new component type on every render, which remounts the Lottie player.
@@ -12,7 +14,6 @@ const Services = () => {
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
-
 
   const t = useTranslations(languageReducer);
 

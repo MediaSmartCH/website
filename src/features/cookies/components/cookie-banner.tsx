@@ -7,25 +7,28 @@ import {
   Settings,
   Zap
 } from "lucide-react";
-import { OPEN_COOKIE_SETTINGS_EVENT } from "@store/slices/common/cookieUtils";
+import { Link, useInRouterContext } from "react-router-dom";
+
 import CategoryToggle from "@features/cookies/components/category-toggle";
 import CompactConsentBar from "@features/cookies/components/compact-consent-bar";
 import ConsentPreferencesPanel from "@features/cookies/components/consent-preferences-panel";
 import ConsentSummaryPanel from "@features/cookies/components/consent-summary-panel";
-import ThemeSwitchOverlay from "@shared/components/theme-switch-overlay";
 import { getConsentThemeClasses } from "@features/cookies/lib/consent-theme-classes";
 import { useConsentScrollLock } from "@features/cookies/hooks/use-consent-scroll-lock";
 import { useConsentPreferences } from "@features/cookies/hooks/use-consent-preferences";
+
+import ThemeSwitchOverlay from "@shared/components/theme-switch-overlay";
 import { useLocationPath } from "@shared/hooks/use-location-path";
 import { useTranslations } from "@shared/i18n/translator";
-import { Link, useInRouterContext } from "react-router-dom";
 import { CONSTRUCTION_CONFIG } from "@shared/config/construction";
 import LocaleThemeControls from "@shared/components/locale-theme-controls";
+import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
+
+import { OPEN_COOKIE_SETTINGS_EVENT } from "@store/slices/common/cookieUtils";
 import {
   resolveThemePreference,
   ThemePreference,
 } from "@store/slices/common/themeUtils";
-import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
 
 const ModernCookieBanner = () => {
   const inRouter = useInRouterContext();
@@ -92,7 +95,6 @@ const ModernCookieBanner = () => {
 
     setTimeout(() => setIsThemeChanging(false), 300);
   };
-
 
   // The hook reads the stored record; this only decides what to show for it.
   useEffect(() => {
@@ -173,8 +175,6 @@ const ModernCookieBanner = () => {
     saveCurrent();
     handleClose();
   };
-
-
 
   const themeClasses = getConsentThemeClasses(themeReducer);
 

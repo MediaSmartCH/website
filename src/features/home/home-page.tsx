@@ -1,12 +1,12 @@
 import React, { lazy, Suspense } from "react";
 
-import { useAppSelector } from "@shared/hooks/store-hooks";
-import { refreshAosAnimations } from "@shared/lib/scroll-animations";
-
 import About from "@features/home/components/about";
 import Hero from "@features/home/components/hero";
 import ITOverview from "@features/home/components/it-overview";
 import VideoOverview from "@features/home/components/video-overview";
+
+import { useAppSelector } from "@shared/hooks/store-hooks";
+import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
 
 const Contact = lazy(() => import("@features/contact/components/contact-section"));

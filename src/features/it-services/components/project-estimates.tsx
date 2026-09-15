@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Globe, ShoppingCart, Wrench, Code2, ArrowRight, Clock, Shield, Zap, Star } from "lucide-react";
+
 import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";

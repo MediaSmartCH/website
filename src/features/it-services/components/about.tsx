@@ -1,5 +1,6 @@
 import React from "react";
 import { lazy, Suspense } from "react";
+
 import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";

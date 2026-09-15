@@ -6,11 +6,13 @@ import {
   Outlet,
   type RouteObject,
 } from "react-router-dom";
-import PreLoader from "@shared/components/preloader";
+
 import Layout from "@app/layout/site-layout";
 import ConstructionWrapper from "@app/construction-wrapper";
 import LangLayout from "@app/layout/lang-layout";
 import ErrorBoundary from "@app/layout/error-boundary";
+
+import PreLoader from "@shared/components/preloader";
 import { DEFAULT_LANGUAGE } from "@shared/config/languages";
 
 const Homepage = lazy(() => import("@features/home/home-page"));

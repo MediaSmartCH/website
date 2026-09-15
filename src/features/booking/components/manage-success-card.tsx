@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle2, XCircle } from 'lucide-react';
 
 import { formatHumanDate, formatTimeOnly } from '@features/booking/lib/booking-formatting';
+
 import { useTranslations } from '@shared/i18n/translator';
 
 interface SuccessCardProps {

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { getCookie, setCookie } from "@store/slices/common/cookieUtils";
 import {
   isThemePreference,

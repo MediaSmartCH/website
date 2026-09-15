@@ -1,10 +1,11 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { initAosAnimations, refreshAosAnimations, setAosEnabled, disableAosAnimations } from "@shared/lib/scroll-animations";
 import Navbar from "@shared/components/navbar";
 import Footer from "@shared/components/footer";
 import PageTopBackdrop from "@shared/components/page-top-backdrop";
-import { useLocation } from "react-router-dom";
 
 interface LayoutProps { children: React.ReactNode; }
 

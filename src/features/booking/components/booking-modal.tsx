@@ -1,17 +1,12 @@
 import React from 'react';
 import { ArrowLeft, CheckCircle2, Clock, Loader2, Video, X } from 'lucide-react';
-
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-import { useAppSelector } from '@shared/hooks/store-hooks';
-import { useTranslations } from '@shared/i18n/translator';
-import { getRecaptchaToken } from '@shared/lib/recaptcha';
 import {
   BookingSlot,
   createBooking,
   fetchAvailability,
 } from '@features/booking/api/booking-api';
-
 import BookingCalendar from '@features/booking/components/booking-calendar';
 import BookingForm from '@features/booking/components/booking-form';
 import BookingSuccess from '@features/booking/components/booking-success';
@@ -24,6 +19,10 @@ import {
   formatHumanDate,
   formatTimeOnly,
 } from '@features/booking/lib/booking-formatting';
+
+import { useAppSelector } from '@shared/hooks/store-hooks';
+import { useTranslations } from '@shared/i18n/translator';
+import { getRecaptchaToken } from '@shared/lib/recaptcha';
 import { logger } from '@shared/lib/logger';
 
 interface BookingModalProps {
@@ -35,8 +34,6 @@ interface BookingModalProps {
 // looking at two interactive controls at once. Going back is always possible
 // via the explicit "back" button on every non-initial step (or the close X).
 type Stage = 'date' | 'time' | 'form' | 'success';
-
-
 
 const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   const language = useAppSelector((state) => state.language.currentLanguage);

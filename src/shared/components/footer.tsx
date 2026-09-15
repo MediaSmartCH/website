@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
-import logo from "@assets/images/logo-footer.webp";
-import linkedin from "@assets/icons/linkedin.svg";
-import insta from "@assets/icons/insta.svg";
-import telegram from "@assets/icons/telegram.svg";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import {
   SOCIAL_LINKS,
 } from "@shared/constants/contact";
+
+import logo from "@assets/images/logo-footer.webp";
+import linkedin from "@assets/icons/linkedin.svg";
+import insta from "@assets/icons/insta.svg";
+import telegram from "@assets/icons/telegram.svg";
 
 const Footer = () => {
   const { L, Lhash } = useLangLink();

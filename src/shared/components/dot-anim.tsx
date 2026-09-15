@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
 import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
+
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import {
   getLottieAspectRatio,

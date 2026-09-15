@@ -7,6 +7,7 @@ import { ArrowLeft, Clock } from 'lucide-react';
 
 import { BookingSlot } from '@features/booking/api/booking-api';
 import { formatDayHuman, formatTimeOnly } from '@features/booking/lib/booking-formatting';
+
 import { useTranslations } from '@shared/i18n/translator';
 
 // ----------------------------------------------------------------------------

@@ -1,7 +1,9 @@
 import React, { lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Mail } from "lucide-react";
+
 import BookingButton from "@features/booking/components/booking-button";
+
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import {

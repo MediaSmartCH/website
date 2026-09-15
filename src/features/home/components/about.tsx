@@ -1,9 +1,11 @@
 import React, { lazy, Suspense } from "react";
-import raphaelPhoto from "@assets/images/raphael-rouiller.webp";
 import { Briefcase, CheckCircle2, ExternalLink, MapPin, User } from "lucide-react";
+
 import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
+
+import raphaelPhoto from "@assets/images/raphael-rouiller.webp";
 
 // Hoisted to module scope: declaring lazy() inside the component body creates a
 // new component type on every render, which remounts the Lottie player.

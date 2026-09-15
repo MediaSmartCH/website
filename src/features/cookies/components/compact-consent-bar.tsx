@@ -9,6 +9,7 @@ import { Cookie, Settings, X } from "lucide-react";
 import { Link, useInRouterContext } from "react-router-dom";
 
 import type { ConsentThemeClasses } from "@features/cookies/lib/consent-theme-classes";
+
 import { useTranslations } from "@shared/i18n/translator";
 
 export interface CompactConsentBarProps {

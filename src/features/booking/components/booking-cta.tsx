@@ -1,15 +1,16 @@
 import React from "react";
 
 import BookingButton from "@features/booking/components/booking-button";
+
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
+
 import bookLine from "@assets/icons/bookLine.svg";
 
 const Booking = () => {
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
-
 
   const t = useTranslations(languageReducer);
 

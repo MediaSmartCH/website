@@ -11,8 +11,6 @@ import {
   XCircle,
 } from 'lucide-react';
 
-import { useAppSelector } from '@shared/hooks/store-hooks';
-import { useTranslations } from '@shared/i18n/translator';
 import {
   BookingDetail,
   BookingSlot,
@@ -31,8 +29,10 @@ import {
   formatHumanDate,
   formatTimeOnly,
 } from '@features/booking/lib/booking-formatting';
-import { logger } from '@shared/lib/logger';
 
+import { useAppSelector } from '@shared/hooks/store-hooks';
+import { useTranslations } from '@shared/i18n/translator';
+import { logger } from '@shared/lib/logger';
 
 type ViewMode = 'overview' | 'reschedule' | 'cancel';
 

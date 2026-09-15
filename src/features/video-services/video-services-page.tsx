@@ -1,14 +1,14 @@
 import React from "react";
 
-import { useAppSelector } from "@shared/hooks/store-hooks";
-import { refreshAosAnimations } from "@shared/lib/scroll-animations";
-
 import Hero from "@features/video-services/components/hero";
 import About from "@features/video-services/components/about";
 import Services from "@features/video-services/components/services";
 import Faq from "@features/video-services/components/faq";
 import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
+
+import { useAppSelector } from "@shared/hooks/store-hooks";
+import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 import WaveBackdrop from "@shared/components/wave-backdrop";
 
 export default function VideoServicesPage() {

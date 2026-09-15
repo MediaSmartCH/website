@@ -7,6 +7,7 @@ import { AlertCircle, ArrowLeft, Loader2, XCircle } from 'lucide-react';
 
 import { BookingDetail, cancelBooking } from '@features/booking/api/booking-api';
 import { formatHumanDate, formatTimeOnly } from '@features/booking/lib/booking-formatting';
+
 import { useTranslations } from '@shared/i18n/translator';
 import { logger } from '@shared/lib/logger';
 

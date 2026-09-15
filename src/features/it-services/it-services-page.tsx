@@ -1,18 +1,18 @@
 import React from "react";
 
-import { useAppSelector } from "@shared/hooks/store-hooks";
-import { refreshAosAnimations } from "@shared/lib/scroll-animations";
-
 import Hero from "@features/it-services/components/hero";
 import About from "@features/it-services/components/about";
 import Services from "@features/it-services/components/services";
 import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
-import WaveBackdrop from "@shared/components/wave-backdrop";
 import Process from "@features/it-services/components/process";
 import FaqIT from "@features/it-services/components/faq";
 import PracticalInfo from "@features/it-services/components/practical-info";
 import ProjectEstimates from "@features/it-services/components/project-estimates";
+
+import { useAppSelector } from "@shared/hooks/store-hooks";
+import { refreshAosAnimations } from "@shared/lib/scroll-animations";
+import WaveBackdrop from "@shared/components/wave-backdrop";
 
 export default function ITServicesPage() {
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);

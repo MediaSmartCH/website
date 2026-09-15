@@ -18,6 +18,7 @@ import {
 } from "@features/it-services/lib/portfolio-helpers";
 import { SCROLLABLE_GALLERY_THRESHOLD } from "@features/it-services/lib/portfolio-helpers";
 import type { PortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
+
 import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import { useTranslations } from "@shared/i18n/translator";
 
