@@ -7,7 +7,16 @@ import { isValidPhoneNumber } from "libphonenumber-js";
 
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { getRecaptchaToken } from "@shared/lib/recaptcha";
-import { fetchWithDeployment } from "@shared/lib/fetch-with-deployment";
+import {
+  getSubmissionLanguage,
+  submitContactForm,
+} from "@features/contact/lib/contact-api";
+import {
+  getLocalDigits,
+  isDialCodeOnly,
+  isValidEmailStrict,
+} from "@features/contact/lib/contact-validation";
+import { useIntentToggle } from "@features/contact/hooks/use-intent-toggle";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
@@ -138,84 +147,24 @@ const ContactInner = () => {
   const [phoneValue, setPhoneValue] = React.useState("");
   const [phoneValid, setPhoneValid] = React.useState(true);
 
-  // Strip the dial code prefix and return only the subscriber digits.
-  const getLocalDigits = (phone: string) => {
-    const { country } = guessCountryByPartialPhoneNumber({ phone });
-    const dial = country?.dialCode || "";
-    try {
-      return removeDialCode({ phone, dialCode: dial }).replace(/\D/g, "");
-    } catch {
-      return phone.replace(/^\+\d{1,4}\s*/, "").replace(/\D/g, "");
-    }
-  };
+  const dialOnly = isDialCodeOnly(phoneValue);
 
-  const localDigits = getLocalDigits(phoneValue);
-  // True when the user has typed only a dial code with no subscriber digits yet.
-  const dialOnly = localDigits.length === 0;
-
-  const toggleRef = React.useRef<HTMLDivElement>(null);
-  // Suppresses the click event that fires immediately after a drag gesture ends.
-  const suppressToggleClickRef = React.useRef(false);
-  const toggleDragState = React.useRef({ pointerId: null as number | null, startX: 0, hasMoved: false });
-  const [dragIntent, setDragIntent] = React.useState<"question" | "quote" | null>(null);
-
-  // Determine which toggle option the pointer is currently over.
-  const getIntentFromClientX = (clientX: number): "question" | "quote" => {
-    const rect = toggleRef.current?.getBoundingClientRect();
-    if (!rect) return intent;
-    return clientX < rect.left + rect.width / 2 ? "question" : "quote";
-  };
-
-  const handleTogglePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    toggleDragState.current = { pointerId: e.pointerId, startX: e.clientX, hasMoved: false };
-    setDragIntent(intent);
-  };
-
-  const handleTogglePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (toggleDragState.current.pointerId !== e.pointerId) return;
-    if (Math.abs(e.clientX - toggleDragState.current.startX) > 4) {
-      // Capture the pointer on first significant move so the drag stays smooth
-      // even if the cursor leaves the element.
-      if (!toggleDragState.current.hasMoved) e.currentTarget.setPointerCapture(e.pointerId);
-      toggleDragState.current.hasMoved = true;
-    }
-    if (!toggleDragState.current.hasMoved) return;
-    setDragIntent(getIntentFromClientX(e.clientX));
-  };
-
-  const handleTogglePointerEnd = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (toggleDragState.current.pointerId !== e.pointerId) return;
-    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
-    if (toggleDragState.current.hasMoved && dragIntent !== null) {
-      // A drag just finished — set a flag so the subsequent click event is ignored.
-      suppressToggleClickRef.current = true;
-      const next = dragIntent;
-      setIntent(next);
-      if (next === "question") { setProjectType(""); setProjectTypeValid(true); }
-      window.setTimeout(() => { suppressToggleClickRef.current = false; }, 0);
-    }
-    toggleDragState.current.pointerId = null;
-    toggleDragState.current.hasMoved = false;
-    setDragIntent(null);
-  };
+  const { toggleRef, dragIntent, shouldIgnoreClick, handlers: toggleHandlers } =
+    useIntentToggle({
+      intent,
+      onIntentChange: (next) => {
+        setIntent(next);
+        if (next === "question") {
+          setProjectType("");
+          setProjectTypeValid(true);
+        }
+      },
+    });
 
   const [nameValid, setNameValid] = React.useState(true);
   const [messageValid, setMessageValid] = React.useState(true);
   const [emailValid, setEmailValid] = React.useState(true);
 
-  const emailBase = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,24}$/i;
-  // Stricter than the base regex: also rejects consecutive dots, leading/trailing
-  // dots in the local part, and hyphens at label boundaries in the domain.
-  const isValidEmailStrict = (value: string) => {
-    if (!emailBase.test(value)) return false;
-    if (value.includes("..")) return false;
-    const [local, domain] = value.split("@");
-    if (!local || !domain) return false;
-    if (local.startsWith(".") || local.endsWith(".")) return false;
-    const labels = domain.split(".");
-    if (labels.some((l) => l.startsWith("-") || l.endsWith("-") || l.length === 0)) return false;
-    return true;
-  };
 
   const handleInvalid = (
     e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -257,7 +206,20 @@ const ContactInner = () => {
     setContact((c) => ({ ...c, [name]: value }));
   };
 
-  const handleClick = () => {};
+  /** Clears the form back to its pristine state after a successful send. */
+  const resetForm = () => {
+    setDone(true);
+    setContact({ name: "", email: "", message: "" });
+    setPhoneValue("");
+    setIsChecked(false);
+    setNameValid(true);
+    setEmailValid(true);
+    setPhoneValid(true);
+    setMessageValid(true);
+    setProjectType("");
+    setProjectTypeValid(true);
+  };
+
 
   const onCheckboxChange = (e: any) => {
     setIsChecked(e.target.checked);
@@ -457,58 +419,30 @@ const ContactInner = () => {
                     return;
                   }
 
-                  // Derive language from the URL prefix rather than the Redux store
-                  // so the server-side email template uses the correct locale.
-                  const urlLang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
-                  // Omit the phone field entirely when the user only selected a dial code.
-                  const payload = {
+                  const result = await submitContactForm({
                     ...contact,
+                    // Omit the phone entirely when only a dial code was selected.
                     phone: dialOnly ? "" : phoneValue,
-                    lang: urlLang,
+                    lang: getSubmissionLanguage(),
                     intent,
                     projectType: intent === "quote" ? projectType : "",
                     recaptchaToken,
                     website: honeypotValue,
-                  };
-                  const controller = new AbortController();
-                  const timeout = window.setTimeout(() => controller.abort(), 10000);
-                  let result: Response;
+                  });
 
-                  try {
-                    result = await fetchWithDeployment('/api/send', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify(payload),
-                      signal: controller.signal,
-                    });
-                  } finally {
-                    window.clearTimeout(timeout);
+                  if (result.status === "sent") {
+                    resetForm();
+                    return;
                   }
 
-                  const responsePayload = await result.json().catch(() => null);
-
-                  if (result.ok) {
-                    setDone(true);
-                    setContact({ name: "", email: "", message: "" });
-                    setPhoneValue("");
-                    setIsChecked(false);
-                    setNameValid(true);
-                    setEmailValid(true);
-                    setPhoneValid(true);
-                    setMessageValid(true);
-                    setProjectType("");
-                    setProjectTypeValid(true);
-                    handleClick();
-                  } else {
-                    setError(
-                      responsePayload?.message === 'Security verification failed' ||
-                      responsePayload?.message === 'Security token missing'
-                        ? 'Security verification failed'
-                        : 'An error occurred while sending the message, please try again later.'
-                    );
-                  }
-
+                  setError(
+                    result.status === "security-rejected"
+                      ? 'Security verification failed'
+                      : 'An error occurred while sending the message, please try again later.'
+                  );
                 } catch (error) {
+                  // submitContactForm and getRecaptchaToken both swallow their own
+                  // failures, so this only catches the genuinely unexpected.
                   console.error('Send error:', error);
                   setError('An error occurred while sending the message, please try again later.');
                 } finally {
@@ -532,17 +466,17 @@ const ContactInner = () => {
                 ref={toggleRef}
                 className={`${themeReducer === "light" ? "bg-white border-[#C8CAE4]" : "bg-[#685A9C] border-[#C8CAE4]"} flex border-2 rounded-[11px] p-[5px] gap-[5px] mb-[16px] lg:mb-[22px] cursor-grab active:cursor-grabbing select-none`}
                 style={{ touchAction: "none" }}
-                onPointerDown={handleTogglePointerDown}
-                onPointerMove={handleTogglePointerMove}
-                onPointerUp={handleTogglePointerEnd}
-                onPointerCancel={handleTogglePointerEnd}
+                onPointerDown={toggleHandlers.onPointerDown}
+                onPointerMove={toggleHandlers.onPointerMove}
+                onPointerUp={toggleHandlers.onPointerEnd}
+                onPointerCancel={toggleHandlers.onPointerEnd}
               >
                 {(["question", "quote"] as const).map((v) => (
                   <button
                     key={v}
                     type="button"
                     onClick={() => {
-                      if (suppressToggleClickRef.current) return;
+                      if (shouldIgnoreClick()) return;
                       setIntent(v);
                       if (v === "question") { setProjectType(""); setProjectTypeValid(true); }
                     }}
