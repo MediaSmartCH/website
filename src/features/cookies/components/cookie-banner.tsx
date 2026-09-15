@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { OPEN_COOKIE_SETTINGS_EVENT } from "@store/slices/common/cookieUtils";
 import CategoryToggle from "@features/cookies/components/category-toggle";
-import { useBodyScrollLock } from "@features/cookies/hooks/use-body-scroll-lock";
+import { useConsentScrollLock } from "@features/cookies/hooks/use-consent-scroll-lock";
 import { useConsentPreferences } from "@features/cookies/hooks/use-consent-preferences";
 import { useLocationPath } from "@shared/hooks/use-location-path";
 import { useTranslations } from "@shared/i18n/translator";
@@ -111,7 +111,7 @@ const ModernCookieBanner = () => {
     return () => mediaQuery.removeEventListener("change", syncViewport);
   }, []);
 
-  useBodyScrollLock(actuallyVisible && !showCompactBanner);
+  useConsentScrollLock(actuallyVisible && !showCompactBanner);
 
   const handleClose = () => {
     setIsClosing(true);

@@ -2,195 +2,28 @@ import React, { useEffect, useId, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
+import { useModalScrollLock } from "@features/it-services/hooks/use-modal-scroll-lock";
+import {
+  formatImageCount,
+  formatPreviewCount,
+  formatProjectsCount,
+  formatRemainingProjects,
+  formatRemainingProjectsCta,
+  getInlineGalleryClassName,
+  getItemImages,
+  getSafeExternalUrl,
+  PREVIEW_LIMIT,
+  resolveLocalizedField,
+  resolveScreenshotUrl,
+  SCROLLABLE_GALLERY_THRESHOLD,
+  truncateText,
+  type LightboxImage,
+  type PortfolioData,
+  type PortfolioItem,
+} from "@features/it-services/lib/portfolio-helpers";
 import { useTranslations } from "@shared/i18n/translator";
 import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
-
-type SupportedLanguage = "fr" | "en";
-type LocalizedField = string | Partial<Record<SupportedLanguage, string>>;
-
-interface PortfolioItem {
-  id: string;
-  title: LocalizedField;
-  description: LocalizedField;
-  url?: string;
-  images?: string[];
-  screenshotUrls?: string[];
-  /**
-   * Optional short note shown as a non-clickable badge when the project is
-   * not freely accessible (private / bespoke / restricted-access). Renders
-   * either alongside or instead of the Visit Site button depending on
-   * whether a public URL is also provided.
-   */
-  accessNote?: LocalizedField;
-}
-
-interface PortfolioData {
-  items: PortfolioItem[];
-}
-
-const PREVIEW_LIMIT = 4;
-const SCROLLABLE_GALLERY_THRESHOLD = 3;
-
-// Returns the resolved image paths for a portfolio item, preferring generated screenshot paths
-function getItemImages(item: PortfolioItem): string[] {
-  if (item.screenshotUrls && item.screenshotUrls.length > 0) {
-    return item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`);
-  }
-
-  return item.images ?? [];
-}
-
-// Resolves a relative screenshot URL against the item's base URL
-function getSafeExternalUrl(value?: string): string | null {
-  if (!value) {
-    return null;
-  }
-
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:"
-      ? url.toString()
-      : null;
-  } catch {
-    return null;
-  }
-}
-
-// Resolves a relative screenshot URL against the item's base URL
-function resolveScreenshotUrl(
-  screenshotUrl: string,
-  baseUrl?: string
-): string | null {
-  if (screenshotUrl.startsWith("http://") || screenshotUrl.startsWith("https://")) {
-    return getSafeExternalUrl(screenshotUrl);
-  }
-
-  try {
-    const base = new URL(baseUrl ?? "");
-    const path = screenshotUrl.startsWith("/") ? screenshotUrl : `/${screenshotUrl}`;
-    return getSafeExternalUrl(`${base.origin}${path}`);
-  } catch {
-    return null;
-  }
-}
-
-// Returns the string value for the current language, falling back to fr then en
-function resolveLocalizedField(
-  field: LocalizedField,
-  language: string
-): string {
-  if (typeof field === "string") {
-    return field;
-  }
-
-  return field[language as SupportedLanguage] ?? field.fr ?? field.en ?? "";
-}
-
-function truncateText(value: string, maxLength: number): string {
-  if (value.length <= maxLength) {
-    return value;
-  }
-
-  return `${value.slice(0, maxLength).trim()}...`;
-}
-
-function formatProjectsCount(count: number, language: string): string {
-  if (language === "fr") {
-    return `${count} ${count > 1 ? "projets" : "projet"}`;
-  }
-
-  return `${count} ${count > 1 ? "projects" : "project"}`;
-}
-
-function formatImageCount(count: number, language: string): string {
-  if (language === "fr") {
-    return `${count} ${count > 1 ? "apercus" : "apercu"}`;
-  }
-
-  return `${count} ${count > 1 ? "previews" : "preview"}`;
-}
-
-function formatPreviewCount(
-  shownCount: number,
-  totalCount: number,
-  language: string
-): string {
-  if (language === "fr") {
-    return `Apercu de ${shownCount} sur ${totalCount}`;
-  }
-
-  return `Showing ${shownCount} of ${totalCount}`;
-}
-
-function formatRemainingProjects(count: number, language: string): string {
-  if (language === "fr") {
-    return `${count} ${count > 1 ? "autres projets" : "autre projet"}`;
-  }
-
-  return `${count} ${count > 1 ? "more projects" : "more project"}`;
-}
-
-function formatRemainingProjectsCta(count: number, language: string): string {
-  if (language === "fr") {
-    return `Voir les ${count} autres`;
-  }
-
-  return `View ${count} more`;
-}
-
-// Returns Tailwind grid class based on how many images a card holds
-function getInlineGalleryClassName(imageCount: number): string {
-  if (imageCount <= 1) {
-    return "grid grid-cols-1 gap-3";
-  }
-
-  if (imageCount === 2) {
-    return "grid grid-cols-1 gap-3 sm:grid-cols-2";
-  }
-
-  return "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3";
-}
-
-// Locks body scroll while the modal is open and restores original styles on cleanup
-function useBodyScrollLock(isLocked: boolean): void {
-  useEffect(() => {
-    if (!isLocked) {
-      return undefined;
-    }
-
-    const originalBodyStyles = {
-      overscrollBehavior: document.body.style.overscrollBehavior,
-      overflow: document.body.style.overflow,
-      paddingRight: document.body.style.paddingRight,
-      touchAction: document.body.style.touchAction,
-    };
-    // Add padding to compensate for the scrollbar disappearing and prevent layout shift
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-
-    document.body.style.overflow = "hidden";
-    document.body.style.overscrollBehavior = "none";
-    document.body.style.touchAction = "none";
-
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
-
-    return () => {
-      document.body.style.overscrollBehavior =
-        originalBodyStyles.overscrollBehavior;
-      document.body.style.overflow = originalBodyStyles.overflow;
-      document.body.style.paddingRight = originalBodyStyles.paddingRight;
-      document.body.style.touchAction = originalBodyStyles.touchAction;
-    };
-  }, [isLocked]);
-}
-
-interface LightboxImage {
-  src: string;
-  alt: string;
-}
 
 const PortfolioGallery = () => {
   const dialogTitleId = useId();
@@ -219,7 +52,7 @@ const PortfolioGallery = () => {
     return data.items ?? [];
   }, []);
 
-  useBodyScrollLock(isModalOpen || lightbox !== null);
+  useModalScrollLock(isModalOpen || lightbox !== null);
 
   useEffect(() => {
     if (!isModalOpen) {

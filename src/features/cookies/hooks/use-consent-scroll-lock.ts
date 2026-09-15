@@ -13,8 +13,13 @@ const RECHECK_DELAY_MS = 100;
  * extension acts on a delay.
  *
  * Scroll is always released on unmount, whatever path got us here.
+ *
+ * Distinct from the portfolio modal's lock in
+ * features/it-services/hooks/use-modal-scroll-lock.ts, which compensates for
+ * the scrollbar width and restores prior inline styles instead. The two differ
+ * on purpose.
  */
-export function useBodyScrollLock(locked: boolean) {
+export function useConsentScrollLock(locked: boolean) {
   useEffect(() => {
     const release = () => {
       document.body.style.overflow = "";
