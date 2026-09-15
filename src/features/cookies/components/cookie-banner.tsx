@@ -12,7 +12,7 @@ import CategoryToggle from "@features/cookies/components/category-toggle";
 import CompactConsentBar from "@features/cookies/components/compact-consent-bar";
 import ConsentPreferencesPanel from "@features/cookies/components/consent-preferences-panel";
 import ConsentSummaryPanel from "@features/cookies/components/consent-summary-panel";
-import ThemeSwitchOverlay from "@features/cookies/components/theme-switch-overlay";
+import ThemeSwitchOverlay from "@shared/components/theme-switch-overlay";
 import { getConsentThemeClasses } from "@features/cookies/lib/consent-theme-classes";
 import { useConsentScrollLock } from "@features/cookies/hooks/use-consent-scroll-lock";
 import { useConsentPreferences } from "@features/cookies/hooks/use-consent-preferences";
