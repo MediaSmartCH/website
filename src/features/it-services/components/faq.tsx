@@ -3,7 +3,7 @@ import { Collapse } from "antd";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 
-import "@styles/faq-accordion.css";
+import "@styles/components/faq-accordion.css";
 
 type FaqTile = { faqQuestion: string; faqAnswer: string };
 

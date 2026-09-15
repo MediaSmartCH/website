@@ -1,0 +1,47 @@
+/**
+ * Typography for translator-authored HTML rendered through RichText.
+ */
+
+/* about */
+.about-description ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-description li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.about-description strong {
+  font-weight: 600;
+}
+
+.it-service-hero-gradient span,
+.it-service-about-title span,
+.it-service-process-title span,
+.it-service-title span {
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.it-service-about-description b,
+.it-service-description b {
+  font-weight: 600;
+}
+
+.it-service-description ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.it-service-description li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
