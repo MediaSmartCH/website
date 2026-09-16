@@ -35,17 +35,23 @@ export function registerLocale(language: AppLanguage, bundle: LocaleModule) {
 }
 
 /**
- * Language to bundle loader.
+ * Imports a language bundle.
  *
- * A Map rather than a plain object because the language reaching `ensureLocale`
- * is derived from the URL: indexing a record with it lets an unsupported code
- * resolve to something inherited from Object.prototype, which then gets called.
- * `Map.get` can only ever return one of the entries below, or undefined.
+ * A switch, not a lookup table: the language reaching here comes from the URL,
+ * and resolving a call target by indexing any container with it is a dynamic
+ * dispatch on user input — the import below is a literal in every branch, so
+ * there is nothing to dispatch. With two locales the table bought nothing.
  */
-const LOCALE_LOADERS = new Map<AppLanguage, () => Promise<LocaleModule>>([
-  ["fr", () => import("@shared/i18n/fr") as Promise<LocaleModule>],
-  ["en", () => import("@shared/i18n/en") as Promise<LocaleModule>],
-]);
+function importLocaleBundle(language: AppLanguage): Promise<LocaleModule> {
+  switch (language) {
+    case "fr":
+      return import("@shared/i18n/fr") as Promise<LocaleModule>;
+    case "en":
+      return import("@shared/i18n/en") as Promise<LocaleModule>;
+    default:
+      return Promise.reject(new Error(`Unsupported language: ${String(language)}`));
+  }
+}
 
 const inFlight = new Map<AppLanguage, Promise<void>>();
 
@@ -62,12 +68,7 @@ export function ensureLocale(language: AppLanguage): Promise<void> {
   let pending = inFlight.get(language);
 
   if (!pending) {
-    const load = LOCALE_LOADERS.get(language);
-    if (!load) {
-      return Promise.reject(new Error(`Unsupported language: ${String(language)}`));
-    }
-
-    pending = load().then((bundle) => {
+    pending = importLocaleBundle(language).then((bundle) => {
       registerLocale(language, bundle);
     });
     inFlight.set(language, pending);
