@@ -1,9 +1,13 @@
 import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
-  checkRateLimit,
+  enforceRateLimit,
   getRateLimitIdentifier,
 } from '../_shared/rate-limit.js';
+import {
+  applyApiResponseHeaders,
+  guardRequest,
+} from '../_shared/request-guard.js';
 
 import { queryFirst } from './_lib/d1.js';
 import { verifyManageToken } from './_lib/tokens.js';
@@ -11,6 +15,9 @@ import { verifyManageToken } from './_lib/tokens.js';
 const LOOKUP_RATE_LIMIT = {
   limit: 30,
   windowMs: 5 * 60 * 1000,
+  // A visitor opening their manage link makes one or two of these. More than a
+  // handful is a script probing tokens, which is worth a shared-store lookup.
+  durableAfter: 5,
 };
 
 interface BookingRow {
@@ -31,14 +38,14 @@ interface BookingRow {
 // both kinds of links lead to the same manage screen and we want the visitor
 // to be able to flip between actions without a new email round-trip.
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  res.setHeader('Allow', 'GET');
-  res.setHeader('Cache-Control', 'no-store');
+  applyApiResponseHeaders(res, ['GET']);
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  const guard = guardRequest(req, { methods: ['GET'] });
+  if (!guard.ok) {
+    return res.status(guard.status).json({ success: false, message: guard.message });
   }
 
-  const rateLimitResult = checkRateLimit({
+  const rateLimitResult = await enforceRateLimit({
     namespace: 'booking-lookup',
     identifier: getRateLimitIdentifier(req.headers),
     ...LOOKUP_RATE_LIMIT,

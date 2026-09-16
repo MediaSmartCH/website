@@ -1,9 +1,13 @@
 import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
-  checkRateLimit,
+  enforceRateLimit,
   getRateLimitIdentifier,
 } from '../_shared/rate-limit.js';
+import {
+  applyApiResponseHeaders,
+  guardRequest,
+} from '../_shared/request-guard.js';
 
 import {
   BOOKING_TIMEZONE,
@@ -35,14 +39,15 @@ interface BookingRow {
 }
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  res.setHeader('Allow', 'POST');
-  res.setHeader('Cache-Control', 'no-store');
+  applyApiResponseHeaders(res, ['POST']);
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  const guard = guardRequest(req, { methods: ['POST'], maxBodyBytes: 8 * 1024 });
+  if (!guard.ok) {
+    console.warn(`booking/reschedule refused: ${guard.reason}`);
+    return res.status(guard.status).json({ success: false, message: guard.message });
   }
 
-  const rateLimitResult = checkRateLimit({
+  const rateLimitResult = await enforceRateLimit({
     namespace: 'booking-reschedule',
     identifier: getRateLimitIdentifier(req.headers),
     ...RESCHEDULE_RATE_LIMIT,

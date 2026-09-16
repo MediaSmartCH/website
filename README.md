@@ -126,6 +126,11 @@ Application variables:
 - `REACT_APP_RECAPTCHA_SITE_KEY`: backward-compatible fallback while the Vercel project is still carrying the legacy CRA variable
 - `RECAPTCHA_SECRET_KEY`: server-side secret used by `/api/send` and `/api/newsletter`
 - `RESEND_API_KEY`: server-side key used by `/api/send` and `/api/newsletter`
+- `SITE_ORIGIN`: canonical public origin. Decides which `Origin` headers and reCAPTCHA hostnames are accepted, and builds the booking manage links
+- `ALLOWED_ORIGINS` (optional): extra origins the site is served from, comma-separated
+- `SECURITY_COUNTER_SALT` (optional): salt for the hashed abuse-counter keys; falls back to `BOOKING_HMAC_SECRET`
+- `RECAPTCHA_MIN_SCORE` (optional): minimum v3 score, defaults to `0.5`
+- `CONTACT_CONFIRMATION_RECIPIENT_LIMIT`, `CONTACT_CONFIRMATION_DAILY_LIMIT`, `BOOKING_MAIL_RECIPIENT_LIMIT`, `BOOKING_MAIL_DAILY_LIMIT` (optional): outbound-mail ceilings, defaults in `api/_shared/outbound-mail-guard.ts`
 
 Vercel project sync variables:
 
@@ -168,6 +173,12 @@ The client now pins API requests with `x-deployment-id`, so the code is already 
 - reCAPTCHA is now enforced server-side on each form submission. The public client no longer performs a standalone `/api/verify-recaptcha` call.
 - The under-construction newsletter form now uses the server-side Resend flow instead of exposing a browser-side email delivery provider.
 - Public form endpoints add `Cache-Control: no-store`, hidden honeypot fields, and stricter payload length validation.
+- Every state-changing endpoint is guarded before its payload is parsed: allowed method, an `Origin` on one of our own pages, a JSON content type, and a body-size ceiling (`api/_shared/request-guard.ts`).
+- Rate limits are counted in shared Cloudflare D1 counters as well as in memory, so a burst spread across serverless instances is caught. Requires migration `0002`; without it the counters fail soft to per-instance limits.
+- Mail addressed to a visitor-supplied address is budgeted per recipient and per day (`api/_shared/outbound-mail-guard.ts`), so the contact form cannot be used to mail a third party at scale. The internal notification is never budgeted.
+- Contact addresses are assembled at runtime and never appear in the HTML or the JS bundle; `ObfuscatedEmail` attaches the `mailto:` only once a visitor hovers or focuses the link.
+
+[`SECURITY.md`](SECURITY.md) explains what each layer does, what it deliberately does not do, and the trade-offs behind the CSP.
 
 The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.github/workflows/sync-vercel-project-settings.yml) can re-apply those settings manually when you want GitHub to enforce the tracked Vercel configuration.
 

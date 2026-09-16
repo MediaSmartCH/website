@@ -7,7 +7,7 @@ import BookingButton from "@features/booking/components/booking-button";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import {
-  SUPPORT_EMAIL,
+  getSupportEmail,
 } from "@shared/constants/contact";
 
 // Hoisted to module scope: declaring lazy() inside the component body creates a
@@ -28,7 +28,7 @@ const Error404Page: React.FC = () => {
   const t = useTranslations(languageReducer);
 
   const handleContact = () => {
-    window.location.href = `mailto:${SUPPORT_EMAIL}`;
+    window.location.href = `mailto:${getSupportEmail()}`;
   };
 
   const handleITServices = () => {

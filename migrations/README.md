@@ -11,15 +11,25 @@ With Wrangler pointed at the booking database:
 ```bash
 # Preview
 wrangler d1 execute <DB_NAME> --file=migrations/0001_add_token_version_and_slot_uniqueness.sql --local
+wrangler d1 execute <DB_NAME> --file=migrations/0002_add_security_counters.sql --local
 
 # Production (the same DB id as CLOUDFLARE_D1_DATABASE_ID)
 wrangler d1 execute <DB_NAME> --file=migrations/0001_add_token_version_and_slot_uniqueness.sql --remote
+wrangler d1 execute <DB_NAME> --file=migrations/0002_add_security_counters.sql --remote
 ```
 
 Or paste the SQL into the D1 console for the database in the Cloudflare
 dashboard.
 
 ## Ordering
+
+Apply `0002_*` **before** deploying the API changes that depend on it:
+
+- `security_counters` — the shared abuse counters (rate limits and outbound
+  mail budgets) for every endpoint, not just the booking ones. Missing, the
+  counters fail soft: each instance falls back to its own in-memory limiter and
+  logs the failure, so the site keeps working but a flood spread across
+  instances is no longer caught.
 
 Apply `0001_*` **before** deploying the API changes that depend on it:
 
@@ -51,3 +61,16 @@ migration files):
 | updated_at         | INTEGER | unix seconds                             |
 | cancelled_at       | INTEGER | nullable                                 |
 | cancel_reason      | TEXT    | nullable                                 |
+
+## Reference: expected `security_counters` shape
+
+Written and read by `api/_shared/security-counters.ts`. Rows are self-expiring
+and the daily cron at `/api/booking/health` deletes the closed ones.
+
+| column   | type    | notes                                              |
+|----------|---------|----------------------------------------------------|
+| key      | TEXT    | primary key, `<namespace>:<salted sha256>`          |
+| hits     | INTEGER | requests counted in the current window              |
+| reset_at | INTEGER | unix **milliseconds**; in the past means "empty"    |
+
+`key` never contains a plaintext IP or e-mail address.

@@ -8,6 +8,8 @@ import { createRequest, createResponse, uniqueClientHeaders } from './http-fixtu
 // headers, and which collaborators are reached in which order.
 
 const sendContactEmails = vi.fn();
+const reserveOutboundMail = vi.fn();
+const releaseBudget = vi.fn();
 const validateContactPayload = vi.fn();
 const verifyRecaptcha = vi.fn();
 const resendConstructor = vi.fn();
@@ -39,6 +41,11 @@ vi.mock('../_shared/recaptcha.js', async () => {
   };
 });
 
+vi.mock('../_shared/outbound-mail-guard.js', () => ({
+  CONTACT_CONFIRMATION_POLICY: { flow: 'contact-confirmation' },
+  reserveOutboundMail: (...args: unknown[]) => reserveOutboundMail(...args),
+}));
+
 vi.mock('resend', () => ({
   Resend: class {
     constructor(key: string) {
@@ -60,7 +67,132 @@ beforeEach(() => {
   process.env.RESEND_API_KEY = 'test-key';
   validateContactPayload.mockReturnValue({ ok: true, data: VALID_PAYLOAD });
   verifyRecaptcha.mockResolvedValue({ ok: true });
-  sendContactEmails.mockResolvedValue({ error: null });
+  sendContactEmails.mockResolvedValue({ error: null, confirmationSent: true });
+  releaseBudget.mockResolvedValue(undefined);
+  reserveOutboundMail.mockResolvedValue({
+    allowed: true,
+    enforced: true,
+    release: releaseBudget,
+  });
+});
+
+describe('POST /api/send — request guard', () => {
+  it('refuses a submission posted from another site', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const res = createResponse();
+
+    await handler(
+      createRequest({
+        headers: { ...uniqueClientHeaders(), origin: 'https://evil.example' },
+        body: VALID_PAYLOAD,
+      }),
+      res.res,
+    );
+
+    expect(res.statusCode()).toBe(403);
+    expect(sendContactEmails).not.toHaveBeenCalled();
+  });
+
+  it('refuses a body that is not JSON', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const res = createResponse();
+
+    await handler(
+      createRequest({
+        headers: { ...uniqueClientHeaders(), 'content-type': 'text/plain' },
+        body: VALID_PAYLOAD,
+      }),
+      res.res,
+    );
+
+    expect(res.statusCode()).toBe(415);
+    expect(sendContactEmails).not.toHaveBeenCalled();
+  });
+
+  it('refuses an oversized body before parsing it', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const res = createResponse();
+
+    await handler(
+      createRequest({
+        headers: { ...uniqueClientHeaders(), 'content-length': '5000000' },
+        body: VALID_PAYLOAD,
+      }),
+      res.res,
+    );
+
+    expect(res.statusCode()).toBe(413);
+    expect(validateContactPayload).not.toHaveBeenCalled();
+  });
+
+  it('answers a same-origin submission that carries only Fetch Metadata', async () => {
+    const headers = uniqueClientHeaders();
+    delete headers.origin;
+    expect(headers['sec-fetch-site']).toBe('same-origin');
+
+    const res = createResponse();
+
+    await handler(createRequest({ headers, body: VALID_PAYLOAD }), res.res);
+
+    expect(res.statusCode()).toBe(200);
+  });
+});
+
+describe('POST /api/send — outbound mail budget', () => {
+  it('still delivers the enquiry when the confirmation copy is over budget', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    reserveOutboundMail.mockResolvedValue({
+      allowed: false,
+      refusedBy: 'recipient',
+      enforced: true,
+      release: releaseBudget,
+    });
+
+    const res = createResponse();
+    await handler(postContact(), res.res);
+
+    expect(sendContactEmails).toHaveBeenCalledWith(expect.anything(), VALID_PAYLOAD, {
+      sendConfirmation: false,
+    });
+    expect(res.statusCode()).toBe(200);
+    expect(res.body()).toEqual({ success: true });
+  });
+
+  it('budgets the address the form supplied', async () => {
+    const res = createResponse();
+    await handler(postContact(), res.res);
+
+    expect(reserveOutboundMail).toHaveBeenCalledWith(
+      expect.anything(),
+      VALID_PAYLOAD.email,
+    );
+  });
+
+  it('hands the allowance back when the copy never left', async () => {
+    sendContactEmails.mockResolvedValue({
+      error: { internal: null, confirm: { message: 'boom' } },
+      confirmationSent: false,
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const res = createResponse();
+    await handler(postContact(), res.res);
+
+    expect(releaseBudget).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the allowance charged when the copy did go out', async () => {
+    sendContactEmails.mockResolvedValue({
+      error: { internal: { message: 'boom' }, confirm: null },
+      confirmationSent: true,
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const res = createResponse();
+    await handler(postContact(), res.res);
+
+    expect(releaseBudget).not.toHaveBeenCalled();
+  });
 });
 
 describe('POST /api/send — always-on response headers', () => {
@@ -222,7 +354,9 @@ describe('POST /api/send — delivery', () => {
     await handler(postContact(), res.res);
 
     expect(resendConstructor).toHaveBeenCalledWith('test-key');
-    expect(sendContactEmails).toHaveBeenCalledWith(expect.anything(), VALID_PAYLOAD);
+    expect(sendContactEmails).toHaveBeenCalledWith(expect.anything(), VALID_PAYLOAD, {
+      sendConfirmation: true,
+    });
     expect(res.statusCode()).toBe(200);
     expect(res.body()).toEqual({ success: true });
   });

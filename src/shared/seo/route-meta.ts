@@ -4,6 +4,7 @@ import {
   stripLanguageFromPath,
   type AppLanguage,
 } from "@shared/config/languages";
+import { CONTACT_PHONE } from "@shared/constants/contact";
 import routeSeoData from "@shared/seo/route-seo-data.json";
 
 export const SITE_NAME = "MediaSmart";
@@ -102,7 +103,11 @@ const buildStructuredData = (
       "@id": `${SITE_URL}/#organization`,
       name: SITE_NAME,
       url: SITE_URL,
-      email: "contact@mediasmart.ch",
+      // No `email` here on purpose. Structured data is published on every page
+      // and is, by design, machine-readable: an address in it is the easiest
+      // one on the site to harvest, and it buys nothing in search results that
+      // the contact page and the phone number do not already provide.
+      telephone: CONTACT_PHONE,
       logo: {
         "@type": "ImageObject",
         "@id": `${SITE_URL}/#logo`,
@@ -116,7 +121,8 @@ const buildStructuredData = (
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: "contact@mediasmart.ch",
+        telephone: CONTACT_PHONE,
+        url: `${SITE_URL}/${language}#contact`,
         areaServed: "CH",
         availableLanguage: ["fr", "en"],
       },

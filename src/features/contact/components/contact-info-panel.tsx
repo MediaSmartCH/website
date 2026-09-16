@@ -4,11 +4,11 @@
  * Purely presentational — it holds no form state and never submits anything.
  */
 
+import ObfuscatedEmail from "@shared/components/obfuscated-email";
 import {
-  CONTACT_EMAIL,
-  CONTACT_EMAIL_DISPLAY,
   CONTACT_PHONE,
   CONTACT_PHONE_DISPLAY,
+  getContactEmail,
   OFFICE_MAP_URL,
   SOCIAL_LINKS,
 } from "@shared/constants/contact";
@@ -32,12 +32,7 @@ export default function ContactInfoPanel({ theme }: ContactInfoPanelProps) {
       <div className="flex items-center gap-x-[18px]">
         <img src={email} alt="email"  loading="lazy" decoding="async" />
         <p className="font-poppins font-light text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] 2xl:text-[18px]">
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className={`text-ink`}
-          >
-            {CONTACT_EMAIL_DISPLAY}
-          </a>
+          <ObfuscatedEmail address={getContactEmail()} className="text-ink" />
         </p>
       </div>
 
