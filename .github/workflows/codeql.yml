@@ -28,14 +28,14 @@ jobs:
     steps:
       - name: Checkout repository
         # Pin the action to an immutable commit to reduce supply-chain risk.
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
       - name: Initialize CodeQL
         # Pin the action to an immutable commit to reduce supply-chain risk.
-        uses: github/codeql-action/init@95e58e9a2cdfd71adc6e0353d5c52f41a045d225
+        uses: github/codeql-action/init@7188fc363630916deb702c7fdcf4e481b751f97a
         with:
           languages: ${{ matrix.language }}
 
       - name: Analyze
         # Pin the action to an immutable commit to reduce supply-chain risk.
-        uses: github/codeql-action/analyze@95e58e9a2cdfd71adc6e0353d5c52f41a045d225
+        uses: github/codeql-action/analyze@7188fc363630916deb702c7fdcf4e481b751f97a
