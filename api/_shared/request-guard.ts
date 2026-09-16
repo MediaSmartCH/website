@@ -1,6 +1,9 @@
 import type { IncomingHttpHeaders } from 'http';
 
+import clientIp from './client-ip.js';
 import type { ApiRequest, ApiResponse } from './http-types.js';
+
+const { verifyCloudflareOrigin } = clientIp;
 
 /**
  * The checks every endpoint runs before it looks at a payload.
@@ -27,6 +30,14 @@ export interface RequestGuardOptions {
    * Default: true for anything other than a read-only endpoint.
    */
   requireSameOrigin?: boolean;
+  /**
+   * Require the request to have passed through our Cloudflare zone.
+   *
+   * Default true. Set false only for a caller that legitimately reaches the
+   * origin directly — the Vercel cron, which never goes through Cloudflare and
+   * authenticates with its own secret instead.
+   */
+  requireCloudflareOrigin?: boolean;
 }
 
 export interface GuardRejection {
@@ -168,6 +179,31 @@ export function guardRequest(
   req: ApiRequest,
   options: RequestGuardOptions,
 ): GuardResult {
+  // The network hop comes first: it is the cheapest check and the most
+  // fundamental. Everything below reasons about headers, and headers are only
+  // worth what the hop that set them is worth.
+  if (options.requireCloudflareOrigin ?? true) {
+    const cloudflare = verifyCloudflareOrigin(req.headers);
+
+    if (cloudflare.configured && !cloudflare.verified) {
+      if (cloudflare.enforced) {
+        return {
+          ok: false,
+          status: 403,
+          message: 'Forbidden',
+          reason: 'cloudflare-origin',
+        };
+      }
+
+      // Observe-only: the secret is set but enforcement is not on yet. This
+      // line is the whole point of that mode — it says the Transform Rule is
+      // missing or mismatched while the site keeps serving.
+      console.warn(
+        'Request reached the origin without valid Cloudflare proof (not enforced)',
+      );
+    }
+  }
+
   const methods = options.methods.map((method) => method.toUpperCase());
   const method = (req.method ?? 'GET').toUpperCase();
   const mutates = method !== 'GET' && method !== 'HEAD';

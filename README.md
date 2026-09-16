@@ -131,6 +131,8 @@ Application variables:
 - `SECURITY_COUNTER_SALT` (optional): salt for the hashed abuse-counter keys; falls back to `BOOKING_HMAC_SECRET`
 - `RECAPTCHA_MIN_SCORE` (optional): minimum v3 score, defaults to `0.5`
 - `CONTACT_CONFIRMATION_RECIPIENT_LIMIT`, `CONTACT_CONFIRMATION_DAILY_LIMIT`, `BOOKING_MAIL_RECIPIENT_LIMIT`, `BOOKING_MAIL_DAILY_LIMIT` (optional): outbound-mail ceilings, defaults in `api/_shared/outbound-mail-guard.ts`
+- `CLOUDFLARE_ORIGIN_SECRET`: shared secret a Cloudflare Transform Rule adds as `x-origin-verify`. Proves a request came through our zone and makes `cf-connecting-ip` trustworthy
+- `CLOUDFLARE_ORIGIN_ENFORCE`: set to `true` only once that rule is live — see the rollout order in [`SECURITY.md`](SECURITY.md)
 
 Vercel project sync variables:
 
@@ -177,6 +179,7 @@ The client now pins API requests with `x-deployment-id`, so the code is already 
 - Rate limits are counted in shared Cloudflare D1 counters as well as in memory, so a burst spread across serverless instances is caught. Requires migration `0002`; without it the counters fail soft to per-instance limits.
 - Mail addressed to a visitor-supplied address is budgeted per recipient and per day (`api/_shared/outbound-mail-guard.ts`), so the contact form cannot be used to mail a third party at scale. The internal notification is never budgeted.
 - Contact addresses are assembled at runtime and never appear in the HTML or the JS bundle; `ObfuscatedEmail` attaches the `mailto:` only once a visitor hovers or focuses the link.
+- The API is locked to requests that came through our Cloudflare zone, proven by a secret header rather than an IP allowlist. The same proof is what makes `cf-connecting-ip` — and therefore per-visitor rate limiting — trustworthy behind the CDN (`api/_shared/client-ip.js`).
 
 [`SECURITY.md`](SECURITY.md) explains what each layer does, what it deliberately does not do, and the trade-offs behind the CSP.
 
