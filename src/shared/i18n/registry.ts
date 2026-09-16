@@ -1,4 +1,4 @@
-import { type AppLanguage, isSupportedLanguage } from "@shared/config/languages";
+import type { AppLanguage } from "@shared/config/languages";
 
 type SectionDict = Record<string, any>;
 /** Shape of a `services/locales/<lang>` barrel namespace. */
@@ -34,21 +34,18 @@ export function registerLocale(language: AppLanguage, bundle: LocaleModule) {
   }
 }
 
-const LOCALE_LOADERS: Record<AppLanguage, () => Promise<LocaleModule>> = {
-  fr: () => import("@shared/i18n/fr") as Promise<LocaleModule>,
-  en: () => import("@shared/i18n/en") as Promise<LocaleModule>,
-};
-
 /**
- * Resolves a language to its loader, or undefined when it is not one we ship.
+ * Language to bundle loader.
  *
- * The language reaching here is derived from the URL, so the lookup is guarded
- * rather than done straight on the record: an unsupported code would otherwise
- * index into Object.prototype and dispatch to whatever it found there.
+ * A Map rather than a plain object because the language reaching `ensureLocale`
+ * is derived from the URL: indexing a record with it lets an unsupported code
+ * resolve to something inherited from Object.prototype, which then gets called.
+ * `Map.get` can only ever return one of the entries below, or undefined.
  */
-function getLocaleLoader(language: AppLanguage) {
-  return isSupportedLanguage(language) ? LOCALE_LOADERS[language] : undefined;
-}
+const LOCALE_LOADERS = new Map<AppLanguage, () => Promise<LocaleModule>>([
+  ["fr", () => import("@shared/i18n/fr") as Promise<LocaleModule>],
+  ["en", () => import("@shared/i18n/en") as Promise<LocaleModule>],
+]);
 
 const inFlight = new Map<AppLanguage, Promise<void>>();
 
@@ -65,7 +62,7 @@ export function ensureLocale(language: AppLanguage): Promise<void> {
   let pending = inFlight.get(language);
 
   if (!pending) {
-    const load = getLocaleLoader(language);
+    const load = LOCALE_LOADERS.get(language);
     if (!load) {
       return Promise.reject(new Error(`Unsupported language: ${String(language)}`));
     }
