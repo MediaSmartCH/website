@@ -48,9 +48,9 @@ const ENV_KEYS = {
     envVar: 'GOOGLE_FREEBUSY_CALENDAR_IDS',
     fallback: '',
   },
-  cfAccountId: { envVar: 'CLOUDFLARE_ACCOUNT_ID' },
-  cfApiToken: { envVar: 'CLOUDFLARE_API_TOKEN' },
-  d1DatabaseId: { envVar: 'CLOUDFLARE_D1_DATABASE_ID' },
+  // The Cloudflare D1 credentials are read by api/_shared/d1.ts directly: the
+  // client is shared with the security counters, which must not depend on the
+  // booking config.
   resendApiKey: { envVar: 'RESEND_API_KEY' },
   bookingSecret: { envVar: 'BOOKING_HMAC_SECRET' },
   siteOrigin: { envVar: 'SITE_ORIGIN', fallback: 'https://mediasmart.ch' },

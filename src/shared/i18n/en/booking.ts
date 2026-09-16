@@ -1,3 +1,5 @@
+import { getBookingEmail } from "@shared/constants/contact";
+
 const booking = {
     title: "Free Consultation",
     subtitle: "30 minutes to explore your needs together",
@@ -93,7 +95,7 @@ const booking = {
         loading: "Loading your booking…",
         notFound: "Booking not found",
         notFoundDescription:
-            "The link may have expired or be invalid. If you think this is a mistake, drop us a line at booking@mediasmart.ch.",
+            `The link may have expired or be invalid. If you think this is a mistake, drop us a line at ${getBookingEmail()}.`,
         backHome: "Back to home",
         scheduledFor: "Scheduled for",
         with: "with",

@@ -3,13 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
+import ObfuscatedEmail from "@shared/components/obfuscated-email";
 import {
-  CONTACT_EMAIL,
-  CONTACT_EMAIL_DISPLAY,
   CONTACT_PHONE,
   CONTACT_PHONE_DISPLAY,
-  PRIVACY_EMAIL,
-  PRIVACY_EMAIL_DISPLAY,
+  getContactEmail,
+  getPrivacyEmail,
 } from "@shared/constants/contact";
 
 export default function PrivacyPolicy() {
@@ -117,9 +116,7 @@ export default function PrivacyPolicy() {
             {t.text("privacy.s1Address")}
             <br />
             {t.text("privacy.s1Email")}{" "}
-            <a href={`mailto:${CONTACT_EMAIL}`} className={linkClass}>
-              {CONTACT_EMAIL_DISPLAY}
-            </a>
+            <ObfuscatedEmail address={getContactEmail()} className={linkClass} />
             <br />
             {t.text("privacy.s1Phone")}{" "}
             <a href={`tel:${CONTACT_PHONE}`} className={linkClass}>
@@ -299,9 +296,7 @@ export default function PrivacyPolicy() {
           </p>
           <p className={`${pClass} mt-2`}>
             {t.text("privacy.s8Contact")}{" "}
-            <a href={`mailto:${PRIVACY_EMAIL}`} className={linkClass}>
-              {PRIVACY_EMAIL_DISPLAY}
-            </a>
+            <ObfuscatedEmail address={getPrivacyEmail()} className={linkClass} />
             {". "}
             {t.text("privacy.s8Complaint")}{" "}
             <ExternalLink href={commissionerUrl}>

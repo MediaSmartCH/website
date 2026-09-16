@@ -1,6 +1,8 @@
 import { timingSafeEqual } from 'crypto';
 
 import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
+import { applyApiResponseHeaders, guardRequest } from '../_shared/request-guard.js';
+import { purgeExpiredCounters } from '../_shared/security-counters.js';
 
 import { getRuntimeEnv } from './_lib/config.js';
 import { runHealthChecks } from './_lib/health.js';
@@ -35,16 +37,23 @@ function isAuthorized(req: ApiRequest): boolean {
 }
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  res.setHeader('Allow', 'GET');
-  res.setHeader('Cache-Control', 'no-store');
+  applyApiResponseHeaders(res, ['GET']);
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ ok: false, message: 'Method not allowed' });
+  const guard = guardRequest(req, { methods: ['GET'] });
+  if (!guard.ok) {
+    return res.status(guard.status).json({ ok: false, message: guard.message });
   }
 
   if (!isAuthorized(req)) {
     return res.status(401).json({ ok: false, message: 'Unauthorized' });
   }
+
+  // Housekeeping for the abuse counters rides along with the daily cron: the
+  // rows are already inert once their window closes, so deleting them is not
+  // worth a millisecond on any visitor's request.
+  await purgeExpiredCounters().catch((error) => {
+    console.error('security counter purge failed', error);
+  });
 
   const report = await runHealthChecks();
 

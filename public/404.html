@@ -216,7 +216,12 @@
           <a class="secondary" href="/fr/it-services">Services IT</a>
           <a class="secondary" href="/fr/video-services">Services video</a>
           <a class="secondary" href="/fr/support-contract">Support</a>
-          <a class="secondary" href="mailto:contact@mediasmart.ch">Contact</a>
+          <!-- Points at the contact section rather than a mailto:. This file is
+               served as static HTML, so an address written here would be the
+               easiest one on the whole site to harvest — no JavaScript to run,
+               no interaction to fake. The form behind this link is also the
+               better destination: it is the one with the anti-abuse checks. -->
+          <a class="secondary" href="/fr#contact">Contact</a>
         </div>
       </article>
     </section>
