@@ -21,6 +21,13 @@ Marketing website built with React, TypeScript, and Vite, deployed on Vercel wit
 - pnpm 10.x
 - Vercel CLI for local project sync
 
+`mise.toml` pins Node 20 for this directory — `mise trust && mise install` sets it
+up. The version is not cosmetic: `engines.node` in package.json is what Vercel
+reads to pick the runtime for the functions in `api/`, so anything else means
+developing against a different runtime than production (and pnpm warns about it
+on every command). With another version manager, read the version from
+`mise.toml`.
+
 ## Setup
 
 1. Install dependencies:
