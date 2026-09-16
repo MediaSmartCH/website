@@ -29,14 +29,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          # The toolchain's Node, not the runtime's. pnpm loads node:sqlite on
-          # this runner and dies on Node 20 with ERR_UNKNOWN_BUILTIN_MODULE, so
-          # CI needs 22 even though engines.node pins 20.x for the Vercel
-          # functions in api/. That is fine: CI only runs the build tools, and
-          # Vercel builds and runs the functions itself on the pinned version.
-          # (An earlier revision of this file set 20 here to "match production"
-          # and broke every run — do not reinstate it.)
-          node-version: 22
+          # Matches engines.node, which is what Vercel reads for the api/
+          # functions. It has to stay at or above 22.13 whatever that says:
+          # pnpm loads node:sqlite on this runner and dies on anything older
+          # with ERR_UNKNOWN_BUILTIN_MODULE. An earlier revision set 20 here to
+          # "match production" and broke every run.
+          node-version: 24
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
