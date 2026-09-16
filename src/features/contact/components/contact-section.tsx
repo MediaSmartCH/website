@@ -175,8 +175,13 @@ const ContactInner = () => {
             {t.text("home.contactTitle")}
           </p>
 
+          {/*
+            Top-aligned on desktop rather than centred: the form grows by a whole
+            field when "quote" is picked, and centring slid the left column down
+            by half that height on every switch between the two intents.
+          */}
           <div
-            className={`text-body-on-surface flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-between gap-y-[35px] `}
+            className={`text-body-on-surface flex flex-col-reverse lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-y-[35px] `}
           >
             <ContactInfoPanel language={languageReducer} theme={themeReducer} />
 
