@@ -10,7 +10,7 @@ import {
 } from '../_shared/request-guard.js';
 
 import { queryFirst } from './_lib/d1.js';
-import { verifyToken } from './_lib/tokens.js';
+import { verifyManageToken } from './_lib/tokens.js';
 
 const LOOKUP_RATE_LIMIT = {
   limit: 30,
@@ -72,11 +72,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     [id],
   );
 
-  if (
-    !row ||
-    (!verifyToken(id, 'cancel', row.token_version, token) &&
-      !verifyToken(id, 'reschedule', row.token_version, token))
-  ) {
+  if (!row || !verifyManageToken(id, row.token_version, token)) {
     return res.status(403).json({ success: false, message: 'Invalid token' });
   }
 

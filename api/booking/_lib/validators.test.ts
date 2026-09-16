@@ -96,13 +96,13 @@ describe('validateCreatePayload — rejected input', () => {
 });
 
 describe('parseAvailabilityRange', () => {
-  it('expands short YYYY-MM-DD dates to the start of the UTC day', () => {
+  it('expands short YYYY-MM-DD dates to cover both whole days', () => {
     const result = parseAvailabilityRange('2027-02-15', '2027-02-16');
 
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.value.from.toISOString()).toBe('2027-02-15T00:00:00.000Z');
-    expect(result.value.to.toISOString()).toBe('2027-02-16T00:00:00.000Z');
+    expect(result.value.to.toISOString()).toBe('2027-02-16T23:59:59.999Z');
   });
 
   it('accepts full ISO timestamps unchanged', () => {
@@ -122,7 +122,7 @@ describe('parseAvailabilityRange', () => {
     ['an unparseable "from"', 'garbage', '2027-02-16', 'from'],
     ['an unparseable "to"', '2027-02-15', 'garbage', 'to'],
     ['an inverted range', '2027-02-16', '2027-02-15', 'from'],
-    ['an empty range', '2027-02-15', '2027-02-15', 'from'],
+    ['an inverted range given as timestamps', '2027-02-15T10:00:00.000Z', '2027-02-15T09:00:00.000Z', 'from'],
   ];
 
   it.each(rejected)('rejects %s', (_label, from, to, field) => {
@@ -130,5 +130,28 @@ describe('parseAvailabilityRange', () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error.field).toBe(field);
+  });
+});
+
+describe('parseAvailabilityRange — bare dates cover whole days', () => {
+  it('leaves an explicit timestamp exactly as given', () => {
+    const parsed = parseAvailabilityRange(
+      '2027-02-15T08:30:00.000Z',
+      '2027-02-20T11:15:00.000Z'
+    );
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) return;
+    expect(parsed.value.to.toISOString()).toBe('2027-02-20T11:15:00.000Z');
+  });
+
+  it('still refuses a single day expressed backwards', () => {
+    expect(parseAvailabilityRange('2027-02-20', '2027-02-15').ok).toBe(false);
+  });
+
+  it('accepts the same day for from and to, which now spans that day', () => {
+    const parsed = parseAvailabilityRange('2027-02-15', '2027-02-15');
+
+    expect(parsed.ok).toBe(true);
   });
 });

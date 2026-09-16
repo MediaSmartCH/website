@@ -46,6 +46,30 @@ export function generateToken(
   return `${exp}.${compute(bookingId, purpose, exp, version)}`;
 }
 
+/**
+ * True when `candidate` is a valid manage link for this booking, whichever of
+ * the two links it came from.
+ *
+ * The purposes were never a capability boundary. The manage page offers both
+ * cancelling and rescheduling from its overview, and `lookup` has always
+ * accepted either token to open that page — so requiring a purpose match on
+ * the action itself only meant whichever button did not correspond to the link
+ * the visitor happened to open answered 403.
+ *
+ * What actually bounds a leaked link is unchanged: the expiry, and the
+ * token_version that rescheduling bumps to invalidate every earlier link.
+ */
+export function verifyManageToken(
+  bookingId: string,
+  version: number,
+  candidate: string,
+): boolean {
+  return (
+    verifyToken(bookingId, 'cancel', version, candidate) ||
+    verifyToken(bookingId, 'reschedule', version, candidate)
+  );
+}
+
 export function verifyToken(
   bookingId: string,
   purpose: TokenPurpose,

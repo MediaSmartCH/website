@@ -13,7 +13,7 @@ import { getRuntimeEnv } from './_lib/config.js';
 import { exec, queryFirst } from './_lib/d1.js';
 import { deleteEvent } from './_lib/google-calendar.js';
 import { sendBookingCancellation } from './_lib/mailer.js';
-import { verifyToken } from './_lib/tokens.js';
+import { verifyManageToken } from './_lib/tokens.js';
 
 const CANCEL_RATE_LIMIT = {
   limit: 10,
@@ -74,7 +74,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     [id],
   );
 
-  if (!row || !verifyToken(id, 'cancel', row.token_version, token)) {
+  if (!row || !verifyManageToken(id, row.token_version, token)) {
     return res.status(403).json({ success: false, message: 'Invalid token' });
   }
 

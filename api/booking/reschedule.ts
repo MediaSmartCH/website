@@ -18,7 +18,7 @@ import { exec, isUniqueConstraintError, queryFirst } from './_lib/d1.js';
 import { getBusyIntervals, updateEventTime } from './_lib/google-calendar.js';
 import { sendBookingConfirmation } from './_lib/mailer.js';
 import { isSlotValid } from './_lib/slots.js';
-import { generateToken, verifyToken } from './_lib/tokens.js';
+import { generateToken, verifyManageToken } from './_lib/tokens.js';
 
 const RESCHEDULE_RATE_LIMIT = {
   limit: 5,
@@ -87,7 +87,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     [id],
   );
 
-  if (!row || !verifyToken(id, 'reschedule', row.token_version, token)) {
+  if (!row || !verifyManageToken(id, row.token_version, token)) {
     return res.status(403).json({ success: false, message: 'Invalid token' });
   }
   if (row.status !== 'confirmed') {

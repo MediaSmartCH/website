@@ -97,13 +97,21 @@ export function parseAvailabilityRange(
     return { ok: false, error: { field: 'from', code: 'missing', message: 'from + to required' } };
   }
 
-  const expandIfDate = (raw: string): string => {
-    if (ISO_DATE_REGEX.test(raw)) return `${raw}T00:00:00.000Z`;
-    return raw;
+  // A bare YYYY-MM-DD names a whole day, so the range it describes runs from
+  // the start of `from` to the end of `to`. Expanding `to` to midnight instead
+  // made the last day requested always come back empty: buildAvailableSlots
+  // stops at the first day whose business window starts at or after the bound,
+  // which a 09:00 local window always does against 00:00 UTC. The calendar
+  // shows that day as in range, so the bookable horizon was a day short.
+  //
+  // A caller passing a full timestamp still gets that exact instant.
+  const expandIfDate = (raw: string, endOfDay = false): string => {
+    if (!ISO_DATE_REGEX.test(raw)) return raw;
+    return endOfDay ? `${raw}T23:59:59.999Z` : `${raw}T00:00:00.000Z`;
   };
 
   const from = new Date(expandIfDate(fromInput));
-  const to = new Date(expandIfDate(toInput));
+  const to = new Date(expandIfDate(toInput, true));
 
   if (Number.isNaN(from.getTime())) {
     return { ok: false, error: { field: 'from', code: 'invalid', message: 'from is invalid' } };
