@@ -39,7 +39,13 @@ function isAuthorized(req: ApiRequest): boolean {
 export default async function handler(req: ApiRequest, res: ApiResponse) {
   applyApiResponseHeaders(res, ['GET']);
 
-  const guard = guardRequest(req, { methods: ['GET'] });
+  // Vercel Cron calls the deployment directly, never through Cloudflare, so
+  // the origin proof every other endpoint requires would refuse it. This one is
+  // gated on the cron secret below instead.
+  const guard = guardRequest(req, {
+    methods: ['GET'],
+    requireCloudflareOrigin: false,
+  });
   if (!guard.ok) {
     return res.status(guard.status).json({ ok: false, message: guard.message });
   }

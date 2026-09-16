@@ -71,10 +71,15 @@ function maybeCleanupBuckets(now: number) {
 }
 
 export function getRateLimitIdentifier(headers: IncomingHttpHeaders) {
-  // Key on the client IP only. On Vercel `x-forwarded-for` is overwritten with
-  // the real client IP and client-supplied values are not forwarded, so the IP
-  // is trustworthy. We deliberately do NOT fold in the User-Agent: it is fully
-  // client-controlled, so mixing it into the key let an attacker mint a fresh
+  // Key on the client IP only. Resolving it is not as simple as reading
+  // `x-forwarded-for` — behind Cloudflare that header holds a Cloudflare edge
+  // address shared by every visitor through that datacenter, which would pool
+  // strangers into one bucket. `client-ip.js` owns that decision and explains
+  // it; what matters here is that the value it returns is one the caller could
+  // not choose for itself.
+  //
+  // We deliberately do NOT fold in the User-Agent: it is fully client-
+  // controlled, so mixing it into the key would let an attacker mint a fresh
   // rate-limit bucket on every request just by rotating the header.
   return extractClientIp(headers) || 'anonymous';
 }

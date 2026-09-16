@@ -166,6 +166,67 @@ inline `<script>` elements whatever their type. Moving to a nonce would require
 a Vercel middleware that rewrites the header and the injected tags per request;
 that is the next step available, not a change to make blindly.
 
+## Cloudflare in front of Vercel
+
+The site is served through Cloudflare, which proxies to Vercel. That has two
+consequences the code has to account for.
+
+### The origin is reachable without Cloudflare
+
+Vercel's own deployment URLs answer directly. The immutable
+`<project>-<hash>-<team>.vercel.app` URL is covered by Vercel's deployment
+protection, but the branch alias `<project>-git-<branch>-<team>.vercel.app` is
+not: it serves the real site, API included. Anything that relies on "requests
+arrive via Cloudflare" is therefore not true by default — it has to be proven.
+
+### `x-forwarded-for` is not the visitor
+
+Vercel overwrites that header with the address that opened the connection and
+does not forward what it received, which is what makes it unspoofable. Behind
+Cloudflare the thing opening the connection *is* Cloudflare, so the header
+holds an edge address shared by every visitor routed through that datacenter.
+Keying a rate limit on it pools strangers into one bucket.
+
+Cloudflare sends the real address in `cf-connecting-ip`, but that is a header
+like any other: sent straight to the Vercel URL it lets a caller pick its own
+identity, and therefore its own allowance.
+
+### How both are handled
+
+A Cloudflare Transform Rule adds a secret header (`x-origin-verify`) to every
+request it forwards. `api/_shared/client-ip.js` checks it, and only a verified
+request has its `cf-connecting-ip` believed; `request-guard.ts` refuses
+unverified requests once enforcement is on.
+
+A secret rather than an IP allowlist, because Cloudflare's published ranges
+belong to every Cloudflare customer: "came from a Cloudflare address" only
+proves someone used Cloudflare, not that they used ours. Anyone can point their
+own zone at our origin and arrive from a valid Cloudflare address.
+
+`/api/booking/health` is exempt (`requireCloudflareOrigin: false`): Vercel Cron
+calls the deployment directly and never passes through Cloudflare. It is gated
+on `CRON_SECRET` instead.
+
+### Rolling it out, in this order
+
+Reversing steps 1 and 3 refuses every API request.
+
+1. **Cloudflare → Rules → Transform Rules → Modify Request Header.** Add a
+   static header `x-origin-verify` with a long random value, on all incoming
+   requests for the zone.
+2. **Vercel → Settings → Environment Variables.** Set
+   `CLOUDFLARE_ORIGIN_SECRET` to that value. Leave `CLOUDFLARE_ORIGIN_ENFORCE`
+   unset: the secret is now checked, mismatches are logged, nothing is refused.
+3. Watch the runtime logs for `Request reached the origin without valid
+   Cloudflare proof`. Silence under real traffic means the rule covers
+   everything.
+4. Set `CLOUDFLARE_ORIGIN_ENFORCE=true`. Unverified requests now get a 403, and
+   `cf-connecting-ip` was already being trusted from step 2 onward.
+
+To rotate the secret, add the new value in Cloudflare first, then change it in
+Vercel; there is a brief window where both must be accepted, so rotate with
+enforcement off if the traffic matters.
+
 ## Animation Security
 
 ### WASM execution

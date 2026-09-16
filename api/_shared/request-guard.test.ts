@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { ApiRequest } from './http-types.js';
 import {
@@ -27,6 +27,8 @@ beforeEach(() => {
   process.env.VERCEL_ENV = 'production';
   process.env.SITE_ORIGIN = 'https://mediasmart.ch';
   delete process.env.ALLOWED_ORIGINS;
+  delete process.env.CLOUDFLARE_ORIGIN_SECRET;
+  delete process.env.CLOUDFLARE_ORIGIN_ENFORCE;
 });
 
 afterEach(() => {
@@ -69,6 +71,59 @@ describe('isAllowedOrigin', () => {
   it('refuses a value that is not a URL', () => {
     expect(isAllowedOrigin('null')).toBe(false);
     expect(isAllowedOrigin('')).toBe(false);
+  });
+});
+
+describe('guardRequest — Cloudflare origin', () => {
+  const SECRET = 'test-origin-secret';
+
+  it('lets everything through while no secret is configured', () => {
+    expect(guardRequest(request(BROWSER_POST), { methods: ['POST'] }).ok).toBe(true);
+  });
+
+  it('refuses a request with no Cloudflare proof once enforcing', () => {
+    process.env.CLOUDFLARE_ORIGIN_SECRET = SECRET;
+    process.env.CLOUDFLARE_ORIGIN_ENFORCE = 'true';
+
+    const rejected = guardRequest(request(BROWSER_POST), { methods: ['POST'] });
+
+    expect(rejected).toMatchObject({
+      ok: false,
+      status: 403,
+      reason: 'cloudflare-origin',
+    });
+  });
+
+  it('accepts a request carrying the proof', () => {
+    process.env.CLOUDFLARE_ORIGIN_SECRET = SECRET;
+    process.env.CLOUDFLARE_ORIGIN_ENFORCE = 'true';
+
+    const result = guardRequest(
+      request({ ...BROWSER_POST, 'x-origin-verify': SECRET }),
+      { methods: ['POST'] },
+    );
+
+    expect(result.ok).toBe(true);
+  });
+
+  it('only warns while enforcement is off, so a misordered rollout is visible', () => {
+    process.env.CLOUDFLARE_ORIGIN_SECRET = SECRET;
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(guardRequest(request(BROWSER_POST), { methods: ['POST'] }).ok).toBe(true);
+    expect(warn).toHaveBeenCalledTimes(1);
+  });
+
+  it('exempts a caller that legitimately bypasses Cloudflare, like the cron', () => {
+    process.env.CLOUDFLARE_ORIGIN_SECRET = SECRET;
+    process.env.CLOUDFLARE_ORIGIN_ENFORCE = 'true';
+
+    const result = guardRequest(request({}, 'GET'), {
+      methods: ['GET'],
+      requireCloudflareOrigin: false,
+    });
+
+    expect(result.ok).toBe(true);
   });
 });
 

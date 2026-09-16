@@ -123,12 +123,54 @@ describe('getRateLimitIdentifier', () => {
     );
   });
 
-  it('falls through the header candidates in order', () => {
+  it('falls through the platform-set header candidates in order', () => {
     expect(getRateLimitIdentifier(asHeaders({ 'x-real-ip': '9.9.9.9' }))).toBe('9.9.9.9');
-    expect(getRateLimitIdentifier(asHeaders({ 'cf-connecting-ip': '8.8.8.8' }))).toBe(
-      '8.8.8.8',
-    );
     expect(getRateLimitIdentifier(asHeaders({ forwarded: 'for=7.7.7.7' }))).toBe('7.7.7.7');
+  });
+
+  it('ignores cf-connecting-ip when the Cloudflare hop is not proven', () => {
+    // Caller-supplied and therefore free to rotate: trusting it would hand an
+    // attacker a fresh bucket per request. Only a verified hop makes it fact.
+    expect(
+      getRateLimitIdentifier(
+        asHeaders({ 'x-forwarded-for': '172.68.1.1', 'cf-connecting-ip': '8.8.8.8' }),
+      ),
+    ).toBe('172.68.1.1');
+
+    expect(getRateLimitIdentifier(asHeaders({ 'cf-connecting-ip': '8.8.8.8' }))).toBe(
+      'anonymous',
+    );
+  });
+
+  it('uses cf-connecting-ip once the Cloudflare hop is proven', () => {
+    process.env.CLOUDFLARE_ORIGIN_SECRET = 'test-origin-secret';
+
+    try {
+      expect(
+        getRateLimitIdentifier(
+          asHeaders({
+            'x-forwarded-for': '172.68.1.1',
+            'cf-connecting-ip': '8.8.8.8',
+            'x-origin-verify': 'test-origin-secret',
+          }),
+        ),
+      ).toBe('8.8.8.8');
+
+      // A wrong secret is not a proven hop, so the edge address stands and two
+      // visitors behind the same Cloudflare datacenter still share a bucket —
+      // degraded, but never attacker-controlled.
+      expect(
+        getRateLimitIdentifier(
+          asHeaders({
+            'x-forwarded-for': '172.68.1.1',
+            'cf-connecting-ip': '8.8.8.8',
+            'x-origin-verify': 'wrong',
+          }),
+        ),
+      ).toBe('172.68.1.1');
+    } finally {
+      delete process.env.CLOUDFLARE_ORIGIN_SECRET;
+    }
   });
 
   it('returns "anonymous" when no client IP header is present', () => {

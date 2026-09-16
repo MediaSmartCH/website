@@ -1,3 +1,8 @@
+const {
+  extractRemoteIp,
+  resolveClientIp,
+} = require('./client-ip.js');
+
 const recaptchaErrors = {
   failed: 'Security verification failed',
   missingToken: 'Security token missing',
@@ -6,53 +11,6 @@ const recaptchaErrors = {
 
 function normalizeRecaptchaToken(value) {
   return typeof value === 'string' ? value.trim() : '';
-}
-
-function normalizeHeaderValue(value) {
-  if (Array.isArray(value)) {
-    return normalizeHeaderValue(value[0]);
-  }
-
-  return typeof value === 'string' ? value.trim() : '';
-}
-
-function extractRemoteIp(forwardedFor) {
-  const normalizedForwardedFor = normalizeHeaderValue(forwardedFor);
-  if (!normalizedForwardedFor) {
-    return '';
-  }
-
-  return normalizedForwardedFor
-    .split(',')[0]
-    ?.trim()
-    .replace(/^for=/i, '')
-    .replace(/^"|"$/g, '')
-    .replace(/^\[?::ffff:/i, '')
-    .replace(/\]$/g, '') ?? '';
-}
-
-function extractClientIp(headers) {
-  if (!headers || typeof headers !== 'object') {
-    return '';
-  }
-
-  const candidates = [
-    headers['x-forwarded-for'],
-    headers['x-real-ip'],
-    headers['x-vercel-forwarded-for'],
-    headers['cf-connecting-ip'],
-    headers.forwarded,
-  ];
-
-  for (const candidate of candidates) {
-    const ip = extractRemoteIp(candidate);
-
-    if (ip) {
-      return ip;
-    }
-  }
-
-  return '';
 }
 
 /**
@@ -263,7 +221,9 @@ async function verifyRecaptcha({
 }
 
 module.exports = {
-  extractClientIp,
+  // Re-exported so the handlers keep one import for "who is calling". The
+  // resolution itself lives in client-ip.js, which owns the Cloudflare rules.
+  extractClientIp: resolveClientIp,
   extractRemoteIp,
   isAllowedRecaptchaHostname,
   recaptchaErrors,
