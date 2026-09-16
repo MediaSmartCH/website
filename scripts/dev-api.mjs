@@ -1,4 +1,10 @@
-// Local dev server that mimics the public Vercel serverless form endpoints.
+// Local dev server standing in for the Vercel serverless functions.
+//
+// The contact and newsletter endpoints are reimplemented here against the same
+// shared modules the deployed handlers use. The booking endpoints are not
+// reimplemented at all: they are the real `api/booking/*.ts` handlers, loaded
+// through Vite's SSR pipeline, so local behaviour cannot drift from production.
+//
 // Run with: node scripts/dev-api.mjs
 import { createServer } from 'http';
 import { readFileSync } from 'fs';
@@ -62,16 +68,137 @@ function hasFilledHoneypot(body) {
   return typeof body?.website === 'string' && body.website.trim().length > 0;
 }
 
+// The real serverless handlers, by path and accepted method.
+const BOOKING_ROUTES = {
+  '/api/booking/availability': { module: '/api/booking/availability.ts', methods: ['GET'] },
+  '/api/booking/lookup': { module: '/api/booking/lookup.ts', methods: ['GET'] },
+  '/api/booking/create': { module: '/api/booking/create.ts', methods: ['POST'] },
+  '/api/booking/cancel': { module: '/api/booking/cancel.ts', methods: ['POST'] },
+  '/api/booking/reschedule': { module: '/api/booking/reschedule.ts', methods: ['POST'] },
+};
+
+/**
+ * Lets Vite's SSR runner pull in the CommonJS modules under api/_shared.
+ *
+ * Those files are plain `module.exports` and the deployed functions reach them
+ * through Node's own CJS interop. Vite's runner evaluates everything as ESM, so
+ * it trips on `module`. Handing the file back to Node's `require` and
+ * re-exporting keeps one copy of the module rather than a second, transpiled
+ * one with its own rate-limit state.
+ */
+function commonJsInterop() {
+  return {
+    name: 'dev-api-commonjs-interop',
+    enforce: 'pre',
+    load(id) {
+      if (!/api\/_shared\/[^/]+\.js$/.test(id)) return null;
+      return [
+        "import { createRequire } from 'module';",
+        `const require = createRequire(${JSON.stringify(import.meta.url)});`,
+        `export default require(${JSON.stringify(id)});`,
+      ].join('\n');
+    },
+  };
+}
+
+// Vite is started on first use only: the contact endpoints do not need it, and
+// spinning up the whole pipeline costs a second or two.
+let vitePromise = null;
+function getViteServer() {
+  if (!vitePromise) {
+    vitePromise = import('vite').then((vite) =>
+      vite.createServer({
+        root,
+        configFile: false,
+        plugins: [commonJsInterop()],
+        server: { middlewareMode: true },
+        appType: 'custom',
+        logLevel: 'warn',
+      }),
+    );
+  }
+  return vitePromise;
+}
+
+/**
+ * Gives a Node response the three extras the handlers expect from Vercel.
+ *
+ * Deliberately minimal: anything beyond `status`, `json` and `send` would be a
+ * behaviour this shim invents, which is exactly what must not happen here.
+ */
+function asApiResponse(res) {
+  res.status = (code) => {
+    res.statusCode = code;
+    return res;
+  };
+  res.json = (body) => {
+    if (!res.headersSent) res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(body));
+  };
+  res.send = (body) => {
+    res.end(typeof body === 'string' ? body : JSON.stringify(body));
+  };
+  return res;
+}
+
+/** Vercel hands handlers a flat query object; rebuild it from the URL. */
+function asApiRequest(req, body) {
+  const url = new URL(req.url, 'http://localhost');
+  const query = {};
+  for (const key of url.searchParams.keys()) {
+    const all = url.searchParams.getAll(key);
+    query[key] = all.length > 1 ? all : all[0];
+  }
+  req.query = query;
+  req.body = body;
+  return req;
+}
+
+async function handleBookingRoute(route, req, res) {
+  if (!route.methods.includes(req.method)) {
+    sendJson(res, 405, { success: false, message: 'Method not allowed' });
+    return;
+  }
+
+  let body = {};
+  if (req.method === 'POST') {
+    try {
+      body = await readJsonBody(req);
+    } catch (error) {
+      console.error('❌ Invalid JSON body:', error);
+      sendJson(res, 400, { success: false, message: 'Invalid JSON body' });
+      return;
+    }
+  }
+
+  const vite = await getViteServer();
+  const module = await vite.ssrLoadModule(route.module);
+  await module.default(asApiRequest(req, body), asApiResponse(res));
+}
+
 createServer(async (req, res) => {
   // Allow requests from the local Vite dev server
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Allow', 'POST');
   res.setHeader('Cache-Control', 'no-store');
 
   if (req.method === 'OPTIONS') return res.writeHead(204).end();
-  if (req.method !== 'POST' || !['/api/send', '/api/newsletter'].includes(req.url)) {
+
+  const path = req.url.split('?')[0];
+  const bookingRoute = BOOKING_ROUTES[path];
+  if (bookingRoute) {
+    try {
+      await handleBookingRoute(bookingRoute, req, res);
+    } catch (error) {
+      console.error(`❌ ${path} failed:`, error);
+      if (!res.headersSent) sendJson(res, 500, { success: false, message: 'Server error' });
+    }
+    return;
+  }
+
+  res.setHeader('Allow', 'POST');
+  if (req.method !== 'POST' || !['/api/send', '/api/newsletter'].includes(path)) {
     res.writeHead(404).end();
     return;
   }
@@ -158,5 +285,7 @@ createServer(async (req, res) => {
   }
 }).listen(3001, () => {
   console.log('🚀 API dev server running on http://localhost:3001');
-  console.log('   Handling: POST /api/send, POST /api/newsletter');
+  console.log('   POST /api/send, POST /api/newsletter');
+  console.log(`   ${Object.keys(BOOKING_ROUTES).join(', ')}`);
+  console.log('   ⚠  Booking uses the real Google Calendar, D1 and Resend credentials from .env.local');
 });
