@@ -192,7 +192,9 @@ createServer(async (req, res) => {
     try {
       await handleBookingRoute(bookingRoute, req, res);
     } catch (error) {
-      console.error(`❌ ${path} failed:`, error);
+      // Path passed as an argument, never interpolated: it comes from the
+      // request line, and console treats its first argument as a format string.
+      console.error('❌ booking route failed:', path, error);
       if (!res.headersSent) sendJson(res, 500, { success: false, message: 'Server error' });
     }
     return;

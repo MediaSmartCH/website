@@ -1,4 +1,4 @@
-import type { AppLanguage } from "@shared/config/languages";
+import { type AppLanguage, isSupportedLanguage } from "@shared/config/languages";
 
 type SectionDict = Record<string, any>;
 /** Shape of a `services/locales/<lang>` barrel namespace. */
@@ -39,6 +39,17 @@ const LOCALE_LOADERS: Record<AppLanguage, () => Promise<LocaleModule>> = {
   en: () => import("@shared/i18n/en") as Promise<LocaleModule>,
 };
 
+/**
+ * Resolves a language to its loader, or undefined when it is not one we ship.
+ *
+ * The language reaching here is derived from the URL, so the lookup is guarded
+ * rather than done straight on the record: an unsupported code would otherwise
+ * index into Object.prototype and dispatch to whatever it found there.
+ */
+function getLocaleLoader(language: AppLanguage) {
+  return isSupportedLanguage(language) ? LOCALE_LOADERS[language] : undefined;
+}
+
 const inFlight = new Map<AppLanguage, Promise<void>>();
 
 /** True once `language` can be read synchronously by the translators. */
@@ -54,7 +65,12 @@ export function ensureLocale(language: AppLanguage): Promise<void> {
   let pending = inFlight.get(language);
 
   if (!pending) {
-    pending = LOCALE_LOADERS[language]().then((bundle) => {
+    const load = getLocaleLoader(language);
+    if (!load) {
+      return Promise.reject(new Error(`Unsupported language: ${String(language)}`));
+    }
+
+    pending = load().then((bundle) => {
       registerLocale(language, bundle);
     });
     inFlight.set(language, pending);
