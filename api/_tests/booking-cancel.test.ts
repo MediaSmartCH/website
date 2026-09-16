@@ -107,11 +107,40 @@ describe('booking/cancel — guards', () => {
     expect(deleteEvent).not.toHaveBeenCalled();
   });
 
-  it('rejects a reschedule token presented for cancellation', async () => {
+  it('accepts a reschedule token, which the manage page hands it', async () => {
+    // The manage link carries the reschedule token and its overview offers both
+    // buttons, so requiring a purpose match here made Cancel always answer 403.
     const res = createResponse();
     await handler(postCancel({ token: generateToken(BOOKING_ID, 'reschedule', 0) }), res.res);
 
+    expect(res.statusCode()).toBe(200);
+  });
+
+  it('still rejects a token minted for a different booking', async () => {
+    const res = createResponse();
+    await handler(postCancel({ token: generateToken('some-other-booking', 'cancel', 0) }), res.res);
+
     expect(res.statusCode()).toBe(403);
+    expect(deleteEvent).not.toHaveBeenCalled();
+  });
+
+  it('still rejects a token from a superseded token_version', async () => {
+    const res = createResponse();
+    await handler(postCancel({ token: generateToken(BOOKING_ID, 'cancel', 99) }), res.res);
+
+    expect(res.statusCode()).toBe(403);
+    expect(deleteEvent).not.toHaveBeenCalled();
+  });
+
+  it('still rejects an expired token', async () => {
+    const res = createResponse();
+    await handler(
+      postCancel({ token: generateToken(BOOKING_ID, 'cancel', 0, -1000) }),
+      res.res
+    );
+
+    expect(res.statusCode()).toBe(403);
+    expect(deleteEvent).not.toHaveBeenCalled();
   });
 
   it('allows ten attempts per IP then answers 429', async () => {
