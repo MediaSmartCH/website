@@ -54,6 +54,9 @@ const ENV_KEYS = {
   resendApiKey: { envVar: 'RESEND_API_KEY' },
   bookingSecret: { envVar: 'BOOKING_HMAC_SECRET' },
   siteOrigin: { envVar: 'SITE_ORIGIN', fallback: 'https://mediasmart.ch' },
+  // Shared secret Vercel Cron sends as `Authorization: Bearer …`. Empty by
+  // default so every other endpoint keeps working without it configured.
+  cronSecret: { envVar: 'CRON_SECRET', fallback: '' },
 } as const satisfies Record<string, EnvSpec>;
 
 type EnvKey = keyof typeof ENV_KEYS;

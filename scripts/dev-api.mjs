@@ -75,6 +75,7 @@ const BOOKING_ROUTES = {
   '/api/booking/create': { module: '/api/booking/create.ts', methods: ['POST'] },
   '/api/booking/cancel': { module: '/api/booking/cancel.ts', methods: ['POST'] },
   '/api/booking/reschedule': { module: '/api/booking/reschedule.ts', methods: ['POST'] },
+  '/api/booking/health': { module: '/api/booking/health.ts', methods: ['GET'] },
 };
 
 /**

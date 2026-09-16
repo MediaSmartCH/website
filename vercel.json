@@ -133,5 +133,11 @@
       "source": "/en/(.*)",
       "destination": "/generated-pages/en.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/booking/health",
+      "schedule": "0 7 * * *"
+    }
   ]
 }
