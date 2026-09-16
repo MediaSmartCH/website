@@ -129,10 +129,42 @@ describe('booking/reschedule — input guards', () => {
     expect(unknown.body()).toEqual(badToken.body());
   });
 
-  it('rejects a cancel token presented for rescheduling', async () => {
+  it('accepts a cancel token, which the cancel link hands it', async () => {
+    // Symmetric to the cancel endpoint: a visitor arriving on the cancel link
+    // can still pick Reschedule from the manage overview.
     const res = createResponse();
     await handler(
       postReschedule({ token: generateToken(BOOKING_ID, 'cancel', 0) }),
+      res.res,
+    );
+
+    expect(res.statusCode()).toBe(200);
+  });
+
+  it('still rejects a token minted for a different booking', async () => {
+    const res = createResponse();
+    await handler(
+      postReschedule({ token: generateToken('some-other-booking', 'reschedule', 0) }),
+      res.res,
+    );
+
+    expect(res.statusCode()).toBe(403);
+  });
+
+  it('still rejects a token from a superseded token_version', async () => {
+    const res = createResponse();
+    await handler(
+      postReschedule({ token: generateToken(BOOKING_ID, 'reschedule', 99) }),
+      res.res,
+    );
+
+    expect(res.statusCode()).toBe(403);
+  });
+
+  it('still rejects an expired token', async () => {
+    const res = createResponse();
+    await handler(
+      postReschedule({ token: generateToken(BOOKING_ID, 'reschedule', 0, -1000) }),
       res.res,
     );
 
