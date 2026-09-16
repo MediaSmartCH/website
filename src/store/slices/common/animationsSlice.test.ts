@@ -3,16 +3,16 @@ import { configureStore } from "@reduxjs/toolkit";
 
 // Mock cookieUtils before importing the slice so the module initializer
 // (getInitialEnabled) uses the mock from the very first import.
-vi.mock("./cookieUtils", () => ({
+vi.mock("@store/slices/common/cookieUtils", () => ({
   getCookie: vi.fn(() => null),
   setCookie: vi.fn(),
 }));
 
-import { getCookie, setCookie } from "./cookieUtils";
+import { getCookie, setCookie } from "@store/slices/common/cookieUtils";
 import animationsReducer, {
   setAnimations,
   toggleAnimations,
-} from "./animationsSlice";
+} from "@store/slices/common/animationsSlice";
 
 // ---------------------------------------------------------------------------
 // Helpers
