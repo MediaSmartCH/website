@@ -238,6 +238,35 @@ const MemoizedPlayer = memo(DotAnimPlayer);
 const PRELOAD_MARGIN = "400px 0px";
 
 /**
+ * Ceiling on how long a placeholder may stay empty once the page has painted.
+ *
+ * The observer alone is not enough: a fast scroll travels further in one frame
+ * than the preload margin, and the player still needs to fetch its chunk, the
+ * WASM runtime and its .lottie before it paints. Measured on the homepage, a
+ * quick scroll left eleven slots blank for several hundred milliseconds.
+ */
+const IDLE_MOUNT_TIMEOUT_MS = 1500;
+
+/**
+ * Runs `callback` when the main thread is next free, or after
+ * IDLE_MOUNT_TIMEOUT_MS at the latest. Returns a cancel function.
+ *
+ * requestIdleCallback is unavailable in Safari before 17, so a plain timer
+ * stands in there — the deadline is what matters, not the idle detection.
+ */
+function scheduleIdleMount(callback: () => void): () => void {
+  if (typeof requestIdleCallback === "function") {
+    const handle = requestIdleCallback(callback, {
+      timeout: IDLE_MOUNT_TIMEOUT_MS,
+    });
+    return () => cancelIdleCallback(handle);
+  }
+
+  const handle = window.setTimeout(callback, IDLE_MOUNT_TIMEOUT_MS);
+  return () => window.clearTimeout(handle);
+}
+
+/**
  * Viewport gate around the player.
  *
  * Mounting DotLottie triggers the ~1.7MB WASM runtime plus the .lottie file for
@@ -246,6 +275,10 @@ const PRELOAD_MARGIN = "400px 0px";
  * placeholder with the exact same box until the animation is close to the
  * viewport, which keeps layout stable and leaves the above-the-fold animation
  * loading immediately (it intersects on mount).
+ *
+ * The gate exists to keep that payload off the *critical path*, not to keep it
+ * off the page: once the first paint is done and the thread goes idle, anything
+ * still gated mounts anyway, so scrolling never reveals an empty box.
  */
 function DotAnim(props: DotAnimProps) {
   const { className, style } = props;
@@ -284,7 +317,14 @@ function DotAnim(props: DotAnimProps) {
 
     observer.observe(element);
 
-    return () => observer.disconnect();
+    // Whichever comes first: the animation nears the viewport, or the page goes
+    // idle. The second arm is what stops a fast scroll from outrunning the gate.
+    const cancelIdleMount = scheduleIdleMount(() => setInView(true));
+
+    return () => {
+      observer.disconnect();
+      cancelIdleMount();
+    };
   }, [inView]);
 
   const placeholderStyle = useMemo<React.CSSProperties>(() => {
