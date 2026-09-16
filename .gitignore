@@ -233,3 +233,9 @@ yarn.lock
 
 # Visual non-regression snapshots (local only)
 .snapshots/
+
+# Internal security audit — never publish it from this public repo
+SECURITY-AUDIT.md
+
+# Claude Code local settings and worktrees
+.claude/
