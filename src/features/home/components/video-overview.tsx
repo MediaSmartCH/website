@@ -1,3 +1,9 @@
+/* ============================================================================
+ * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+ * Ce composant n'est plus monté sur l'accueil (voir home-page.tsx) depuis que
+ * le site ne communique plus que sur l'informatique. Il est conservé intact
+ * pour pouvoir remettre l'offre vidéo en ligne immédiatement.
+ * ============================================================================ */
 import OverviewSection from "@features/home/components/overview-section";
 import { LottieKey } from "@shared/config/lotties";
 

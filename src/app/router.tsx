@@ -4,6 +4,7 @@ import {
   RouterProvider,
   Navigate,
   Outlet,
+  useParams,
   type RouteObject,
 } from "react-router-dom";
 
@@ -13,10 +14,20 @@ import LangLayout from "@app/layout/lang-layout";
 import ErrorBoundary from "@app/layout/error-boundary";
 
 import PreLoader from "@shared/components/preloader";
-import { DEFAULT_LANGUAGE } from "@shared/config/languages";
+import {
+  buildLocalizedPath,
+  DEFAULT_LANGUAGE,
+  normalizeLanguage,
+} from "@shared/config/languages";
 
 const Homepage = lazy(() => import("@features/home/home-page"));
-const VideoServicesPage = lazy(() => import("@features/video-services/video-services-page"));
+/* ============================================================================
+ * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+ * Le volet "services vidéo" est mis en pause : le site ne communique plus que
+ * sur l'informatique. Tout le code ci-dessous reste volontairement en place
+ * pour pouvoir réactiver l'offre vidéo en décommentant simplement ce bloc.
+ * ============================================================================ */
+// const VideoServicesPage = lazy(() => import("@features/video-services/video-services-page"));
 const ITServicesPage = lazy(() => import("@features/it-services/it-services-page"));
 const PrivacyPolicyPage = lazy(() => import("@features/privacy-policy/privacy-policy-page"));
 const Error404Page = lazy(() => import("@features/error/error-404-page"));
@@ -41,6 +52,20 @@ const LayoutWrapper: React.FC = () => (
   </Layout>
 );
 
+/* ============================================================================
+ * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+ * Renvoie /:lang/video-services vers l'accueil de la même langue.
+ * Vercel sert déjà une 301 (voir "redirects" dans vercel.json), mais elle ne
+ * s'applique ni en dev, ni en preview, ni lors d'une navigation interne : sans
+ * cette redirection côté routeur, l'URL tomberait sur la 404 en local.
+ * Le chemin est construit en absolu à partir du segment de langue, une cible
+ * relative ("..") se résolvant mal sous une route splat.
+ * ============================================================================ */
+const RedirectVideoToHome: React.FC = () => {
+  const { lang } = useParams<{ lang?: string }>();
+  return <Navigate to={buildLocalizedPath(normalizeLanguage(lang), "/")} replace />;
+};
+
 const routes: RouteObject[] = [
   // Bare "/" immediately redirects to the default locale prefix.
   { path: "/", element: <Navigate to={`/${DEFAULT_LANGUAGE}`} replace /> },
@@ -54,15 +79,30 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Wrap(<Homepage />) },
           { path: "it-services", element: Wrap(<ITServicesPage />) },
-          { path: "video-services", element: Wrap(<VideoServicesPage />) },
+          /* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+             La page vidéo n'est plus rendue : l'URL renvoie vers l'accueil.
+             Vercel répond déjà une 301 (voir "redirects" dans vercel.json), mais
+             ces redirects ne s'appliquent ni en dev ni en preview ni lors d'une
+             navigation interne — d'où cette redirection côté routeur, qui évite
+             de tomber sur la 404 partout ailleurs qu'en production.
+             Pour réactiver la vidéo : supprimer la ligne Navigate ci-dessous et
+             décommenter la route d'origine. */
+          { path: "video-services", element: <RedirectVideoToHome /> },
+          // { path: "video-services", element: Wrap(<VideoServicesPage />) },
           { path: "privacy-policy", element: Wrap(<PrivacyPolicyPage />) },
           { path: "support-contract", element: Wrap(<SupportContractPage />) },
           { path: "booking/manage", element: Wrap(<BookingManagePage />) },
-          { path: "404", element: Wrap(<Error404Page />) },
-          // Any unmatched sub-path falls through to the 404 page.
-          { path: "*", element: <Navigate to="../404" replace /> },
         ],
       },
+
+      /* The 404 sits outside LayoutWrapper on purpose: it is a dead end, not a
+         page of the site. Rendering it inside the shell put the fixed header
+         on top of it and left the footer to be found by scrolling, which
+         invited the visitor to keep exploring a page that leads nowhere. It
+         stays under LangLayout so the locale and the SEO tags still apply. */
+      { path: "404", element: Wrap(<Error404Page />) },
+      // Any unmatched sub-path falls through to the 404 page.
+      { path: "*", element: <Navigate to="../404" replace /> },
     ],
   },
 

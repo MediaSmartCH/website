@@ -17,16 +17,30 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const didInitRef = React.useRef(false);
 
   // Initialize AOS on first mount, respecting the animations preference.
+  //
+  // The cleanup has to hand the guard back when the frame never ran. React
+  // mounts, cleans up and remounts effects in development: the first mount
+  // claimed the guard and scheduled the frame, the cleanup cancelled it, and
+  // the remount bailed out on the guard — leaving AOS uninitialised, so every
+  // `data-aos` element (the whole footer included) stayed at opacity 0.
   React.useEffect(() => {
     if (didInitRef.current) return;
     didInitRef.current = true;
 
     setAosEnabled(animationsEnabled);
+
+    let hasRun = false;
     const rafId = window.requestAnimationFrame(() => {
+      hasRun = true;
       initAosAnimations();
     });
 
-    return () => window.cancelAnimationFrame(rafId);
+    return () => {
+      if (hasRun) return;
+
+      window.cancelAnimationFrame(rafId);
+      didInitRef.current = false;
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

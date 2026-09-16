@@ -5,12 +5,9 @@
  * every part of it — splitting that into ten props would say less, not more.
  */
 
-import { BarChart3, Shield, X, Zap } from "lucide-react";
+import { BarChart3, Shield, Zap } from "lucide-react";
 
 import CategoryToggle from "@features/cookies/components/category-toggle";
-import ConsentLocaleControls, {
-  type ConsentLocaleControlsProps,
-} from "@features/cookies/components/consent-locale-controls";
 import type { ConsentThemeClasses } from "@features/cookies/lib/consent-theme-classes";
 import type { useConsentPreferences } from "@features/cookies/hooks/use-consent-preferences";
 
@@ -20,10 +17,8 @@ export interface ConsentPreferencesPanelProps {
   language: string;
   theme: string;
   themeClasses: ConsentThemeClasses;
-  localeControls: ConsentLocaleControlsProps;
   consent: ReturnType<typeof useConsentPreferences>;
   onSave: () => void;
-  onClose: () => void;
   onBack: () => void;
 }
 
@@ -31,12 +26,11 @@ export default function ConsentPreferencesPanel({
   language,
   theme,
   themeClasses,
-  localeControls,
   consent,
-  onSave,
-  onClose,
-  onBack,
-}: ConsentPreferencesPanelProps) {
+}: Pick<
+  ConsentPreferencesPanelProps,
+  "language" | "theme" | "themeClasses" | "consent"
+>) {
   const t = useTranslations(language);
   const themeReducer = theme;
   const {
@@ -53,32 +47,6 @@ export default function ConsentPreferencesPanel({
   } = consent;
 
   return (
-              <div className="flex flex-col max-h-[95vh]">
-                <div className={`flex-shrink-0 border-b ${themeClasses.border}`}>
-                  <div className="flex flex-wrap items-start justify-between gap-3 p-4 md:p-6 pb-3">
-                    <h3
-                      className={`min-w-[140px] flex-1 text-lg sm:text-xl font-bold ${themeClasses.text}`}
-                    >
-                      {t.text("cookies.detailedPrefs")}
-                    </h3>
-
-                    <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2 sm:flex-nowrap sm:gap-3 shrink-0">
-                      <ConsentLocaleControls {...localeControls} />
-
-                      <button
-                        onClick={onClose}
-                        className={`h-[26px] w-[26px] sm:h-8 sm:w-8 rounded-full ${themeClasses.bg} ${themeClasses.hover} flex items-center justify-center transition-colors`}
-                        title={t.text("cookies.ariaCloseModal")}
-                        aria-label={t.text("cookies.ariaCloseModal")}
-                      >
-                        <X className={`w-3 h-3 sm:w-4 sm:h-4 ${themeClasses.textSecondary}`} />
-                      </button>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex-1 overflow-y-auto px-4 md:px-6 py-3" style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
                   <div className="space-y-3">
                     <div className={`p-3 md:p-4 rounded-2xl ${themeClasses.bg} border ${themeClasses.borderSecondary}`}>
                       <div className="flex items-center justify-between mb-2">
@@ -212,9 +180,22 @@ export default function ConsentPreferencesPanel({
                     </div>
 
                   </div>
-                </div>
+  );
+}
 
-                <div className={`flex-shrink-0 p-4 md:p-6 pt-3 border-t ${themeClasses.border}`}>
+/** Save / back, rendered in the shell's pinned footer. */
+export function ConsentPreferencesActions({
+  language,
+  themeClasses,
+  onSave,
+  onBack,
+}: Pick<
+  ConsentPreferencesPanelProps,
+  "language" | "themeClasses" | "onSave" | "onBack"
+>) {
+  const t = useTranslations(language);
+
+  return (
                   <div className="flex flex-col sm:flex-row gap-2">
                     <button
                       onClick={onSave}
@@ -229,7 +210,5 @@ export default function ConsentPreferencesPanel({
                       {t.text("cookies.back")}
                     </button>
                   </div>
-                </div>
-              </div>
   );
 }

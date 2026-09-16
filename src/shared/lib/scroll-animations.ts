@@ -1,6 +1,10 @@
 import AOS from "aos";
 
 let _animationsEnabled = true;
+// AOS.refreshHard() is a no-op until AOS.init() has run, so a refresh that
+// lands first silently does nothing. Tracking it here lets refreshAosAnimations
+// stand on its own — which is what every caller already assumes it does.
+let _initialized = false;
 
 export function setAosEnabled(enabled: boolean) {
   _animationsEnabled = enabled;
@@ -9,6 +13,7 @@ export function setAosEnabled(enabled: boolean) {
 export function disableAosAnimations() {
   if (typeof window === "undefined") return;
   AOS.init({ disable: true });
+  _initialized = true;
   document.querySelectorAll<HTMLElement>("[data-aos]").forEach((el) => {
     el.classList.add("aos-animate");
     el.style.opacity = "1";
@@ -118,6 +123,7 @@ export function initAosAnimations() {
     disableMutationObserver: true,
   });
 
+  _initialized = true;
   AOS.refreshHard();
 }
 
@@ -126,6 +132,13 @@ export function refreshAosAnimations() {
 
   if (!_animationsEnabled) {
     disableAosAnimations();
+    return;
+  }
+
+  // A page that mounts before the layout has initialised AOS would otherwise
+  // refresh into the void and leave all of its elements at opacity 0.
+  if (!_initialized) {
+    initAosAnimations();
     return;
   }
 

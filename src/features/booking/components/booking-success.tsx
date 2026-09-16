@@ -44,7 +44,7 @@ const BookingSuccess: React.FC<BookingSuccessProps> = ({
   const whenLabel = formatHumanDate(confirmation.start, language);
 
   return (
-    <div className="flex flex-col items-center text-center px-6 py-12 sm:px-12 sm:py-16">
+    <div className="flex flex-col items-center text-center px-1 py-6 sm:px-6 sm:py-10">
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(135deg,#b514fd,#5f75f5)] shadow-[0_18px_36px_-10px_rgba(181,20,253,0.5)]">
         <CheckCircle2 size={32} strokeWidth={2.4} className="text-white" />
       </div>

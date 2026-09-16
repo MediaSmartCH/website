@@ -1,6 +1,8 @@
 import React from "react";
 import { Monitor, Moon, Sun, Zap, ZapOff } from "lucide-react";
 
+import Tooltip from "@shared/components/tooltip";
+
 import {
   ResolvedTheme,
   ThemePreference,
@@ -218,29 +220,29 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           const isActive = activeIndex === index;
 
           return (
-            <button
-              key={value}
-              type="button"
-              onClick={() => handleButtonClick(value)}
-              aria-label={label}
-              aria-pressed={isCommitted}
-              title={label}
-              className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${
-                isActive ? activeButtonClasses : inactiveButtonClasses
-              }`}
-              style={{
-                width: `${sizeConfig.button}px`,
-                height: `${sizeConfig.button}px`,
-              }}
-            >
-              <Icon
-                strokeWidth={1.9}
+            <Tooltip key={value} label={label} className="z-10">
+              <button
+                type="button"
+                onClick={() => handleButtonClick(value)}
+                aria-label={label}
+                aria-pressed={isCommitted}
+                className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${
+                  isActive ? activeButtonClasses : inactiveButtonClasses
+                }`}
                 style={{
-                  width: `${sizeConfig.icon}px`,
-                  height: `${sizeConfig.icon}px`,
+                  width: `${sizeConfig.button}px`,
+                  height: `${sizeConfig.button}px`,
                 }}
-              />
-            </button>
+              >
+                <Icon
+                  strokeWidth={1.9}
+                  style={{
+                    width: `${sizeConfig.icon}px`,
+                    height: `${sizeConfig.icon}px`,
+                  }}
+                />
+              </button>
+            </Tooltip>
           );
         })}
       </div>
@@ -253,26 +255,27 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
             className={`shrink-0 rounded-full ${separatorClass}`}
             style={{ width: 1, height: sizeConfig.button * 0.55 }}
           />
-          <button
-            type="button"
-            onClick={onAnimationsToggle}
-            aria-label={animToggleLabel}
-            // aria-pressed reflects the *current* state so screen readers can
-            // announce "Animations on, button" or "Animations off, button"
-            // regardless of the label wording.
-            aria-pressed={animationsEnabled}
-            title={animToggleLabel}
-            className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${animButtonClasses}`}
-            style={{
-              width: `${sizeConfig.button}px`,
-              height: `${sizeConfig.button}px`,
-            }}
-          >
-            {animationsEnabled
-              ? <Zap strokeWidth={1.9} style={{ width: sizeConfig.icon, height: sizeConfig.icon }} />
-              : <ZapOff strokeWidth={1.9} style={{ width: sizeConfig.icon, height: sizeConfig.icon }} />
-            }
-          </button>
+          <Tooltip label={animToggleLabel} className="z-10">
+            <button
+              type="button"
+              onClick={onAnimationsToggle}
+              aria-label={animToggleLabel}
+              // aria-pressed reflects the *current* state so screen readers can
+              // announce "Animations on, button" or "Animations off, button"
+              // regardless of the label wording.
+              aria-pressed={animationsEnabled}
+              className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${animButtonClasses}`}
+              style={{
+                width: `${sizeConfig.button}px`,
+                height: `${sizeConfig.button}px`,
+              }}
+            >
+              {animationsEnabled
+                ? <Zap strokeWidth={1.9} style={{ width: sizeConfig.icon, height: sizeConfig.icon }} />
+                : <ZapOff strokeWidth={1.9} style={{ width: sizeConfig.icon, height: sizeConfig.icon }} />
+              }
+            </button>
+          </Tooltip>
         </>
       )}
     </div>

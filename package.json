@@ -46,13 +46,15 @@
     "typescript": "^6.0.2"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/clean-workspace.mjs && vite",
     "api": "node scripts/dev-api.mjs",
     "google:token": "node scripts/google-oauth-token.mjs",
     "build": "node scripts/generate-localized-html.mjs && vite build",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.api.json",
     "preview": "vite preview",
     "analyze": "node scripts/generate-localized-html.mjs && cross-env ANALYZE=true vite build",
+    "clean": "node scripts/clean-workspace.mjs",
+    "clean:dry-run": "node scripts/clean-workspace.mjs --dry-run --verbose",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

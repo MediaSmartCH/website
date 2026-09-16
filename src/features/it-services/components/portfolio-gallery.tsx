@@ -18,14 +18,8 @@ const PortfolioGallery = () => {
   // hovered on, full-size and inspectable.
   const [lightbox, setLightbox] = useState<LightboxImage | null>(null);
 
-  const {
-    currentLanguage: languageReducer,
-    currentTheme: themeReducer,
-    themePreference,
-    changeLanguage,
-    changeTheme,
-    labels,
-  } = useInterfaceControls();
+  const { currentLanguage: languageReducer, currentTheme: themeReducer } =
+    useInterfaceControls();
 
   const t = useTranslations(languageReducer);
 
@@ -212,26 +206,16 @@ const PortfolioGallery = () => {
         </div>
       </div>
 
-      {isModalOpen &&
-        createPortal(
-          <PortfolioModal
-            items={portfolioItems}
-            language={languageReducer}
-            classes={classes}
-            dialogTitleId={dialogTitleId}
-            localeControls={{
-              currentLanguage: languageReducer,
-              currentTheme: themeReducer,
-              themePreference,
-              onLanguageChange: changeLanguage,
-              onThemeChange: changeTheme,
-              labels,
-            }}
-            onClose={() => setIsModalOpen(false)}
-            onOpenImage={setLightbox}
-          />,
-          document.body
-        )}
+      {isModalOpen && (
+        <PortfolioModal
+          items={portfolioItems}
+          language={languageReducer}
+          classes={classes}
+          dialogTitleId={dialogTitleId}
+          onClose={() => setIsModalOpen(false)}
+          onOpenImage={setLightbox}
+        />
+      )}
       {lightbox &&
         createPortal(
           <div

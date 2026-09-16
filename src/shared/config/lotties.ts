@@ -71,6 +71,10 @@ const LOTTIE_LOADERS = {
     dark: () => import("@assets/lotties/it/Process_dark.lottie"),
   },
 
+  /* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+     Les animations "video.*" ne sont plus référencées par une page active,
+     mais restent déclarées (et leurs fichiers présents) pour pouvoir
+     réactiver l'offre vidéo sans rien réimporter. */
   "video.editing": {
     light: () => import("@assets/lotties/video/Editing_light.lottie"),
     dark: () => import("@assets/lotties/video/Editing_dark.lottie"),

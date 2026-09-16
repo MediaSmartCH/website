@@ -23,9 +23,14 @@ const Hero = () => {
     import("@features/it-services/it-services-page");
   };
 
-  const preloadVideoServices = () => {
-    import("@features/video-services/video-services-page");
-  };
+  /* ==========================================================================
+   * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+   * Préchargement de la page vidéo mis en pause (site 100% informatique).
+   * Décommenter en même temps que le bouton vidéo du hero.
+   * ========================================================================== */
+  // const preloadVideoServices = () => {
+  //   import("@features/video-services/video-services-page");
+  // };
 
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
@@ -100,6 +105,12 @@ const Hero = () => {
                 </span>
               </button>
             </Link>
+            {/* ================================================================
+                VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+                Bouton "Explorer les services vidéo" mis en pause.
+                Décommenter (avec preloadVideoServices) pour le réafficher.
+                ================================================================ */}
+            {/*
             <Link to={L("/video-services")} onMouseEnter={preloadVideoServices}>
               <button
                 className="
@@ -114,6 +125,7 @@ const Hero = () => {
                 </span>
               </button>
             </Link>
+            */}
           </div>
         </div>
         <div

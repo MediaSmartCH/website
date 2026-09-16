@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Clock, Loader2, X } from 'lucide-react';
+import { ArrowLeft, Clock, Loader2 } from 'lucide-react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import {
@@ -14,6 +14,7 @@ import TimeStep from '@features/booking/components/booking-time-step';
 import { useBookingScrollLock } from '@features/booking/hooks/use-booking-scroll-lock';
 import { HORIZON_DAYS, dateKeyInBookingTz, formatHumanDate } from '@features/booking/lib/booking-formatting';
 
+import ModalShell from '@shared/components/modal-shell';
 import { useAppSelector } from '@shared/hooks/store-hooks';
 import { useTranslations } from '@shared/i18n/translator';
 import { getRecaptchaToken } from '@shared/lib/recaptcha';
@@ -139,14 +140,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
 
   const isLight = theme === 'light';
 
-  const overlayClass = isLight ? 'bg-black/40' : 'bg-black/60';
-  const panelClass = isLight
-    ? 'bg-white text-[#14172D] shadow-[0_30px_60px_-15px_rgba(15,23,42,0.35)]'
-    : 'bg-[#14172d] text-[#F6F6F6] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]';
   const subtleText = isLight ? 'text-[#6B7280]' : 'text-[#CFCDE0]';
-  const closeButtonClass = isLight
-    ? 'bg-black/5 text-[#14172D] hover:bg-black/10'
-    : 'bg-white/8 text-[#F6F6F6] hover:bg-white/15';
   const backButtonClass = isLight
     ? 'text-[#4B5563] hover:text-[#14172D]'
     : 'text-[#CFCDE0] hover:text-white';
@@ -197,32 +191,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
     }
   };
 
-  // Close when the backdrop is clicked. target===currentTarget guard keeps
-  // clicks inside the modal from bubbling up and dismissing it.
-  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      handleClose();
-    }
-  };
-
-  // Centralised header — same on every step so it doesn't jump around.
-  // `flex-none` keeps it pinned at the top of the flex column; only the
-  // sibling content region scrolls.
-  const header = (
-    <div className="flex-none px-6 sm:px-10 pt-8 sm:pt-10 pb-2">
-      <p
-        id="booking-modal-title"
-        className={`font-redDisplay font-bold text-[24px] sm:text-[28px] ${isLight ? 'text-[#14172D]' : 'text-[#F6F6F6]'}`}
-      >
-        {t.text('booking.title')}
-      </p>
-      <p className={`mt-1 text-[14px] font-poppins ${subtleText}`}>
-        {t.text('booking.subtitle')}
-      </p>
-      <p className={`mt-3 inline-flex items-center gap-1.5 text-[12px] font-poppins font-medium uppercase tracking-[0.08em] ${subtleText}`}>
-        <Clock size={13} strokeWidth={2.2} /> {t.text('booking.duration')} · {t.text('booking.timezone')}
-      </p>
-    </div>
+  // The duration + timezone line sits under the shell's title block, which
+  // already renders the heading, the subtitle and the locale controls.
+  const durationLine = (
+    <p className={`mt-3 inline-flex items-center gap-1.5 text-[12px] font-poppins font-medium uppercase tracking-[0.08em] ${subtleText}`}>
+      <Clock size={13} strokeWidth={2.2} /> {t.text('booking.duration')} · {t.text('booking.timezone')}
+    </p>
   );
 
   // Reusable back row — kept inline rather than a sub-component because every
@@ -239,124 +213,97 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   );
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="booking-modal-title"
-      onClick={handleBackdropClick}
-      className={`fixed inset-0 z-[100] flex items-stretch sm:items-center justify-center backdrop-blur-sm ${overlayClass}`}
+    <ModalShell
+      titleId="booking-modal-title"
+      title={t.text('booking.title')}
+      subtitle={t.text('booking.subtitle')}
+      headerFooter={durationLine}
+      closeLabel={t.text('booking.navigation.close')}
+      closeDisabled={submitting}
+      onClose={handleClose}
+      bodyClassName="sm:min-h-[460px]"
     >
-      {/*
-        Pin the modal envelope to a fixed sm+ size so navigating between
-        steps doesn't pop the box to a different height. Layout is a flex
-        column so the header stays pinned while only the content area
-        scrolls when it overflows — the title and back button never get
-        scrolled out of view.
-      */}
-      <div
-        className={`relative w-full sm:w-[560px] sm:h-[680px] sm:max-h-[90vh] sm:rounded-3xl flex flex-col ${panelClass}`}
-      >
-        {/* Close button — pinned top-right */}
-        <button
-          type="button"
-          onClick={handleClose}
-          disabled={submitting}
-          aria-label="Close"
-          className={`absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full transition-colors disabled:opacity-50 ${closeButtonClass}`}
-        >
-          <X size={18} strokeWidth={2.2} />
-        </button>
-
-        {stage === 'success' && confirmation ? (
-          <BookingSuccess
-            confirmation={confirmation}
-            language={language}
-            theme={theme}
-            t={t}
-            onClose={handleClose}
-          />
-        ) : (
-          <>
-            {header}
-            {/*
-              Scrollable content region. `overscroll-contain` stops scroll
-              from "chaining" to the page underneath when the user hits the
-              top or bottom of this list, which felt jarring on long forms.
-            */}
-            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 sm:px-10 pb-6 sm:pb-8">
-              {stage === 'date' && (
-                <div className="mt-3">
-                  {loadingSlots ? (
-                    <div className={`flex flex-col items-center justify-center py-12 gap-3 ${subtleText}`}>
-                      <Loader2 size={22} strokeWidth={2.2} className="animate-spin" />
-                      <p className="text-[13px] font-poppins">{t.text('booking.loading')}</p>
-                    </div>
-                  ) : slotsError ? (
-                    <p className="rounded-xl border border-[#dc2626]/30 bg-[#dc2626]/8 px-4 py-3 text-[13px] font-poppins text-[#dc2626]">
-                      {slotsError}
-                    </p>
-                  ) : (
-                    <BookingCalendar
-                      slotsByDate={slotsByDate}
-                      selectedDate={selectedDateKey}
-                      onSelectDate={(key) => {
-                        // Auto-advance so the user doesn't need a "continuer"
-                        // button on this step.
-                        setSelectedDateKey(key);
-                        setSelectedSlot(null);
-                        setStage('time');
-                      }}
-                      loading={loadingSlots}
-                      language={language}
-                      theme={theme}
-                      t={t}
-                      earliestDate={dateRange.from}
-                      latestDate={dateRange.to}
-                    />
-                  )}
+      {stage === 'success' && confirmation ? (
+        <BookingSuccess
+          confirmation={confirmation}
+          language={language}
+          theme={theme}
+          t={t}
+          onClose={handleClose}
+        />
+      ) : (
+        <>
+          {stage === 'date' && (
+            <div>
+              {loadingSlots ? (
+                <div className={`flex flex-col items-center justify-center py-12 gap-3 ${subtleText}`}>
+                  <Loader2 size={22} strokeWidth={2.2} className="animate-spin" />
+                  <p className="text-[13px] font-poppins">{t.text('booking.loading')}</p>
                 </div>
-              )}
-
-              {stage === 'time' && selectedDateKey && (
-                <TimeStep
-                  slots={slotsForSelectedDate}
-                  selectedDateKey={selectedDateKey}
+              ) : slotsError ? (
+                <p className="rounded-xl border border-[#dc2626]/30 bg-[#dc2626]/8 px-4 py-3 text-[13px] font-poppins text-[#dc2626]">
+                  {slotsError}
+                </p>
+              ) : (
+                <BookingCalendar
+                  slotsByDate={slotsByDate}
+                  selectedDate={selectedDateKey}
+                  onSelectDate={(key) => {
+                    // Auto-advance so the user doesn't need a "continuer"
+                    // button on this step.
+                    setSelectedDateKey(key);
+                    setSelectedSlot(null);
+                    setStage('time');
+                  }}
+                  loading={loadingSlots}
                   language={language}
                   theme={theme}
                   t={t}
-                  onBack={() => {
-                    setSelectedSlot(null);
-                    setStage('date');
-                  }}
-                  onPickSlot={(slot) => {
-                    setSelectedSlot(slot);
-                    setStage('form');
-                  }}
-                  backRow={renderBackRow}
+                  earliestDate={dateRange.from}
+                  latestDate={dateRange.to}
                 />
               )}
-
-              {stage === 'form' && selectedSlot && (
-                <div className="mt-6">
-                  {/* BookingForm renders its own back button at the top — no
-                      need to duplicate it from the parent. */}
-                  <BookingForm
-                    formattedSlot={formatHumanDate(new Date(selectedSlot.startUtc), language)}
-                    language={language}
-                    theme={theme}
-                    t={t}
-                    submitting={submitting}
-                    errorMessage={submitError}
-                    onBack={() => setStage('time')}
-                    onSubmit={handleSubmitForm}
-                  />
-                </div>
-              )}
             </div>
-          </>
-        )}
-      </div>
-    </div>
+          )}
+
+          {stage === 'time' && selectedDateKey && (
+            <TimeStep
+              slots={slotsForSelectedDate}
+              selectedDateKey={selectedDateKey}
+              language={language}
+              theme={theme}
+              t={t}
+              onBack={() => {
+                setSelectedSlot(null);
+                setStage('date');
+              }}
+              onPickSlot={(slot) => {
+                setSelectedSlot(slot);
+                setStage('form');
+              }}
+              backRow={renderBackRow}
+            />
+          )}
+
+          {stage === 'form' && selectedSlot && (
+            <div className="mt-2">
+              {/* BookingForm renders its own back button at the top — no
+                  need to duplicate it from the parent. */}
+              <BookingForm
+                formattedSlot={formatHumanDate(new Date(selectedSlot.startUtc), language)}
+                language={language}
+                theme={theme}
+                t={t}
+                submitting={submitting}
+                errorMessage={submitError}
+                onBack={() => setStage('time')}
+                onSubmit={handleSubmitForm}
+              />
+            </div>
+          )}
+        </>
+      )}
+    </ModalShell>
   );
 };
 

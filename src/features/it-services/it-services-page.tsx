@@ -3,6 +3,7 @@ import React from "react";
 import Hero from "@features/it-services/components/hero";
 import About from "@features/it-services/components/about";
 import Services from "@features/it-services/components/services";
+import SaasProducts from "@features/it-services/components/saas-products";
 import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
 import Process from "@features/it-services/components/process";
@@ -12,9 +13,13 @@ import ProjectEstimates from "@features/it-services/components/project-estimates
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
+import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
 import WaveBackdrop from "@shared/components/wave-backdrop";
 
 export default function ITServicesPage() {
+  // Lets the homepage teaser link straight to the #saas section.
+  useScrollToHash();
+
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
   const [hasAnimated, setHasAnimated] = React.useState(false);
 
@@ -39,6 +44,7 @@ export default function ITServicesPage() {
       <Hero />
       <About />
       <Services />
+      <SaasProducts />
       <PracticalInfo />
       <ProjectEstimates />
       <Process />

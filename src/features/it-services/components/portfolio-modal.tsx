@@ -10,7 +10,7 @@ import { formatImageCount, getInlineGalleryClassName, getItemImages, getSafeExte
 import { SCROLLABLE_GALLERY_THRESHOLD } from "@features/it-services/lib/portfolio-helpers";
 import type { PortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
 
-import LocaleThemeControls from "@shared/components/locale-theme-controls";
+import ModalShell from "@shared/components/modal-shell";
 import { useTranslations } from "@shared/i18n/translator";
 
 export interface PortfolioModalProps {
@@ -19,11 +19,6 @@ export interface PortfolioModalProps {
   classes: PortfolioThemeClasses;
   /** Id of the heading that labels this dialog, owned by the gallery. */
   dialogTitleId: string;
-  /** Header language + theme pills, forwarded straight to LocaleThemeControls. */
-  localeControls: Omit<
-    React.ComponentProps<typeof LocaleThemeControls>,
-    "size" | "className"
-  >;
   onClose: () => void;
   onOpenImage: (image: LightboxImage) => void;
 }
@@ -33,7 +28,6 @@ export default function PortfolioModal({
   language: languageReducer,
   classes,
   dialogTitleId,
-  localeControls,
   onClose,
   onOpenImage,
 }: PortfolioModalProps) {
@@ -41,77 +35,26 @@ export default function PortfolioModal({
   const {
     isLight: isLightTheme,
     card: cardSurfaceClass,
-    panel: panelSurfaceClass,
     mutedText: mutedTextClass,
     strongText: strongTextClass,
     imageShell: imageShellClass,
-    backdrop: backdropClass,
   } = classes;
 
   return (
-    <div
-          className="fixed inset-0 z-[99999] flex items-center justify-center p-4 md:p-6"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={dialogTitleId}
+    <ModalShell
+      titleId={dialogTitleId}
+      size="wide"
+      title={t.text("it.portfolioModalHeading")}
+      headerFooter={
+        <p
+          className={`${mutedTextClass} mt-3 max-w-3xl text-[13px] font-helvetica font-light leading-6 md:text-[15px]`}
         >
-          <button
-            type="button"
-            aria-label={languageReducer === "fr" ? "Fermer la fenetre" : "Close dialog"}
-            className={`absolute inset-0 ${backdropClass} backdrop-blur-xl`}
-            onClick={() => onClose()}
-          />
-
-          <div
-            className={`relative z-10 flex max-h-[calc(100vh-2rem)] w-full max-w-6xl flex-col overflow-hidden rounded-[28px] border ${panelSurfaceClass}`}
-          >
-            <div
-              className={`grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-3 border-b px-5 py-5 md:px-8 md:py-6 ${isLightTheme ? "border-[#E6E8F7]" : "border-white/10"}`}
-            >
-              <h2
-                id={dialogTitleId}
-                className="min-w-0 font-redDisplay text-[28px] font-bold leading-none md:text-[40px] xl:text-[48px]"
-              >
-                {t.text("it.portfolioModalHeading")}
-              </h2>
-
-              <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center sm:gap-3">
-                <LocaleThemeControls
-                  {...localeControls}
-                  size="xs"
-                  className="order-2 sm:order-1"
-                />
-                <button
-                  type="button"
-                  onClick={() => onClose()}
-                  className={`order-1 flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full border transition duration-200 sm:order-2 sm:h-11 sm:w-11 ${isLightTheme ? "border-[#D9DCF2] text-[#14172D] hover:bg-[#F4F4FF]" : "border-white/10 text-[#F6F6F6] hover:bg-white/10"}`}
-                  aria-label={languageReducer === "fr" ? "Fermer" : "Close"}
-                >
-                  <svg
-                    className="h-3.5 w-3.5 sm:h-5 sm:w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              <p
-                className={`${mutedTextClass} col-span-2 max-w-3xl text-[13px] font-helvetica font-light leading-6 md:text-[15px]`}
-              >
-                {t.text("it.portfolioModalDescription")}
-              </p>
-            </div>
-
-            <div className="portfolio-scrollbar flex-1 overflow-y-auto overscroll-contain px-5 pb-5 pt-5 md:px-8 md:pb-8 md:pt-6">
+          {t.text("it.portfolioModalDescription")}
+        </p>
+      }
+      closeLabel={languageReducer === "fr" ? "Fermer" : "Close"}
+      onClose={onClose}
+    >
               <div
                 className="grid justify-center gap-5"
                 style={{
@@ -239,8 +182,6 @@ export default function PortfolioModal({
                   );
                 })}
               </div>
-            </div>
-          </div>
-        </div>
+    </ModalShell>
   );
 }

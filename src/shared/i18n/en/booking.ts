@@ -68,7 +68,8 @@ const booking = {
 
     navigation: {
         back: "Back",
-        continue: "Continue"
+        continue: "Continue",
+        close: "Close"
     },
 
     loading: "Loading...",

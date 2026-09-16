@@ -82,7 +82,6 @@ export default function CompactConsentBar({
                   <button
                     onClick={onClose}
                     className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${themeClasses.bg} ${themeClasses.hover}`}
-                    title={t.text("cookies.ariaCloseModal")}
                     aria-label={t.text("cookies.ariaCloseModal")}
                   >
                     <X className={`h-4 w-4 ${themeClasses.textSecondary}`} />

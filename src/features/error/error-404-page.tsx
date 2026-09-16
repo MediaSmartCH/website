@@ -1,205 +1,238 @@
-import React, { lazy, Suspense } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Mail } from "lucide-react";
+/**
+ * 404 page.
+ *
+ * Rendered outside the site shell (see the route in `app/router.tsx`): no
+ * fixed header sitting on top of it, no footer to discover by scrolling. It is
+ * a self-contained screen — the logo is the way back in, and every other
+ * control points at somewhere that actually exists.
+ *
+ * The consent modal is suppressed here too: a blocking dialog on top of an
+ * error page is one dead end stacked on another.
+ */
+
+import React from "react";
+import { ArrowLeft, Boxes, Mail, Wrench } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 import BookingButton from "@features/booking/components/booking-button";
+import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
 
-import { useAppSelector } from "@shared/hooks/store-hooks";
+import LocaleThemeControls from "@shared/components/locale-theme-controls";
+import ThemeSwitchOverlay from "@shared/components/theme-switch-overlay";
+import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
+import { useLangLink } from "@shared/hooks/use-localized-path";
+import { useSuppressConsentModal } from "@shared/hooks/use-consent-suppression";
+import { useThemeSwitch } from "@shared/hooks/use-theme-switch";
 import { useTranslations } from "@shared/i18n/translator";
-import {
-  getSupportEmail,
-} from "@shared/constants/contact";
+import { getSupportEmail } from "@shared/constants/contact";
 
-// Hoisted to module scope: declaring lazy() inside the component body creates a
-// new component type on every render, which remounts the Lottie player.
-const DotAnim = lazy(() => import("@shared/components/dot-anim"));
+import logo from "@assets/images/logo-header.webp";
+import logoDark from "@assets/images/logo-footer.webp";
 
 const Error404Page: React.FC = () => {
   const navigate = useNavigate();
-  const { lang } = useParams<{ lang?: string }>();
-  const currentLang = lang || 'fr';
+  const { L } = useLangLink();
 
-  const languageReducer = useAppSelector(
-    (state) => state.language.currentLanguage
+  useSuppressConsentModal();
+
+  // The navbar is not rendered here, so this page carries its own copy of the
+  // language / theme / animation pills — otherwise a visitor who lands on a
+  // 404 in the wrong language has no way to switch.
+  const {
+    currentLanguage: languageReducer,
+    currentTheme: themeReducer,
+    themePreference,
+    animationsEnabled,
+    changeLanguage,
+    changeTheme,
+    flipAnimations,
+    labels,
+  } = useInterfaceControls();
+
+  const { isThemeChanging, requestThemeChange } = useThemeSwitch(
+    themeReducer,
+    themePreference,
+    changeTheme
   );
 
-  const themeReducer = useAppSelector((state) => state.theme.currentTheme);
-
   const t = useTranslations(languageReducer);
+  const classes = getPortfolioThemeClasses(themeReducer);
+
+  const isLight = themeReducer === "light";
 
   const handleContact = () => {
     window.location.href = `mailto:${getSupportEmail()}`;
   };
 
-  const handleITServices = () => {
-    navigate(`/${currentLang}/it-services`);
-  };
+  const secondaryButtonClass = `flex min-h-[45px] items-center justify-center gap-2 rounded-[5px] border px-[20px] font-poppins text-[14px] font-light transition duration-200 ${
+    isLight
+      ? "border-[#D9DCF2] bg-white/70 text-[#2C3A87] hover:bg-[#EEF0FF]"
+      : "border-white/15 text-[#DAD7FF] hover:bg-white/10"
+  }`;
 
-  const handleVideoServices = () => {
-    navigate(`/${currentLang}/video-services`);
-  };
+  // The two shortcuts out of the dead end. Both land on the services page —
+  // one at the top, one straight on the products section.
+  const destinations = [
+    {
+      to: L("/it-services"),
+      Icon: Wrench,
+      title: t.text("error404.itServicesTitle"),
+      description: t.text("error404.itServicesDescription"),
+    },
+    {
+      to: `${L("/it-services")}#saas`,
+      Icon: Boxes,
+      title: t.text("error404.saasTitle"),
+      description: t.text("error404.saasDescription"),
+    },
+  ];
 
   return (
-    <div className={`${themeReducer === "light" ? "hero-bg" : "hero-bg-dark"} relative overflow-hidden min-h-[80vh]`}>
-      <div className="relative z-10 flex items-center justify-center min-h-[80vh] px-6 py-12">
-        <div className="max-w-4xl mx-auto text-center">
+    <div
+      className={`relative flex min-h-[100dvh] flex-col overflow-hidden ${
+        isLight ? "bg-white" : "bg-[#14172D]"
+      }`}
+    >
+      {isThemeChanging && (
+        <ThemeSwitchOverlay theme={themeReducer} language={languageReducer} />
+      )}
 
-          <div className="mb-8 mt-[120px]">
-            <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem] xl:w-[32rem] xl:h-[32rem] mx-auto mb-8">
-              <Suspense
-                fallback={
-                  <div className="h-[220px] flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
-                  </div>
-                }
-              >
-                <DotAnim
-                  anim="it.services.security"
-                  style={{ width: "100%", height: "100%" }}
-                  crisp
-                  protect
-                />
-              </Suspense>
-            </div>
-          </div>
+      <LocaleThemeControls
+        currentLanguage={languageReducer}
+        currentTheme={themeReducer}
+        themePreference={themePreference}
+        onLanguageChange={changeLanguage}
+        onThemeChange={requestThemeChange}
+        animationsEnabled={animationsEnabled}
+        onAnimationsToggle={flipAnimations}
+        labels={labels}
+        themeDisabled={isThemeChanging}
+        className="absolute right-5 top-5 z-20 md:right-8 md:top-7"
+      />
 
-          <div className="mb-12">
-            <h1 className={`font-redDisplay font-bold text-6xl sm:text-7xl md:text-8xl lg:text-9xl ${themeReducer === "light"
-              ? "bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
-              : "text-white"
-              } mb-6 leading-none`}>
-              404
-            </h1>
-          </div>
+      {/* Bounded decorative wave. `hero-bg` scales with `background-size:
+          cover`, so letting it own the whole screen turns the curve into a
+          full-height smear. */}
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-x-0 top-0 z-0 h-[560px] md:h-[640px] ${
+          isLight ? "hero-bg" : "hero-bg-dark"
+        }`}
+      />
 
-          <div className="mb-12">
-            <h2 className={`font-redDisplay font-bold text-3xl sm:text-4xl md:text-5xl ${themeReducer === "light" ? "text-gray-800" : "text-white"
-              } mb-6`}>
-              {t.text("error404.title")}
-            </h2>
-            <p className={`font-poppins text-lg sm:text-xl ${themeReducer === "light" ? "text-gray-600" : "text-gray-300"
-              } max-w-2xl mx-auto leading-relaxed`}>
-              {t.text("error404.description")}
-            </p>
-          </div>
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center w-full homepage-container mx-auto px-[25px] md:px-[50px] xl:px-[100px] py-[48px] md:py-[60px]">
+        {/* The logo is the main way back to the site, so it gets the size to
+            match rather than being tucked into a bar that is not there. */}
+        <Link
+          to={L("/")}
+          aria-label="MediaSmart"
+          className="transition-opacity duration-200 hover:opacity-80"
+        >
+          <img
+            src={isLight ? logo : logoDark}
+            alt="MediaSmart"
+            className="w-[220px] md:w-[260px] xl:w-[300px]"
+            width="412"
+            height="53"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </Link>
 
-          <div className="mb-12">
-            <h3 className={`font-redDisplay font-bold text-2xl ${themeReducer === "light" ? "text-gray-800" : "text-white"
-              } mb-8`}>
-              {t.text("error404.servicesTitle")}
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="mt-[44px] max-w-[720px] text-center md:mt-[56px]">
+          <span
+            className={`inline-block rounded-full border px-3 py-1 font-poppins text-[11px] font-medium uppercase tracking-[0.18em] ${
+              isLight
+                ? "border-[#D9DCF2] bg-white/70 text-[#2C3A87]"
+                : "border-white/10 bg-white/5 text-[#DAD7FF]"
+            }`}
+          >
+            {t.text("error404.badge")}
+          </span>
 
-              <button
-                onClick={handleITServices}
-                className={`${themeReducer === "light"
-                  ? "bg-white/90 border-gray-100"
-                  : "bg-gray-800/90 border-gray-700"
-                  } backdrop-blur-sm p-8 rounded-xl shadow-lg border hover:shadow-xl transition-all duration-300 hover:scale-105 group`}
-              >
-                <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto mb-6">
-                  <Suspense
-                    fallback={
-                      <div className="h-[220px] flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
-                      </div>
-                    }
-                  >
-                    <DotAnim
-                      anim="it.services.website"
-                      style={{ width: "100%", height: "100%" }}
-                      crisp
-                      protect
-                    />
-                  </Suspense>
-                </div>
-                <h4 className={`font-redDisplay font-bold text-xl ${themeReducer === "light" ? "text-gray-800" : "text-white"
-                  } mb-3`}>
-                  {t.text("error404.itServicesTitle")}
-                </h4>
-                <p className={`font-poppins text-base ${themeReducer === "light" ? "text-gray-600" : "text-gray-300"
-                  }`}>
-                  {t.text("error404.itServicesDescription")}
-                </p>
+          <p className="mt-4 bg-[linear-gradient(90deg,#b514fd_1.42%,#5f75f5_97.8%)] bg-clip-text font-redDisplay text-[64px] font-bold leading-none text-transparent md:text-[88px] xl:text-[104px]">
+            404
+          </p>
+
+          <h1
+            className={`mt-3 font-redDisplay font-bold text-[26px] md:text-[32px] xl:text-[36px] ${
+              isLight ? "text-[#14172D]" : "text-[#F6F6F6]"
+            }`}
+          >
+            {t.text("error404.title")}
+          </h1>
+          <p
+            className={`${classes.mutedText} mx-auto mt-3 max-w-[600px] font-poppins font-light text-[14px] md:text-[15px] leading-7`}
+          >
+            {t.text("error404.description")}
+          </p>
+
+          <div className="mt-[28px] flex flex-wrap justify-center gap-3">
+            <Link to={L("/")}>
+              <button className="custom-btn middle-out flex min-h-[45px] items-center justify-center rounded-[5px] px-[22px] font-poppins text-[14px] font-light text-white">
+                {t.text("error404.homeButton")}
               </button>
-
-              <button
-                onClick={handleVideoServices}
-                className={`${themeReducer === "light"
-                  ? "bg-white/90 border-gray-100"
-                  : "bg-gray-800/90 border-gray-700"
-                  } backdrop-blur-sm p-8 rounded-xl shadow-lg border hover:shadow-xl transition-all duration-300 hover:scale-105 group`}
-              >
-                <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto mb-6">
-                  <Suspense
-                    fallback={
-                      <div className="h-[220px] flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
-                      </div>
-                    }
-                  >
-                    <DotAnim
-                      anim="video.production"
-                      style={{ width: "100%", height: "100%" }}
-                      crisp
-                      protect
-                    />
-                  </Suspense>
-                </div>
-                <h4 className={`font-redDisplay font-bold text-xl ${themeReducer === "light" ? "text-gray-800" : "text-white"
-                  } mb-3`}>
-                  {t.text("error404.videoServicesTitle")}
-                </h4>
-                <p className={`font-poppins text-base ${themeReducer === "light" ? "text-gray-600" : "text-gray-300"
-                  }`}>
-                  {t.text("error404.videoServicesDescription")}
-                </p>
-              </button>
-            </div>
+            </Link>
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className={secondaryButtonClass}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {t.text("error404.backButton")}
+            </button>
+            <button
+              type="button"
+              onClick={handleContact}
+              className={secondaryButtonClass}
+            >
+              <Mail className="h-4 w-4" />
+              {t.text("error404.emailButton")}
+            </button>
           </div>
+        </div>
 
-          <div className={`${themeReducer === "light"
-            ? "bg-white/80 border-gray-100"
-            : "bg-gray-800/80 border-gray-700"
-            } backdrop-blur-sm rounded-2xl p-8 shadow-xl border max-w-2xl mx-auto`}>
-            <h3 className={`font-redDisplay font-bold text-2xl ${themeReducer === "light" ? "text-gray-800" : "text-white"
-              } mb-6`}>
-              {t.text("error404.contactTitle")}
-            </h3>
-            <p className={`font-poppins ${themeReducer === "light" ? "text-gray-600" : "text-gray-300"
-              } mb-8`}>
-              {t.text("error404.contactDescription")}
-            </p>
+        <div
+          className="mt-[40px] grid w-full justify-center gap-4"
+          style={{
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 400px))",
+          }}
+        >
+          {destinations.map(({ to, Icon, title, description }) => (
+            <Link
+              key={to}
+              to={to}
+              className={`flex h-full items-start gap-4 rounded-[20px] border p-5 transition duration-300 hover:-translate-y-1 ${classes.card}`}
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#b514fd,#5f75f5)]">
+                <Icon className="h-5 w-5 text-white" />
+              </span>
+              <span className="min-w-0">
+                <span
+                  className={`${classes.strongText} block font-redDisplay text-[17px] font-bold leading-6`}
+                >
+                  {title}
+                </span>
+                <span
+                  className={`${classes.mutedText} mt-1 block font-helvetica text-[13px] font-light leading-6`}
+                >
+                  {description}
+                </span>
+              </span>
+            </Link>
+          ))}
+        </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <BookingButton
-                className="custom-btn rounded-[80px] text-white px-8 py-3 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2"
-                text={t.text("error404.bookingButton")}
-              />
-
-              <button
-                onClick={handleContact}
-                className={`border-2 ${themeReducer === "light"
-                  ? "border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
-                  : "border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-gray-900"
-                  } px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2`}
-              >
-                <Mail className="w-5 h-5" />
-                {t.text("error404.emailButton")}
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-12 text-center">
-            <blockquote className={`font-poppins text-lg ${themeReducer === "light" ? "text-gray-600" : "text-gray-300"
-              } italic mb-4 max-w-2xl mx-auto`}>
-              "{t.text("error404.quote")}"
-            </blockquote>
-            <p className={`${themeReducer === "light" ? "text-purple-600" : "text-purple-400"
-              } font-semibold`}>
-              {t.text("error404.quoteAuthor")}
-            </p>
-          </div>
+        <div className="mt-[32px] flex flex-col items-center gap-3 text-center">
+          <p
+            className={`${classes.mutedText} font-poppins text-[14px] font-light`}
+          >
+            {t.text("error404.contactTitle")}
+          </p>
+          <BookingButton
+            className="custom-btn middle-out flex min-h-[45px] items-center justify-center rounded-[5px] px-[22px] font-poppins text-[14px] font-light text-white"
+            text={t.text("error404.bookingButton")}
+          />
         </div>
       </div>
     </div>

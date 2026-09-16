@@ -18,6 +18,55 @@ const it = {
     itServicesTitle: `<span> Our </span> IT Services`,
     itServicesDescription: "We offer tailored IT solutions designed to keep your business running without interruptions. Our services include:",
 
+    // ------------------------------------------------------------------
+    // MediaSmart SaaS products — highlighted outside the portfolio, because
+    // these are products we sell rather than client references. The free
+    // tools are deliberately kept separate below: they are showcase, not
+    // lead generation.
+    // ------------------------------------------------------------------
+    saasTitle: `<span> Our products, </span> ready to use`,
+    saasDescription:
+        "Beyond bespoke projects, MediaSmart builds and runs its own business solutions. Hosted in Switzerland and designed for small businesses, associations and freelancers who want a tool that works on day one.",
+    saasDemoCta: "See the demo",
+    saasBookCta: "Request a demo",
+    saasProducts: [
+        {
+            id: "cc-factures-dashboard",
+            name: "Supplier invoices dashboard",
+            tagline: "See where the money goes, month by month and supplier by supplier",
+            highlights: [
+                "Monthly KPIs, top suppliers and period-over-period comparisons",
+                "Microsoft 365 sign-in and direct ingestion from SharePoint",
+                "Per-file drill-down and one-click CSV export",
+            ],
+        },
+        {
+            id: "ged-mediasmart",
+            name: "MediaSmart GED",
+            tagline: "Invoices and sensitive paperwork, filed automatically and kept on site",
+            highlights: [
+                "Automatic OCR with supplier, amount and due-date extraction",
+                "Encrypted storage on your internal network — nothing leaves the office",
+                "Password-protected web UI, installed and maintained by MediaSmart",
+            ],
+        },
+    ],
+    saasFreeTitle: "Also, freely available",
+    saasFreeDescription:
+        "Tools we open up to everyone — no account, no invoice.",
+    saasFreeTools: [
+        {
+            id: "cc-voice",
+            name: "Voice Studio",
+            tagline: "Voice cloning and synthesis, computed on our own studio hardware rather than in the cloud. Opening up to everyone soon.",
+        },
+        {
+            id: "mediasmart-games",
+            name: "MediaSmart Lab",
+            tagline: "Our mini-games and web experiments, free to play.",
+        },
+    ],
+
     portfolioTxt: "Check our portfolio",
     portfolioBtn: "See more portfolio",
 

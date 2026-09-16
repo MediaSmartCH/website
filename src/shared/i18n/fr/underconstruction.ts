@@ -1,12 +1,21 @@
+// ============================================================================
+// VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+// Le site ne communique plus que sur l'informatique. Les clés vidéo restent en
+// place (parité FR/EN + retour arrière immédiat) mais ne sont plus affichées.
+// ============================================================================
 const underConstruction = {
     title: "Notre site est actuellement en cours de construction",
     subtitle: "Nous travaillons activement à la création d’une plateforme innovante qui transformera votre façon de découvrir et d’accéder à nos services.",
-    connectingWorlds: "Deux univers d’expertise se rejoignent :",
-    tagline: "l’excellence en solutions informatiques et la créativité en production vidéo.",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (anciens textes "deux univers") :
+    // connectingWorlds: "Deux univers d’expertise se rejoignent :",
+    // tagline: "l’excellence en solutions informatiques et la créativité en production vidéo.",
+    connectingWorlds: "Une expertise, un interlocuteur :",
+    tagline: "l’excellence en solutions informatiques, du site web à l’infrastructure.",
 
     itSolutionsTitle: "Solutions informatiques sur mesure",
     itSolutionsDescription: "Nous offrons une expertise technique complète et une flexibilité totale pour accompagner la réussite de tous vos projets numériques, du conseil stratégique à la mise en œuvre opérationnelle.",
 
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : carte vidéo retirée de la page de maintenance.
     videoServicesTitle: "Services vidéo professionnels",
     videoServicesDescription: "Nous produisons des contenus audiovisuels de haute qualité, pensés pour valoriser votre image, captiver votre audience et renforcer l’impact de votre communication.",
 
