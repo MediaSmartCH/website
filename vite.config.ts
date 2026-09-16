@@ -11,20 +11,66 @@ const _require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
- * Emits the DotLottie WASM binary as a content-hashed asset and exposes its
- * public URL via the `virtual:dotlottie-wasm-url` virtual module.
+ * Serves the DotLottie WASM binary locally and exposes its URL through the
+ * `virtual:dotlottie-wasm-url` virtual module.
  *
- * Without this plugin the WASM file is absent from the build output.
- * DotLottie falls back to CDN, which our Content-Security-Policy blocks,
- * causing all Lottie animations to silently fail in production.
+ * Without it, DotLottie falls back to its CDN (unpkg / jsdelivr). In production
+ * the Content-Security-Policy blocks that, so every animation silently fails.
+ *
+ * The two modes need different mechanics:
+ *   - build: emit the file as a content-hashed asset via Rollup's emitFile.
+ *   - serve: emitFile is a build-only API — calling it logs "not supported in
+ *     serve mode" and returns undefined, which left the dev server pulling the
+ *     1.7MB binary from unpkg. Point at the file on disk instead, through
+ *     Vite's /@fs/ route.
  */
 function dotLottieWasmPlugin(): Plugin {
   const VIRTUAL_ID = "virtual:dotlottie-wasm-url";
   const RESOLVED_ID = "\0" + VIRTUAL_ID;
   const ASSET_HASH_LENGTH = 8;
 
+  let isServe = false;
+
+  /**
+   * Absolute path to the WASM binary inside dotlottie-web.
+   *
+   * Resolved through the package entrypoints so package exports and pnpm's
+   * symlinked layout both work. dotlottie-web is a transitive dep of
+   * dotlottie-react, so it is resolved from that package's own location —
+   * pnpm does not expose transitive deps at the project root.
+   */
+  const resolveWasmPath = () => {
+    const dotLottieReactEntry = _require.resolve(
+      "@lottiefiles/dotlottie-react"
+    );
+    const dotLottieEntry = createRequire(dotLottieReactEntry).resolve(
+      "@lottiefiles/dotlottie-web"
+    );
+    return path.join(path.dirname(dotLottieEntry), "dotlottie-player.wasm");
+  };
+
+  /**
+   * Builds the /@fs/ URL Vite serves a file from during development.
+   *
+   * Vite decodes the request path with decodeURI, so the encoding has to match:
+   * escape what is illegal in a URI (a space in this repo's own path, for one)
+   * but leave `@`, `+` and `/` alone — percent-encoding those yields a path
+   * Vite cannot match, and the SPA fallback answers with index.html instead.
+   */
+  const toDevUrl = (absolutePath: string) => {
+    const posixPath = absolutePath.split(path.sep).join("/");
+    const encoded = encodeURI(posixPath).replace(
+      /[#?]/g,
+      (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`
+    );
+    return `/@fs${encoded}`;
+  };
+
   return {
     name: "dotlottie-wasm-asset",
+    configResolved(config) {
+      isServe = config.command === "serve";
+    },
     resolveId(id) {
       if (id === VIRTUAL_ID) return RESOLVED_ID;
       return null;
@@ -32,20 +78,12 @@ function dotLottieWasmPlugin(): Plugin {
     load(id) {
       if (id !== RESOLVED_ID) return null;
 
-      // Resolve via the package entrypoint so we stay compatible with package
-      // exports and pnpm's symlinked node_modules layout. dotlottie-web is a
-      // transitive dep of dotlottie-react, so resolve it from that package's
-      // location — pnpm does not expose transitive deps at the project root.
-      const dotLottieReactEntry = _require.resolve(
-        "@lottiefiles/dotlottie-react"
-      );
-      const dotLottieEntry = createRequire(dotLottieReactEntry).resolve(
-        "@lottiefiles/dotlottie-web"
-      );
-      const wasmSrc = path.join(
-        path.dirname(dotLottieEntry),
-        "dotlottie-player.wasm"
-      );
+      const wasmSrc = resolveWasmPath();
+
+      if (isServe) {
+        return `export default ${JSON.stringify(toDevUrl(wasmSrc))}`;
+      }
+
       const wasmBuffer = fs.readFileSync(wasmSrc);
       const hash = createHash("sha256")
         .update(wasmBuffer)
