@@ -5,7 +5,6 @@ import { fileURLToPath } from "url";
 import { defineConfig, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 const _require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -128,7 +127,7 @@ const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
   : {};
 
 export default defineConfig(async () => {
-  const plugins: PluginOption[] = [dotLottieWasmPlugin(), react(), tsconfigPaths()];
+  const plugins: PluginOption[] = [dotLottieWasmPlugin(), react()];
 
   // Load the bundle analyzer lazily so normal builds never try to require
   // an ESM-only dependency while Vite is bundling this config file.

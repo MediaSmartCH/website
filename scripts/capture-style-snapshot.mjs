@@ -190,7 +190,28 @@ const browser = await puppeteer.launch({
 
 const snapshot = { baseUrl: BASE_URL, viewport: VIEWPORT, pages: {} };
 
+/**
+ * Loads one page and throws it away before capturing anything.
+ *
+ * Vite re-optimizes dependencies on the first request after a config change,
+ * and pages served during that pause render slowly enough that lazily-mounted
+ * sections miss the settle window. A capture taken then reports hundreds of
+ * phantom "text-missing" differences.
+ */
+async function warmUp(browser) {
+  process.stdout.write('warming up … ');
+  const page = await browser.newPage();
+  await page.goto(`${BASE_URL}/${LANGUAGES[0]}`, {
+    waitUntil: 'networkidle2',
+    timeout: 120_000,
+  });
+  await page.close();
+  console.log('ready');
+}
+
 try {
+  await warmUp(browser);
+
   for (const language of LANGUAGES) {
     for (const theme of THEMES) {
       for (const route of ROUTES) {
