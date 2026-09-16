@@ -33,8 +33,31 @@ export interface HealthReport {
 /** Narrow window: the probe proves the call works, it does not need real data. */
 const PROBE_WINDOW_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * Deadline per probe.
+ *
+ * The underlying fetches have none of their own, and the report waits for every
+ * probe, so one hanging dependency would keep the endpoint from ever answering
+ * 503 or sending its alert — the exact silence this module exists to break.
+ */
+const PROBE_TIMEOUT_MS = 8_000;
+
 function describeError(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+/** Rejects if `work` has not settled within PROBE_TIMEOUT_MS. */
+function withDeadline<T>(work: Promise<T>): Promise<T> {
+  let timer: ReturnType<typeof setTimeout>;
+
+  const deadline = new Promise<never>((_resolve, reject) => {
+    timer = setTimeout(
+      () => reject(new Error(`timed out after ${PROBE_TIMEOUT_MS}ms`)),
+      PROBE_TIMEOUT_MS,
+    );
+  });
+
+  return Promise.race([work, deadline]).finally(() => clearTimeout(timer)) as Promise<T>;
 }
 
 async function probe(
@@ -42,7 +65,7 @@ async function probe(
   run: () => Promise<unknown> | unknown,
 ): Promise<HealthCheck> {
   try {
-    await run();
+    await withDeadline(Promise.resolve(run()));
     return { name, ok: true };
   } catch (error) {
     return { name, ok: false, detail: describeError(error) };

@@ -131,3 +131,21 @@ describe("runHealthChecks, a dependency down", () => {
     expect(report.checks.filter((check) => !check.ok)).toHaveLength(3);
   });
 });
+
+describe("runHealthChecks, a dependency that hangs", () => {
+  it("gives up on a probe that never settles", async () => {
+    vi.useFakeTimers();
+    getBusyIntervals.mockImplementation(() => new Promise(() => {}));
+
+    const pending = runHealthChecks();
+    await vi.advanceTimersByTimeAsync(8_000);
+    const report = await pending;
+
+    expect(report.ok).toBe(false);
+    expect(checkNamed(report, "google-calendar")).toMatchObject({
+      ok: false,
+      detail: expect.stringContaining("timed out"),
+    });
+    vi.useRealTimers();
+  });
+});

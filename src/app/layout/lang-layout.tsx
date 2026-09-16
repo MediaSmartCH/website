@@ -5,6 +5,7 @@ import RouteSeo from "@app/layout/route-seo";
 
 import { useAppDispatch, useAppSelector } from "@shared/hooks/store-hooks";
 import { ensureLocale, isLocaleReady } from "@shared/i18n/registry";
+import { logger } from "@shared/lib/logger";
 import PreLoader from "@shared/components/preloader";
 import {
   buildLocalizedPath,
@@ -43,9 +44,16 @@ const LangLayout: React.FC = () => {
     let cancelled = false;
     setLocaleReady(false);
 
-    ensureLocale(lang).then(() => {
-      if (!cancelled) setLocaleReady(true);
-    });
+    ensureLocale(lang).then(
+      () => {
+        if (!cancelled) setLocaleReady(true);
+      },
+      (error) => {
+        // Nothing to render without a dictionary, but leaving the rejection
+        // unhandled pinned the page on the preloader with no trace of why.
+        logger.error("Locale bundle failed to load", error);
+      }
+    );
 
     return () => {
       cancelled = true;

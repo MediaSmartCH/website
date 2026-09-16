@@ -1,6 +1,6 @@
 import type { AppLanguage } from "@shared/config/languages";
 
-type SectionDict = Record<string, any>;
+type SectionDict = Record<string, unknown>;
 /** Shape of a `services/locales/<lang>` barrel namespace. */
 type LocaleModule = Record<string, SectionDict>;
 
@@ -68,9 +68,17 @@ export function ensureLocale(language: AppLanguage): Promise<void> {
   let pending = inFlight.get(language);
 
   if (!pending) {
-    pending = importLocaleBundle(language).then((bundle) => {
-      registerLocale(language, bundle);
-    });
+    pending = importLocaleBundle(language).then(
+      (bundle) => {
+        registerLocale(language, bundle);
+      },
+      (error) => {
+        // Drop the failed attempt so the next call retries, instead of handing
+        // every later caller the same rejection for the rest of the session.
+        inFlight.delete(language);
+        throw error;
+      }
+    );
     inFlight.set(language, pending);
   }
 
