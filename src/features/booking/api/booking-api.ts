@@ -46,6 +46,22 @@ function toIsoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+/**
+ * How long a visitor may be left watching the calendar spinner.
+ *
+ * Availability is computed from a live Google Calendar call, which has no
+ * deadline of its own: a slow or unreachable calendar used to leave the modal
+ * spinning for as long as the platform allowed. Matches the contact form.
+ */
+const AVAILABILITY_TIMEOUT_MS = 10_000;
+
+/**
+ * Loads the bookable slots between two dates.
+ *
+ * Rejects with an `AbortError` when the caller's own signal fires — the modal
+ * relies on that to tell "the visitor closed me" apart from a real failure — and
+ * with `availability_timeout` when the request simply took too long.
+ */
 export async function fetchAvailability(
   from: Date,
   to: Date,
@@ -55,14 +71,35 @@ export async function fetchAvailability(
     from: toIsoDate(from),
     to: toIsoDate(to),
   });
-  const response = await fetchWithDeployment(
-    `/api/booking/availability?${params.toString()}`,
-    { signal },
-  );
-  if (!response.ok) {
-    throw new Error(`availability_${response.status}`);
+
+  const controller = new AbortController();
+  const abortForCaller = () => controller.abort();
+  if (signal?.aborted) abortForCaller();
+  signal?.addEventListener('abort', abortForCaller);
+
+  let timedOut = false;
+  const timeout = window.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, AVAILABILITY_TIMEOUT_MS);
+
+  try {
+    const response = await fetchWithDeployment(
+      `/api/booking/availability?${params.toString()}`,
+      { signal: controller.signal },
+    );
+    if (!response.ok) {
+      throw new Error(`availability_${response.status}`);
+    }
+    return (await response.json()) as AvailabilityResponse;
+  } catch (error) {
+    // Our own deadline is a failure to report, not a cancellation to swallow.
+    if (timedOut) throw new Error('availability_timeout');
+    throw error;
+  } finally {
+    window.clearTimeout(timeout);
+    signal?.removeEventListener('abort', abortForCaller);
   }
-  return (await response.json()) as AvailabilityResponse;
 }
 
 export async function createBooking(
