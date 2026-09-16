@@ -48,6 +48,7 @@
   "scripts": {
     "dev": "vite",
     "api": "node scripts/dev-api.mjs",
+    "google:token": "node scripts/google-oauth-token.mjs",
     "build": "node scripts/generate-localized-html.mjs && vite build",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.api.json",
     "preview": "vite preview",
