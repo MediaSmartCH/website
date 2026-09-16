@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
 import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import {
   getLottieAspectRatio,
+  getLottiePoster,
   getLottiePresentation,
   LottieKey,
   preloadLottieSrc,
@@ -43,6 +44,39 @@ function selectSrc(theme: string, pair: { light: string; dark?: string }) {
   return theme === "dark" && pair.dark ? pair.dark : pair.light;
 }
 
+type PosterProps = {
+  src: string;
+  /** Same scale the player applies, so the still frame lands on the same pixels. */
+  scale?: number;
+  /** Off-screen slots defer their poster; an imminent one loads right away. */
+  eager?: boolean;
+};
+
+/**
+ * The animation's first frame, filling its box.
+ *
+ * Decorative, so it stays out of the accessibility tree: the animations carry
+ * no information the surrounding copy does not already give.
+ */
+function LottiePoster({ src, scale = 1, eager = false }: PosterProps) {
+  return (
+    <img
+      src={src}
+      alt=""
+      aria-hidden={true}
+      draggable={false}
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{
+        objectFit: "contain",
+        transform: scale === 1 ? undefined : `scale(${scale})`,
+        transformOrigin: "center center",
+      }}
+    />
+  );
+}
+
 function DotAnimPlayer(props: DotAnimProps) {
   const theme = useAppSelector((state) => state.theme.currentTheme);
   const animationsEnabled = useAppSelector((state) => state.animations.enabled);
@@ -58,6 +92,10 @@ function DotAnimPlayer(props: DotAnimProps) {
   const [stableTheme, setStableTheme] = useState(theme);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [dotLottieInstance, setDotLottieInstance] = useState<DotLottie | null>(null);
+  // The poster stays up until the canvas has actually drawn something. "load"
+  // is too early: it only means the file was parsed, and the canvas is still
+  // blank at that point.
+  const [hasPainted, setHasPainted] = useState(false);
 
   const {
     className,
@@ -132,6 +170,15 @@ function DotAnimPlayer(props: DotAnimProps) {
     };
   }, [animKey, stableTheme, theme]);
 
+  useEffect(() => {
+    if (!dotLottieInstance) return;
+
+    const handleRender = () => setHasPainted(true);
+    dotLottieInstance.addEventListener("render", handleRender);
+
+    return () => dotLottieInstance.removeEventListener("render", handleRender);
+  }, [dotLottieInstance]);
+
   // Imperatively pause/play when the global animations toggle changes so the
   // change takes effect immediately without remounting the player.
   useEffect(() => {
@@ -148,6 +195,9 @@ function DotAnimPlayer(props: DotAnimProps) {
     : staticPair
       ? selectSrc(stableTheme, staticPair)
       : undefined;
+
+  // Only keyed animations have a poster; raw-src callers pass their own markup.
+  const posterUrl = animKey ? getLottiePoster(animKey, stableTheme) : undefined;
 
   const wrapperStyle = useMemo<React.CSSProperties>(() => {
     const nextStyle: React.CSSProperties = {
@@ -213,6 +263,12 @@ function DotAnimPlayer(props: DotAnimProps) {
         dotLottieRefCallback={setDotLottieInstance}
       />
 
+      {/* Sits above the canvas, not below it: until the first frame is drawn the
+          canvas is fully transparent, so anything behind it would show through. */}
+      {posterUrl && !hasPainted && (
+        <LottiePoster src={posterUrl} scale={presentation?.scale} eager={true} />
+      )}
+
       {/* Transparent overlay that intercepts all pointer/touch events to prevent
           right-click saving or dragging the animation when protect is enabled. */}
       {protect && (
@@ -266,6 +322,24 @@ function scheduleIdleMount(callback: () => void): () => void {
   return () => window.clearTimeout(handle);
 }
 
+type PosterBoxProps = {
+  className?: string;
+  style: React.CSSProperties;
+  posterUrl?: string;
+  scale?: number;
+  eager?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
+};
+
+/** The animation's box, showing its still frame and nothing else. */
+function PosterBox({ className, style, posterUrl, scale, eager, ref }: PosterBoxProps) {
+  return (
+    <div ref={ref} aria-hidden={true} className={`relative ${className || ""}`} style={style}>
+      {posterUrl && <LottiePoster src={posterUrl} scale={scale} eager={eager} />}
+    </div>
+  );
+}
+
 /**
  * Viewport gate around the player.
  *
@@ -282,8 +356,11 @@ function scheduleIdleMount(callback: () => void): () => void {
  */
 function DotAnim(props: DotAnimProps) {
   const { className, style } = props;
+  const theme = useAppSelector((state) => state.theme.currentTheme);
   const animKey = hasAnim(props) ? props.anim : undefined;
   const intrinsicAspectRatio = animKey ? getLottieAspectRatio(animKey) : undefined;
+  const presentation = animKey ? getLottiePresentation(animKey) : undefined;
+  const posterUrl = animKey ? getLottiePoster(animKey, theme) : undefined;
 
   const placeholderRef = useRef<HTMLDivElement | null>(null);
   // Browsers without IntersectionObserver render the player straight away.
@@ -338,15 +415,33 @@ function DotAnim(props: DotAnimProps) {
   }, [intrinsicAspectRatio, style]);
 
   if (inView) {
-    return <MemoizedPlayer {...props} />;
+    // The boundary belongs here rather than at the thirteen call sites: reading
+    // the animation URL suspends, and without a nearer boundary each of them
+    // fell back to a spinner — the empty-looking box this poster replaces.
+    return (
+      <Suspense
+        fallback={
+          <PosterBox
+            className={className}
+            style={placeholderStyle}
+            posterUrl={posterUrl}
+            scale={presentation?.scale}
+            eager={true}
+          />
+        }
+      >
+        <MemoizedPlayer {...props} />
+      </Suspense>
+    );
   }
 
   return (
-    <div
+    <PosterBox
       ref={placeholderRef}
-      aria-hidden={true}
-      className={`relative ${className || ""}`}
+      className={className}
       style={placeholderStyle}
+      posterUrl={posterUrl}
+      scale={presentation?.scale}
     />
   );
 }

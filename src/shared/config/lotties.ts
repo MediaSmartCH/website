@@ -104,6 +104,55 @@ const LOTTIE_LOADERS = {
 
 export type LottieKey = keyof typeof LOTTIE_LOADERS;
 
+/** Every catalogued animation, for exhaustive iteration in tests and preloads. */
+export const LOTTIE_KEYS = Object.keys(LOTTIE_LOADERS) as LottieKey[];
+
+/**
+ * Poster stems, relative to `assets/lotties/posters` and without the
+ * `_light` / `_dark` suffix.
+ *
+ * A poster is the animation's first frame, flattened to a ~14kB WebP. DotAnim
+ * paints it the moment a slot appears, so the box is never empty while the
+ * DotLottie runtime and the animation file are still on their way. Regenerate
+ * with `node scripts/generate-lottie-posters.mjs` after touching a .lottie.
+ */
+const LOTTIE_POSTER_STEM: Record<LottieKey, string> = {
+  "home.hero": "home/Home",
+  "home.about": "home/About",
+
+  "it.hero": "it/IT",
+  "it.about": "it/Introduction",
+
+  "it.services.website": "it/Website",
+  "it.services.maintenance": "it/Maintenance",
+  "it.services.optimization": "it/Optimization",
+  "it.services.security": "it/Security",
+  "it.services.backup": "it/Backup",
+  "it.services.support": "it/Support",
+
+  "it.process": "it/Process",
+
+  "video.editing": "video/Editing",
+  "video.live": "video/Live",
+  "video.photography": "video/Photography",
+  "video.rental": "video/Rental",
+  "video.retransmission": "video/Retransmission",
+  "video.production": "video/Video",
+  "video.header": "video/VideoHeader",
+};
+
+// Eager on purpose: these resolve to URL strings, not image data, and the
+// poster is only useful if its address is known synchronously — an extra async
+// hop would reintroduce the very gap it exists to cover.
+const POSTER_URLS = import.meta.glob<string>(
+  "../../assets/lotties/posters/**/*.webp",
+  { eager: true, query: "?url", import: "default" }
+);
+
+function readPosterUrl(stem: string, variant: "light" | "dark") {
+  return POSTER_URLS[`../../assets/lotties/posters/${stem}_${variant}.webp`];
+}
+
 // The React canvas player does not inherit the source animation footprint the
 // same way the old SVG web component did. Keeping the native dimensions here
 // lets DotAnim restore the expected size across all sections without page-level
@@ -220,4 +269,18 @@ export function getLottieAspectRatio(key: LottieKey) {
 
 export function getLottiePresentation(key: LottieKey) {
   return LOTTIE_PRESENTATION[key];
+}
+
+/**
+ * URL of the still frame standing in for an animation until it has drawn.
+ *
+ * Falls back to the light poster for keys that have no dark variant, mirroring
+ * how `resolveLoader` picks the animation file itself.
+ */
+export function getLottiePoster(key: LottieKey, theme: string): string | undefined {
+  const stem = LOTTIE_POSTER_STEM[key];
+  if (!stem) return undefined;
+
+  const preferred = theme === "dark" ? readPosterUrl(stem, "dark") : undefined;
+  return preferred ?? readPosterUrl(stem, "light");
 }
