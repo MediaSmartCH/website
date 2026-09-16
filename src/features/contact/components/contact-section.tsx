@@ -2,6 +2,8 @@ import React from "react";
 import { Checkbox } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { PhoneInput } from "react-international-phone";
+
+import { COUNTRY_FLAGS } from "@features/contact/lib/country-flags";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
@@ -366,6 +368,7 @@ const ContactInner = () => {
               >
                 <PhoneInput
                   defaultCountry="ch"
+                  flags={COUNTRY_FLAGS}
                   value={phoneValue}
                   onChange={(value) => {
                     setPhoneValue(value);

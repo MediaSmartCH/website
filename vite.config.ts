@@ -171,6 +171,16 @@ export default defineConfig(async () => {
     },
     assetsInclude: ["**/*.lottie"],
     build: {
+      /**
+       * Country flags stay as files; everything else keeps the default rule.
+       *
+       * They are 2KB each and there are 218 of them, so inlining put every one
+       * into the contact chunk — 58KB gzipped charged to every visitor, for
+       * images only shown to someone who opens the country selector. As files
+       * the player's `loading="lazy"` fetches just the handful on screen.
+       */
+      assetsInlineLimit: (filePath: string) =>
+        filePath.includes("/assets/flags/") ? false : undefined,
       // Raise the default 500KB limit to account for expected large vendor chunks
       // while still surfacing bundles that are unusually large for this app.
       chunkSizeWarningLimit: 1000,
