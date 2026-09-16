@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, CheckCircle2, Clock, Loader2, Video, X } from 'lucide-react';
+import { ArrowLeft, Clock, Loader2, X } from 'lucide-react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import {
@@ -12,13 +12,7 @@ import BookingForm from '@features/booking/components/booking-form';
 import BookingSuccess from '@features/booking/components/booking-success';
 import TimeStep from '@features/booking/components/booking-time-step';
 import { useBookingScrollLock } from '@features/booking/hooks/use-booking-scroll-lock';
-import {
-  HORIZON_DAYS,
-  dateKeyInBookingTz,
-  formatDayHuman,
-  formatHumanDate,
-  formatTimeOnly,
-} from '@features/booking/lib/booking-formatting';
+import { HORIZON_DAYS, dateKeyInBookingTz, formatHumanDate } from '@features/booking/lib/booking-formatting';
 
 import { useAppSelector } from '@shared/hooks/store-hooks';
 import { useTranslations } from '@shared/i18n/translator';

@@ -3,16 +3,8 @@ import React, { useEffect } from "react";
 import ThemeSwitchOverlay from "@shared/components/theme-switch-overlay";
 import NavbarDesktop from "@shared/components/navbar-desktop";
 import NavbarMobile from "@shared/components/navbar-mobile";
-import { Link } from "react-router-dom";
 
-import BookingButton from "@features/booking/components/booking-button";
-import { useTranslations } from "@shared/i18n/translator";
-import logo from "@assets/images/logo-header.webp";
-import logoDark from "@assets/images/logo-footer.webp";
-import toggler from "@assets/icons/toggler.svg";
 
-import { useLangLink } from "@shared/hooks/use-localized-path";
-import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import {
   resolveThemePreference,
   ThemePreference,
@@ -22,8 +14,6 @@ import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
 import "@styles/components/preloader.css";
 
 const Navbar = () => {
-  const { L, Lhash } = useLangLink();
-
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -49,8 +39,6 @@ const Navbar = () => {
     flipAnimations,
     labels,
   } = useInterfaceControls({ preserveScroll: true });
-
-  const t = useTranslations(languageReducer);
 
   // Both navigations render the same control with the same props.
   const localeControls = {

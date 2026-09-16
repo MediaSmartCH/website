@@ -1,34 +1,13 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link, useSearchParams } from 'react-router-dom';
-import {
-  AlertCircle,
-  ArrowLeft,
-  CalendarClock,
-  CheckCircle2,
-  Loader2,
-  Mail,
-  XCircle,
-} from 'lucide-react';
+import { AlertCircle, ArrowLeft, CalendarClock, Loader2, Mail, XCircle } from 'lucide-react';
 
-import {
-  BookingDetail,
-  BookingSlot,
-  cancelBooking,
-  fetchAvailability,
-  lookupBooking,
-  rescheduleBooking,
-} from '@features/booking/api/booking-api';
+import { BookingDetail, lookupBooking } from '@features/booking/api/booking-api';
 import CancelPanel from '@features/booking/components/cancel-panel';
 import ManageShell from '@features/booking/components/manage-shell';
 import ReschedulePanel from '@features/booking/components/reschedule-panel';
 import SuccessCard from '@features/booking/components/manage-success-card';
-import {
-  BOOKING_TIMEZONE,
-  HORIZON_DAYS,
-  formatHumanDate,
-  formatTimeOnly,
-} from '@features/booking/lib/booking-formatting';
+import { formatHumanDate } from '@features/booking/lib/booking-formatting';
 
 import { useAppSelector } from '@shared/hooks/store-hooks';
 import { useTranslations } from '@shared/i18n/translator';

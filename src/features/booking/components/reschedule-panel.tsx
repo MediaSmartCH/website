@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { AlertCircle, ArrowLeft, CalendarClock, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 
 import BookingCalendar from '@features/booking/components/booking-calendar';
 import {

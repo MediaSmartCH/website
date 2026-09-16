@@ -6,16 +6,7 @@
 
 import React from "react";
 
-import {
-  formatImageCount,
-  formatProjectsCount,
-  getInlineGalleryClassName,
-  getItemImages,
-  getSafeExternalUrl,
-  resolveLocalizedField,
-  type LightboxImage,
-  type PortfolioItem,
-} from "@features/it-services/lib/portfolio-helpers";
+import { formatImageCount, getInlineGalleryClassName, getItemImages, getSafeExternalUrl, resolveLocalizedField, type LightboxImage, type PortfolioItem } from "@features/it-services/lib/portfolio-helpers";
 import { SCROLLABLE_GALLERY_THRESHOLD } from "@features/it-services/lib/portfolio-helpers";
 import type { PortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
 

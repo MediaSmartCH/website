@@ -12,7 +12,6 @@ import {
   OFFICE_MAP_URL,
   SOCIAL_LINKS,
 } from "@shared/constants/contact";
-import { useTranslations } from "@shared/i18n/translator";
 
 import address from "@assets/icons/address.svg";
 import email from "@assets/icons/email.svg";
@@ -22,12 +21,10 @@ import phone from "@assets/icons/phone.svg";
 import telegram from "@assets/icons/telegram.svg";
 
 export interface ContactInfoPanelProps {
-  language: string;
   theme: string;
 }
 
-export default function ContactInfoPanel({ language, theme }: ContactInfoPanelProps) {
-  const t = useTranslations(language);
+export default function ContactInfoPanel({ theme }: ContactInfoPanelProps) {
   const themeReducer = theme;
 
   return (

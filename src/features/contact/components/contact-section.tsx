@@ -1,8 +1,7 @@
 import React from "react";
-import { ChevronDown, Check } from "lucide-react";
 import { Checkbox } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import { PhoneInput, removeDialCode, guessCountryByPartialPhoneNumber } from "react-international-phone";
+import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
@@ -22,12 +21,6 @@ import { useIntentToggle } from "@features/contact/hooks/use-intent-toggle";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 
-import email from "@assets/icons/email.svg";
-import address from "@assets/icons/address.svg";
-import phone from "@assets/icons/phone.svg";
-import insta from "@assets/icons/contactInsta.svg";
-import linkedin from "@assets/icons/contactLinkedin.svg";
-import telegram from "@assets/icons/telegram.svg";
 import contactUser from "@assets/icons/contactUser.svg";
 import contactEmail from "@assets/icons/contactEmail.svg";
 import contactPhone from "@assets/icons/contactPhone.svg";
@@ -40,14 +33,6 @@ import ScopedRecaptchaProvider from "@shared/components/scoped-recaptcha-provide
 import ProjectTypeDropdown from "@features/contact/components/project-type-dropdown";
 import ContactInfoPanel from "@features/contact/components/contact-info-panel";
 import ContactSuccess from "@features/contact/components/contact-success";
-import {
-  CONTACT_EMAIL,
-  CONTACT_EMAIL_DISPLAY,
-  CONTACT_PHONE,
-  CONTACT_PHONE_DISPLAY,
-  OFFICE_MAP_URL,
-  SOCIAL_LINKS,
-} from "@shared/constants/contact";
 import { logger } from "@shared/lib/logger";
 
 const ContactInner = () => {
@@ -183,7 +168,7 @@ const ContactInner = () => {
           <div
             className={`text-body-on-surface flex flex-col-reverse lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-y-[35px] `}
           >
-            <ContactInfoPanel language={languageReducer} theme={themeReducer} />
+            <ContactInfoPanel theme={themeReducer} />
 
             {done ? (
               <ContactSuccess

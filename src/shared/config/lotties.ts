@@ -1,7 +1,6 @@
 type LottieAssetModule = { default: string };
 type LottieVariantLoader = () => Promise<LottieAssetModule>;
 type ResourceStatus = "pending" | "resolved" | "rejected";
-type LottieDimensions = { width: number; height: number };
 type LottieFit = "contain" | "cover" | "fill" | "none" | "fit-width" | "fit-height";
 type LottiePresentation = {
   width: number;

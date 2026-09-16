@@ -25,7 +25,7 @@ function pressKeys(keys: string[]) {
 }
 
 function makeURLConstructorMock() {
-  return vi.fn(function (this: URL, input: string, base?: string) {
+  return vi.fn(function (this: URL, input: string, _base?: string) {
     const resolvedInput = String(input);
     const protocol = resolvedInput.match(/^[a-zA-Z][a-zA-Z\d+.-]*:/)?.[0] ?? "https:";
     return {

@@ -15,7 +15,6 @@ import { useTranslations } from "@shared/i18n/translator";
 
 export interface ConsentSummaryPanelProps {
   language: string;
-  theme: string;
   themeClasses: ConsentThemeClasses;
   localeControls: ConsentLocaleControlsProps;
   privacyPath: string;
@@ -29,7 +28,6 @@ export interface ConsentSummaryPanelProps {
 
 export default function ConsentSummaryPanel({
   language,
-  theme,
   themeClasses,
   localeControls,
   privacyPath,
@@ -40,7 +38,6 @@ export default function ConsentSummaryPanel({
   onCustomize,
 }: ConsentSummaryPanelProps) {
   const t = useTranslations(language);
-  const themeReducer = theme;
 
   return (
               <div className="p-6 md:p-8">

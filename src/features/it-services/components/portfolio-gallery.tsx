@@ -5,27 +5,9 @@ import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import { useModalScrollLock } from "@features/it-services/hooks/use-modal-scroll-lock";
 import PortfolioModal from "@features/it-services/components/portfolio-modal";
 import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
-import {
-  formatImageCount,
-  formatPreviewCount,
-  formatProjectsCount,
-  formatRemainingProjects,
-  formatRemainingProjectsCta,
-  getInlineGalleryClassName,
-  getItemImages,
-  getSafeExternalUrl,
-  PREVIEW_LIMIT,
-  resolveLocalizedField,
-  resolveScreenshotUrl,
-  SCROLLABLE_GALLERY_THRESHOLD,
-  truncateText,
-  type LightboxImage,
-  type PortfolioData,
-  type PortfolioItem,
-} from "@features/it-services/lib/portfolio-helpers";
+import { formatPreviewCount, formatProjectsCount, formatRemainingProjects, formatRemainingProjectsCta, getItemImages, getSafeExternalUrl, PREVIEW_LIMIT, resolveLocalizedField, truncateText, type LightboxImage, type PortfolioData } from "@features/it-services/lib/portfolio-helpers";
 
 import { useTranslations } from "@shared/i18n/translator";
-import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
 
 const PortfolioGallery = () => {

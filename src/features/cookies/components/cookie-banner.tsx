@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  X,
-  Cookie,
-  Shield,
-  BarChart3,
-  Settings,
-  Zap
-} from "lucide-react";
-import { Link, useInRouterContext } from "react-router-dom";
+import { Cookie } from "lucide-react";
+import { useInRouterContext } from "react-router-dom";
 
-import CategoryToggle from "@features/cookies/components/category-toggle";
 import CompactConsentBar from "@features/cookies/components/compact-consent-bar";
 import ConsentPreferencesPanel from "@features/cookies/components/consent-preferences-panel";
 import ConsentSummaryPanel from "@features/cookies/components/consent-summary-panel";
@@ -21,7 +13,6 @@ import ThemeSwitchOverlay from "@shared/components/theme-switch-overlay";
 import { useLocationPath } from "@shared/hooks/use-location-path";
 import { useTranslations } from "@shared/i18n/translator";
 import { CONSTRUCTION_CONFIG } from "@shared/config/construction";
-import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
 
 import { OPEN_COOKIE_SETTINGS_EVENT } from "@store/slices/common/cookieUtils";
@@ -61,22 +52,7 @@ const ModernCookieBanner = () => {
   const [isThemeChanging, setIsThemeChanging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const {
-    googleAnalytics,
-    themePreference,
-    languagePreference,
-    setGoogleAnalytics,
-    setThemePreference,
-    setLanguagePreference,
-    hasStoredConsent,
-    functionalityState,
-    performanceState,
-    toggleFunctionality,
-    togglePerformance,
-    acceptAll,
-    rejectAll,
-    saveCurrent,
-  } = consent;
+  const { hasStoredConsent, acceptAll, rejectAll, saveCurrent } = consent;
   const showCompactBanner = actuallyVisible && isMobile && !showCustomize;
 
   const handleThemeChange = (nextTheme: ThemePreference) => {
@@ -236,7 +212,6 @@ const ModernCookieBanner = () => {
               {!showCustomize ? (
                 <ConsentSummaryPanel
                   language={languageReducer}
-                  theme={themeReducer}
                   themeClasses={themeClasses}
                   localeControls={localeControls}
                   privacyPath={privacyPath}
