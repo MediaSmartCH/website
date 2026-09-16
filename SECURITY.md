@@ -128,6 +128,28 @@ So instead:
   touch, so a crawler that renders the page still finds no link. A click or an
   `Enter` that never hovered opens the mail client from the handler, so the
   visitor never notices;
+- the address **text** is also withheld from a crawler that renders the page.
+  Until the first pointer move, scroll, tap or keypress anywhere on the page,
+  the DOM holds it backwards (`hc.tramsaidem@olleh`) with a bidi override
+  putting it back in reading order. No address pattern matches that, and
+  neither the domain nor the local part survives as a searchable substring. A
+  render-and-dump scraper never performs any of those events, because
+  extracting text does not require them; a person performs one within a second
+  without noticing.
+
+  Copying is itself text extraction, which is why the scrambling is temporary
+  rather than permanent: once a visitor has interacted, the DOM holds ordinary
+  text and selection, double-click, copy, find-in-page and assistive technology
+  all behave normally. Selecting requires a pointer or a key, so the swap has
+  always happened before anyone could copy anything.
+
+  Reverse one text node, never several pieces: pieces are separate inline
+  boxes, which lose sub-pixel glyph positioning at every seam and stop
+  `text-decoration` from propagating into them. Measured on the privacy page,
+  the single-node version reports **zero** differing pixels and an identical
+  bounding box across the swap; a four-piece split differed on 2.8% of pixels
+  and rendered 8px taller. If this is ever changed, measure it again rather
+  than assuming;
 - structured data carries no `email`. It is published on every page and is
   machine-readable by design, which made it the easiest address on the site to
   collect; the contact page URL and the phone number serve the same purpose;
