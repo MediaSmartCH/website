@@ -145,9 +145,18 @@ the address secret, which is why the anti-abuse work above lives on the server.
 
 The policy in `vercel.json` allows only what the site actually loads: its own
 origin, Google Fonts for styles and fonts, reCAPTCHA, and Vercel Analytics.
-`img-src` is restricted to our own origin, `data:`/`blob:` and the reCAPTCHA
-badge — **if a portfolio item ever points at an image on another domain, that
-domain has to be added here or the image will not render.**
+`img-src` is restricted to our own origin, `data:`/`blob:`, the reCAPTCHA badge
+and `cdnjs.cloudflare.com` — **if a portfolio item ever points at an image on
+another domain, that domain has to be added here or the image will not render.**
+
+`cdnjs.cloudflare.com` is there for one reason: `react-international-phone`
+renders each country flag as an `<img>` pointing at the Twemoji SVG set hosted
+there. Removing it does not raise an error anywhere — the contact form's country
+selector simply shows empty squares where the flags belong, which is exactly how
+this entry came to be needed. Serving those SVGs ourselves would close the last
+third-party image request and stop visitors' browsers reaching Cloudflare at
+all; it means vendoring roughly 240 files and passing them through the library's
+`flags` prop.
 
 `script-src` still carries `'unsafe-inline'`. It cannot be dropped as things
 stand: react-helmet injects the structured-data block inline, and CSP applies to
