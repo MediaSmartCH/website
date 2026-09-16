@@ -1,0 +1,10 @@
+export { default as navbar } from "@shared/i18n/en/navbar";
+export { default as footer } from "@shared/i18n/en/footer";
+export { default as home } from "@shared/i18n/en/home";
+export { default as it } from "@shared/i18n/en/it";
+export { default as video } from "@shared/i18n/en/video";
+export { default as error404 } from "@shared/i18n/en/error404";
+export { default as cookies } from "@shared/i18n/en/cookies";
+export { default as underconstruction } from "@shared/i18n/en/underconstruction";
+export { default as booking } from "@shared/i18n/en/booking"
+export { default as privacy } from "@shared/i18n/en/privacy"

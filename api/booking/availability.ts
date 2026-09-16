@@ -1,9 +1,13 @@
 import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
-  checkRateLimit,
+  enforceRateLimit,
   getRateLimitIdentifier,
 } from '../_shared/rate-limit.js';
+import {
+  applyApiResponseHeaders,
+  guardRequest,
+} from '../_shared/request-guard.js';
 
 import { getBusyIntervals } from './_lib/google-calendar.js';
 import { buildAvailableSlots } from './_lib/slots.js';
@@ -12,18 +16,23 @@ import { parseAvailabilityRange } from './_lib/validators.js';
 const AVAILABILITY_RATE_LIMIT = {
   limit: 60,
   windowMs: 5 * 60 * 1000,
+  // Browsing the calendar legitimately costs a handful of calls per visit, and
+  // each shared-store lookup is a round-trip the visitor waits for. Stay
+  // per-instance for normal browsing; escalate once the pattern stops looking
+  // like one person picking a slot.
+  durableAfter: 10,
 };
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  res.setHeader('Allow', 'GET');
   // Slots are computed against live calendar data; never cache.
-  res.setHeader('Cache-Control', 'no-store');
+  applyApiResponseHeaders(res, ['GET']);
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  const guard = guardRequest(req, { methods: ['GET'] });
+  if (!guard.ok) {
+    return res.status(guard.status).json({ success: false, message: guard.message });
   }
 
-  const rateLimitResult = checkRateLimit({
+  const rateLimitResult = await enforceRateLimit({
     namespace: 'booking-availability',
     identifier: getRateLimitIdentifier(req.headers),
     ...AVAILABILITY_RATE_LIMIT,

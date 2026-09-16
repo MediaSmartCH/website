@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const outputDir = path.join(rootDir, "generated-pages");
-const seoDataPath = path.join(rootDir, "src", "services", "seo", "routeSeoData.json");
+const seoDataPath = path.join(rootDir, "src", "shared", "seo", "route-seo-data.json");
 
 const SITE_NAME = "MediaSmart";
 const SITE_URL = "https://mediasmart.ch";
@@ -122,7 +122,7 @@ ${alternateLocaleBlock}  <meta data-rh="true" name="twitter:card" content="summa
   <meta data-rh="true" name="twitter:image:alt" content="${escapeHtml(seo.shareImageAlt)}" />
 ${alternateLinks}${canonicalLink}  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Red+Hat+Display:wght@300..900&family=Mulish:wght@200..1000&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Red+Hat+Display:wght@300..700&display=swap" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/logo192.png" />
   <link rel="manifest" href="/manifest.json" />
@@ -131,7 +131,7 @@ ${alternateLinks}${canonicalLink}  <link rel="preconnect" href="https://fonts.go
 
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/index.tsx"></script>
+  <script type="module" src="/src/app/entries/${language}.tsx"></script>
 </body>
 
 </html>

@@ -21,6 +21,13 @@ Marketing website built with React, TypeScript, and Vite, deployed on Vercel wit
 - pnpm 10.x
 - Vercel CLI for local project sync
 
+`mise.toml` pins Node 20 for this directory — `mise trust && mise install` sets it
+up. The version is not cosmetic: `engines.node` in package.json is what Vercel
+reads to pick the runtime for the functions in `api/`, so anything else means
+developing against a different runtime than production (and pnpm warns about it
+on every command). With another version manager, read the version from
+`mise.toml`.
+
 ## Setup
 
 1. Install dependencies:
@@ -80,6 +87,37 @@ Generate a bundle report:
 make analyze
 ```
 
+## Quality Checks
+
+```bash
+make typecheck   # tsc over src (tsconfig.json) and over api + scripts (tsconfig.api.json)
+make test        # vitest
+```
+
+Both run on every pull request, in the `audit` job of `.github/workflows/security.yml`,
+before the build check.
+
+The two tsconfigs exist because `src` is browser code and `api` is Node: the API
+needs `process` and `Buffer` in scope, and the browser code must not have them.
+
+### Visual non-regression
+
+`scripts/capture-style-snapshot.mjs` fingerprints every route in both languages
+and both themes by resolved colour, typography and box size, keyed on visible
+text so it survives class and DOM churn. Two captures of unchanged code are
+byte-identical, so any reported difference is real.
+
+```bash
+pnpm dev
+node scripts/capture-style-snapshot.mjs --out .snapshots/before.json
+# ... make changes ...
+node scripts/capture-style-snapshot.mjs --out .snapshots/after.json
+node scripts/diff-style-snapshot.mjs .snapshots/before.json .snapshots/after.json
+```
+
+Puppeteer is not a dependency of this repo; the header of the capture script
+explains how to provide it.
+
 ## Environment Variables
 
 Application variables:
@@ -88,6 +126,11 @@ Application variables:
 - `REACT_APP_RECAPTCHA_SITE_KEY`: backward-compatible fallback while the Vercel project is still carrying the legacy CRA variable
 - `RECAPTCHA_SECRET_KEY`: server-side secret used by `/api/send` and `/api/newsletter`
 - `RESEND_API_KEY`: server-side key used by `/api/send` and `/api/newsletter`
+- `SITE_ORIGIN`: canonical public origin. Decides which `Origin` headers and reCAPTCHA hostnames are accepted, and builds the booking manage links
+- `ALLOWED_ORIGINS` (optional): extra origins the site is served from, comma-separated
+- `SECURITY_COUNTER_SALT` (optional): salt for the hashed abuse-counter keys; falls back to `BOOKING_HMAC_SECRET`
+- `RECAPTCHA_MIN_SCORE` (optional): minimum v3 score, defaults to `0.5`
+- `CONTACT_CONFIRMATION_RECIPIENT_LIMIT`, `CONTACT_CONFIRMATION_DAILY_LIMIT`, `BOOKING_MAIL_RECIPIENT_LIMIT`, `BOOKING_MAIL_DAILY_LIMIT` (optional): outbound-mail ceilings, defaults in `api/_shared/outbound-mail-guard.ts`
 
 Vercel project sync variables:
 
@@ -130,6 +173,12 @@ The client now pins API requests with `x-deployment-id`, so the code is already 
 - reCAPTCHA is now enforced server-side on each form submission. The public client no longer performs a standalone `/api/verify-recaptcha` call.
 - The under-construction newsletter form now uses the server-side Resend flow instead of exposing a browser-side email delivery provider.
 - Public form endpoints add `Cache-Control: no-store`, hidden honeypot fields, and stricter payload length validation.
+- Every state-changing endpoint is guarded before its payload is parsed: allowed method, an `Origin` on one of our own pages, a JSON content type, and a body-size ceiling (`api/_shared/request-guard.ts`).
+- Rate limits are counted in shared Cloudflare D1 counters as well as in memory, so a burst spread across serverless instances is caught. Requires migration `0002`; without it the counters fail soft to per-instance limits.
+- Mail addressed to a visitor-supplied address is budgeted per recipient and per day (`api/_shared/outbound-mail-guard.ts`), so the contact form cannot be used to mail a third party at scale. The internal notification is never budgeted.
+- Contact addresses are assembled at runtime and never appear in the HTML or the JS bundle; `ObfuscatedEmail` attaches the `mailto:` only once a visitor hovers or focuses the link.
+
+[`SECURITY.md`](SECURITY.md) explains what each layer does, what it deliberately does not do, and the trade-offs behind the CSP.
 
 The GitHub workflow [`.github/workflows/sync-vercel-project-settings.yml`](.github/workflows/sync-vercel-project-settings.yml) can re-apply those settings manually when you want GitHub to enforce the tracked Vercel configuration.
 
@@ -161,6 +210,7 @@ Main targets:
 - `make analyze`
 - `make clean`
 - `make check-env`
+- `make typecheck`
 - `make test`
 - `make test-watch`
 - `make test-coverage`
@@ -175,47 +225,78 @@ Main targets:
 
 ```text
 api/                              Vercel Functions
+  _shared/                        Cross-endpoint helpers (mailers, rate limit, reCAPTCHA)
+  _tests/                         Handler contract tests
+  booking/_lib/                   Booking domain: slots, tokens, D1, Google Calendar
 config/                           Deployment settings tracked in git
 public/                           Static assets
-scripts/                          Local tooling and Vercel sync scripts
-src/_archive/                     Inactive components kept for future reimplementation
-src/assets/lotties/               .lottie animation files (light + dark variants per animation)
-src/components/
-  common/                         Shared UI components (Navbar, Footer, Contact, …)
-    DotAnim.tsx                   Single animation player (wraps DotLottieReact)
-  layout/                         Routing infrastructure (LangLayout, ErrorBoundary, RouteSeo)
-  preloader/                      Full-page loading spinner
-  presentation/                   Page-specific section components
-    cookies/                      Cookie consent banner
-    home/                         Home page sections
-    itServices/                   IT services page sections
-    privacy-policy/               Privacy policy page (single unified component)
-    videoServices/                Video services page sections
-src/config/
-  Config.tsx                      React Router configuration
-  lotties.ts                      Animation registry: keys, lazy loaders, and dimensions
-src/pages/                        Route-level page wrappers
-src/services/
-  api/                            Fetch helpers and reCAPTCHA client
-  aos/                            AOS animation timing utilities
-  hooks/                          Custom React hooks
-  locales/                        i18n translation files (en/, fr/) + safe accessor
-  router/                         Language-aware link helpers
-  seo/                            SEO route metadata
-src/store/
+scripts/                          Local tooling, Vercel sync, visual-regression snapshots
+src/app/                          Application shell — nothing feature-specific lives here
+  entries/                        One entry point per locale (fr.tsx, en.tsx)
+  layout/                         site-layout, lang-layout, route-seo, error-boundary
+  bootstrap.tsx                   Mounts React once the active locale is loaded
+  router.tsx                      React Router configuration
+src/features/                     One folder per product area, self-contained
+  booking/                        Modal, calendar, manage page, booking API client
+  contact/                        Contact section and form
+  cookies/                        Consent banner
+  error/  home/  it-services/  privacy-policy/  support-contract/
+  under-construction/  video-services/
+    components/                   Sections rendered by that feature only
+    api/ · data/                  Feature-owned data access and fixtures
+src/shared/                       Reusable across features, owns no product logic
+  components/                     navbar, footer, selectors, dot-anim, rich-text, backdrops
+  config/                         languages, lotties, construction flag
+  constants/                      contact details, social links
+  hooks/                          store-hooks, use-cookie-consent, use-interface-controls, …
+  i18n/                           Translation bundles (en/, fr/), registry and translator
+  lib/                            fetch-with-deployment, recaptcha, scroll-animations
+  seo/                            Route metadata
+  types/                          Ambient module declarations
+src/store/                        Redux store
   slices/common/                  animationsSlice, themeSlice, languageSlice, cookieUtils
+src/styles/                       Global stylesheets
+  tokens.css                      Design tokens: raw palette + per-theme roles
+  app.css                         Barrel; import order is the cascade order
+  base.css · sections.css · responsive.css
+  components/                     buttons, forms, phone-input, faq, preloader
+src/test/                         Vitest setup and module mocks
 ```
+
+## Styling
+
+Colours go through design tokens, never a hex value in the JSX.
+
+`src/styles/tokens.css` has two layers. `--palette-*` on `:root` holds the raw
+colours, named after what they look like. `--color-*` on `.App` and `.AppDark`
+assigns them to semantic roles, named after what they are for. `.App` /
+`.AppDark` already wrapped the whole tree, so the theme switch needs no extra
+markup.
+
+`tailwind.config.js` exposes the roles as utilities, so a component writes
+`text-heading` or `bg-surface` and gets the right colour in either theme —
+instead of the `isLight ? "text-[#14172D]" : "text-[#F6F6F6]"` ternaries this
+replaced.
+
+To add a colour: add the raw value to `--palette-*`, assign it to a role in both
+theme blocks, register the role in `tailwind.config.js`, then use the class.
+
+Some roles resolve to the same colour in one theme and differ in the other —
+`heading`, `heading-strong` and `ink` are all `#F6F6F6` in dark mode. They stay
+separate because merging them would change the light theme. That is a design
+inconsistency worth resolving deliberately, not a refactoring one.
 
 ## Internationalization (i18n)
 
-All user-facing text is managed through translation files in `src/services/locales/`:
+All user-facing text is managed through translation files in `src/shared/i18n/`:
 
 ```text
-src/services/locales/
-  en/          English translations (navbar, footer, home, it, video, cookies, privacy, …)
-  fr/          French translations (mirror structure)
-  index.ts     Master dictionary — registers each namespace for both languages
-  safe.ts      useTranslations(lang) hook — dot-notation accessor with fallback
+src/shared/i18n/
+  en/            English translations (navbar, footer, home, it, video, cookies, privacy, …)
+  fr/            French translations (mirror structure)
+  registry.ts    Per-locale loader — each entry point registers its own bundle
+  index.ts       Dictionary facade over the registry
+  translator.ts  useTranslations(lang) hook — dot-notation accessor with fallback
 ```
 
 To add a new translated string:
@@ -223,11 +304,11 @@ To add a new translated string:
 1. Add the key to both `en/<namespace>.ts` and `fr/<namespace>.ts`.
 2. The key is immediately accessible via `t.text("namespace.key")` in any component that calls `useTranslations(languageReducer)`.
 
-Supported languages are defined in `src/config/languages.ts`. The active language is stored in Redux (`languageSlice`) and synced to the `/:lang/` URL prefix by `LangLayout`.
+Supported languages are defined in `src/shared/config/languages.ts`. The active language is stored in Redux (`languageSlice`) and synced to the `/:lang/` URL prefix by `LangLayout`.
 
 ## Cookies & Consent
 
-Cookie consent is managed by `src/components/presentation/cookies/index.tsx` (the `ModernCookieBanner` component). Consent state is persisted in `localStorage` via `src/store/slices/common/cookieUtils.ts`.
+Cookie consent is managed by `src/features/cookies/components/cookie-banner.tsx` (the `ModernCookieBanner` component). Consent state is persisted in `localStorage` via `src/store/slices/common/cookieUtils.ts`.
 
 Three optional cookie categories are presented to the user:
 
@@ -261,7 +342,7 @@ Animations are powered by `@lottiefiles/dotlottie-react`. The WASM runtime is bu
 
 1. Export two `.lottie` files from After Effects / LottieFiles: one for light mode, one for dark mode.
 2. Drop them in `src/assets/lotties/<section>/`.
-3. Add a new entry to `LOTTIE_LOADERS` in `src/config/lotties.ts` with lazy `import()` calls for both variants.
+3. Add a new entry to `LOTTIE_LOADERS` in `src/shared/config/lotties.ts` with lazy `import()` calls for both variants.
 4. Add a matching entry to `LOTTIE_PRESENTATION` in the same file with the animation's native pixel dimensions (and an optional `scale` factor if it needs a visual boost).
 5. Use `<DotAnim anim="your.key" />` anywhere in the component tree.
 

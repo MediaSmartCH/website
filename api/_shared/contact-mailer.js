@@ -317,15 +317,28 @@ function buildContactEmails(payload) {
 }
 
 /**
+ * Sends the notification to us and, unless suppressed, the copy to the visitor.
+ *
+ * The two mails have very different risk profiles. The internal one goes to a
+ * fixed address we own and must always be attempted — it is the actual
+ * enquiry. The confirmation goes wherever the form said, which is what makes
+ * it worth budgeting; `sendConfirmation: false` drops it while still
+ * delivering the enquiry, so a visitor's message is never lost to an
+ * anti-abuse ceiling.
+ *
  * @param {{ emails: { send: (...args: any[]) => Promise<{ error?: unknown }> } }} resend
  * @param {ContactPayload} payload
+ * @param {{ sendConfirmation?: boolean }} [options]
  */
-async function sendContactEmails(resend, payload) {
+async function sendContactEmails(resend, payload, options = {}) {
+  const sendConfirmation = options.sendConfirmation !== false;
   const emails = buildContactEmails(payload);
 
   const [internal, confirm] = await Promise.all([
     resend.emails.send(emails.internal),
-    resend.emails.send(emails.confirm),
+    sendConfirmation
+      ? resend.emails.send(emails.confirm)
+      : Promise.resolve({ skipped: true }),
   ]);
 
   const hasInternalError = internal.error != null;
@@ -342,6 +355,7 @@ async function sendContactEmails(resend, payload) {
   return {
     internal,
     confirm,
+    confirmationSent: sendConfirmation && !hasConfirmError,
     error: combinedError,
   };
 }

@@ -1,10 +1,18 @@
 import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
+  BOOKING_MAIL_POLICY,
+  reserveOutboundMail,
+} from '../_shared/outbound-mail-guard.js';
+import {
   applyRateLimitHeaders,
-  checkRateLimit,
+  enforceRateLimit,
   getRateLimitIdentifier,
 } from '../_shared/rate-limit.js';
 import recaptcha from '../_shared/recaptcha.js';
+import {
+  applyApiResponseHeaders,
+  guardRequest,
+} from '../_shared/request-guard.js';
 
 import {
   BOOKING_TIMEZONE,
@@ -36,14 +44,15 @@ const CREATE_RATE_LIMIT = {
 };
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  res.setHeader('Allow', 'POST');
-  res.setHeader('Cache-Control', 'no-store');
+  applyApiResponseHeaders(res, ['POST']);
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  const guard = guardRequest(req, { methods: ['POST'], maxBodyBytes: 16 * 1024 });
+  if (!guard.ok) {
+    console.warn(`booking/create refused: ${guard.reason}`);
+    return res.status(guard.status).json({ success: false, message: guard.message });
   }
 
-  const rateLimitResult = checkRateLimit({
+  const rateLimitResult = await enforceRateLimit({
     namespace: 'booking-create',
     identifier: getRateLimitIdentifier(req.headers),
     ...CREATE_RATE_LIMIT,
@@ -79,6 +88,21 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       .json({ success: false, message: recaptchaResult.message });
   }
 
+  // A booking always mails the attendee. Claiming that budget before we touch
+  // the calendar means one address cannot be used to fill the agenda — and be
+  // mailed for it — over and over, and that a distributed attempt runs out of
+  // site-wide allowance before it runs out of slots. Rejected here nothing has
+  // been written, so there is no state to unwind.
+  const mailBudget = await reserveOutboundMail(
+    BOOKING_MAIL_POLICY,
+    parsed.value.email,
+  );
+
+  if (!mailBudget.allowed) {
+    console.warn(`booking/create refused by the ${mailBudget.refusedBy} mail budget`);
+    return res.status(429).json({ success: false, message: 'Rate limited' });
+  }
+
   const start = parsed.value.startUtc;
   const end = new Date(start.getTime() + MEETING_DURATION_MIN * 60_000);
 
@@ -92,10 +116,12 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     );
   } catch (err) {
     console.error('booking/create freebusy failed', err);
+    await mailBudget.release();
     return res.status(502).json({ success: false, message: 'Calendar unavailable' });
   }
 
   if (!isSlotValid(start, busy)) {
+    await mailBudget.release();
     return res.status(409).json({
       success: false,
       message: 'Slot is no longer available',
@@ -144,6 +170,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       ],
     );
   } catch (err) {
+    await mailBudget.release();
     if (isUniqueConstraintError(err)) {
       return res
         .status(409)
@@ -169,7 +196,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     });
   } catch (err) {
     console.error('booking/create calendar insert failed; releasing slot', err);
-    await releaseBookingRow(bookingId);
+    await Promise.all([releaseBookingRow(bookingId), mailBudget.release()]);
     return res.status(502).json({ success: false, message: 'Could not create event' });
   }
 
@@ -192,6 +219,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     await Promise.allSettled([
       deleteEvent(event.id),
       releaseBookingRow(bookingId),
+      mailBudget.release(),
     ]);
     return res.status(500).json({ success: false, message: 'Could not save booking' });
   }
@@ -222,6 +250,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     // can read the confirmation page; we'll see the missing email in logs and
     // can manually follow up.
     console.error('booking/create email send failed', err);
+    await mailBudget.release();
   }
 
   // Look up the canonical row so the response always reflects what is stored.

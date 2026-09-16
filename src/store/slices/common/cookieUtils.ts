@@ -67,11 +67,11 @@ export function safeJSONParse<T>(jsonString: unknown, fallback: T): T {
 }
 
 // Reads cookie consent from localStorage; removes the entry if it is corrupted
-export function getSafeConsentData(): Record<string, any> | null {
+export function getSafeConsentData(): Record<string, unknown> | null {
   try {
     const stored = localStorage.getItem("cookie_consent");
     if (!stored) return null;
-    const data = safeJSONParse<Record<string, any>>(stored, null as any);
+    const data = safeJSONParse<Record<string, unknown> | null>(stored, null);
     if (data && typeof data === "object") return data;
     localStorage.removeItem("cookie_consent");
     return null;

@@ -230,3 +230,6 @@ TODO.md
 package-lock.json
 yarn.lock
 .env*.local
+
+# Visual non-regression snapshots (local only)
+.snapshots/

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
+import { parseAvailabilityRange } from './validators.js';
 import {
   buildAvailableSlots,
   isSlotValid,
@@ -170,5 +171,36 @@ describe('isSlotValid', () => {
     ];
     // 09:00 UTC start overlaps the 09:00–10:00 busy block.
     expect(isSlotValid(utc(2027, 2, 15, 9, 0), busyMid, nowMs)).toBe(false);
+  });
+});
+
+describe('buildAvailableSlots — the last day of a whole-day range', () => {
+  /** Mirrors the endpoint: parse the query, then generate from what it yields. */
+  function slotsForQuery(from: string, to: string, nowMs: number) {
+    const range = parseAvailabilityRange(from, to);
+    if (!range.ok) throw new Error('range rejected');
+    return buildAvailableSlots({ from: range.value.from, to: range.value.to, busy: [], nowMs });
+  }
+
+  it('offers slots on the final day the calendar shows', () => {
+    // 2027-02-15 Monday … 2027-02-19 Friday, asked for five days ahead so the
+    // horizon cap cannot clip the end.
+    const slots = slotsForQuery('2027-02-15', '2027-02-19', utc(2027, 2, 14, 9).getTime());
+
+    const onLastDay = slots.filter((slot) => slot.startUtc.startsWith('2027-02-19'));
+    expect(onLastDay.length).toBeGreaterThan(0);
+  });
+
+  it('treats a single bare date as that one day', () => {
+    const slots = slotsForQuery('2027-02-18', '2027-02-18', utc(2027, 2, 16, 9).getTime());
+
+    expect(slots.length).toBeGreaterThan(0);
+    expect(slots.every((slot) => slot.startUtc.startsWith('2027-02-18'))).toBe(true);
+  });
+
+  it('still stops before a day outside the range', () => {
+    const slots = slotsForQuery('2027-02-15', '2027-02-17', utc(2027, 2, 14, 9).getTime());
+
+    expect(slots.some((slot) => slot.startUtc.startsWith('2027-02-18'))).toBe(false);
   });
 });

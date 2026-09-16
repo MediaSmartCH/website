@@ -3,10 +3,11 @@ import type { ApiRequest, ApiResponse } from './_shared/http-types.js';
 import newsletterMailer from './_shared/newsletter-mailer.js';
 import {
   applyRateLimitHeaders,
-  checkRateLimit,
+  enforceRateLimit,
   getRateLimitIdentifier,
 } from './_shared/rate-limit.js';
 import recaptcha from './_shared/recaptcha.js';
+import { applyApiResponseHeaders, guardRequest } from './_shared/request-guard.js';
 
 const { newsletterApiErrors, sendNewsletterEmail, validateNewsletterPayload } = newsletterMailer;
 const { extractClientIp, verifyRecaptcha } = recaptcha;
@@ -17,15 +18,16 @@ const NEWSLETTER_RATE_LIMIT = {
 };
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  res.setHeader('Allow', 'POST');
-  res.setHeader('Cache-Control', 'no-store');
+  applyApiResponseHeaders(res, ['POST']);
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  const guard = guardRequest(req, { methods: ['POST'], maxBodyBytes: 4 * 1024 });
+  if (!guard.ok) {
+    console.warn(`Newsletter request refused: ${guard.reason}`);
+    return res.status(guard.status).json({ success: false, message: guard.message });
   }
 
   const clientIp = extractClientIp(req.headers);
-  const rateLimitResult = checkRateLimit({
+  const rateLimitResult = await enforceRateLimit({
     namespace: 'newsletter',
     identifier: getRateLimitIdentifier(req.headers),
     ...NEWSLETTER_RATE_LIMIT,

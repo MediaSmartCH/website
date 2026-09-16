@@ -1,0 +1,110 @@
+/**
+ * Button variants.
+ *
+ * Six variants exist because six were authored, and they are NOT
+ * interchangeable: padding, fill and hover treatment all differ. Verify with
+ * the style snapshot before merging any of them.
+ */
+
+/* navbar */
+.navbar-btn {
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navbar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(181, 20, 253, 0.35);
+}
+
+.navbar-btn:active {
+  transform: translateY(0px) scale(0.97);
+}
+
+.hero-btn {
+  box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.custom-btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-btn .custom-btn-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.custom-btn::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.custom-btn:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(181, 20, 253, 0.35);
+}
+
+.custom-btn:hover::after {
+  opacity: 1;
+}
+
+.custom-btn:active {
+  transform: translateY(0px) scale(0.97);
+  box-shadow: 0 3px 8px rgba(181, 20, 253, 0.25);
+}
+
+/* booking */
+.custom-btn2 {
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  z-index: 1;
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-btn,
+.hero-contact-btn,
+.custom-btn,
+.custom-btn2,
+.booking-btn,
+.navbar-btn {
+  font-family: "Poppins", sans-serif;
+}
+
+.custom-btn2::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 0;
+}
+
+.custom-btn2:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(181, 20, 253, 0.35);
+}
+
+.custom-btn2:hover::after {
+  opacity: 1;
+}
+
+.custom-btn2:active {
+  transform: translateY(0px) scale(0.97);
+  box-shadow: 0 3px 8px rgba(181, 20, 253, 0.25);
+}

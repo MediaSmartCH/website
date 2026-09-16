@@ -1,15 +1,19 @@
 import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
   applyRateLimitHeaders,
-  checkRateLimit,
+  enforceRateLimit,
   getRateLimitIdentifier,
 } from '../_shared/rate-limit.js';
+import {
+  applyApiResponseHeaders,
+  guardRequest,
+} from '../_shared/request-guard.js';
 
 import { getRuntimeEnv } from './_lib/config.js';
 import { exec, queryFirst } from './_lib/d1.js';
 import { deleteEvent } from './_lib/google-calendar.js';
 import { sendBookingCancellation } from './_lib/mailer.js';
-import { verifyToken } from './_lib/tokens.js';
+import { verifyManageToken } from './_lib/tokens.js';
 
 const CANCEL_RATE_LIMIT = {
   limit: 10,
@@ -28,14 +32,15 @@ interface BookingRow {
 }
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
-  res.setHeader('Allow', 'POST');
-  res.setHeader('Cache-Control', 'no-store');
+  applyApiResponseHeaders(res, ['POST']);
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  const guard = guardRequest(req, { methods: ['POST'], maxBodyBytes: 8 * 1024 });
+  if (!guard.ok) {
+    console.warn(`booking/cancel refused: ${guard.reason}`);
+    return res.status(guard.status).json({ success: false, message: guard.message });
   }
 
-  const rateLimitResult = checkRateLimit({
+  const rateLimitResult = await enforceRateLimit({
     namespace: 'booking-cancel',
     identifier: getRateLimitIdentifier(req.headers),
     ...CANCEL_RATE_LIMIT,
@@ -69,7 +74,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     [id],
   );
 
-  if (!row || !verifyToken(id, 'cancel', row.token_version, token)) {
+  if (!row || !verifyManageToken(id, row.token_version, token)) {
     return res.status(403).json({ success: false, message: 'Invalid token' });
   }
 
