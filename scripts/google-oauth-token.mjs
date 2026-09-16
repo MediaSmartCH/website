@@ -133,7 +133,14 @@ const server = createServer(async (req, res) => {
       }
       console.log('\nAlso set this in the Vercel project env (Production + Preview), then redeploy:');
       console.log('GOOGLE_OAUTH_REFRESH_TOKEN=' + tokens.refresh_token);
-      console.log('\nThen restart `vercel dev` so it reloads .env.local.');
+      console.log('\nThen restart `pnpm api` so it reloads .env.local.');
+      console.log(
+        'Check it worked:  curl -s localhost:3001/api/booking/health',
+      );
+      console.log(
+        '\n⚠️  The token above is a live credential — it is now in your shell\n' +
+          '   scrollback. Do not paste it anywhere public.',
+      );
     } else {
       console.log(
         '⚠️  No refresh_token returned (only an access token). Revoke prior access at ' +
