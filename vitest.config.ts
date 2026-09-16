@@ -1,29 +1,33 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
   resolve: {
     alias: {
-      components: path.resolve(__dirname, "src/components"),
-      services: path.resolve(__dirname, "src/services"),
-      config: path.resolve(__dirname, "src/config"),
-      assets: path.resolve(__dirname, "src/assets"),
-      store: path.resolve(__dirname, "src/store"),
-      pages: path.resolve(__dirname, "src/pages"),
+      "@app": path.resolve(__dirname, "src/app"),
+      "@features": path.resolve(__dirname, "src/features"),
+      "@shared": path.resolve(__dirname, "src/shared"),
+      "@store": path.resolve(__dirname, "src/store"),
+      "@styles": path.resolve(__dirname, "src/styles"),
+      "@assets": path.resolve(__dirname, "src/assets"),
+      "@test": path.resolve(__dirname, "src/test"),
       // Stub the virtual WASM module so tests never try to load the binary.
       "virtual:dotlottie-wasm-url": path.resolve(
         __dirname,
-        "src/__mocks__/dotlottie-wasm-url.ts"
+        "src/test/mocks/dotlottie-wasm-url.ts"
       ),
     },
   },
   test: {
+    // macOS writes AppleDouble sidecars ("._name.test.ts") when the repo lives
+    // on a non-APFS volume. They are not valid UTF-8 and would be collected as
+    // empty, failing suites.
+    exclude: [...configDefaults.exclude, "**/._*"],
     environment: "jsdom",
     globals: true,
-    setupFiles: ["src/setupTests.ts"],
+    setupFiles: ["src/test/setup-tests.ts"],
     environmentOptions: {
       jsdom: {
         // A valid URL is required for Web Storage APIs (localStorage, sessionStorage)
@@ -37,10 +41,10 @@ export default defineConfig({
       reporter: ["text", "lcov"],
       include: [
         "src/store/slices/common/**",
-        "src/config/languages.ts",
-        "src/config/lotties.ts",
-        "src/services/locales/safe.ts",
-        "src/services/hooks/useCookieConsent.ts",
+        "src/shared/config/languages.ts",
+        "src/shared/config/lotties.ts",
+        "src/shared/i18n/translator.ts",
+        "src/shared/hooks/use-cookie-consent.ts",
       ],
     },
   },

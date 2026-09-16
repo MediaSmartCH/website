@@ -1,52 +1,57 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2020",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
     ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    // Unused imports and locals survived the refactoring unnoticed because
+    // nothing checked for them; 69 of them had piled up.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "baseUrl": ".",
     "paths": {
-      "components/*": [
-        "src/components/*"
+      "@app/*": [
+        "./src/app/*"
       ],
-      "services/*": [
-        "src/services/*"
+      "@features/*": [
+        "./src/features/*"
       ],
-      "config/*": [
-        "src/config/*"
+      "@shared/*": [
+        "./src/shared/*"
       ],
-      "assets/*": [
-        "src/assets/*"
+      "@store/*": [
+        "./src/store/*"
       ],
-      "store/*": [
-        "src/store/*"
+      "@styles/*": [
+        "./src/styles/*"
       ],
-      "pages/*": [
-        "src/pages/*"
+      "@assets/*": [
+        "./src/assets/*"
       ],
-    }
+      "@test/*": [
+        "./src/test/*"
+      ]
+    },
+    "types": [
+      "vite/client",
+      "vitest/globals"
+    ]
   },
   "include": [
-    "src",
-    "api/**/*"
+    "src"
   ]
 }

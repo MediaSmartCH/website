@@ -6,6 +6,7 @@ import {
   NOTIFICATION_EMAIL,
   getRuntimeEnv,
 } from './config.js';
+import type { HealthReport } from './health.js';
 
 // Render-side helpers are kept lean and inline: no template engine, no
 // per-locale dispatch table, just two functions per email kind (subject + html)
@@ -252,4 +253,36 @@ export async function sendBookingCancellation(input: CancellationInputs): Promis
       replyTo: input.attendeeEmail,
     }),
   ]);
+}
+
+/**
+ * Tells the owner that a booking dependency is down.
+ *
+ * Sent by the scheduled health check, and only when something failed — a daily
+ * "everything is fine" e-mail would be trained away within a week. While a
+ * dependency stays broken this arrives once per run, which is the point: the
+ * reminder should not stop before the problem does.
+ */
+export async function sendBookingHealthAlert(report: HealthReport): Promise<void> {
+  const failed = report.checks.filter((check) => !check.ok);
+
+  const rows = failed
+    .map(
+      (check) =>
+        `<li><strong>${escapeHtml(check.name)}</strong> — ${escapeHtml(check.detail ?? 'unknown error')}</li>`,
+    )
+    .join('');
+
+  await getResend().emails.send({
+    from: MAIL_FROM,
+    to: [NOTIFICATION_EMAIL],
+    subject: `[MediaSmart] Booking indisponible — ${failed.map((c) => c.name).join(', ')}`,
+    html: [
+      '<h2>La prise de rendez-vous ne fonctionne pas</h2>',
+      `<p>Vérification du ${escapeHtml(report.checkedAt)}.</p>`,
+      `<ul>${rows}</ul>`,
+      '<p>Un <code>invalid_grant</code> sur Google signifie que le refresh token a expiré :',
+      ' lancer <code>pnpm google:token</code>, puis reporter la valeur dans Vercel et redéployer.</p>',
+    ].join(''),
+  });
 }

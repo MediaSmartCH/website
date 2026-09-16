@@ -5,7 +5,7 @@ SHELL := /bin/sh
 VERCEL_SYNC_SCRIPT := scripts/sync-vercel-project-settings.mjs
 VERCEL_DOMAIN_SYNC_SCRIPT := scripts/sync-vercel-domain-settings.mjs
 
-.PHONY: help install update dev api start build preview analyze clean env check-env test test-watch test-coverage vercel-sync vercel-sync-dry-run vercel-sync-project vercel-sync-project-dry-run vercel-sync-domains vercel-sync-domains-dry-run
+.PHONY: help install update dev api start build preview analyze clean env check-env typecheck test test-watch test-coverage vercel-sync vercel-sync-dry-run vercel-sync-project vercel-sync-project-dry-run vercel-sync-domains vercel-sync-domains-dry-run
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-22s %s\n", $$1, $$2}'
@@ -32,6 +32,9 @@ preview: ## Preview the production build
 
 analyze: ## Generate the bundle analysis report
 	pnpm run analyze
+
+typecheck: ## Type-check the app and the API (two tsconfigs)
+	pnpm typecheck
 
 test: ## Run the test suite once
 	pnpm test

@@ -1,0 +1,455 @@
+import React, { memo, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
+import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
+
+import { useAppSelector } from "@shared/hooks/store-hooks";
+import {
+  getLottieAspectRatio,
+  getLottiePoster,
+  getLottiePresentation,
+  LottieKey,
+  preloadLottieSrc,
+  readLottieSrc,
+} from "@shared/config/lotties";
+
+// Point the WASM runtime to the locally-bundled file so DotLottie never
+// fetches from an external CDN, which the production CSP would block.
+setWasmUrl(dotLottieWasmUrl);
+
+type Base = {
+  className?: string;
+  style?: React.CSSProperties;
+  autoplay?: boolean;
+  loop?: boolean;
+  protect?: boolean;
+  crisp?: boolean;
+};
+
+// Two usage modes:
+// - ByKeyProps: pass a named key from LOTTIE_LOADERS and let DotAnim resolve
+//   the correct src + dimensions automatically (preferred for site animations).
+// - BySrcProps: pass raw file URLs directly. SECURITY: only pass URLs that
+//   come from bundled assets (import statements). Never pass user-controlled
+//   strings here — the DotLottie player executes the file content as code.
+type ByKeyProps = Base & { anim: LottieKey; light?: never; dark?: never };
+type BySrcProps = Base & { light: string; dark?: string; anim?: never };
+export type DotAnimProps = ByKeyProps | BySrcProps;
+
+// Type guard to distinguish between the two usage modes at runtime.
+function hasAnim(p: DotAnimProps): p is ByKeyProps {
+  return (p as ByKeyProps).anim !== undefined;
+}
+
+function selectSrc(theme: string, pair: { light: string; dark?: string }) {
+  return theme === "dark" && pair.dark ? pair.dark : pair.light;
+}
+
+type PosterProps = {
+  src: string;
+  /** Same scale the player applies, so the still frame lands on the same pixels. */
+  scale?: number;
+  /** Off-screen slots defer their poster; an imminent one loads right away. */
+  eager?: boolean;
+};
+
+/**
+ * The animation's first frame, filling its box.
+ *
+ * Decorative, so it stays out of the accessibility tree: the animations carry
+ * no information the surrounding copy does not already give.
+ */
+function LottiePoster({ src, scale = 1, eager = false }: PosterProps) {
+  return (
+    <img
+      src={src}
+      alt=""
+      aria-hidden={true}
+      draggable={false}
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{
+        objectFit: "contain",
+        transform: scale === 1 ? undefined : `scale(${scale})`,
+        transformOrigin: "center center",
+      }}
+    />
+  );
+}
+
+function DotAnimPlayer(props: DotAnimProps) {
+  const theme = useAppSelector((state) => state.theme.currentTheme);
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
+  const animKey = hasAnim(props) ? props.anim : undefined;
+  const staticPair = hasAnim(props)
+    ? undefined
+    : { light: props.light, dark: props.dark };
+  const intrinsicAspectRatio = animKey ? getLottieAspectRatio(animKey) : undefined;
+  const presentation = animKey ? getLottiePresentation(animKey) : undefined;
+
+  // stableTheme only advances once the next animation source is ready, so the
+  // player keeps rendering the current file instead of flashing a fallback.
+  const [stableTheme, setStableTheme] = useState(theme);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [dotLottieInstance, setDotLottieInstance] = useState<DotLottie | null>(null);
+  // The poster stays up until the canvas has actually drawn something. "load"
+  // is too early: it only means the file was parsed, and the canvas is still
+  // blank at that point.
+  const [hasPainted, setHasPainted] = useState(false);
+
+  const {
+    className,
+    style,
+    autoplay: autoplayProp = true,
+    loop = true,
+    protect = false,
+    // The SVG renderer is now the only code path we ship. Keep the prop so
+    // existing call sites do not need to change.
+    crisp: _crisp = true,
+  } = props;
+
+  const autoplay = autoplayProp && animationsEnabled;
+
+  // Cap DPR at 2 to avoid excessive raster cost on high-density displays (e.g. 3x on some Android devices)
+  // without any noticeable quality loss. Falls back to 1 in SSR environments where window is undefined.
+  const renderConfig = useMemo(() => {
+    if (typeof window === "undefined") {
+      return { autoResize: true, devicePixelRatio: 1 };
+    }
+
+    return {
+      autoResize: true,
+      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+    };
+  }, []);
+
+  // When the global theme changes, preload the new animation variant before
+  // switching. This prevents the player from briefly showing a blank frame
+  // between the old and new file. A minimum 220ms opacity transition gives the
+  // fade-out time to complete even if the fetch resolves instantly.
+  useEffect(() => {
+    if (theme === stableTheme) {
+      return;
+    }
+
+    let cancelled = false;
+    const startTime = Date.now();
+
+    const syncTheme = async () => {
+      setIsTransitioning(true);
+
+      try {
+        if (animKey) {
+          await preloadLottieSrc(animKey, theme);
+        }
+
+        // Ensure the fade-out has at least 220ms to complete.
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, 220 - elapsed);
+
+        if (remaining > 0) {
+          await new Promise((resolve) => setTimeout(resolve, remaining));
+        }
+
+        if (!cancelled) {
+          setStableTheme(theme);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsTransitioning(false);
+        }
+      }
+    };
+
+    syncTheme();
+
+    // If the component unmounts or theme changes again before the transition
+    // completes, cancel the pending state updates to avoid stale setState calls.
+    return () => {
+      cancelled = true;
+    };
+  }, [animKey, stableTheme, theme]);
+
+  useEffect(() => {
+    if (!dotLottieInstance) return;
+
+    const handleRender = () => setHasPainted(true);
+    dotLottieInstance.addEventListener("render", handleRender);
+
+    return () => dotLottieInstance.removeEventListener("render", handleRender);
+  }, [dotLottieInstance]);
+
+  // Imperatively pause/play when the global animations toggle changes so the
+  // change takes effect immediately without remounting the player.
+  useEffect(() => {
+    if (!dotLottieInstance) return;
+    if (animationsEnabled && autoplayProp) {
+      dotLottieInstance.play();
+    } else {
+      dotLottieInstance.pause();
+    }
+  }, [animationsEnabled, autoplayProp, dotLottieInstance]);
+
+  const src = animKey
+    ? readLottieSrc(animKey, stableTheme)
+    : staticPair
+      ? selectSrc(stableTheme, staticPair)
+      : undefined;
+
+  // Only keyed animations have a poster; raw-src callers pass their own markup.
+  const posterUrl = animKey ? getLottiePoster(animKey, stableTheme) : undefined;
+  // The player below is keyed on the source, so switching theme mounts a fresh
+  // canvas that is blank again. Without this the poster would stay hidden over
+  // it, which is the gap the poster exists to cover.
+  useEffect(() => {
+    setHasPainted(false);
+  }, [src]);
+
+  const wrapperStyle = useMemo<React.CSSProperties>(() => {
+    const nextStyle: React.CSSProperties = {
+      display: "block",
+      ...style,
+    };
+
+    if (intrinsicAspectRatio && nextStyle.aspectRatio === undefined) {
+      nextStyle.aspectRatio = `${intrinsicAspectRatio}`;
+    }
+
+    return nextStyle;
+  }, [intrinsicAspectRatio, style]);
+
+  const playerStyle = useMemo<React.CSSProperties>(() => {
+    const scale = presentation?.scale ?? 1;
+
+    return {
+      width: "100%",
+      height: "100%",
+      display: "block",
+      transform: scale === 1 ? undefined : `scale(${scale})`,
+      transformOrigin: "center center",
+    };
+  }, [presentation?.scale]);
+
+  const prevent = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  return (
+    <div
+      className={`relative ${className || ""}`}
+      style={{
+        ...wrapperStyle,
+        userSelect: protect ? "none" : undefined,
+        WebkitUserSelect: protect ? "none" : undefined,
+        WebkitTouchCallout: protect ? "none" : undefined,
+        touchAction: protect ? "pan-x pan-y" : undefined,
+        transition: "opacity 0.3s ease",
+        opacity: isTransitioning ? 0.7 : 1,
+      }}
+      onContextMenu={protect ? prevent : undefined}
+      onDragStart={protect ? prevent : undefined}
+      draggable={protect ? false : undefined}
+    >
+      {/* dotLottie-react is the maintained React integration from LottieFiles.
+          We keep interpolation disabled and cap DPR a bit on mobile to reduce
+          raster cost without noticeably degrading the animation. */}
+      <DotLottieReact
+        key={`${src}-${stableTheme}`}
+        src={src}
+        autoplay={autoplay}
+        loop={loop}
+        useFrameInterpolation={false}
+        renderConfig={renderConfig}
+        layout={{
+          fit: presentation?.fit ?? "contain",
+          align: presentation?.align ?? [0.5, 0.5],
+        }}
+        style={playerStyle}
+        dotLottieRefCallback={setDotLottieInstance}
+      />
+
+      {/* Sits above the canvas, not below it: until the first frame is drawn the
+          canvas is fully transparent, so anything behind it would show through. */}
+      {posterUrl && !hasPainted && (
+        <LottiePoster src={posterUrl} scale={presentation?.scale} eager={true} />
+      )}
+
+      {/* Transparent overlay that intercepts all pointer/touch events to prevent
+          right-click saving or dragging the animation when protect is enabled. */}
+      {protect && (
+        <div
+          aria-hidden={true}
+          className="absolute inset-0"
+          onContextMenu={prevent}
+          onDragStart={prevent}
+          onMouseDown={prevent}
+          onTouchStart={prevent}
+          onTouchMove={prevent}
+          onTouchEnd={prevent}
+          style={{ background: "transparent", pointerEvents: "auto" }}
+        />
+      )}
+    </div>
+  );
+}
+
+const MemoizedPlayer = memo(DotAnimPlayer);
+
+// How early (in px) before entering the viewport an animation starts loading.
+const PRELOAD_MARGIN = "400px 0px";
+
+/**
+ * Ceiling on how long a placeholder may stay empty once the page has painted.
+ *
+ * The observer alone is not enough: a fast scroll travels further in one frame
+ * than the preload margin, and the player still needs to fetch its chunk, the
+ * WASM runtime and its .lottie before it paints. Measured on the homepage, a
+ * quick scroll left eleven slots blank for several hundred milliseconds.
+ */
+const IDLE_MOUNT_TIMEOUT_MS = 1500;
+
+/**
+ * Runs `callback` when the main thread is next free, or after
+ * IDLE_MOUNT_TIMEOUT_MS at the latest. Returns a cancel function.
+ *
+ * requestIdleCallback is unavailable in Safari before 17, so a plain timer
+ * stands in there — the deadline is what matters, not the idle detection.
+ */
+function scheduleIdleMount(callback: () => void): () => void {
+  if (typeof requestIdleCallback === "function") {
+    const handle = requestIdleCallback(callback, {
+      timeout: IDLE_MOUNT_TIMEOUT_MS,
+    });
+    return () => cancelIdleCallback(handle);
+  }
+
+  const handle = window.setTimeout(callback, IDLE_MOUNT_TIMEOUT_MS);
+  return () => window.clearTimeout(handle);
+}
+
+type PosterBoxProps = {
+  className?: string;
+  style: React.CSSProperties;
+  posterUrl?: string;
+  scale?: number;
+  eager?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
+};
+
+/** The animation's box, showing its still frame and nothing else. */
+function PosterBox({ className, style, posterUrl, scale, eager, ref }: PosterBoxProps) {
+  return (
+    <div ref={ref} aria-hidden={true} className={`relative ${className || ""}`} style={style}>
+      {posterUrl && <LottiePoster src={posterUrl} scale={scale} eager={eager} />}
+    </div>
+  );
+}
+
+/**
+ * Viewport gate around the player.
+ *
+ * Mounting DotLottie triggers the ~1.7MB WASM runtime plus the .lottie file for
+ * that animation. Pages stack several animations, so mounting them all up front
+ * saturates the network during the first paint. This renders a zero-cost
+ * placeholder with the exact same box until the animation is close to the
+ * viewport, which keeps layout stable and leaves the above-the-fold animation
+ * loading immediately (it intersects on mount).
+ *
+ * The gate exists to keep that payload off the *critical path*, not to keep it
+ * off the page: once the first paint is done and the thread goes idle, anything
+ * still gated mounts anyway, so scrolling never reveals an empty box.
+ */
+function DotAnim(props: DotAnimProps) {
+  const { className, style } = props;
+  const theme = useAppSelector((state) => state.theme.currentTheme);
+  const animKey = hasAnim(props) ? props.anim : undefined;
+  const intrinsicAspectRatio = animKey ? getLottieAspectRatio(animKey) : undefined;
+  const presentation = animKey ? getLottiePresentation(animKey) : undefined;
+  const posterUrl = animKey ? getLottiePoster(animKey, theme) : undefined;
+
+  const placeholderRef = useRef<HTMLDivElement | null>(null);
+  // Browsers without IntersectionObserver render the player straight away.
+  const [inView, setInView] = useState(
+    () => typeof IntersectionObserver === "undefined"
+  );
+
+  useEffect(() => {
+    if (inView) return;
+
+    const element = placeholderRef.current;
+    if (!element) return;
+
+    // A zero-area target can never report a meaningful intersection, so mount
+    // straight away rather than risk an animation that never appears.
+    const { width, height } = element.getBoundingClientRect();
+    if (width === 0 && height === 0) {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: PRELOAD_MARGIN }
+    );
+
+    observer.observe(element);
+
+    // Whichever comes first: the animation nears the viewport, or the page goes
+    // idle. The second arm is what stops a fast scroll from outrunning the gate.
+    const cancelIdleMount = scheduleIdleMount(() => setInView(true));
+
+    return () => {
+      observer.disconnect();
+      cancelIdleMount();
+    };
+  }, [inView]);
+
+  const placeholderStyle = useMemo<React.CSSProperties>(() => {
+    const nextStyle: React.CSSProperties = { display: "block", ...style };
+
+    if (intrinsicAspectRatio && nextStyle.aspectRatio === undefined) {
+      nextStyle.aspectRatio = `${intrinsicAspectRatio}`;
+    }
+
+    return nextStyle;
+  }, [intrinsicAspectRatio, style]);
+
+  if (inView) {
+    // The boundary belongs here rather than at the thirteen call sites: reading
+    // the animation URL suspends, and without a nearer boundary each of them
+    // fell back to a spinner — the empty-looking box this poster replaces.
+    return (
+      <Suspense
+        fallback={
+          <PosterBox
+            className={className}
+            style={placeholderStyle}
+            posterUrl={posterUrl}
+            scale={presentation?.scale}
+            eager={true}
+          />
+        }
+      >
+        <MemoizedPlayer {...props} />
+      </Suspense>
+    );
+  }
+
+  return (
+    <PosterBox
+      ref={placeholderRef}
+      className={className}
+      style={placeholderStyle}
+      posterUrl={posterUrl}
+      scale={presentation?.scale}
+    />
+  );
+}
+
+export default memo(DotAnim);

@@ -1,15 +1,41 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getCookie, setCookie } from "./cookieUtils";
-import { AppLanguage, getSystemLanguage, normalizeLanguage } from "config/languages";
+
+import {
+  AppLanguage,
+  getLanguageFromPath,
+  getSystemLanguage,
+  normalizeLanguage,
+} from "@shared/config/languages";
+
+import { getCookie, setCookie } from "@store/slices/common/cookieUtils";
 
 type LanguageState = {
   currentLanguage: AppLanguage;
 };
 
-const storedLanguage = getCookie("language");
-const initialLanguage = storedLanguage
-  ? normalizeLanguage(storedLanguage)
-  : getSystemLanguage();
+/**
+ * The language the app should start in.
+ *
+ * The URL prefix wins because LangLayout enforces it on mount anyway; seeding
+ * from it means the first paint is already in the language that will be shown,
+ * and the bootstrap only has to load that one dictionary.
+ */
+export const resolveInitialLanguage = (): AppLanguage => {
+  const fromPath =
+    typeof window !== "undefined"
+      ? getLanguageFromPath(window.location.pathname)
+      : null;
+
+  if (fromPath) {
+    return fromPath;
+  }
+
+  const storedLanguage = getCookie("language");
+
+  return storedLanguage ? normalizeLanguage(storedLanguage) : getSystemLanguage();
+};
+
+const initialLanguage = resolveInitialLanguage();
 
 const languageSlice = createSlice({
   name: "language",

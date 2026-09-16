@@ -1,0 +1,6 @@
+# Node 20 matches `engines.node` in package.json, which is what Vercel reads to
+# pick the runtime for the serverless functions in api/. Running anything else
+# locally means developing against a different runtime than production — and
+# pnpm warns about it on every command.
+[tools]
+node = "20"

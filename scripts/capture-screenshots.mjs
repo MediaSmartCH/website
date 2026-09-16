@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
-const dataPath = resolve(root, 'src/data/itPortfolio.json');
+const dataPath = resolve(root, 'src/features/it-services/data/it-portfolio.json');
 const outputDir = resolve(root, 'public/screenshots');
 
 mkdirSync(outputDir, { recursive: true });

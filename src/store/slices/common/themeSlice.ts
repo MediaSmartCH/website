@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getCookie, setCookie } from "./cookieUtils";
+
+import { getCookie, setCookie } from "@store/slices/common/cookieUtils";
 import {
   isThemePreference,
   resolveThemePreference,
   ThemePreference,
-} from "./themeUtils";
+} from "@store/slices/common/themeUtils";
 
 type ThemeState = {
   currentTheme: "light" | "dark";

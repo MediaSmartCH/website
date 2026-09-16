@@ -1,0 +1,16 @@
+/**
+ * Global stylesheet barrel.
+ *
+ * Import order is the cascade order: base first, then components, then the
+ * breakpoint overrides that adjust them. Design tokens load even earlier, from
+ * index.css, so every file here can use the --color-* variables.
+ */
+
+@import "./base.css";
+@import "./components/buttons.css";
+@import "./components/forms.css";
+@import "./components/phone-input.css";
+@import "./components/rich-text.css";
+@import "./components/faq-accordion.css";
+@import "./sections.css";
+@import "./responsive.css";
