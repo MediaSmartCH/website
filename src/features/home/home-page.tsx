@@ -3,7 +3,14 @@ import React, { lazy, Suspense } from "react";
 import About from "@features/home/components/about";
 import Hero from "@features/home/components/hero";
 import ITOverview from "@features/home/components/it-overview";
-import VideoOverview from "@features/home/components/video-overview";
+import SaasOverview from "@features/home/components/saas-overview";
+/* ============================================================================
+ * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+ * La section "Aperçu vidéo" de l'accueil est mise en pause : le site ne
+ * communique plus que sur l'informatique. L'import et le rendu restent en
+ * commentaire pour pouvoir réactiver l'offre vidéo en une ligne.
+ * ============================================================================ */
+// import VideoOverview from "@features/home/components/video-overview";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
@@ -132,7 +139,9 @@ const Homepage = () => {
       <Hero />
       <About />
       <ITOverview />
-      <VideoOverview />
+      <SaasOverview />
+      {/* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : section vidéo de l'accueil en pause. */}
+      {/* <VideoOverview /> */}
       <div ref={contactSentinelRef} aria-hidden="true" className="h-px w-full" />
       {showContact && (
         <Suspense fallback={null}>

@@ -6,6 +6,8 @@ import { useAppSelector } from "@shared/hooks/store-hooks";
 const BACKDROP_HEIGHTS: Record<string, string> = {
   "/": "h-[900px] md:h-[1040px] lg:h-[1160px] xl:h-[1260px]",
   "/it-services": "h-[900px] md:h-[1040px] lg:h-[1160px] xl:h-[1240px]",
+  // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : hauteur du backdrop de la page vidéo,
+  // conservée telle quelle pour une réactivation immédiate de l'offre.
   "/video-services": "h-[900px] md:h-[1040px] lg:h-[1160px] xl:h-[1240px]",
   "/support-contract": "h-[820px] md:h-[940px] lg:h-[1040px] xl:h-[1160px] 2xl:h-[1260px]",
   "/privacy-policy": "h-[760px] md:h-[860px] lg:h-[960px] xl:h-[1080px] 2xl:h-[1180px]",

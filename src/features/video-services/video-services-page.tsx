@@ -1,3 +1,10 @@
+/* ============================================================================
+ * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+ * Cette page n'est plus routée (voir src/app/router.tsx) : MediaSmart ne
+ * communique plus que sur l'informatique. Le dossier complet
+ * src/features/video-services/ est conservé intentionnellement pour pouvoir
+ * remettre l'offre vidéo en ligne en décommentant la route et les liens.
+ * ============================================================================ */
 import React from "react";
 
 import Hero from "@features/video-services/components/hero";

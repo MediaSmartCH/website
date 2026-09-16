@@ -1,8 +1,21 @@
 {
+  "_videoDisabled": {
+    "_readme": "VIDEO DESACTIVE — NE PAS SUPPRIMER. L'offre video est en pause: le site ne communique plus que sur l'informatique. Les URLs /fr/video-services et /en/video-services sont desormais redirigees en 301 vers /fr et /en (voir 'redirects' dans vercel.json), la route est commentee dans src/app/router.tsx, et l'entree '/video-services' a ete retiree de routeKeyByPath pour ne plus prerendre la page. Les definitions SEO 'video-services' ci-dessous sont conservees intactes. POUR REACTIVER LA VIDEO: 1) remettre \"/video-services\": \"video-services\" dans routeKeyByPath, 2) remettre 'robots' sur videoServicesRobotsBeforeDisable, 3) supprimer les deux redirects 301 de vercel.json et y remettre les deux rewrites listees dans videoServicesRewritesBeforeDisable, 4) decommenter la route, les liens de navigation et les URLs du sitemap.",
+    "videoServicesRobotsBeforeDisable": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+    "videoServicesRewritesBeforeDisable": [
+      {
+        "source": "/fr/video-services",
+        "destination": "/generated-pages/fr-video-services.html"
+      },
+      {
+        "source": "/en/video-services",
+        "destination": "/generated-pages/en-video-services.html"
+      }
+    ]
+  },
   "routeKeyByPath": {
     "/": "home",
     "/it-services": "it-services",
-    "/video-services": "video-services",
     "/privacy-policy": "privacy-policy",
     "/support-contract": "support-contract",
     "/404": "not-found"
@@ -11,10 +24,10 @@
     "fr": {
       "home": {
         "pageName": "Accueil",
-        "title": "MediaSmart | Solutions informatiques et production vidéo en Suisse romande",
-        "description": "MediaSmart accompagne entreprises, indépendants et associations avec des services informatiques, création de sites web et production vidéo en Suisse romande.",
+        "title": "MediaSmart | Solutions informatiques et création de sites web en Suisse romande",
+        "description": "MediaSmart accompagne entreprises, indépendants et associations avec des services informatiques, la création de sites web, la cybersécurité et le support en Suisse romande.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - solutions informatiques et vidéo"
+        "shareImageAlt": "MediaSmart - solutions informatiques"
       },
       "it-services": {
         "pageName": "Services informatiques",
@@ -28,7 +41,7 @@
         "pageName": "Services vidéo",
         "title": "Production vidéo et captation d'événements | MediaSmart",
         "description": "Production vidéo, captation multicaméra, montage, photographie et diffusion en direct pour entreprises, institutions et événements en Suisse romande.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - services vidéo",
         "serviceType": "Production vidéo, captation d'événements, montage et diffusion en direct"
       },
@@ -50,7 +63,7 @@
       "not-found": {
         "pageName": "Page introuvable",
         "title": "Page introuvable | MediaSmart",
-        "description": "La page demandée est introuvable. Retrouvez les services informatiques et vidéo de MediaSmart.",
+        "description": "La page demandée est introuvable. Retrouvez les services informatiques de MediaSmart.",
         "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - page introuvable"
       }
@@ -58,10 +71,10 @@
     "en": {
       "home": {
         "pageName": "Home",
-        "title": "MediaSmart | IT solutions and video production in Switzerland",
-        "description": "MediaSmart supports businesses, freelancers and associations with IT services, website creation and video production across French-speaking Switzerland.",
+        "title": "MediaSmart | IT solutions and website creation in Switzerland",
+        "description": "MediaSmart supports businesses, freelancers and associations with IT services, website creation, cybersecurity and support across French-speaking Switzerland.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - IT solutions and video production"
+        "shareImageAlt": "MediaSmart - IT solutions"
       },
       "it-services": {
         "pageName": "IT Services",
@@ -75,7 +88,7 @@
         "pageName": "Video Services",
         "title": "Video Production and Event Capture | MediaSmart",
         "description": "Video production, multicamera capture, editing, photography and live streaming for businesses, institutions and events in Switzerland.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart video services",
         "serviceType": "Video production, event capture, editing and live streaming"
       },
@@ -97,7 +110,7 @@
       "not-found": {
         "pageName": "Page not found",
         "title": "Page not found | MediaSmart",
-        "description": "The requested page could not be found. Browse MediaSmart IT and video services instead.",
+        "description": "The requested page could not be found. Explore MediaSmart IT services instead.",
         "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart page not found"
       }

@@ -182,7 +182,8 @@ const UnderConstructionInner: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-3xl mx-auto px-4">
+        {/* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : grille repassée sur une colonne, remettre "md:grid-cols-2" en réactivant la carte vidéo. */}
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-xl mx-auto px-4">
           <div className={`${themeReducer === "light"
             ? "bg-white/90 border-purple-100"
             : "bg-[#685A9C]/90 border-purple-600/30"
@@ -213,6 +214,13 @@ const UnderConstructionInner: React.FC = () => {
             </p>
           </div>
 
+          {/* ================================================================
+              VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+              Carte "Services vidéo" de la page de maintenance mise en pause :
+              le site ne communique plus que sur l'informatique.
+              Décommenter pour réactiver l'offre vidéo.
+              ================================================================ */}
+          {/*
           <div className={`${themeReducer === "light"
             ? "bg-white/90 border-blue-100"
             : "bg-[#685A9C]/90 border-blue-600/30"
@@ -242,6 +250,7 @@ const UnderConstructionInner: React.FC = () => {
               {t.text("UnderConstruction.videoServicesDescription")}
             </p>
           </div>
+          */}
         </div>
 
         <div className="mb-10 sm:mb-12 px-4">

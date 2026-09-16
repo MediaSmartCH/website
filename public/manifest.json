@@ -1,7 +1,8 @@
 {
   "short_name": "MediaSmart",
   "name": "MediaSmart",
-  "description": "MediaSmart provides IT services, website creation and video production in Switzerland.",
+  "_videoDisabledNote": "VIDEO DESACTIVE — NE PAS SUPPRIMER. Ancienne description: \"MediaSmart provides IT services, website creation and video production in Switzerland.\" — a remettre pour reactiver l'offre video.",
+  "description": "MediaSmart provides IT services, website creation, cybersecurity and support in Switzerland.",
   "icons": [
     {
       "src": "favicon.ico",

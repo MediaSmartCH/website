@@ -42,7 +42,13 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Video Services -->
+  <!-- ========================================================================
+       VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+       Les pages vidéo sont retirées du sitemap (et passées en noindex dans
+       src/shared/seo/route-seo-data.json) car l'offre vidéo est en pause.
+       Décommenter le bloc ci-dessous pour la réactiver.
+       ======================================================================== -->
+  <!-- Video Services (désactivé)
   <url>
     <loc>https://mediasmart.ch/fr/video-services</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/video-services"/>
@@ -61,6 +67,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+  -->
 
   <!-- Privacy Policy -->
   <url>

@@ -5,11 +5,9 @@ import NavbarDesktop from "@shared/components/navbar-desktop";
 import NavbarMobile from "@shared/components/navbar-mobile";
 
 
-import {
-  resolveThemePreference,
-  ThemePreference,
-} from "@store/slices/common/themeUtils";
+import { ThemePreference } from "@store/slices/common/themeUtils";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
+import { useThemeSwitch } from "@shared/hooks/use-theme-switch";
 
 import "@styles/components/preloader.css";
 
@@ -26,9 +24,6 @@ const Navbar = () => {
       closeMobileMenu();
     }
   };
-  const [isThemeChanging, setIsThemeChanging] = React.useState(false);
-
-
   const {
     currentLanguage: languageReducer,
     currentTheme: themeReducer,
@@ -40,37 +35,23 @@ const Navbar = () => {
     labels,
   } = useInterfaceControls({ preserveScroll: true });
 
+  // Allow lottie assets time to swap before hiding the overlay.
+  const { isThemeChanging, requestThemeChange } = useThemeSwitch(
+    themeReducer,
+    themePreference,
+    changeTheme
+  );
+
   // Both navigations render the same control with the same props.
   const localeControls = {
     currentLanguage: languageReducer,
     currentTheme: themeReducer,
     themePreference,
     onLanguageChange: changeLanguage,
-    onThemeChange: (nextTheme: ThemePreference) => handleThemeChange(nextTheme),
+    onThemeChange: (nextTheme: ThemePreference) => requestThemeChange(nextTheme),
     labels,
     animationsEnabled,
     onAnimationsToggle: flipAnimations,
-  };
-
-  const handleThemeChange = (nextTheme: ThemePreference) => {
-    if (isThemeChanging || nextTheme === themePreference) return;
-
-    const nextResolvedTheme = resolveThemePreference(nextTheme);
-    // Only show the loading overlay when the resolved (visual) theme actually changes.
-    const shouldShowLoader = nextResolvedTheme !== themeReducer;
-
-    if (shouldShowLoader) {
-      setIsThemeChanging(true);
-    }
-
-    changeTheme(nextTheme);
-
-    if (!shouldShowLoader) return;
-
-    // Allow lottie assets time to swap before hiding the overlay.
-    setTimeout(() => {
-      setIsThemeChanging(false);
-    }, 500);
   };
 
   useEffect(() => {

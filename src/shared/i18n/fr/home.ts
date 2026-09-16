@@ -1,33 +1,60 @@
+// ============================================================================
+// VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+// Le site ne communique plus que sur l'informatique. Les anciens textes
+// mentionnant la vidéo sont conservés en commentaire juste au-dessus de leur
+// remplaçant, afin de pouvoir revenir en arrière sans rien réécrire.
+// ============================================================================
 const home = {
     heroTitle: "MediaSmart",
-    heroSubtitle: "est l'endroit où deux mondes se rencontrent",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien texte "deux mondes") :
+    // heroSubtitle: "est l'endroit où deux mondes se rencontrent",
+    heroSubtitle: "votre partenaire informatique en Suisse romande",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne description mixte vidéo/IT) :
+    // heroDescription:
+    //     "Que ce soit en production vidéo ou en solutions informatiques, MediaSmart vous accompagne avec expertise et flexibilité. Choisissez un service ou combinez-les selon vos besoins.",
     heroDescription:
-        "Que ce soit en production vidéo ou en solutions informatiques, MediaSmart vous accompagne avec expertise et flexibilité. Choisissez un service ou combinez-les selon vos besoins.",
+        "Création de sites web, maintenance, cybersécurité et support: MediaSmart vous accompagne avec expertise et flexibilité sur l'ensemble de votre informatique.",
     itBtn: "Explorer les services informatiques",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : clé conservée, le bouton n'est plus affiché.
     videoBtn: "Explorer les services vidéo",
 
     bookingTitle: "Vous souhaitez une consultation gratuite de 30 minutes ?",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien texte orienté récits visuels) :
+    // bookingDescription:
+    //     "Lancez-vous dans votre aventure créative avec MediaSmart grâce à une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – que ce soit chez vous, dans un espace public, ou même en ligne – et sélectionnez un horaire qui correspond à notre disponibilité. Fournissez simplement les détails de la réunion souhaitée et vos coordonnées, et nous organiserons le rendez-vous. Cette session est votre chance de discuter de vos idées avec nous et de découvrir comment nous pouvons collaborer pour transformer votre vision en récits visuels captivants.",
     bookingDescription:
-        "Lancez-vous dans votre aventure créative avec MediaSmart grâce à une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – que ce soit chez vous, dans un espace public, ou même en ligne – et sélectionnez un horaire qui correspond à notre disponibilité. Fournissez simplement les détails de la réunion souhaitée et vos coordonnées, et nous organiserons le rendez-vous. Cette session est votre chance de discuter de vos idées avec nous et de découvrir comment nous pouvons collaborer pour transformer votre vision en récits visuels captivants.",
+        "Faisons le point sur votre informatique lors d'une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – chez vous, dans vos locaux ou en ligne – et un horaire qui correspond à nos disponibilités. Décrivez simplement votre besoin et laissez-nous vos coordonnées: nous organisons le rendez-vous. C'est l'occasion d'exposer votre situation et de voir concrètement comment rendre vos outils plus fiables, plus sûrs et plus performants.",
     bookingBtn: "Réservez votre Consultation de 30 Min",
 
     partnersTitle: "Nos partenaires de confiance",
 
     aboutTitle: "À propos de ",
     aboutSubtitle: "MediaSmart",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne présentation vidéo + informatique) :
+    // aboutDescription: `
+    //   MediaSmart est l'endroit où deux mondes se rencontrent.
+    //   <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
+    //     <li><strong>Production vidéo</strong>, pour sublimer vos événements, messages et image de marque.</li>
+    //     <li><strong>Solutions informatiques</strong>, pour garantir des outils fiables, sécurisés et performants.</li>
+    //   </ul>
+    //   Basée en Suisse romande, nous fournissons des services modernes, flexibles et axés sur les résultats.
+    // `,
     aboutDescription: `
-      MediaSmart est l'endroit où deux mondes se rencontrent.
+      MediaSmart, c'est votre informatique prise en main de bout en bout.
       <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li><strong>Production vidéo</strong>, pour sublimer vos événements, messages et image de marque.</li>
-        <li><strong>Solutions informatiques</strong>, pour garantir des outils fiables, sécurisés et performants.</li>
+        <li><strong>Sites web</strong>, conçus, refondus et maintenus pour servir vraiment votre activité.</li>
+        <li><strong>Infrastructure &amp; postes de travail</strong>, pour des outils fiables, sécurisés et performants.</li>
+        <li><strong>Sécurité &amp; sauvegardes</strong>, pour dormir tranquille et repartir vite en cas de pépin.</li>
       </ul>
-      Basée en Suisse romande, nous fournissons des services modernes, flexibles et axés sur les résultats.
+      Basée en Suisse romande, MediaSmart fournit des services modernes, flexibles et axés sur les résultats.
     `,
     soloBadge: "Indépendant",
     soloTitle: "Derrière MediaSmart",
     soloName: "Raphael Rouiller",
     soloJobTitle: "Fondateur & Prestataire indépendant",
-    soloRole: "Un interlocuteur unique pour vos besoins en vidéo et en informatique.",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne formulation vidéo + informatique) :
+    // soloRole: "Un interlocuteur unique pour vos besoins en vidéo et en informatique.",
+    soloRole: "Un interlocuteur unique pour l'ensemble de vos besoins informatiques.",
     soloLead:
         "Pour l'instant, je travaille seul en tant qu'indépendant. Vous échangez donc directement avec la personne qui conçoit, pilote et livre votre projet.",
     soloDescription:
@@ -35,7 +62,9 @@ const home = {
     soloStatDirectLabel: "Format",
     soloStatDirectValue: "1 interlocuteur unique",
     soloStatExpertiseLabel: "Expertises",
-    soloStatExpertiseValue: "Vidéo + informatique",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne double expertise) :
+    // soloStatExpertiseValue: "Vidéo + informatique",
+    soloStatExpertiseValue: "Web + infrastructure",
     soloStatLocationLabel: "Base",
     soloStatLocationValue: "Suisse romande",
     soloWorkingTitle: "Ce que cela change pour vous",
@@ -47,7 +76,14 @@ const home = {
     soloNote:
         "L'objectif n'est pas de paraître plus grand, mais d'être plus utile: simple, fiable et impliqué.",
 
-    ITOverviewTitle: "Aperçu informatique",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien titre, quand la page avait deux aperçus) :
+    // ITOverviewTitle: "Aperçu informatique",
+    saasTitle: "Nos produits MediaSmart",
+    saasDescription:
+        "Deux solutions métier que nous développons et hébergeons nous-mêmes : le suivi des factures fournisseurs et la gestion documentaire.",
+    saasCta: "Découvrir nos produits",
+
+    ITOverviewTitle: "Nos services informatiques",
     ITOverviewDescription:
         "Un service informatique agile, adapté à vos besoins.",
     ITOverviewExploreBtn: "En savoir plus sur les services informatiques",
@@ -78,6 +114,10 @@ const home = {
         }
     ],
 
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+    // Le bloc "VideoOverview*" ci-dessous n'est plus affiché (section retirée de
+    // l'accueil). Les clés restent en place pour la parité FR/EN et pour une
+    // réactivation immédiate de l'offre vidéo.
     VideoOverviewTitle: "Aperçu vidéo",
     VideoOverviewDescription:
         "Des prestations vidéo professionnelles, disponibles à la carte ou en accompagnement complet.",

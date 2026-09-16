@@ -54,7 +54,10 @@ export default function NavbarDesktop({
           decoding="async"
         />
       </Link>
-      <ul className="nav-list flex items-center justify-center lg:gap-x-[0px] xl:gap-x-[10px] 2xl:gap-x-[20px] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] lg:ml-[50px] lg:mr-[34px] xl:ml-[75px] xl:mr-[44px]">
+      {/* ml-auto pushes the links to the right of the bar, next to the locale
+          controls and the booking CTA, instead of centring them between the
+          logo and the controls. */}
+      <ul className="nav-list flex items-center justify-end ml-auto lg:gap-x-[14px] xl:gap-x-[20px] 2xl:gap-x-[26px] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] lg:mr-[26px] xl:mr-[36px] 2xl:mr-[44px]">
         <li
           className=""
           data-aos="fade-down"
@@ -91,6 +94,12 @@ export default function NavbarDesktop({
             </Link>
           </div>
         </li>
+        {/* ====================================================================
+            VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+            Lien vers les services vidéo mis en pause (site 100% informatique).
+            Conservé tel quel : décommenter pour réactiver l'offre vidéo.
+            ==================================================================== */}
+        {/*
         <li
           className=""
           data-aos="fade-down"
@@ -110,6 +119,7 @@ export default function NavbarDesktop({
             </Link>
           </div>
         </li>
+        */}
         <li
           className=""
           data-aos="fade-down"

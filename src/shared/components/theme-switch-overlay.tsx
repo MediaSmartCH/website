@@ -19,7 +19,11 @@ export default function ThemeSwitchOverlay({ theme, language }: ThemeSwitchOverl
 
   return (
     <div
-              className={`fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-sm transition-all duration-300 ${themeReducer === 'light' ? 'bg-white/90' : 'bg-black/90'
+              // Above every modal on the site (the consent banner sits at
+              // 999999), so the swap animation is visible when the theme is
+              // changed from inside a popup instead of from the navbar.
+              style={{ zIndex: 2147483000 }}
+              className={`fixed inset-0 flex items-center justify-center backdrop-blur-sm transition-all duration-300 ${themeReducer === 'light' ? 'bg-white/90' : 'bg-black/90'
                 }`}
             >
               <div className={`text-center p-8 rounded-lg border shadow-2xl ${themeReducer === 'light'

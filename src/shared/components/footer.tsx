@@ -52,6 +52,12 @@ const Footer = () => {
                 {t.text("footer.navItem2")}
               </Link>
             </li>
+            {/* ================================================================
+                VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+                Lien vidéo du footer mis en pause (site 100% informatique).
+                Décommenter pour réactiver l'offre vidéo.
+                ================================================================ */}
+            {/*
             <li className="" data-aos="fade-down" data-aos-duration="1000">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
@@ -60,6 +66,7 @@ const Footer = () => {
                 {t.text("footer.navItem3")}
               </Link>
             </li>
+            */}
             <li className="" data-aos="fade-down" data-aos-duration="1200">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"

@@ -18,6 +18,55 @@ const it = {
     itServicesTitle: `<span> Nos </span> services informatiques`,
     itServicesDescription: "Nous proposons des solutions informatiques sur mesure conçues pour assurer le bon fonctionnement de votre entreprise. Nos services comprennent :",
 
+    // ------------------------------------------------------------------
+    // Produits SaaS MediaSmart — mis en avant hors portfolio, parce que ce
+    // sont des offres vendables et non de simples références clients. Les
+    // outils gratuits sont volontairement séparés plus bas : ils servent la
+    // vitrine, pas la prospection.
+    // ------------------------------------------------------------------
+    saasTitle: `<span> Nos produits </span> prêts à l'emploi`,
+    saasDescription:
+        "Au-delà des projets sur mesure, MediaSmart développe et exploite ses propres solutions métier. Hébergées en Suisse, pensées pour les PME, les associations et les indépendants qui veulent un outil qui fonctionne dès le premier jour.",
+    saasDemoCta: "Voir la démo",
+    saasBookCta: "Demander une démo",
+    saasProducts: [
+        {
+            id: "cc-factures-dashboard",
+            name: "Dashboard Factures Fournisseurs",
+            tagline: "Savoir où part l'argent, mois par mois et fournisseur par fournisseur",
+            highlights: [
+                "KPIs mensuels, top fournisseurs et comparaison de périodes",
+                "Connexion Microsoft 365 et ingestion directe depuis SharePoint",
+                "Drill-down par dossier et export CSV en un clic",
+            ],
+        },
+        {
+            id: "ged-mediasmart",
+            name: "MediaSmart GED",
+            tagline: "Vos factures et documents sensibles, classés automatiquement et gardés chez vous",
+            highlights: [
+                "OCR automatique et extraction fournisseur, montant et échéance",
+                "Stockage chiffré sur votre réseau interne, rien ne sort du bureau",
+                "Interface web protégée, installée et maintenue par MediaSmart",
+            ],
+        },
+    ],
+    saasFreeTitle: "Et aussi, en libre accès",
+    saasFreeDescription:
+        "Des outils que nous ouvrons à tout le monde, sans compte ni facture.",
+    saasFreeTools: [
+        {
+            id: "cc-voice",
+            name: "Voice Studio",
+            tagline: "Clonage et synthèse vocale, calculés sur notre propre studio plutôt que dans le cloud. Bientôt ouvert à tous.",
+        },
+        {
+            id: "mediasmart-games",
+            name: "MediaSmart Lab",
+            tagline: "Nos mini-jeux et expérimentations web, en accès libre.",
+        },
+    ],
+
     portfolioTxt: "Notre portfolio",
     portfolioBtn: "Voir plus de portfolio",
 

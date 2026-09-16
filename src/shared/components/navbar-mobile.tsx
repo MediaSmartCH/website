@@ -90,6 +90,12 @@ export default function NavbarMobile({
             >
               {t.text("navbar.navItem2")}
             </Link>
+            {/* ================================================================
+                VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
+                Lien vidéo du menu mobile mis en pause (site 100% informatique).
+                Décommenter pour réactiver l'offre vidéo.
+                ================================================================ */}
+            {/*
             <Link
               to={L("/video-services")}
               onClick={onCloseMenu}
@@ -97,6 +103,7 @@ export default function NavbarMobile({
             >
               {t.text("navbar.navItem3")}
             </Link>
+            */}
             <Link
               to={Lhash("#about")}
               onClick={(e) => scrollToSection("about", e)}

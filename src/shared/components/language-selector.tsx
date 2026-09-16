@@ -1,6 +1,8 @@
 import React from "react";
 import { Check, ChevronDown } from "lucide-react";
 
+import Tooltip from "@shared/components/tooltip";
+
 import {
   AppLanguage,
   getLanguageConfig,
@@ -129,13 +131,15 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
 
   return (
     <div ref={containerRef} className="relative z-20">
+      {/* No tooltip while the picker is open: the panel already says what the
+          control does, and the bubble would overlap it. */}
+      <Tooltip label={isOpen ? undefined : ariaLabel}>
       <button
         type="button"
         onClick={openPicker}
         onPointerEnter={warmLanguages}
         onFocus={warmLanguages}
         aria-label={ariaLabel}
-        title={ariaLabel}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         className={`inline-flex items-center gap-2 rounded-full border backdrop-blur-md transition-colors duration-200 ${sizeConfig.triggerPadding} ${triggerClasses}`}
@@ -160,6 +164,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           }}
         />
       </button>
+      </Tooltip>
 
       {isOpen && (
         <div

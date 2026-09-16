@@ -103,6 +103,16 @@
   ],
   "redirects": [
     {
+      "source": "/fr/video-services",
+      "destination": "/fr",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/video-services",
+      "destination": "/en",
+      "statusCode": 301
+    },
+    {
       "source": "/",
       "destination": "/fr",
       "permanent": true
@@ -124,14 +134,6 @@
     {
       "source": "/en/it-services",
       "destination": "/generated-pages/en-it-services.html"
-    },
-    {
-      "source": "/fr/video-services",
-      "destination": "/generated-pages/fr-video-services.html"
-    },
-    {
-      "source": "/en/video-services",
-      "destination": "/generated-pages/en-video-services.html"
     },
     {
       "source": "/fr/privacy-policy",

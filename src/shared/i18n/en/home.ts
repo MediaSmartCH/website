@@ -1,33 +1,58 @@
+// ============================================================================
+// VIDEO DISABLED — DO NOT DELETE
+// The site now only talks about IT. Every former video-related string is kept
+// commented out right above its replacement so the video offering can be
+// restored without rewriting anything.
+// ============================================================================
 const home = {
     heroTitle: "MediaSmart",
-    heroSubtitle: "Powering your projects",
+    heroSubtitle: "your IT partner in Switzerland",
+    // VIDEO DISABLED — DO NOT DELETE (former mixed video/IT description):
+    // heroDescription:
+    //     "From professional video production to tailored IT support, MediaSmart combines creativity and technical expertise to bring your ideas to life.",
     heroDescription:
-        "From professional video production to tailored IT support, MediaSmart combines creativity and technical expertise to bring your ideas to life.",
+        "Website creation, maintenance, cybersecurity and support: MediaSmart brings expertise and flexibility to every part of your IT.",
     itBtn: "Explore IT Services",
+    // VIDEO DISABLED — DO NOT DELETE: key kept, the button is no longer rendered.
     videoBtn: "Explore Video Services",
 
     bookingTitle: "Interested in Booking a Free 30-Minute Consultation?",
+    // VIDEO DISABLED — DO NOT DELETE (former "visual narratives" wording):
+    // bookingDescription:
+    //     "Embark on your creative journey with MediaSmart through a complimentary, 30-minute consultation. Choose a convenient location for you – be it your home, a public space, or even a virtual meeting – and select a time that aligns with our schedule. Simply provide your preferred meeting details and contact information, and we'll set up the appointment. This session is your opportunity to discuss your ideas with us and discover how we can collaborate to turn your vision into compelling visual narratives.",
     bookingDescription:
-        "Embark on your creative journey with MediaSmart through a complimentary, 30-minute consultation. Choose a convenient location for you – be it your home, a public space, or even a virtual meeting – and select a time that aligns with our schedule. Simply provide your preferred meeting details and contact information, and we'll set up the appointment. This session is your opportunity to discuss your ideas with us and discover how we can collaborate to turn your vision into compelling visual narratives.",
+        "Let's review your IT setup in a complimentary 30-minute consultation. Choose a convenient location – your home, your office, or an online meeting – and a time that aligns with our schedule. Just describe your needs and leave your contact details, and we'll set up the appointment. It's your opportunity to explain your situation and see concretely how to make your tools more reliable, more secure and faster.",
     bookingBtn: "Book your 30-Min Consultation",
 
     partnersTitle: "Our trusted partners",
 
     aboutTitle: "About ",
     aboutSubtitle: "MediaSmart",
+    // VIDEO DISABLED — DO NOT DELETE (former video + IT positioning):
+    // aboutDescription: `
+    //   MediaSmart is where two worlds meet:
+    //   <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
+    //     <li><strong>Video production</strong>, to elevate your events, messages, and brand image.</li>
+    //     <li><strong>IT solutions</strong>, to ensure your tools are reliable, secure, and high-performing.</li>
+    //   </ul>
+    //   Based in Western Switzerland, we provide businesses, associations, and individuals with modern, flexible, and results-driven services.
+    // `,
     aboutDescription: `
-      MediaSmart is where two worlds meet:
+      MediaSmart takes care of your IT from end to end:
       <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li><strong>Video production</strong>, to elevate your events, messages, and brand image.</li>
-        <li><strong>IT solutions</strong>, to ensure your tools are reliable, secure, and high-performing.</li>
+        <li><strong>Websites</strong>, designed, rebuilt and maintained to genuinely serve your business.</li>
+        <li><strong>Infrastructure &amp; workstations</strong>, so your tools stay reliable, secure and high-performing.</li>
+        <li><strong>Security &amp; backups</strong>, so you sleep well and recover fast when something goes wrong.</li>
       </ul>
-      Based in Western Switzerland, we provide businesses, associations, and individuals with modern, flexible, and results-driven services.
+      Based in Western Switzerland, MediaSmart provides businesses, associations, and individuals with modern, flexible, and results-driven services.
     `,
     soloBadge: "Independent",
     soloTitle: "Behind MediaSmart",
     soloName: "Raphael Rouiller",
     soloJobTitle: "Founder & Independent Contractor",
-    soloRole: "A single point of contact for both video and IT needs.",
+    // VIDEO DISABLED — DO NOT DELETE (former video + IT wording):
+    // soloRole: "A single point of contact for both video and IT needs.",
+    soloRole: "A single point of contact for all of your IT needs.",
     soloLead:
         "For now, I work solo as an independent professional. That means you speak directly with the person who plans, builds, and delivers your project.",
     soloDescription:
@@ -35,7 +60,9 @@ const home = {
     soloStatDirectLabel: "Format",
     soloStatDirectValue: "1 direct contact",
     soloStatExpertiseLabel: "Expertise",
-    soloStatExpertiseValue: "Video + IT",
+    // VIDEO DISABLED — DO NOT DELETE (former dual expertise):
+    // soloStatExpertiseValue: "Video + IT",
+    soloStatExpertiseValue: "Web + infrastructure",
     soloStatLocationLabel: "Base",
     soloStatLocationValue: "Western Switzerland",
     soloWorkingTitle: "What this means for you",
@@ -47,7 +74,14 @@ const home = {
     soloNote:
         "The goal is not to look bigger than I am, but to stay useful: direct, reliable, and fully involved.",
 
-    ITOverviewTitle: "IT Overview",
+    // VIDEO DISABLED — DO NOT DELETE (former title, back when the page had two overviews):
+    // ITOverviewTitle: "IT Overview",
+    saasTitle: "Our MediaSmart products",
+    saasDescription:
+        "Two business solutions we build and host ourselves: supplier-invoice tracking and document management.",
+    saasCta: "Explore our products",
+
+    ITOverviewTitle: "Our IT services",
     ITOverviewDescription:
         "Agile IT services tailored to your needs:",
     ITOverviewExploreBtn: "Explore More About IT Services",
@@ -78,6 +112,10 @@ const home = {
         }
     ],
 
+    // VIDEO DISABLED — DO NOT DELETE
+    // The "VideoOverview*" block below is no longer rendered (section removed
+    // from the homepage). The keys stay for FR/EN parity and for an immediate
+    // restore of the video offering.
     VideoOverviewTitle: "Video Overview",
     VideoOverviewDescription:
         "Professional video services, available individually or as a complete package.",
