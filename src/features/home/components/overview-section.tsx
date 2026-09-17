@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 
 import OverviewCard from "@features/home/components/overview-card";
 
+import RichText from "@shared/components/rich-text";
+
 import { LottieKey } from "@shared/config/lotties";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
@@ -54,9 +56,13 @@ export default function OverviewSection({
       id="services"
       className={`w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto relative ${spacingClassName}`}
     >
-      <h2 className="text-heading-strong w-full text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]">
-        {t.text(`home.${translationPrefix}Title`)}
-      </h2>
+      {/* RichText so the title can carry the gradient <span> accent the other
+          section headings use. */}
+      <RichText
+        as="h2"
+        className="text-heading-strong it-service-title w-full text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]"
+        html={t.text(`home.${translationPrefix}Title`)}
+      />
       <p className="text-body w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] ">
         {t.text(`home.${translationPrefix}Description`)}
       </p>

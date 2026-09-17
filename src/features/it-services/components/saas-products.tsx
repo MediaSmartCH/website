@@ -16,6 +16,7 @@ import React from "react";
 
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import BookingButton from "@features/booking/components/booking-button";
+import LaunchCountdown from "@features/it-services/components/launch-countdown";
 import {
   getItemImages,
   getSafeExternalUrl,
@@ -25,6 +26,7 @@ import {
 import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
 
 import RichText from "@shared/components/rich-text";
+import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 
@@ -55,10 +57,18 @@ export default function SaasProducts() {
   if (products.length === 0) return null;
 
   return (
-    <div
-      id="saas"
-      className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[40px] md:pt-[50px] md:pb-[50px] mx-auto scroll-mt-[120px]"
-    >
+    <div id="saas" className="relative overflow-hidden scroll-mt-[120px]">
+      {/* Wave wash behind the section, as the booking block lower on the page
+          does: the products grid otherwise sits on flat white between two
+          sections that both have a background of their own. */}
+      <WaveBackdrop
+        theme={themeReducer}
+        className="top-0 h-[520px] md:h-[600px] lg:h-[660px] xl:h-[720px]"
+      />
+
+      <div
+        className="relative z-10 w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[40px] md:pt-[50px] md:pb-[50px] mx-auto"
+      >
       <RichText
         as="h2"
         className="text-heading-strong it-service-title w-full text-center mx-auto font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]"
@@ -160,37 +170,97 @@ export default function SaasProducts() {
       </div>
 
       {freeTools.length > 0 && (
-        <div className="mt-[46px]">
-          <h3 className="text-heading-strong text-center font-redDisplay font-bold text-[20px] md:text-[24px]">
-            {t.text("it.saasFreeTitle")}
-          </h3>
-          <p className="text-body mx-auto mt-1 max-w-[680px] text-center font-poppins font-light text-[13px] md:text-[14px]">
+        <div className="mt-[56px]">
+          {/* The free tools used to be plain bordered boxes with a centred
+              bold heading, which read as an orphan list dropped between two
+              card grids. They now share the section's anatomy: the same rule
+              and gradient heading as the rest of the page, and cards built like
+              the product cards above — screenshot, badge, pitch, way in. */}
+          <div
+            className={`${classes.isLight ? "bg-[#E1E0F5]" : "bg-white/12"} mx-auto mb-[34px] h-px w-[120px]`}
+            aria-hidden="true"
+          />
+          <RichText
+            as="h3"
+            className="text-heading-strong it-service-title w-full text-center mx-auto font-redDisplay font-bold text-[22px] md:text-[26px] 2xl:text-[30px]"
+            html={t.text("it.saasFreeTitle")}
+          />
+          <p className="text-body mx-auto mt-2 max-w-[680px] text-center font-poppins font-light text-[13px] md:text-[14px]">
             {t.text("it.saasFreeDescription")}
           </p>
 
           <div
-            className="mt-6 grid justify-center gap-4"
+            className="mt-[30px] grid justify-center gap-6"
             style={{
               gridTemplateColumns:
-                "repeat(auto-fit, minmax(min(100%, 280px), 380px))",
+                "repeat(auto-fit, minmax(min(100%, 300px), 420px))",
             }}
           >
-            {freeTools.map((tool) => {
+            {freeTools.map((tool, index) => {
               const source = portfolioItems.find((item) => item.id === tool.id);
               const toolUrl = getSafeExternalUrl(source?.url);
+              const toolImage = source ? getItemImages(source)[0] : undefined;
+              const toolBadge = source?.accessNote
+                ? resolveLocalizedField(source.accessNote, languageReducer)
+                : null;
 
               const inner = (
                 <>
-                  <span
-                    className={`${classes.strongText} block font-redDisplay text-[17px] font-bold leading-6`}
-                  >
-                    {tool.name}
-                  </span>
-                  <span
-                    className={`${classes.mutedText} mt-1.5 block font-helvetica text-[13px] font-light leading-6`}
-                  >
-                    {tool.tagline}
-                  </span>
+                  {toolImage && (
+                    <div className={`aspect-[16/10] w-full overflow-hidden border-b ${classes.imageShell}`}>
+                      <img
+                        src={toolImage}
+                        alt={tool.name}
+                        // Centre-cropped, like the portfolio tiles: anchoring to
+                        // the top of these screenshots frames a sign-in dialog
+                        // rather than the tool itself.
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex flex-1 flex-col p-6">
+                    {toolBadge && (
+                      <span
+                        className={`mb-3 inline-block w-fit rounded-full border px-3 py-1 text-[11px] font-medium leading-tight ${classes.isLight ? "border-[#D9DCF2] bg-[#EEF0FF] text-[#2C3A87]" : "border-white/10 bg-white/5 text-[#DAD7FF]"}`}
+                      >
+                        {toolBadge}
+                      </span>
+                    )}
+
+                    <h4
+                      className={`${classes.strongText} font-redDisplay text-[20px] font-bold leading-6`}
+                    >
+                      {tool.name}
+                    </h4>
+                    <p
+                      className={`${classes.mutedText} mt-2 font-helvetica text-[14px] font-light leading-6`}
+                    >
+                      {tool.tagline}
+                    </p>
+
+                    {/* Only a tool that is not public yet carries a launchDate. */}
+                    {source?.launchDate && (
+                      <LaunchCountdown
+                        launchDate={source.launchDate}
+                        language={languageReducer}
+                        classes={classes}
+                      />
+                    )}
+
+                    {/* Pinned to the bottom so the buttons line up across cards
+                        even when one pitch is longer, as in the block above. */}
+                    {toolUrl && (
+                      <div className="mt-auto pt-6">
+                        <span
+                          className={`${classes.isLight ? "border-[#D9DCF2] text-[#2C3A87] group-hover:bg-[#EEF0FF]" : "border-white/15 text-[#DAD7FF] group-hover:bg-white/10"} flex min-h-[40px] w-fit items-center justify-center rounded-[5px] border px-[18px] font-poppins text-[14px] font-light transition duration-200`}
+                        >
+                          {t.text("it.saasFreeCta")}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </>
               );
 
@@ -202,14 +272,18 @@ export default function SaasProducts() {
                   href={toolUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex h-full flex-col rounded-[18px] border p-5 transition duration-300 hover:-translate-y-1 ${classes.card}`}
+                  className={`group flex h-full flex-col overflow-hidden rounded-[24px] border transition duration-300 hover:-translate-y-1 ${classes.card}`}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 120}
                 >
                   {inner}
                 </a>
               ) : (
                 <div
                   key={tool.id}
-                  className={`flex h-full flex-col rounded-[18px] border p-5 ${classes.card}`}
+                  className={`group flex h-full flex-col overflow-hidden rounded-[24px] border ${classes.card}`}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 120}
                 >
                   {inner}
                 </div>
@@ -218,6 +292,7 @@ export default function SaasProducts() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

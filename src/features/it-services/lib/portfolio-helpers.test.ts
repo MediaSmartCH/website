@@ -6,8 +6,13 @@ import {
   formatProjectsCount,
   formatRemainingProjects,
   getInlineGalleryClassName,
+  getItemCategory,
   getItemImages,
+  groupItemsByCategory,
+  portfolioCategoryKey,
+  sortItemsForPreview,
   getSafeExternalUrl,
+  PORTFOLIO_CATEGORY_ORDER,
   resolveLocalizedField,
   resolveScreenshotUrl,
   truncateText,
@@ -128,7 +133,7 @@ describe("counter formatting", () => {
 
   it("reports how many previews of the total are shown", () => {
     expect(formatPreviewCount(4, 9, "en")).toBe("Showing 4 of 9");
-    expect(formatPreviewCount(4, 9, "fr")).toBe("Apercu de 4 sur 9");
+    expect(formatPreviewCount(4, 9, "fr")).toBe("Aperçu de 4 sur 9");
   });
 });
 
@@ -140,5 +145,91 @@ describe("getInlineGalleryClassName", () => {
     expect(getInlineGalleryClassName(5)).toBe(
       "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
     );
+  });
+});
+
+
+// Gallery sections: the JSON drives which group an entry lands in, so an
+// unknown or missing value must not silently drop a project from the page.
+
+const item = (id: string, category?: string) =>
+  ({ id, title: id, description: id, ...(category ? { category } : {}) }) as const;
+
+describe("getItemCategory", () => {
+  it("reads a known category", () => {
+    expect(getItemCategory(item("a", "saas"))).toBe("saas");
+    expect(getItemCategory(item("b", "free"))).toBe("free");
+  });
+
+  it("falls back to client for a missing or unknown value", () => {
+    expect(getItemCategory(item("c"))).toBe("client");
+    expect(getItemCategory(item("d", "not-a-category"))).toBe("client");
+  });
+});
+
+describe("groupItemsByCategory", () => {
+  it("returns the sections in display order", () => {
+    const groups = groupItemsByCategory([
+      item("free-1", "free"),
+      item("saas-1", "saas"),
+      item("client-1", "client"),
+    ]);
+
+    expect(groups.map((group) => group.category)).toEqual(PORTFOLIO_CATEGORY_ORDER);
+  });
+
+  it("drops empty sections", () => {
+    const groups = groupItemsByCategory([item("saas-1", "saas")]);
+
+    expect(groups).toHaveLength(1);
+    expect(groups[0].category).toBe("saas");
+  });
+
+  it("keeps every item exactly once", () => {
+    const items = [item("a", "saas"), item("b"), item("c", "free"), item("d", "saas")];
+    const grouped = groupItemsByCategory(items).flatMap((group) => group.items);
+
+    expect(grouped.map((entry) => entry.id).sort()).toEqual(["a", "b", "c", "d"]);
+  });
+});
+
+describe("sortItemsForPreview", () => {
+  it("follows the section order and keeps the original order inside a category", () => {
+    const preview = sortItemsForPreview([
+      item("client-1", "client"),
+      item("free-1", "free"),
+      item("saas-1", "saas"),
+      item("client-2", "client"),
+      item("saas-2", "saas"),
+    ]);
+
+    expect(preview.map((entry) => entry.id)).toEqual([
+      "saas-1",
+      "saas-2",
+      "free-1",
+      "client-1",
+      "client-2",
+    ]);
+  });
+
+  it("treats an entry with no category as client work", () => {
+    const preview = sortItemsForPreview([item("legacy"), item("saas-1", "saas")]);
+
+    expect(preview.map((entry) => entry.id)).toEqual(["saas-1", "legacy"]);
+  });
+
+  it("does not mutate its input", () => {
+    const items = [item("client-1", "client"), item("saas-1", "saas")];
+    sortItemsForPreview(items);
+
+    expect(items.map((entry) => entry.id)).toEqual(["client-1", "saas-1"]);
+  });
+});
+
+describe("portfolioCategoryKey", () => {
+  it("builds the i18n key prefix for each section", () => {
+    expect(portfolioCategoryKey("client")).toBe("portfolioCategoryClient");
+    expect(portfolioCategoryKey("saas")).toBe("portfolioCategorySaas");
+    expect(portfolioCategoryKey("free")).toBe("portfolioCategoryFree");
   });
 });

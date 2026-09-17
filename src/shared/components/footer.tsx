@@ -84,6 +84,24 @@ const Footer = () => {
                 {t.text("footer.navItem6")}
               </Link>
             </li>
+            <li className="" data-aos="fade-down" data-aos-duration="1500">
+              <Link
+                to={L("/legal-notice")}
+                className="text-[#fff] hover:text-[#5f75f5]"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              >
+                {t.text("footer.navItem7")}
+              </Link>
+            </li>
+            <li className="" data-aos="fade-down" data-aos-duration="1600">
+              <Link
+                to={L("/terms")}
+                className="text-[#fff] hover:text-[#5f75f5]"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              >
+                {t.text("footer.navItem8")}
+              </Link>
+            </li>
           </ul>
         </div>
         <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between gap-y-[41px] mt-[41px] lg:mt-[60px] 2xl:mt-[77px]">
@@ -105,7 +123,7 @@ const Footer = () => {
             >
               <img
                 src={linkedin}
-                alt="Voir le profil LinkedIn de MediaSmart"
+                alt={t.text("footer.linkedinAlt")}
                 className="w-[14px] h-[14px]"
                 width="14"
                 height="14"
@@ -125,7 +143,7 @@ const Footer = () => {
             >
               <img
                 src={insta}
-                alt="Voir le profil Instagram de MediaSmart"
+                alt={t.text("footer.instagramAlt")}
                 className="w-[17px] h-[17px]"
                 width="17"
                 height="17"
@@ -145,7 +163,7 @@ const Footer = () => {
             >
               <img
                 src={telegram}
-                alt="Contacter MediaSmart sur Telegram"
+                alt={t.text("footer.telegramAlt")}
                 className="w-[17px] h-[17px]"
                 width="17"
                 height="17"

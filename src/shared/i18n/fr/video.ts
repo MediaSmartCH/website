@@ -1,6 +1,6 @@
 const video = {
     videoTitle: "MediaSmart Vidéo ",
-    videoSubitle: "Captivez, Inspirez, Marquez les esprits !",
+    videoSubitle: "Captivez, Inspirez, Marquez les esprits !",
     videoDescription:
         "De la captation d'événements au montage créatif, MediaSmart donne vie à vos histoires avec des vidéos qui marquent et engagent votre audience.",
     videoContactBtn: "Contactez-nous",
@@ -20,7 +20,7 @@ const video = {
         "Revivez les moments forts avec nos services de retransmission d'événements. Nous capturons et diffusons vos occasions spéciales, offrant des flux vidéo de haute qualité qui peuvent être revécus et partagés. Parfait pour les concerts, conférences et événements culturels.",
     videoServicesTitle3: "Montage Vidéo",
     videoServicesDescription3:
-        "Nous façonnons votre récit visuel avec précision et panache. Le montage vidéo n'est pas juste une question de coupe et d'assemblage ; c'est une forme d'art dont nous sommes fiers. Que ce soit pour une vidéo de mariage émouvante, un documentaire captivant ou un clip promotionnel engageant, nous donnons vie à votre histoire avec une touche cinématographique. Notre expertise garantit que chaque transition est fluide, chaque scène est percutante, et votre vision est réalisée dans sa forme la plus éclatante.",
+        "Nous façonnons votre récit visuel avec précision et panache. Le montage vidéo n'est pas juste une question de coupe et d'assemblage ; c'est une forme d'art dont nous sommes fiers. Que ce soit pour une vidéo de mariage émouvante, un documentaire captivant ou un clip promotionnel engageant, nous donnons vie à votre histoire avec une touche cinématographique. Notre expertise garantit que chaque transition est fluide, chaque scène est percutante, et votre vision est réalisée dans sa forme la plus éclatante.",
     videoServicesTitle4: "Location de Matériel",
     videoServicesDescription4:
         "Accédez à du matériel vidéo professionnel sans engagement. MediaSmart propose une gamme complète de locations d'équipements, vous assurant d'avoir les bons outils pour capturer votre vision, des caméras à l'éclairage et au son.",

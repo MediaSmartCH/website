@@ -6,19 +6,21 @@
 // ============================================================================
 const navbar = {
   navItem1: "Accueil",
-  navItem2: "Solutions informatiques",
-  // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : clé conservée, lien retiré du menu.
+  navItem2: "Web & apps",
+  // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : clé conservée, lien retiré du menu.
   navItem3: "Solutions vidéo",
   navItem4: "À propos",
   navItem5: "Témoignages",
   navbarButton: "Prendre rendez-vous",
+  openMenu: "Ouvrir le menu",
+  closeMenu: "Fermer le menu",
   languageSelector: "Sélecteur de langue",
   themeSelector: "Sélecteur de thème",
   themeLight: "Thème clair",
   themeDark: "Thème sombre",
   themeSystem: "Thème système",
   themeChangingTitle: "Changement de thème",
-  themeChangingDescription: "Veuillez patienter...",
+  themeChangingDescription: "Veuillez patienter…",
   animToggle: "Activer/désactiver les animations",
   animOn: "Activer les animations",
   animOff: "Désactiver les animations",

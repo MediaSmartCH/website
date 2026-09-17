@@ -96,7 +96,7 @@ export default function ContactInfoPanel({ theme }: ContactInfoPanelProps) {
           <span>
             <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
           </span>
-          <span>Linkedin</span>
+          <span>LinkedIn</span>
         </a>
         <a
           className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}

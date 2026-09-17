@@ -26,6 +26,8 @@ type RouteSeoKey =
   | "it-services"
   | "video-services"
   | "privacy-policy"
+  | "legal-notice"
+  | "terms"
   | "support-contract"
   | "not-found";
 

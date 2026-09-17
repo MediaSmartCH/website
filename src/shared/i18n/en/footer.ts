@@ -5,11 +5,16 @@
 // ============================================================================
 const footer = {
     navItem1: "Home",
-    navItem2: "IT Solutions",
+    navItem2: "Web & apps",
     // VIDEO DISABLED — DO NOT DELETE: key kept, link removed from the footer.
-    navItem3: "Video Solutions",
-    navItem4: "About Us",
+    navItem3: "Video services",
+    navItem4: "About",
     navItem5: "Testimonials",
-    navItem6: "Privacy Policy",
+    navItem6: "Privacy policy",
+    navItem7: "Legal notice",
+    navItem8: "Terms and conditions",
+    linkedinAlt: "MediaSmart on LinkedIn",
+    instagramAlt: "MediaSmart on Instagram",
+    telegramAlt: "Contact MediaSmart on Telegram",
 };
 export default footer;

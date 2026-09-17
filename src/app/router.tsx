@@ -30,8 +30,19 @@ const Homepage = lazy(() => import("@features/home/home-page"));
 // const VideoServicesPage = lazy(() => import("@features/video-services/video-services-page"));
 const ITServicesPage = lazy(() => import("@features/it-services/it-services-page"));
 const PrivacyPolicyPage = lazy(() => import("@features/privacy-policy/privacy-policy-page"));
+const LegalNoticePage = lazy(() => import("@features/legal/legal-notice-page"));
+const TermsPage = lazy(() => import("@features/legal/terms-page"));
 const Error404Page = lazy(() => import("@features/error/error-404-page"));
-const SupportContractPage = lazy(() => import("@features/support-contract/support-contract-page"));
+/* ============================================================================
+ * CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
+ * L'offre de contrat de support est en cours de refonte. La page, ses textes
+ * (it.supportPage*, it.support*) et son composant restent en place ; seule la
+ * route est neutralisée, comme pour la vidéo.
+ * POUR RÉACTIVER : décommenter la ligne ci-dessous et la route plus bas, puis
+ * suivre la marche à suivre décrite dans "_supportContractDisabled"
+ * (src/shared/seo/route-seo-data.json).
+ * ========================================================================= */
+// const SupportContractPage = lazy(() => import("@features/support-contract/support-contract-page"));
 const BookingManagePage = lazy(() => import("@features/booking/booking-manage-page"));
 
 // Wraps a page node in an ErrorBoundary and a Suspense with a full-page loader fallback.
@@ -53,15 +64,16 @@ const LayoutWrapper: React.FC = () => (
 );
 
 /* ============================================================================
- * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
- * Renvoie /:lang/video-services vers l'accueil de la même langue.
+ * ROUTES DÉSACTIVÉES — NE PAS SUPPRIMER
+ * Renvoie une route mise en pause (/:lang/video-services, puis
+ * /:lang/support-contract) vers l'accueil de la même langue.
  * Vercel sert déjà une 301 (voir "redirects" dans vercel.json), mais elle ne
  * s'applique ni en dev, ni en preview, ni lors d'une navigation interne : sans
  * cette redirection côté routeur, l'URL tomberait sur la 404 en local.
  * Le chemin est construit en absolu à partir du segment de langue, une cible
  * relative ("..") se résolvant mal sous une route splat.
  * ============================================================================ */
-const RedirectVideoToHome: React.FC = () => {
+const RedirectToHome: React.FC = () => {
   const { lang } = useParams<{ lang?: string }>();
   return <Navigate to={buildLocalizedPath(normalizeLanguage(lang), "/")} replace />;
 };
@@ -87,10 +99,19 @@ const routes: RouteObject[] = [
              de tomber sur la 404 partout ailleurs qu'en production.
              Pour réactiver la vidéo : supprimer la ligne Navigate ci-dessous et
              décommenter la route d'origine. */
-          { path: "video-services", element: <RedirectVideoToHome /> },
+          { path: "video-services", element: <RedirectToHome /> },
           // { path: "video-services", element: Wrap(<VideoServicesPage />) },
           { path: "privacy-policy", element: Wrap(<PrivacyPolicyPage />) },
-          { path: "support-contract", element: Wrap(<SupportContractPage />) },
+          { path: "legal-notice", element: Wrap(<LegalNoticePage />) },
+          { path: "terms", element: Wrap(<TermsPage />) },
+          /* CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
+             Même mécanique que la vidéo : Vercel répond une 301 en production
+             (voir "redirects" dans vercel.json), et cette redirection côté
+             routeur couvre le dev, la preview et la navigation interne.
+             Pour réactiver : supprimer la ligne Navigate et décommenter la
+             route d'origine juste en dessous. */
+          { path: "support-contract", element: <RedirectToHome /> },
+          // { path: "support-contract", element: Wrap(<SupportContractPage />) },
           { path: "booking/manage", element: Wrap(<BookingManagePage />) },
         ],
       },

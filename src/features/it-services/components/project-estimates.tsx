@@ -1,17 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Globe, ShoppingCart, Wrench, Code2, ArrowRight, Clock, Shield, Zap, Star } from "lucide-react";
+// CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER : le seul <Link> de ce
+// composant menait à /support-contract (bandeau commenté plus bas).
+// import { Link } from "react-router-dom";
+// CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER : Zap et Star n'illustraient
+// que les formules du bandeau commenté plus bas (Shield/Zap/Star).
+// import { Globe, ShoppingCart, Wrench, Code2, ArrowRight, Clock, Shield, Zap, Star } from "lucide-react";
+import { Globe, ShoppingCart, Wrench, Code2, ArrowRight, Clock } from "lucide-react";
 
 import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
-import { useLangLink } from "@shared/hooks/use-localized-path";
+// CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER : le seul lien localisé de
+// ce composant pointait vers /support-contract (bandeau commenté plus bas).
+// import { useLangLink } from "@shared/hooks/use-localized-path";
 
 const ProjectEstimates = () => {
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(languageReducer);
-  const { L } = useLangLink();
+  // CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER : à rétablir avec le
+  // bandeau des formules de support.
+  // const { L } = useLangLink();
   const isLight = themeReducer === "light";
 
   // Dispatches a custom event so the contact form can pre-select the intent tab,
@@ -165,7 +174,18 @@ const ProjectEstimates = () => {
         })}
       </div>
 
-      {/* Compact support plans summary — links to the full support contract page */}
+      {/* ====================================================================
+          CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
+          L'offre de contrat de support est en cours de refonte. Le bandeau
+          récapitulatif ci-dessous (formules Essentiel / Business / Premium,
+          tarifs, SLA P1 et lien vers /support-contract) n'est plus rendu, mais
+          son balisage et ses clés de traduction (it.supportBand*, it.support*)
+          restent intacts.
+          POUR RÉACTIVER : décommenter le bloc ci-dessous, lui rendre ses
+          balises de commentaire JSX, et suivre la marche à suivre décrite dans
+          "_supportContractDisabled" (src/shared/seo/route-seo-data.json).
+
+      === Compact support plans summary — links to the full support contract page ===
       <div className={`${isLight ? "border-[#E8E4F7] bg-[linear-gradient(135deg,#FFFFFF_0%,#F7F5FF_50%,#EDF6FF_100%)]" : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]"} rounded-[24px] border p-6 mb-6`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div>
@@ -201,7 +221,7 @@ const ProjectEstimates = () => {
                 <span className={`${subtitleColor} font-poppins text-[11px]`}>{t.text("it.supportBandExtra")}</span>
                 <div className="flex items-center gap-1.5">
                   <span className={`${titleColor} font-poppins text-[12px] font-semibold`}>{extraRate} CHF/h</span>
-                  {/* Strikethrough shows the discounted rate vs the standard 140 CHF/h */}
+                  === Strikethrough shows the discounted rate vs the standard 140 CHF/h ===
                   <span className={`${isLight ? "text-[#9B6B6B] line-through" : "text-[#FFAAAA] line-through"} font-poppins text-[11px]`}>140</span>
                 </div>
               </div>
@@ -209,6 +229,8 @@ const ProjectEstimates = () => {
           ))}
         </div>
       </div>
+
+      */}
 
       {/* Disclaimer + CTA buttons */}
       <div className={`${noteBox} rounded-[20px] border p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4`}>

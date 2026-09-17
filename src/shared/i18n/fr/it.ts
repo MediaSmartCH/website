@@ -1,39 +1,37 @@
 const it = {
     itServicesHeroTitle: `
-        <span> Solutions informatiques </span> sur mesure pour vos besoins numériques
+        <span> Sites web et applications </span> sur mesure pour les PME, les indépendants et les associations
         `,
     itServicesHeroDescription:
-        "De la création de sites web à la cybersécurité, MediaSmart est votre partenaire informatique en Suisse romande.",
+        "Conception, développement et maintenance de sites et d'applications web, par un interlocuteur unique en Suisse romande.",
     itServicesHeroContactBtn: "Demander un devis",
 
-    itServicesAboutTitle: `Introduction à <span> l'expertise informatique </span>`,
+    itServicesAboutTitle: `Notre <span> approche du développement web </span>`,
     itServicesAboutDescription: `
-        Chez MediaSmart, nous croyons que l'informatique doit être un <b> allié stratégique, et non une source de frustration. </b>
+        Un site ou une application doit <b> servir votre activité, pas vous compliquer la vie. </b>
         <br />
-        Notre mission est simple : vous permettre de travailler efficacement, en toute sécurité, grâce à des solutions modernes et adaptées à vos besoins spécifiques.
-        <br />
-        Que vous soyez une PME, une association, un indépendant ou un particulier exigeant, nous apportons <b> souplesse, expertise et réactivité </b> à chaque projet.
+        Nous partons donc de votre fonctionnement réel : ce que vos visiteurs doivent trouver, ce que vos équipes doivent pouvoir faire, ce qui doit rester simple à mettre à jour. Vous recevez un périmètre écrit et un devis détaillé avant que le développement commence.
         `,
 
-    itServicesTitle: `<span> Nos </span> services informatiques`,
-    itServicesDescription: "Nous proposons des solutions informatiques sur mesure conçues pour assurer le bon fonctionnement de votre entreprise. Nos services comprennent :",
+    itServicesTitle: `<span> Nos </span> prestations web`,
+    itServicesDescription: "Trois prestations, selon que vous partiez de zéro, d'un besoin métier ou d'un site à reprendre.",
 
     // ------------------------------------------------------------------
     // Produits SaaS MediaSmart — mis en avant hors portfolio, parce que ce
     // sont des offres vendables et non de simples références clients. Les
-    // outils gratuits sont volontairement séparés plus bas : ils servent la
+    // outils gratuits sont volontairement séparés plus bas : ils servent la
     // vitrine, pas la prospection.
     // ------------------------------------------------------------------
-    saasTitle: `<span> Nos produits </span> prêts à l'emploi`,
+    saasTitle: `<span> Nos applications </span> métier`,
     saasDescription:
-        "Au-delà des projets sur mesure, MediaSmart développe et exploite ses propres solutions métier. Hébergées en Suisse, pensées pour les PME, les associations et les indépendants qui veulent un outil qui fonctionne dès le premier jour.",
+        "Nous développons et exploitons aussi nos propres applications, hébergées en Suisse et opérationnelles dès l'installation.",
     saasDemoCta: "Voir la démo",
     saasBookCta: "Demander une démo",
     saasProducts: [
         {
             id: "cc-factures-dashboard",
             name: "Dashboard Factures Fournisseurs",
-            tagline: "Savoir où part l'argent, mois par mois et fournisseur par fournisseur",
+            tagline: "Suivez vos dépenses fournisseurs, mois par mois et fournisseur par fournisseur",
             highlights: [
                 "KPIs mensuels, top fournisseurs et comparaison de périodes",
                 "Connexion Microsoft 365 et ingestion directe depuis SharePoint",
@@ -43,107 +41,155 @@ const it = {
         {
             id: "ged-mediasmart",
             name: "MediaSmart GED",
-            tagline: "Vos factures et documents sensibles, classés automatiquement et gardés chez vous",
+            tagline: "Vos factures et documents sensibles, classés automatiquement et conservés dans vos locaux",
             highlights: [
                 "OCR automatique et extraction fournisseur, montant et échéance",
-                "Stockage chiffré sur votre réseau interne, rien ne sort du bureau",
+                "Stockage chiffré sur votre réseau interne : aucune donnée ne quitte vos locaux",
                 "Interface web protégée, installée et maintenue par MediaSmart",
             ],
         },
     ],
-    saasFreeTitle: "Et aussi, en libre accès",
+    // Compte à rebours affiché sur un outil pas encore ouvert au public. La
+    // date cible vit dans it-portfolio.json (champ "launchDate").
+    launchCountdownLabel: "Ouverture publique dans",
+    launchCountdownDays: "j",
+    launchCountdownHours: "h",
+    launchCountdownMinutes: "min",
+    launchCountdownSeconds: "s",
+    launchCountdownLive: "Ouvert au public",
+    saasFreeTitle: `<span>En accès</span> libre`,
+    saasFreeCta: "Ouvrir l'outil",
     saasFreeDescription:
-        "Des outils que nous ouvrons à tout le monde, sans compte ni facture.",
+        "Des outils que nous mettons à disposition de tous, sans compte ni facturation.",
     saasFreeTools: [
         {
             id: "cc-voice",
             name: "Voice Studio",
-            tagline: "Clonage et synthèse vocale, calculés sur notre propre studio plutôt que dans le cloud. Bientôt ouvert à tous.",
+            tagline: "Clonage et synthèse vocale, calculés sur nos propres machines plutôt que dans le cloud. Ouverture publique en préparation.",
         },
         {
             id: "mediasmart-games",
             name: "MediaSmart Lab",
-            tagline: "Nos mini-jeux et expérimentations web, en accès libre.",
+            tagline: "Nos mini-jeux et expérimentations web, librement accessibles.",
         },
     ],
 
-    portfolioTxt: "Notre portfolio",
-    portfolioBtn: "Voir plus de portfolio",
+    portfolioTxt: "Nos réalisations",
+    portfolioBtn: "Voir plus de réalisations",
 
-    portfolioModalHeading: "Notre portfolio",
-    portfolioModalDescription: "Transformer les idées en expériences Web interactives, visuellement époustouflantes et conviviales qui laissent un impact durable.",
+    portfolioModalHeading: "Nos réalisations",
+    portfolioModalDescription: "Une sélection de sites et d'applications que nous avons conçus, développés et mis en ligne.",
     portfolioVisitSite: "Visiter le site",
+    // Sections de la galerie. Les clés suivent le nom de la catégorie du
+    // fichier it-portfolio.json (client / saas / free).
+    portfolioCategoryClientLabel: "Projets clients",
+    portfolioCategoryClientDescription: "Sites et applications conçus et mis en ligne pour nos clients.",
+    portfolioCategorySaasLabel: "Nos applications métier",
+    portfolioCategorySaasDescription: "Les applications métier que nous développons, hébergeons et commercialisons nous-mêmes.",
+    portfolioCategoryFreeLabel: "Outils gratuits",
+    portfolioCategoryFreeDescription: "Les outils que nous publions en accès libre, sans compte ni facturation.",
+    portfolioCloseImage: "Fermer l'image",
 
-    service1: "Création & refonte de sites web",
+    service1: "Création et refonte de sites web",
     description1: `
-        Votre site internet est souvent le <b> premier contact </b> entre votre organisation et vos clients. Nous concevons des sites modernes, rapides et sécurisés, adaptés à tous les supports (ordinateur, tablette, mobile).
-        <br />
+        Souvent le <b> premier contact </b> entre votre organisation et vos clients. Rapide, sécurisé, lisible sur tous les écrans, et simple à mettre à jour vous-même.
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Sites vitrines pour présenter votre activité. </li>
-        <li> Sites plus avancés avec intégration de formulaires, blogs ou boutique en ligne. </li>
-        <li> Optimisation du référencement naturel (SEO) pour être trouvé sur Google. </li>
+        <li> Sites vitrines pour présenter votre activité et vos prestations. </li>
+        <li> Sites plus complets : formulaires, blog, réservation ou boutique en ligne. </li>
+        <li> Optimisation technique du référencement (SEO). </li>
         </ul>
-        Chaque site est pensé pour être simple à gérer au quotidien, tout en reflétant parfaitement votre image et vos valeurs.
         `,
+    // Prestations web actives, rendues sur la page /it-services juste après
+    // "service1". Elles reprennent le périmètre déjà décrit dans la section
+    // des estimations (application sur mesure, refonte / migration).
+    serviceApp: "Applications web sur mesure",
+    descriptionApp: `
+        Quand un site ne suffit plus, nous développons l'outil qui correspond à votre organisation, plutôt que d'adapter vos processus à un logiciel générique.
+        <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
+        <li> Interface et logique métier conçues pour vos processus. </li>
+        <li> Authentification et gestion des droits d'accès. </li>
+        <li> Conception et administration de la base de données. </li>
+        <li> Développement ou intégration d'API avec vos outils existants. </li>
+        </ul>
+        Nos deux applications, le suivi des factures fournisseurs et la gestion documentaire, sont nées de cette démarche.
+        `,
+    serviceRedesign: "Refonte et migration de sites",
+    descriptionRedesign: `
+        Un site vieillissant n'a pas besoin d'être repris de zéro : un état des lieux chiffre ce qui doit être refait et ce qui peut être conservé.
+        <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
+        <li> Refonte visuelle et revue de la navigation. </li>
+        <li> Reprise et migration des contenus existants. </li>
+        <li> Optimisation du temps de chargement. </li>
+        <li> Mise à niveau sur mobile et tablette. </li>
+        </ul>
+        `,
+
+    // ==================================================================
+    // SERVICES IT ANNEXES DÉSACTIVÉS — NE PAS SUPPRIMER
+    // Le site met désormais en avant la création de sites web et
+    // d'applications. Les prestations "service2" à "service6" (maintenance
+    // Windows/macOS, optimisation des postes, cybersécurité, sauvegarde,
+    // support et formation) ne sont plus rendues : les blocs correspondants
+    // sont commentés dans src/features/it-services/components/services.tsx.
+    // Les clés restent en place pour la parité FR/EN et pour une
+    // réactivation immédiate, sans rien réécrire.
+    // ==================================================================
     service2: "Maintenance Windows et macOS",
     description2: `
-        Un ordinateur bien entretenu dure plus longtemps et évite les pannes imprévues.
-        <br />
-        Nous proposons un service de <b>maintenance proactive</b>, incluant :
+        Un poste entretenu dure plus longtemps et tombe moins souvent en panne. Nous assurons une <b>maintenance préventive</b> de vos machines :
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Mises à jour régulières (système et logiciels). </li>
-        <li> Nettoyage et optimisation des paramètres. </li>
-        <li> Détection préventive des problèmes. </li>
-        <li> Assistance rapide en cas de blocage. </li>
+        <li> Mises à jour du système et des logiciels. </li>
+        <li> Nettoyage et révision des paramètres. </li>
+        <li> Contrôle de l'espace disque, des erreurs et de l'état du matériel. </li>
+        <li> Intervention rapide lorsqu'un poste se bloque. </li>
         </ul>
-        Notre objectif : vous offrir un parc informatique stable, fiable et toujours prêt à l'emploi.
+        L'objectif : un parc stable, à jour, et le moins d'interruptions possible dans votre travail.
         `,
     service3: "Optimisation des performances",
     description3: `
-        Un poste de travail ou un serveur lent, c'est du temps perdu et de la productivité en moins.
-        <br />
-        Nous analysons vos systèmes pour identifier les ralentissements,
+        Un poste ou un serveur lent, c'est du temps perdu chaque jour. Nous analysons le système pour identifier l'origine réelle des ralentissements, puis nous intervenons :
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Amélioration de la configuration matérielle et logicielle. </li>
-        <li> Optimisation du démarrage et des applications. </li>
-        <li> Suppression des fichiers inutiles et processus parasites. </li>
+        <li> Révision de la configuration matérielle et logicielle. </li>
+        <li> Nettoyage du démarrage et des applications en arrière-plan. </li>
+        <li> Suppression des fichiers et processus inutiles. </li>
         </ul>
-        Résultat : des machines plus rapides, plus efficaces et plus agréables à utiliser.
+        Souvent, quelques ajustements suffisent à repousser le remplacement d'une machine de plusieurs années.
         `,
-    service4: "Cybersécurité & audits",
+    service4: "Cybersécurité et audits",
     description4: `
-            Les cyberattaques et tentatives de piratage ne concernent pas que les grandes entreprises.
+        Les tentatives d'intrusion, le rançongiciel et le hameçonnage ne visent pas que les grandes entreprises : les petites structures sont souvent les moins protégées.
         <br />
-        Nous vous aidons à protéger vos données et vos équipements grâce à une approche complète :
+        Nous sécurisons vos données et vos équipements :
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Installation et configuration d'antivirus performants. </li>
-        <li> Mise en place de pare-feu et sécurisation du réseau. </li>
+        <li> Installation et configuration de l'antivirus. </li>
+        <li> Mise en place du pare-feu et sécurisation du réseau. </li>
         <li> Audit de sécurité pour identifier vos points faibles. </li>
-        <li> Sensibilisation et bonnes pratiques pour vos équipes. </li>
+        <li> Gestion des accès et des mots de passe. </li>
+        <li> Sensibilisation de vos collaborateurs aux bonnes pratiques. </li>
         </ul>
-            La cybersécurité n'est pas une option : c'est la garantie de préserver la confiance de vos clients et la continuité de votre activité.
+        Chaque constat est accompagné d'une recommandation claire et d'un ordre de priorité.
         `,
-    service5: "Sauvegarde & récupération de données",
+    service5: "Sauvegarde et restauration des données",
     description5: `
-        Vos données sont précieuses. Qu'il s'agisse de documents professionnels, de projets en cours ou de souvenirs personnels, leur perte peut être dramatique.
+        Une panne de disque, une erreur de manipulation ou un rançongiciel peuvent effacer des années de travail.
         <br />
-        Nous mettons en place des <b> solutions de sauvegarde fiables </b> (locales et cloud) adaptées à votre activité. Et si le pire arrive ? Nous proposons également des services de récupération de données pour tenter de restaurer vos fichiers supprimés ou endommagés.
+        Nous mettons en place une <b>sauvegarde régulière</b>, locale ou dans le cloud, dimensionnée pour votre activité, et nous vérifions qu'une restauration fonctionne réellement. En cas de perte de fichiers supprimés ou endommagés, nous tentons également une récupération des données.
         `,
-    service6: "Support & formation utilisateurs",
+    service6: "Support et formation des utilisateurs",
     description6: `
-        Nous savons qu'un problème informatique peut vite devenir bloquant. C'est pourquoi nous proposons un <b> support réactif et accessible </b>:
+        Un problème informatique devient vite bloquant. Nous assurons un <b> support accessible et réactif </b> :
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Dépannage rapide à distance ou sur site. </li>
-        <li> Réponses claires, sans jargon inutile. </li>
-        <li> Formation personnalisée (individuelle ou en groupe) pour mieux utiliser vos outils (Windows, macOS, Office 365, cybersécurité, etc.). </li>
+        <li> Diagnostic et dépannage à distance ou sur site. </li>
+        <li> Des réponses compréhensibles, sans jargon inutile. </li>
+        <li> Formation individuelle ou en groupe à vos outils : Windows, macOS, Microsoft 365, bonnes pratiques de sécurité. </li>
         </ul>
-        Notre mission : rendre vos utilisateurs plus autonomes et productifs, tout en restant disponibles quand vous avez besoin d'aide.
+        Objectif : rendre vos utilisateurs plus autonomes, et rester joignables quand ils ne le sont pas.
         `,
 
     estimatesTitle: `Estimations de <span>coût projet</span>`,
-    estimatesDescription: "Fourchettes indicatives pour vous aider à planifier votre budget. Chaque projet fait l'objet d'un devis détaillé avant tout démarrage.",
+    estimatesDescription: "Des fourchettes indicatives pour situer votre budget. Chaque projet fait l'objet d'un devis détaillé avant tout démarrage.",
     estimateFrom: "dès",
     estimateOnQuote: "Sur devis",
     estimateDeliveryLabel: "Délai estimé",
@@ -158,9 +204,9 @@ const it = {
     supportBandTitle: "Protégez votre projet avec un contrat de support",
     supportBandSubtitle: "Abonnement annuel optionnel · Heures incluses · SLA garanti",
     supportBandHours: "h incluses",
-    supportBandP1: "P1 :",
+    supportBandP1: "P1 :",
     supportBandDetails: "Voir tous les détails",
-    supportBandExtra: "Heures supp. :",
+    supportBandExtra: "Heures supp. :",
     estimateVitrineTitle: "Site vitrine",
     estimateVitrineSubtitle: "Jusqu'à 5 pages — idéal pour présenter votre activité",
     estimateVitrineItems: [
@@ -198,12 +244,12 @@ const it = {
     ],
 
     practicalInfoTitle: `<span>Informations</span> pratiques`,
-    practicalInfoDescription: "Les points clés à connaître avant de démarrer votre projet.",
+    practicalInfoDescription: "Tarifs, conditions de paiement, garantie et horaires : les points à connaître avant de démarrer.",
     hourlyRateTitle: "Tarif horaire standard",
     hourlyRateStandard: "Standard",
     hourlyRateUrgent: "Urgent (hors horaires ouvrés)",
     hourlyRateWeekend: "Week-end / jour férié",
-    hourlyRateMinBilling: "Facturation minimale : 30 min. Toute demi-heure entamée est due.",
+    hourlyRateMinBilling: "Facturation minimale : 30 min. Toute demi-heure entamée est due.",
     hourlyRateContractNote: "Avec un contrat de support, les heures supplémentaires sont à 90–120 CHF/h. Le Support Premium inclut 2h d'intervention week-end par an sans surcoût.",
     paymentTitle: "Conditions de paiement",
     paymentStep1: "50%",
@@ -259,31 +305,31 @@ const it = {
     supportSlaP2Premium: "8 heures ouvrées",
     supportSlaP3Premium: "1 jour ouvré",
     supportPremiumWeekendIncluded: "Intervention week-end incluse dans la limite de 2h par année contractuelle",
-    supportPremiumBeyond: "Au-delà :",
+    supportPremiumBeyond: "Au-delà :",
     supportPremiumNote: "Les tarifs hors horaires et week-end s'appliquent au-delà des 2h/an incluses.",
 
-    itServicesProcessTitle: `Notre <span> processus </span> de travail`,
-    itServicesProcessDescription: "Chaque mission informatique suit une méthodologie simple et transparente :",
+    itServicesProcessTitle: `Le <span> déroulement </span> d'une mission`,
+    itServicesProcessDescription: "De la prise de contact au suivi après mise en ligne.",
     processData: [
         {
             title: "Consultation",
-            description: "Nous discutons de vos objectifs et de vos défis afin de comprendre exactement vos besoins.",
+            description: "Vos objectifs, vos contraintes, ce que vous attendez concrètement.",
         },
         {
-            title: "Évaluation",
-            description: "Nous analysons vos systèmes pour identifier les risques et les opportunités d'amélioration.",
+            title: "Analyse",
+            description: "Nous examinons l'existant et chiffrons le travail.",
         },
         {
-            title: "Solutions personnalisées",
-            description: "Nous élaborons un plan clair et sur mesure, parfaitement adapté à votre activité et à votre budget.",
+            title: "Proposition",
+            description: "Un devis détaillé : périmètre, délais, ce qui est inclus ou non.",
         },
         {
             title: "Mise en œuvre",
-            description: "Nos experts déploient les solutions avec un minimum d'interruption dans votre travail quotidien.",
+            description: "Mise en ligne, en dehors des heures de production si nécessaire.",
         },
         {
-            title: "Support continu",
-            description: "Nous restons à vos côtés grâce aux mises à jour, à la surveillance et à un support réactif dès que vous en avez besoin.",
+            title: "Suivi",
+            description: "Corrections sous garantie, puis évolutions à la demande.",
         },
     ],
     supportPageTitle: `Contrat de <span>support</span>`,
@@ -316,36 +362,42 @@ const it = {
       "En cas de résiliation anticipée, le montant annuel reste dû jusqu'à l'échéance contractuelle.",
       "Le contrat de support est indépendant du projet de création et peut être souscrit à tout moment.",
     ],
-    supportPageCtaTitle: "Vous avez des questions ?",
-    supportPageCtaDesc: "Contactez-nous pour choisir le niveau adapté à votre activité ou pour obtenir un devis.",
+    supportPageCtaTitle: "Une question sur le contrat de support ?",
+    supportPageCtaDesc: "Écrivez-nous pour déterminer le niveau adapté à votre activité ou obtenir un devis.",
     supportPageBackLink: "← Retour aux services informatiques",
     supportPageMoreInfo: "Plus d'info",
     supportMostPopular: "Le plus populaire",
 
     itFaqTitle: "Questions fréquentes",
     itFaq1: {
-        faqQuestion: "Quels types de projets informatiques prenez-vous en charge ?",
-        faqAnswer: "De la création de sites vitrines aux applications web sur mesure, en passant par les refontes, la maintenance, le support IT et la cybersécurité — nous couvrons l'ensemble du spectre informatique pour les PME, indépendants et associations en Suisse romande.",
+        faqQuestion: "Quels types de projets web développez-vous ?",
+        faqAnswer: "Sites vitrines, sites business (blog, boutique en ligne, réservation), refontes et migrations, et applications web sur mesure avec base de données et authentification. Nous travaillons avec des PME, des indépendants et des associations de Suisse romande.",
     },
     itFaq2: {
-        faqQuestion: "Travaillez-vous avec les petites entreprises et indépendants ?",
-        faqAnswer: "Absolument. Les PME, TPE, associations et indépendants constituent notre cœur de cible. Nous adaptons nos solutions à votre budget et à vos besoins réels, sans jargon inutile ni frais cachés.",
+        faqQuestion: "Travaillez-vous avec les petites entreprises et indépendants ?",
+        faqAnswer: "Oui, c'est même notre cœur de clientèle. Nous dimensionnons chaque projet selon votre budget et vos besoins réels, avec un devis détaillé et sans frais cachés.",
     },
     itFaq3: {
-        faqQuestion: "Dans quelle région intervenez-vous ?",
-        faqAnswer: "Nous intervenons principalement dans les cantons du Valais, Vaud, Genève et Fribourg. Pour les projets de développement web et de support à distance, nous accompagnons des clients partout en Suisse et au-delà.",
+        faqQuestion: "Dans quelle région intervenez-vous ?",
+        faqAnswer: "Nous rencontrons volontiers nos clients en Valais, Vaud, Genève et Fribourg. Le développement et le suivi se faisant à distance, nous travaillons aussi avec des clients partout en Suisse et à l'étranger.",
     },
     itFaq4: {
-        faqQuestion: "Combien de temps faut-il pour créer un site web ou une application ?",
-        faqAnswer: "Un site vitrine simple peut être livré en 2 à 4 semaines. Une application web sur mesure ou une refonte complexe nécessite généralement 6 à 16 semaines selon le périmètre. Nous définissons ensemble un planning clair dès le début du projet.",
+        faqQuestion: "Combien de temps faut-il pour créer un site web ou une application ?",
+        faqAnswer: "Comptez 2 à 4 semaines pour un site vitrine, et généralement 6 à 16 semaines pour une application web sur mesure ou une refonte importante, selon le périmètre. Le planning est fixé avec vous au démarrage du projet.",
     },
+    // CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
+    // L'offre de contrat de support est en refonte : la question ci-dessous a
+    // été remplacée par une question sur le suivi après mise en ligne. Ancien
+    // contenu, à remettre tel quel lors de la réactivation :
+    // faqQuestion: "Proposez-vous des contrats de support ou de maintenance ?",
+    // faqAnswer: "Oui. Après la mise en ligne, trois niveaux de contrat annuel (Essentiel, Business, Premium) couvrent les corrections, les évolutions et les questions : heures d'intervention incluses, délais de prise en charge garantis (SLA) et tarif horaire réduit au-delà."
     itFaq5: {
-        faqQuestion: "Proposez-vous des contrats de support ou de maintenance ?",
-        faqAnswer: "Oui. Nous proposons trois niveaux de contrat de support (Essentiel, Business, Premium) incluant des heures d'intervention, des délais de réponse garantis (SLA) et un tarif horaire préférentiel. Idéal pour sécuriser la continuité de votre activité.",
+        faqQuestion: "Que se passe-t-il une fois le site en ligne ?",
+        faqAnswer: "Toute anomalie technique imputable à nos développements est corrigée sans frais pendant 14 jours après la mise en ligne. Ensuite, les corrections et les évolutions se font à la demande, sur devis ou au tarif horaire. Une offre de suivi annuel est en préparation.",
     },
     itFaq6: {
-        faqQuestion: "Comment se déroule le premier contact ?",
-        faqAnswer: "Commencez par une consultation gratuite de 30 minutes via notre outil de réservation en ligne. Nous écoutons vos besoins, évaluons votre situation et vous proposons un devis personnalisé sous 48 heures, sans engagement.",
+        faqQuestion: "Comment se déroule le premier contact ?",
+        faqAnswer: "Réservez une consultation gratuite de 30 minutes via notre outil en ligne. Nous faisons le point sur votre situation, puis vous recevez un devis détaillé sous 48 heures, sans engagement.",
     },
 };
 export default it;
