@@ -52,6 +52,16 @@ describe("vercel rewrites", () => {
   });
 });
 
+describe("trailing slashes", () => {
+  it("redirects /path/ to /path instead of letting it 404", () => {
+    // Search Console reported /fr/, /en/ and their www variants as hard 404s:
+    // a trailing slash matches no rewrite, so the request fell through to the
+    // 404 page. `trailingSlash: false` makes Vercel answer a 301 to the
+    // slashless URL, which is also the one the sitemap and the canonicals use.
+    expect(vercelConfig.trailingSlash).toBe(false);
+  });
+});
+
 describe("404 route data", () => {
   it.each(LANGUAGES)("keeps the %s not-found page out of the index", (language) => {
     const seo = seoData.routeSeoByLanguage[language]["not-found"];
