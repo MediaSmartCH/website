@@ -57,7 +57,8 @@ const it = {
     launchCountdownMinutes: "min",
     launchCountdownSeconds: "s",
     launchCountdownLive: "Open to everyone",
-    saasFreeTitle: "Freely available",
+    saasFreeTitle: `<span>Freely</span> available`,
+    saasFreeCta: "Open the tool",
     saasFreeDescription:
         "Tools we make available to everyone, with no account and no invoicing.",
     saasFreeTools: [
