@@ -83,7 +83,7 @@ export default function NavbarDesktop({
         >
           <div className="btn-test from-bottom">
             <Link
-              to={L("/it-services")}
+              to={L("/web-development")}
               className={
                 themeReducer === "light"
                   ? "text-[#14172D] hover:text-[#fff]"

@@ -99,7 +99,7 @@ const it = {
         <li> Technical SEO work. </li>
         </ul>
         `,
-    // Active web services, rendered on /it-services right after "service1".
+    // Active web services, rendered on /web-development right after "service1".
     // They cover the same scope already described in the estimates section
     // (custom application, redesign / migration).
     serviceApp: "Custom web applications",

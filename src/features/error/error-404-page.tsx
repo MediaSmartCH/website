@@ -74,13 +74,13 @@ const Error404Page: React.FC = () => {
   // one at the top, one straight on the products section.
   const destinations = [
     {
-      to: L("/it-services"),
+      to: L("/web-development"),
       Icon: Wrench,
       title: t.text("error404.itServicesTitle"),
       description: t.text("error404.itServicesDescription"),
     },
     {
-      to: `${L("/it-services")}#saas`,
+      to: `${L("/web-development")}#saas`,
       Icon: Boxes,
       title: t.text("error404.saasTitle"),
       description: t.text("error404.saasDescription"),

@@ -91,7 +91,7 @@ const Hero = () => {
           </p>
           <div className="w-full justify-center flex items-center gap-3 md:gap-5 flex-wrap px-[20px]"
           >
-            <Link to={L("/it-services")} onMouseEnter={preloadITServices}>
+            <Link to={L("/web-development")} onMouseEnter={preloadITServices}>
               <button
                 className="
                   hero-btn custom-btn

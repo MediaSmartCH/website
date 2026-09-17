@@ -99,7 +99,7 @@ const it = {
         <li> Optimisation technique du référencement (SEO). </li>
         </ul>
         `,
-    // Prestations web actives, rendues sur la page /it-services juste après
+    // Prestations web actives, rendues sur la page /web-development juste après
     // "service1". Elles reprennent le périmètre déjà décrit dans la section
     // des estimations (application sur mesure, refonte / migration).
     serviceApp: "Applications web sur mesure",
