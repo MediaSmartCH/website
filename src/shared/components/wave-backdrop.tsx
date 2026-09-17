@@ -26,10 +26,13 @@ const WaveBackdrop: React.FC<WaveBackdropProps> = ({
       >
         <defs>
           <linearGradient id={fillGradientId} x1="0" y1="0" x2="0" y2="1">
+            {/* The first stop matches .hero-bg / .hero-bg-dark exactly, so the
+                wave and the backdrop behind the header read as one tint. The
+                light pair was already identical; the dark one was 0.02 short. */}
             <stop
               offset="0%"
               stopColor={isLight ? "#F4F1FF" : "#2B284C"}
-              stopOpacity={isLight ? "0.88" : "0.9"}
+              stopOpacity={isLight ? "0.88" : "0.92"}
             />
             <stop
               offset="62%"
