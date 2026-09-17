@@ -1,8 +1,8 @@
 const cookies = {
-    title: "Cookie Management",
-    subtitle: "Your privacy matters to us",
+    title: "Cookie settings",
+    subtitle: "You choose what we measure",
     description:
-        "We use necessary cookies for the proper functioning of the site (forms, appointments, security). With your consent, we also use cookies to improve functionality, analyze performance and personalize your experience.",
+        "We use cookies that are necessary for the site to work (forms, appointments, security). With your consent, we also use cookies to remember your preferences and to measure how the site performs.",
     necessary: "Necessary",
     functionality: "Functionality",
     performance: "Performance",
@@ -10,7 +10,7 @@ const cookies = {
     yourChoice: "Your choice",
     acceptAll: "Accept all",
     refuse: "Refuse all",
-    customize: "Customize",
+    customize: "Customise",
     detailedPrefs: "Detailed preferences",
     confirmChoices: "Confirm my choices",
     back: "Back",
@@ -19,13 +19,13 @@ const cookies = {
     cookiesFunctionality: "Functionality cookies",
     cookiesPerformance: "Performance cookies",
     necessaryDesc:
-        "These cookies are essential for the site to function (forms, security, navigation).",
+        "Essential for the site to work: forms, security and navigation.",
     functionalityDesc:
-        "These cookies allow us to improve and personalize the website features.",
+        "They remember your display preferences so the site applies them on your next visit.",
     performanceDesc:
-        "These cookies allow us to measure and improve the performance of our website.",
+        "They let us measure how the site is used so we can fix what does not work well.",
     contactForm: "Contact form",
-    contactFormDesc: "Enables message sending",
+    contactFormDesc: "Enables the form to be submitted",
     antiSpamDesc: "Anti-spam protection",
     pagesVisited: "Pages visited, time spent, traffic source",
     themePreference: "Theme preferences",

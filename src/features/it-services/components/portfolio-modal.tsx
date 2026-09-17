@@ -6,7 +6,7 @@
 
 import React from "react";
 
-import { formatImageCount, getInlineGalleryClassName, getItemImages, getSafeExternalUrl, resolveLocalizedField, type LightboxImage, type PortfolioItem } from "@features/it-services/lib/portfolio-helpers";
+import { formatImageCount, getInlineGalleryClassName, getItemImages, getSafeExternalUrl, groupItemsByCategory, portfolioCategoryKey, resolveLocalizedField, type LightboxImage, type PortfolioItem } from "@features/it-services/lib/portfolio-helpers";
 import { SCROLLABLE_GALLERY_THRESHOLD } from "@features/it-services/lib/portfolio-helpers";
 import type { PortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
 
@@ -55,6 +55,24 @@ export default function PortfolioModal({
       closeLabel={languageReducer === "fr" ? "Fermer" : "Close"}
       onClose={onClose}
     >
+      {/* One section per category (client work, our own products, free tools)
+          so a visitor can tell a paid client reference from a MediaSmart
+          product at a glance. Sections with no entry are dropped upstream. */}
+      {groupItemsByCategory(portfolioItems).map((group) => (
+        <section key={group.category} className="mb-10 last:mb-0">
+          <div className="mb-5">
+            <h3
+              className={`${strongTextClass} font-redDisplay text-[20px] font-bold leading-7 md:text-[24px]`}
+            >
+              {t.text(`it.${portfolioCategoryKey(group.category)}Label`)}
+            </h3>
+            <p
+              className={`${mutedTextClass} mt-1 max-w-3xl text-[13px] font-helvetica font-light leading-6`}
+            >
+              {t.text(`it.${portfolioCategoryKey(group.category)}Description`)}
+            </p>
+          </div>
+
               <div
                 className="grid justify-center gap-5"
                 style={{
@@ -62,7 +80,7 @@ export default function PortfolioModal({
                     "repeat(auto-fit, minmax(min(100%, 280px), 360px))",
                 }}
               >
-                {portfolioItems.map((item) => {
+                {group.items.map((item) => {
                   const title = resolveLocalizedField(item.title, languageReducer);
                   const description = resolveLocalizedField(
                     item.description,
@@ -182,6 +200,8 @@ export default function PortfolioModal({
                   );
                 })}
               </div>
+        </section>
+      ))}
     </ModalShell>
   );
 }

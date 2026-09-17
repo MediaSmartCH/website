@@ -1,22 +1,22 @@
 const it = {
     itServicesHeroTitle: `
-        Smarter <span> IT Solutions </span> for Your Digital Needs:
+        <span> Websites and web applications </span> built for small businesses, freelancers and associations
         `,
     itServicesHeroDescription:
-        "From website creation to cybersecurity, MediaSmart is your trusted IT partner in Switzerland.",
-    itServicesHeroContactBtn: "Request a Quote",
+        "Design, development and maintenance of websites and web applications, with a single point of contact in French-speaking Switzerland.",
+    itServicesHeroContactBtn: "Request a quote",
 
-    itServicesAboutTitle: `Introduction to <span> IT Expertise </span>`,
+    itServicesAboutTitle: `How we <span> approach web projects </span>`,
     itServicesAboutDescription: `
-        At MediaSmart, we believe IT should be <b> a strategic asset, not a source of frustration. </b>
+        A website or an application should <b> serve your business, not complicate it. </b>
         <br />
-        Our mission is simple: to help you work efficiently and securely with modern, tailored solutions.
+        We start from how you actually operate before writing a single line of code: what your visitors need to find, what your team needs to be able to do, and what has to stay easy to update.
         <br />
-        Whether you are a small business, an association, a freelancer, or a private client, we bring <b> flexibility, expertise, and responsiveness </b> to every project.
+        Small businesses, associations or freelancers: you get a written scope, a detailed quote and <b> a single point of contact from the first conversation to go-live. </b>
         `,
 
-    itServicesTitle: `<span> Our </span> IT Services`,
-    itServicesDescription: "We offer tailored IT solutions designed to keep your business running without interruptions. Our services include:",
+    itServicesTitle: `<span> Our </span> web services`,
+    itServicesDescription: "From a showcase site to a business application, here is what we design and build:",
 
     // ------------------------------------------------------------------
     // MediaSmart SaaS products — highlighted outside the portfolio, because
@@ -24,16 +24,16 @@ const it = {
     // tools are deliberately kept separate below: they are showcase, not
     // lead generation.
     // ------------------------------------------------------------------
-    saasTitle: `<span> Our products, </span> ready to use`,
+    saasTitle: `<span> Our business </span> applications`,
     saasDescription:
-        "Beyond bespoke projects, MediaSmart builds and runs its own business solutions. Hosted in Switzerland and designed for small businesses, associations and freelancers who want a tool that works on day one.",
+        "Beyond bespoke projects, we build and run our own applications. Hosted in Switzerland and designed for organisations without an in-house IT team, they are operational from the day they are installed.",
     saasDemoCta: "See the demo",
     saasBookCta: "Request a demo",
     saasProducts: [
         {
             id: "cc-factures-dashboard",
             name: "Supplier invoices dashboard",
-            tagline: "See where the money goes, month by month and supplier by supplier",
+            tagline: "Track your supplier spending, month by month and supplier by supplier",
             highlights: [
                 "Monthly KPIs, top suppliers and period-over-period comparisons",
                 "Microsoft 365 sign-in and direct ingestion from SharePoint",
@@ -43,107 +43,158 @@ const it = {
         {
             id: "ged-mediasmart",
             name: "MediaSmart GED",
-            tagline: "Invoices and sensitive paperwork, filed automatically and kept on site",
+            tagline: "Invoices and sensitive paperwork, filed automatically and kept on your premises",
             highlights: [
                 "Automatic OCR with supplier, amount and due-date extraction",
-                "Encrypted storage on your internal network — nothing leaves the office",
+                "Encrypted storage on your internal network: no data leaves your premises",
                 "Password-protected web UI, installed and maintained by MediaSmart",
             ],
         },
     ],
-    saasFreeTitle: "Also, freely available",
+    // Countdown shown on a tool that is not public yet. The target date lives
+    // in it-portfolio.json (the "launchDate" field).
+    launchCountdownLabel: "Public launch in",
+    launchCountdownDays: "d",
+    launchCountdownHours: "h",
+    launchCountdownMinutes: "min",
+    launchCountdownSeconds: "s",
+    launchCountdownLive: "Open to everyone",
+    saasFreeTitle: "Freely available",
     saasFreeDescription:
-        "Tools we open up to everyone — no account, no invoice.",
+        "Tools we make available to everyone, with no account and no invoicing.",
     saasFreeTools: [
         {
             id: "cc-voice",
             name: "Voice Studio",
-            tagline: "Voice cloning and synthesis, computed on our own studio hardware rather than in the cloud. Opening up to everyone soon.",
+            tagline: "Voice cloning and synthesis, computed on our own hardware rather than in the cloud. A public release is in preparation.",
         },
         {
             id: "mediasmart-games",
             name: "MediaSmart Lab",
-            tagline: "Our mini-games and web experiments, free to play.",
+            tagline: "Our mini-games and web experiments, freely accessible.",
         },
     ],
 
-    portfolioTxt: "Check our portfolio",
-    portfolioBtn: "See more portfolio",
+    portfolioTxt: "Our work",
+    portfolioBtn: "See more projects",
 
-    portfolioModalHeading: "Our Portfolio",
-    portfolioModalDescription: "Turning ideas into interactive, visually stunning, and user-friendly web experiences that leave a lasting impact.",
+    portfolioModalHeading: "Our work",
+    portfolioModalDescription: "A selection of the websites and applications we have designed, built and put online.",
     portfolioVisitSite: "Visit website",
+    // Gallery sections. The keys follow the category name used in
+    // it-portfolio.json (client / saas / free).
+    portfolioCategoryClientLabel: "Client projects",
+    portfolioCategoryClientDescription: "Websites and applications designed and delivered for our clients.",
+    portfolioCategorySaasLabel: "Our business applications",
+    portfolioCategorySaasDescription: "The business applications we build, host and sell ourselves.",
+    portfolioCategoryFreeLabel: "Free tools",
+    portfolioCategoryFreeDescription: "Tools we publish openly, with no account and no invoicing.",
+    portfolioCloseImage: "Close image",
 
-    service1: "Website Creation & Redesign",
+    service1: "Website creation and redesign",
     description1: `
-        Your website is often the <b> first impression </b> your clients have of you. We design modern, fast, and secure websites, optimized for all devices (desktop, tablet, mobile).
+        Your website is often the <b> first contact </b> between your organisation and your clients. We build it fast, secure and readable on desktop, tablet and mobile.
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Simple showcase sites to present your activity. </li>
-        <li> Advanced sites with forms, blogs, or e-commerce features. </li>
-        <li> SEO optimization to help you rank on Google. </li>
+        <li> Showcase sites to present your activity and your services. </li>
+        <li> Fuller sites: forms, blog, booking or online shop. </li>
+        <li> Technical SEO work so you can be found on Google. </li>
         </ul>
-            Each site is easy to manage daily while reflecting your image and values.
+        We hand over a site you can keep updated yourself, and stay available for later changes.
         `,
-    service2: "Windows & macOS Maintenance",
+    // Active web services, rendered on /it-services right after "service1".
+    // They cover the same scope already described in the estimates section
+    // (custom application, redesign / migration).
+    serviceApp: "Custom web applications",
+    descriptionApp: `
+        When a website is no longer enough, we build the tool that actually matches your organisation, instead of bending your processes around generic software.
+        <br />
+        <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
+        <li> Interface and business logic designed around your own processes. </li>
+        <li> User authentication and access-rights management. </li>
+        <li> Database design and administration. </li>
+        <li> API development, or integration with the tools you already use. </li>
+        </ul>
+        Every project starts with a scoping analysis, followed by a detailed quote. The two applications we run today, supplier-invoice tracking and document management, both came out of that process.
+        `,
+    serviceRedesign: "Website redesign and migration",
+    descriptionRedesign: `
+        A site that still works but has aged does not need to be rebuilt from scratch. We keep what holds up and replace what gets in the way.
+        <br />
+        <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
+        <li> Visual redesign and a review of the navigation paths. </li>
+        <li> Migration of the existing content. </li>
+        <li> Load-time optimisation. </li>
+        <li> Updated display on mobile and tablet. </li>
+        </ul>
+        We start with a review of the current site, so we can cost precisely what has to be rebuilt and what can be kept.
+        `,
+
+    // ==================================================================
+    // SECONDARY IT SERVICES DISABLED — DO NOT DELETE
+    // The site now leads with website and web application development.
+    // Services "service2" through "service6" (Windows/macOS maintenance,
+    // workstation optimisation, cybersecurity, backup, user support and
+    // training) are no longer rendered: their blocks are commented out in
+    // src/features/it-services/components/services.tsx. The keys stay for
+    // FR/EN parity and for an immediate rollback, with nothing to rewrite.
+    // ==================================================================
+    service2: "Windows and macOS maintenance",
     description2: `
-        A well-maintained computer lasts longer and prevents unexpected downtime.
-        <br />
-        We offer <b> proactive maintenance </b>, including:
+        A maintained workstation lasts longer and fails less often. We carry out <b> preventive maintenance </b> on your machines:
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Regular updates (system and software). </li>
-        <li> Cleaning and system optimization. </li>
-        <li> Preventive problem detection. </li>
-        <li> Fast assistance when issues arise. </li>
+        <li> System and software updates. </li>
+        <li> Clean-up and review of settings. </li>
+        <li> Checks on disk space, system errors and hardware health. </li>
+        <li> Fast intervention when a workstation locks up. </li>
         </ul>
-        Our goal: a stable, reliable IT environment, always ready to work.
+        The goal: a stable, up-to-date estate and as few interruptions to your work as possible.
         `,
-    service3: "System Performance Optimization",
+    service3: "Performance optimisation",
     description3: `
-        Slow systems waste time and money.
-        <br />
-        We identify bottlenecks and apply concrete solutions:
+        A slow workstation or server costs time every single day. We analyse the system to find the real cause of the slowdown, then act on it:
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Hardware and software configuration improvements. </li>
-        <li> Faster startup and application performance. </li>
-        <li> Removal of unnecessary files and background processes. </li>
+        <li> Review of the hardware and software configuration. </li>
+        <li> Clean-up of startup items and background applications. </li>
+        <li> Removal of unnecessary files and processes. </li>
         </ul>
-        The result: faster, more efficient, and more enjoyable computers to use.
+        A few adjustments are often enough to postpone replacing a machine by several years.
         `,
-    service4: "Cybersecurity & Audits",
+    service4: "Cybersecurity and audits",
     description4: `
-        Cyber threats are not just for large corporations.
+        Intrusion attempts, ransomware and phishing do not only target large corporations: smaller organisations are often the least protected.
         <br />
-        We help protect your data and equipment with a complete approach:
+        We secure your data and your equipment:
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Antivirus installation and configuration. </li>
-        <li> Firewall setup and network security. </li>
-        <li> Security audits to spot vulnerabilities. </li>
-        <li> Awareness and best practices for your team. </li>
+        <li> Firewall setup and network hardening. </li>
+        <li> Security audit to identify your weak points. </li>
+        <li> Access and password management. </li>
+        <li> Good-practice awareness for your staff. </li>
         </ul>
-        Cybersecurity is not optional—it's essential to maintain client trust and business continuity.
+        Every finding comes with a clear recommendation and a priority order.
         `,
-    service5: "Data Backup & Recovery",
+    service5: "Data backup and restore",
     description5: `
-        Your data is valuable. Whether it's business documents, ongoing projects, or personal memories, losing them can be devastating. We implement <b> reliable backup strategies </b> (local and cloud) adapted to your needs.
+        A failed disk, a mishandled file or a ransomware infection can wipe out years of work.
         <br />
-        And if the worst happens, we provide recovery services to restore lost or damaged files whenever possible.
+        We put a <b> regular backup </b> in place, local or in the cloud, sized for your activity, and we verify that a restore actually works. If files are deleted or damaged, we also attempt data recovery.
         `,
-    service6: "User Support & Training",
+    service6: "User support and training",
     description6: `
-        We know IT problems can be disruptive. That's why we provide <b> responsive and accessible support </b>:
+        An IT problem quickly becomes a blocker. We provide <b>accessible and responsive support</b>:
         <br />
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Fast troubleshooting, on-site or remotely. </li>
-        <li> Clear answers without unnecessary jargon. </li>
-        <li> Personalized training (one-on-one or group) to help you get the most out of your tools (Windows, macOS, Office 365, cybersecurity, etc.). </li>
+        <li> Diagnosis and troubleshooting, remotely or on site. </li>
+        <li> Answers you can actually understand, without unnecessary jargon. </li>
+        <li> One-to-one or group training on your tools: Windows, macOS, Microsoft 365, security good practice. </li>
         </ul>
-        Our mission: empower users to be more independent and productive, while always being there when support is needed.
+        The goal: make your users more self-sufficient, and stay reachable when they are not.
         `,
 
-    estimatesTitle: `Project <span>Cost Estimates</span>`,
-    estimatesDescription: "Indicative ranges to help you plan your budget. Every project gets a detailed quote before work begins.",
+    estimatesTitle: `Project <span>cost estimates</span>`,
+    estimatesDescription: "Indicative ranges to help you situate your budget. Every project gets a detailed quote before work begins.",
     estimateFrom: "from",
     estimateOnQuote: "On request",
     estimateDeliveryLabel: "Estimated delivery",
@@ -197,28 +248,28 @@ const it = {
       "Detailed quote after scoping session",
     ],
 
-    practicalInfoTitle: `<span>Practical</span> Information`,
-    practicalInfoDescription: "Key details about how we work together — before we get started.",
-    hourlyRateTitle: "Standard Hourly Rate",
+    practicalInfoTitle: `<span>Practical</span> information`,
+    practicalInfoDescription: "Rates, payment terms, warranty and working hours: what to know before we start.",
+    hourlyRateTitle: "Standard hourly rate",
     hourlyRateStandard: "Standard",
     hourlyRateUrgent: "Urgent (off-hours)",
-    hourlyRateWeekend: "Weekend / Public Holiday",
+    hourlyRateWeekend: "Weekend / public holiday",
     hourlyRateMinBilling: "Minimum billing: 30 min. Every started half-hour is due.",
     hourlyRateContractNote: "With a support contract, extra hours are billed at 90–120 CHF/h. The Premium plan includes 2h of weekend intervention per year at no extra charge.",
-    paymentTitle: "Payment Terms",
+    paymentTitle: "Payment terms",
     paymentStep1: "50%",
     paymentStep1Sub: "at order — before work begins",
     paymentStep2: "50%",
     paymentStep2Sub: "before going live",
     paymentNote: "Late payments incur 5% annual interest from the due date, plus recovery costs.",
-    warrantyTitle: "Corrective Warranty",
+    warrantyTitle: "Corrective warranty",
     warrantyDays: "days after going live",
     warrantyDescription: "We correct any technical anomalies attributable to us within 14 days of the site going live.",
     warrantyExclusion: "Excludes new requests, content changes, hosting issues, or client-side interventions.",
-    hoursTitle: "Business Hours",
+    hoursTitle: "Business hours",
     hoursSchedule: "Monday – Friday, 07:00 – 18:00",
     hoursNote: "Excluding official Valais public holidays",
-    scopeTitle: "Website Creation — What's Included",
+    scopeTitle: "Website creation — what is included",
     includedTitle: "Included by default",
     excludedTitle: "Not included by default",
     practicalIncludedItems: [
@@ -236,7 +287,7 @@ const it = {
       "Maintenance, updates and monitoring after go-live",
     ],
 
-    supportPricingTitle: `<span>Support</span> Pricing`,
+    supportPricingTitle: `<span>Support</span> pricing`,
     supportPricingDescription: "Applicable to all projects — website, app, or other. One flat rate for all services.",
     supportPerYear: "year",
     supportIncluded: "included",
@@ -262,31 +313,31 @@ const it = {
     supportPremiumBeyond: "Beyond that:",
     supportPremiumNote: "After-hours and weekend rates apply beyond the included 2h/year.",
 
-    itServicesProcessTitle: `Our Work <span> Process </span>`,
-    itServicesProcessDescription: "We believe in a clear, structured approach that delivers results:",
+    itServicesProcessTitle: `How an <span> assignment </span> runs`,
+    itServicesProcessDescription: "Five steps, from first contact through to follow-up after go-live:",
     processData: [
         {
             title: "Consultation",
-            description: "We discuss your goals and challenges to understand exactly what you need.",
+            description: "We review your situation, your constraints and what you actually expect.",
         },
         {
-            title: "Assessment",
-            description: "We review your systems, spotting risks and opportunities.",
+            title: "Analysis",
+            description: "We examine your existing setup, flag the risks and cost what needs fixing.",
         },
         {
-            title: "Tailored Solutions",
-            description: "A clear, customized plan that fits your business and budget.",
+            title: "Proposal",
+            description: "You receive a detailed quote, with scope, timeline and what is and is not included.",
         },
         {
             title: "Implementation",
-            description: "Deployment with minimal disruption to your daily work.",
+            description: "We deploy with minimal disruption, outside production hours when necessary.",
         },
         {
-            title: "Ongoing Support",
-            description: "Updates, monitoring, and fast assistance whenever required.",
+            title: "Follow-up",
+            description: "After go-live we handle updates, fixes and support, with or without a contract.",
         },
     ],
-    supportPageTitle: `Support <span>Contract</span>`,
+    supportPageTitle: `Support <span>contract</span>`,
     supportPageSubtitle: "An optional annual subscription to protect your project with guaranteed response times and included hours.",
     supportPageIntro: "The support contract is separate from the creation project. It activates after go-live and covers technical interventions, fixes and improvement requests within the included hours.",
     supportPagePriorityTitle: "Priority definitions",
@@ -316,36 +367,42 @@ const it = {
       "In case of early termination, the full annual amount remains due until the contractual expiry date.",
       "The support contract is independent of the creation project and can be subscribed at any time.",
     ],
-    supportPageCtaTitle: "Have questions?",
-    supportPageCtaDesc: "Contact us to choose the right plan for your needs or to request a quote.",
+    supportPageCtaTitle: "A question about the support contract?",
+    supportPageCtaDesc: "Write to us to work out which plan fits your activity, or to request a quote.",
     supportPageBackLink: "← Back to IT services",
     supportPageMoreInfo: "More info",
     supportMostPopular: "Most popular",
 
     itFaqTitle: "Frequently Asked Questions",
     itFaq1: {
-        faqQuestion: "What types of IT projects do you handle?",
-        faqAnswer: "From simple showcase websites to custom web applications, redesigns, maintenance, IT support and cybersecurity — we cover the full IT spectrum for SMEs, freelancers and associations across French-speaking Switzerland.",
+        faqQuestion: "What kind of web projects do you build?",
+        faqAnswer: "Showcase sites, business sites (blog, online shop, booking), redesigns and migrations, and custom web applications with a database and user authentication. We work with SMEs, freelancers and associations across French-speaking Switzerland.",
     },
     itFaq2: {
         faqQuestion: "Do you work with small businesses and freelancers?",
-        faqAnswer: "Absolutely. SMEs, small businesses, associations and freelancers are our core clientele. We tailor our solutions to your budget and actual needs, without unnecessary jargon or hidden fees.",
+        faqAnswer: "Yes — they are in fact our core clientele. We size every project to your budget and your real needs, with a detailed quote and no hidden fees.",
     },
     itFaq3: {
         faqQuestion: "What regions do you serve?",
-        faqAnswer: "We primarily operate in the cantons of Valais, Vaud, Geneva and Fribourg. For web development and remote support projects, we work with clients throughout Switzerland and beyond.",
+        faqAnswer: "We are happy to meet clients in the cantons of Valais, Vaud, Geneva and Fribourg. Since development and follow-up happen remotely, we also work with clients elsewhere in Switzerland and abroad.",
     },
     itFaq4: {
         faqQuestion: "How long does it take to build a website or application?",
-        faqAnswer: "A simple showcase website can be delivered in 2 to 4 weeks. A custom web application or complex redesign typically requires 6 to 16 weeks depending on scope. We define a clear timeline together at the start of each project.",
+        faqAnswer: "Allow 2 to 4 weeks for a showcase website, and typically 6 to 16 weeks for a custom web application or a major redesign, depending on scope. The timeline is agreed with you when the project starts.",
     },
+    // SUPPORT CONTRACT DISABLED — DO NOT DELETE
+    // The support-contract offering is being reworked: the question below was
+    // replaced by one about what happens after go-live. Former copy, to restore
+    // as-is when the offering comes back:
+    // faqQuestion: "Do you offer support or maintenance contracts?",
+    // faqAnswer: "Yes. After go-live, three annual contract levels (Essentiel, Business, Premium) cover fixes, changes and questions: included intervention hours, guaranteed response times (SLA) and a reduced hourly rate beyond them."
     itFaq5: {
-        faqQuestion: "Do you offer support or maintenance contracts?",
-        faqAnswer: "Yes. We offer three levels of support contracts (Essential, Business, Premium) including intervention hours, guaranteed response times (SLA) and a preferential hourly rate. Ideal for ensuring your business continuity.",
+        faqQuestion: "What happens once the site is live?",
+        faqAnswer: "Any technical fault attributable to our own work is fixed free of charge for 14 days after go-live. After that, fixes and changes are handled on request, by quote or at the hourly rate. An annual follow-up offering is in preparation.",
     },
     itFaq6: {
         faqQuestion: "How does the initial contact work?",
-        faqAnswer: "Start with a free 30-minute consultation via our online booking tool. We listen to your needs, assess your situation and provide a personalised quote within 48 hours, with no commitment required.",
+        faqAnswer: "Book a free 30-minute consultation through our online tool. We review your situation together, then you receive a detailed quote within 48 hours, with no commitment.",
     },
 };
 export default it;

@@ -2,6 +2,7 @@
   "items": [
     {
       "id": "cc-wk",
+      "category": "client",
       "title": {
         "fr": "C.C. & W.K. SA – Cabinet d’architecture",
         "en": "C.C. & W.K. SA – Architecture firm"
@@ -21,6 +22,7 @@
     },
     {
       "id": "jocolor",
+      "category": "client",
       "title": {
         "fr": "JoColor – Peinture en bâtiment",
         "en": "JoColor – Building painting services"
@@ -39,6 +41,7 @@
     },
     {
       "id": "lechoixdesmots",
+      "category": "client",
       "title": {
         "fr": "Le Choix des Mots – Officiante laïque",
         "en": "Le Choix des Mots – Secular ceremony officiant"
@@ -52,6 +55,7 @@
     },
     {
       "id": "soclean4u",
+      "category": "client",
       "title": {
         "fr": "SoClean4U – Services de nettoyage",
         "en": "SoClean4U – Cleaning services"
@@ -65,6 +69,7 @@
     },
     {
       "id": "actions-suisse",
+      "category": "client",
       "title": {
         "fr": "Actions Suisse – Média et retransmission d’événements",
         "en": "Actions Suisse – Media and live event streaming"
@@ -84,6 +89,7 @@
     },
     {
       "id": "chateau-castalia",
+      "category": "client",
       "title": {
         "fr": "Château Castalia – Lieu d’événements et patrimoine historique",
         "en": "Château Castalia – Historic event venue"
@@ -97,6 +103,7 @@
     },
     {
       "id": "arml",
+      "category": "client",
       "title": {
         "fr": "ARML – Association Romande des Médias Libres",
         "en": "ARML – Romandy Association of Independent Media"
@@ -110,6 +117,7 @@
     },
     {
       "id": "mediasmart-games",
+      "category": "free",
       "title": {
         "fr": "MediaSmart Lab – Mini-jeux Telegram",
         "en": "MediaSmart Lab – Telegram mini-games"
@@ -123,29 +131,32 @@
     },
     {
       "id": "cc-voice",
+      "category": "free",
       "title": {
         "fr": "Voice Studio – Clonage de voix",
         "en": "Voice Studio – Voice cloning"
       },
       "description": {
         "fr": "Interface web pour un système de clonage vocal local. Inférence GPU côté studio MediaSmart, frontend Vercel et accès strictement contrôlé. Une version grand public est en préparation.",
-        "en": "Web frontend for a local voice-cloning system. Inference runs on the MediaSmart studio GPU, the frontend is hosted on Vercel and access is strictly controlled. A public-facing version is in the works."
+        "en": "Web frontend for a local voice-cloning system. Inference runs on the MediaSmart studio GPU, the frontend is hosted on Vercel and access is strictly controlled. A public release is in preparation."
       },
       "url": "https://apps.mediasmart.ch/CC-Voice/",
       "accessNote": {
-        "fr": "Accès restreint",
-        "en": "Restricted access"
+        "fr": "Accès anticipé",
+        "en": "Early access"
       },
+      "launchDate": "2027-01-01T00:00:00+01:00",
       "images": ["/portfolio/cc-voice-0.jpg"]
     },
     {
       "id": "ged-mediasmart",
+      "category": "saas",
       "title": {
         "fr": "MediaSmart GED – Gestion documentaire privée",
         "en": "MediaSmart GED – Private document management"
       },
       "description": {
-        "fr": "Gestion électronique de documents 100% locale, pensée pour les factures et documents sensibles. OCR automatique, extraction des champs (fournisseur, montant, échéance), interface web protégée par mot de passe et stockage chiffré sur le réseau interne. Solution proposée par MediaSmart sur devis.",
+        "fr": "Gestion électronique de documents 100% locale, pensée pour les factures et documents sensibles. OCR automatique, extraction des champs (fournisseur, montant, échéance), interface web protégée par mot de passe et stockage chiffré sur le réseau interne. Proposée par MediaSmart sur devis.",
         "en": "Fully on-prem document management system designed for invoices and sensitive paperwork. Automatic OCR, supplier/amount/due-date extraction, password-protected web UI and encrypted storage on the internal network. Offered by MediaSmart on quote."
       },
       "accessNote": {
@@ -156,13 +167,14 @@
     },
     {
       "id": "cc-factures-dashboard",
+      "category": "saas",
       "title": {
         "fr": "Dashboard Factures Fournisseurs",
         "en": "Supplier invoices dashboard"
       },
       "description": {
-        "fr": "Tableau de bord d’analyse des factures fournisseurs : KPIs mensuels, top fournisseurs, comparaison de périodes, drill-down par dossier et export CSV. Authentification Microsoft 365, ingestion depuis SharePoint. Une démo gratuite est disponible en ligne sur dashboard-depenses.mediasmart.ch — clique sur « Visiter le site » pour explorer l’interface avec des données fictives.",
-        "en": "Supplier-invoice analytics dashboard: monthly KPIs, top suppliers, period-over-period comparisons, per-file drill-down and CSV export. Microsoft 365 authentication, SharePoint ingestion. A free demo is live at dashboard-depenses.mediasmart.ch — click 'Visit site' to explore the UI with synthetic data."
+        "fr": "Tableau de bord d’analyse des factures fournisseurs : KPIs mensuels, top fournisseurs, comparaison de périodes, drill-down par dossier et export CSV. Authentification Microsoft 365, ingestion depuis SharePoint. Une démo gratuite est accessible en ligne sur dashboard-depenses.mediasmart.ch : cliquez sur « Visiter le site » pour parcourir l’interface avec des données fictives.",
+        "en": "Supplier-invoice analytics dashboard: monthly KPIs, top suppliers, period-over-period comparisons, per-file drill-down and CSV export. Microsoft 365 authentication, SharePoint ingestion. A free demo is live at dashboard-depenses.mediasmart.ch: click ‘Visit site’ to explore the interface with synthetic data."
       },
       "url": "https://dashboard-depenses.mediasmart.ch/mock",
       "accessNote": {

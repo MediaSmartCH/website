@@ -239,7 +239,7 @@ const ContactInner = () => {
                   const recaptchaToken = await getRecaptchaToken(executeRecaptcha, "contact_form");
 
                   if (recaptchaToken === null) {
-                    setError('Security verification failed');
+                    setError(t.text("home.contactSecurityError"));
                     return;
                   }
 
@@ -261,14 +261,14 @@ const ContactInner = () => {
 
                   setError(
                     result.status === "security-rejected"
-                      ? 'Security verification failed'
-                      : 'An error occurred while sending the message, please try again later.'
+                      ? t.text("home.contactSecurityError")
+                      : t.text("home.contactSendError")
                   );
                 } catch (error) {
                   // submitContactForm and getRecaptchaToken both swallow their own
                   // failures, so this only catches the genuinely unexpected.
                   logger.error('Send error:', error);
-                  setError('An error occurred while sending the message, please try again later.');
+                  setError(t.text("home.contactSendError"));
                 } finally {
                   setLoading(false);
                 }

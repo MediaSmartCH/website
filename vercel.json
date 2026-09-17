@@ -113,6 +113,16 @@
       "statusCode": 301
     },
     {
+      "source": "/fr/support-contract",
+      "destination": "/fr",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/support-contract",
+      "destination": "/en",
+      "statusCode": 301
+    },
+    {
       "source": "/",
       "destination": "/fr",
       "permanent": true
@@ -142,14 +152,6 @@
     {
       "source": "/en/privacy-policy",
       "destination": "/generated-pages/en-privacy-policy.html"
-    },
-    {
-      "source": "/fr/support-contract",
-      "destination": "/generated-pages/fr-support-contract.html"
-    },
-    {
-      "source": "/en/support-contract",
-      "destination": "/generated-pages/en-support-contract.html"
     },
     {
       "source": "/fr/404",

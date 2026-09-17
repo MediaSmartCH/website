@@ -5,7 +5,7 @@ import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import { useModalScrollLock } from "@features/it-services/hooks/use-modal-scroll-lock";
 import PortfolioModal from "@features/it-services/components/portfolio-modal";
 import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
-import { formatPreviewCount, formatProjectsCount, formatRemainingProjects, formatRemainingProjectsCta, getItemImages, getSafeExternalUrl, PREVIEW_LIMIT, resolveLocalizedField, truncateText, type LightboxImage, type PortfolioData } from "@features/it-services/lib/portfolio-helpers";
+import { formatPreviewCount, formatProjectsCount, formatRemainingProjects, formatRemainingProjectsCta, getItemCategory, getItemImages, getSafeExternalUrl, portfolioCategoryKey, PREVIEW_LIMIT, resolveLocalizedField, sortItemsForPreview, truncateText, type LightboxImage, type PortfolioData } from "@features/it-services/lib/portfolio-helpers";
 
 import { useTranslations } from "@shared/i18n/translator";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
@@ -63,8 +63,10 @@ const PortfolioGallery = () => {
 
   // Preview tiles are image-driven, so we hide items that have no screenshot
   // to show. They still appear in the full modal as text-only cards.
-  const previewCandidates = portfolioItems.filter(
-    (item) => getItemImages(item).length > 0
+  // Ordered along PORTFOLIO_CATEGORY_ORDER: our own products first, then the
+  // free tools, then client work.
+  const previewCandidates = sortItemsForPreview(
+    portfolioItems.filter((item) => getItemImages(item).length > 0)
   );
   const previewItems = previewCandidates.slice(0, PREVIEW_LIMIT);
   const hiddenProjectsCount = Math.max(
@@ -132,6 +134,11 @@ const PortfolioGallery = () => {
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-2 p-4">
+                  <span
+                    className={`w-fit rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em] ${classes.isLight ? "bg-[#EEF0FF] text-[#4453A6]" : "bg-white/10 text-[#DAD7FF]"}`}
+                  >
+                    {t.text(`it.${portfolioCategoryKey(getItemCategory(item))}Label`)}
+                  </span>
                   <div className="flex items-center justify-between gap-3">
                     <h3
                       className={`${classes.strongText} font-redDisplay text-[18px] font-bold leading-6`}
@@ -235,7 +242,7 @@ const PortfolioGallery = () => {
             <button
               type="button"
               onClick={() => setLightbox(null)}
-              aria-label="Close"
+              aria-label={t.text("it.portfolioCloseImage")}
               className="absolute top-4 right-4 z-[100001] flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
             >
               <span aria-hidden="true" className="text-2xl leading-none">

@@ -10,6 +10,23 @@
  */
 
 export type SupportedLanguage = "fr" | "en";
+
+/**
+ * How a portfolio entry is grouped in the gallery.
+ *
+ * - "client"  — sites and applications built for a client
+ * - "saas"    — MediaSmart's own products, sold and hosted by us
+ * - "free"    — tools we publish freely (no account, no invoicing)
+ *
+ * Entries without an explicit category fall back to "client", which keeps
+ * older JSON rows valid.
+ */
+export type PortfolioCategory = "client" | "saas" | "free";
+
+/** Display order of the gallery sections. */
+export const PORTFOLIO_CATEGORY_ORDER: PortfolioCategory[] = ["saas", "free", "client"];
+
+const KNOWN_CATEGORIES = new Set<string>(PORTFOLIO_CATEGORY_ORDER);
 export type LocalizedField = string | Partial<Record<SupportedLanguage, string>>;
 
 export interface PortfolioItem {
@@ -26,10 +43,62 @@ export interface PortfolioItem {
    * whether a public URL is also provided.
    */
   accessNote?: LocalizedField;
+  /** Gallery section this entry belongs to. Defaults to "client". */
+  category?: string;
+  /**
+   * ISO date the product opens to the public. Present only while a product is
+   * still in early access; the UI shows a countdown until then.
+   */
+  launchDate?: string;
+}
+
+/** A gallery section: one category and the entries that belong to it. */
+export interface PortfolioGroup {
+  category: PortfolioCategory;
+  items: PortfolioItem[];
 }
 
 export interface PortfolioData {
   items: PortfolioItem[];
+}
+
+/**
+ * Builds the i18n key prefix for a category, e.g. "client" ->
+ * "portfolioCategoryClient", read as `it.portfolioCategoryClientLabel`.
+ */
+export function portfolioCategoryKey(category: PortfolioCategory): string {
+  return `portfolioCategory${category.charAt(0).toUpperCase()}${category.slice(1)}`;
+}
+
+/** Reads an item's category, falling back to "client" for unknown values. */
+export function getItemCategory(item: PortfolioItem): PortfolioCategory {
+  return KNOWN_CATEGORIES.has(item.category ?? "")
+    ? (item.category as PortfolioCategory)
+    : "client";
+}
+
+/**
+ * Splits the portfolio into ordered sections, dropping the ones with no entry
+ * so the gallery never renders an empty heading.
+ */
+export function groupItemsByCategory(items: PortfolioItem[]): PortfolioGroup[] {
+  return PORTFOLIO_CATEGORY_ORDER.map((category) => ({
+    category,
+    items: items.filter((item) => getItemCategory(item) === category),
+  })).filter((group) => group.items.length > 0);
+}
+
+/**
+ * Orders items for the preview strip along PORTFOLIO_CATEGORY_ORDER, each
+ * category keeping its original order. Our own products lead, because they are
+ * the only entries a visitor can buy or try straight away.
+ */
+export function sortItemsForPreview(items: PortfolioItem[]): PortfolioItem[] {
+  return [...items].sort(
+    (a, b) =>
+      PORTFOLIO_CATEGORY_ORDER.indexOf(getItemCategory(a)) -
+      PORTFOLIO_CATEGORY_ORDER.indexOf(getItemCategory(b))
+  );
 }
 
 export const PREVIEW_LIMIT = 4;

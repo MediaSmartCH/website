@@ -13,29 +13,42 @@
       }
     ]
   },
+  "_supportContractDisabled": {
+    "_readme": "CONTRAT DE SUPPORT DESACTIVE — NE PAS SUPPRIMER. L'offre de contrat de support est en cours de refonte: la page n'est plus accessible. Les URLs /fr/support-contract et /en/support-contract sont redirigees en 301 vers /fr et /en (voir 'redirects' dans vercel.json), la route est neutralisee dans src/app/router.tsx, et l'entree '/support-contract' a ete retiree de routeKeyByPath pour ne plus prerendre la page. Les definitions SEO 'support-contract' ci-dessous sont conservees intactes. POUR REACTIVER: 1) remettre \"/support-contract\": \"support-contract\" dans routeKeyByPath, 2) remettre 'robots' sur supportContractRobotsBeforeDisable, 3) supprimer les deux redirects 301 de vercel.json et y remettre les deux rewrites listees dans supportContractRewritesBeforeDisable, 4) decommenter la route et l'import dans src/app/router.tsx, le bloc des formules dans project-estimates.tsx, la section PracticalInfo dans it-services-page.tsx, et les URLs du sitemap.",
+    "supportContractRobotsBeforeDisable": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+    "supportContractRewritesBeforeDisable": [
+      {
+        "source": "/fr/support-contract",
+        "destination": "/generated-pages/fr-support-contract.html"
+      },
+      {
+        "source": "/en/support-contract",
+        "destination": "/generated-pages/en-support-contract.html"
+      }
+    ]
+  },
   "routeKeyByPath": {
     "/": "home",
     "/it-services": "it-services",
     "/privacy-policy": "privacy-policy",
-    "/support-contract": "support-contract",
     "/404": "not-found"
   },
   "routeSeoByLanguage": {
     "fr": {
       "home": {
         "pageName": "Accueil",
-        "title": "MediaSmart | Solutions informatiques et création de sites web en Suisse romande",
-        "description": "MediaSmart accompagne entreprises, indépendants et associations avec des services informatiques, la création de sites web, la cybersécurité et le support en Suisse romande.",
+        "title": "MediaSmart | Création de sites web et d'applications en Suisse romande",
+        "description": "MediaSmart conçoit et développe des sites vitrines, des sites business et des applications web sur mesure pour les PME, indépendants et associations de Suisse romande.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - solutions informatiques"
+        "shareImageAlt": "MediaSmart - création de sites web et d'applications"
       },
       "it-services": {
-        "pageName": "Services informatiques",
-        "title": "Services informatiques en Suisse romande | MediaSmart",
-        "description": "Création de sites web, maintenance, cybersécurité, sauvegarde et support IT pour PME, indépendants et associations en Suisse romande.",
+        "pageName": "Création de sites web et d'applications",
+        "title": "Création de sites web et d'applications en Suisse romande | MediaSmart",
+        "description": "Sites vitrines, sites business, refontes et migrations, applications web sur mesure : conception, développement et maintenance pour les PME, indépendants et associations de Suisse romande.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - services informatiques",
-        "serviceType": "Services informatiques, création de sites web et support IT"
+        "serviceType": "Création de sites web, refonte et développement d'applications web"
       },
       "video-services": {
         "pageName": "Services vidéo",
@@ -55,15 +68,15 @@
       "support-contract": {
         "pageName": "Contrat de support",
         "title": "Contrat de support IT et SLA | MediaSmart",
-        "description": "Découvrez les contrats de support MediaSmart avec heures incluses, SLA et niveaux Essentiel, Business et Premium pour sécuriser vos projets.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "description": "Contrats de support MediaSmart : heures d'intervention incluses, délais de prise en charge garantis (SLA) et trois niveaux — Essentiel, Business et Premium.",
+        "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - contrat de support IT",
         "serviceType": "Contrats de support IT avec SLA"
       },
       "not-found": {
         "pageName": "Page introuvable",
         "title": "Page introuvable | MediaSmart",
-        "description": "La page demandée est introuvable. Retrouvez les services informatiques de MediaSmart.",
+        "description": "Cette adresse ne correspond à aucune page du site. Retrouvez les prestations web de MediaSmart.",
         "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - page introuvable"
       }
@@ -71,18 +84,18 @@
     "en": {
       "home": {
         "pageName": "Home",
-        "title": "MediaSmart | IT solutions and website creation in Switzerland",
-        "description": "MediaSmart supports businesses, freelancers and associations with IT services, website creation, cybersecurity and support across French-speaking Switzerland.",
+        "title": "MediaSmart | Website and web application development in Switzerland",
+        "description": "MediaSmart designs and builds showcase sites, business websites and custom web applications for SMEs, freelancers and associations in French-speaking Switzerland.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - IT solutions"
+        "shareImageAlt": "MediaSmart - IT services"
       },
       "it-services": {
-        "pageName": "IT Services",
-        "title": "IT Services in Switzerland | MediaSmart",
-        "description": "Website creation, maintenance, cybersecurity, backup strategies and IT support for SMEs, freelancers and associations in French-speaking Switzerland.",
+        "pageName": "Website and application development",
+        "title": "Website and Web Application Development in Switzerland | MediaSmart",
+        "description": "Showcase sites, business websites, redesigns and migrations, custom web applications: design, development and maintenance for SMEs, freelancers and associations in French-speaking Switzerland.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart IT services",
-        "serviceType": "IT services, website creation and ongoing support"
+        "shareImageAlt": "MediaSmart website and application development",
+        "serviceType": "Website creation, redesign and web application development"
       },
       "video-services": {
         "pageName": "Video Services",
@@ -102,15 +115,15 @@
       "support-contract": {
         "pageName": "Support Contract",
         "title": "IT Support Contract and SLA | MediaSmart",
-        "description": "Explore MediaSmart support contracts with included hours, SLAs and Essential, Business and Premium plans to protect your projects.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "description": "MediaSmart support contracts: included intervention hours, guaranteed response times (SLA) and three levels — Essentiel, Business and Premium.",
+        "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart IT support contract",
         "serviceType": "Managed IT support contracts with SLA"
       },
       "not-found": {
         "pageName": "Page not found",
         "title": "Page not found | MediaSmart",
-        "description": "The requested page could not be found. Explore MediaSmart IT services instead.",
+        "description": "This address does not match any page on the site. Explore MediaSmart web services instead.",
         "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart page not found"
       }

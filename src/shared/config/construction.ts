@@ -4,7 +4,7 @@ import { getContactEmail } from "@shared/constants/contact";
 
 export const CONSTRUCTION_CONFIG = {
   isUnderConstruction: false,
-  customMessage: "Nous préparons une expérience exceptionnelle...",
+  customMessage: "La nouvelle version du site arrive prochainement.",
   launchDate: "2025-10-01",
   progressPercentage: 93,
   enableEmailCollection: true,

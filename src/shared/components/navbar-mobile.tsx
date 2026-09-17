@@ -61,7 +61,7 @@ export default function NavbarMobile({
               type="button"
               onClick={() => onToggleMenu()}
               aria-expanded={mobileMenuOpen}
-              aria-label="Toggle menu"
+              aria-label={mobileMenuOpen ? t.text("navbar.closeMenu") : t.text("navbar.openMenu")}
               className="flex items-center justify-center"
             >
               <img src={toggler} alt="Menu" className="w-[28px] h-[24px]" width="28" height="24" decoding="async" />
@@ -122,7 +122,7 @@ export default function NavbarMobile({
       )}
       {mobileMenuOpen && (
         <button
-          aria-label="Close menu"
+          aria-label={t.text("navbar.closeMenu")}
           className="fixed inset-0 z-40 lg:hidden"
           onClick={onCloseMenu}
         />

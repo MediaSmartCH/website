@@ -16,6 +16,7 @@ import React from "react";
 
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import BookingButton from "@features/booking/components/booking-button";
+import LaunchCountdown from "@features/it-services/components/launch-countdown";
 import {
   getItemImages,
   getSafeExternalUrl,
@@ -178,9 +179,19 @@ export default function SaasProducts() {
             {freeTools.map((tool) => {
               const source = portfolioItems.find((item) => item.id === tool.id);
               const toolUrl = getSafeExternalUrl(source?.url);
+              const toolBadge = source?.accessNote
+                ? resolveLocalizedField(source.accessNote, languageReducer)
+                : null;
 
               const inner = (
                 <>
+                  {toolBadge && (
+                    <span
+                      className={`mb-2 inline-block w-fit rounded-full border px-3 py-1 text-[11px] font-medium leading-tight ${classes.isLight ? "border-[#D9DCF2] bg-[#EEF0FF] text-[#2C3A87]" : "border-white/10 bg-white/5 text-[#DAD7FF]"}`}
+                    >
+                      {toolBadge}
+                    </span>
+                  )}
                   <span
                     className={`${classes.strongText} block font-redDisplay text-[17px] font-bold leading-6`}
                   >
@@ -191,6 +202,14 @@ export default function SaasProducts() {
                   >
                     {tool.tagline}
                   </span>
+                  {/* Only a tool that is not public yet carries a launchDate. */}
+                  {source?.launchDate && (
+                    <LaunchCountdown
+                      launchDate={source.launchDate}
+                      language={languageReducer}
+                      classes={classes}
+                    />
+                  )}
                 </>
               );
 

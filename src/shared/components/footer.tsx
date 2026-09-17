@@ -105,7 +105,7 @@ const Footer = () => {
             >
               <img
                 src={linkedin}
-                alt="Voir le profil LinkedIn de MediaSmart"
+                alt={t.text("footer.linkedinAlt")}
                 className="w-[14px] h-[14px]"
                 width="14"
                 height="14"
@@ -125,7 +125,7 @@ const Footer = () => {
             >
               <img
                 src={insta}
-                alt="Voir le profil Instagram de MediaSmart"
+                alt={t.text("footer.instagramAlt")}
                 className="w-[17px] h-[17px]"
                 width="17"
                 height="17"
@@ -145,7 +145,7 @@ const Footer = () => {
             >
               <img
                 src={telegram}
-                alt="Contacter MediaSmart sur Telegram"
+                alt={t.text("footer.telegramAlt")}
                 className="w-[17px] h-[17px]"
                 width="17"
                 height="17"

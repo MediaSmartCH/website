@@ -1,6 +1,6 @@
 const cookies = {
     title: "Gestion des cookies",
-    subtitle: "Votre confidentialité compte pour nous",
+    subtitle: "Vous choisissez ce que nous mesurons",
     description:
         "Nous utilisons des cookies nécessaires au bon fonctionnement du site (formulaire, prise de rendez-vous, sécurité). Avec votre accord, nous utilisons également des cookies pour améliorer les fonctionnalités et analyser les performances.",
     necessary: "Nécessaires",
@@ -19,13 +19,13 @@ const cookies = {
     cookiesFunctionality: "Cookies de fonctionnalité",
     cookiesPerformance: "Cookies de performance",
     necessaryDesc:
-        "Ces cookies sont indispensables au fonctionnement du site (formulaires, sécurité, navigation).",
+        "Indispensables au fonctionnement du site : formulaires, sécurité et navigation.",
     functionalityDesc:
-        "Ces cookies permettent d'améliorer et de personnaliser les fonctionnalités du site Web.",
+        "Ils mémorisent vos préférences d'affichage pour que le site vous les propose à chaque visite.",
     performanceDesc:
-        "Ces cookies nous permettent de mesurer et d'améliorer les performances de notre site Web.",
+        "Ils nous permettent de mesurer la fréquentation du site et d'en corriger les points faibles.",
     contactForm: "Formulaire de contact",
-    contactFormDesc: "Permet l'envoi de messages",
+    contactFormDesc: "Permet l'envoi du formulaire",
     antiSpamDesc: "Protection anti-spam",
     pagesVisited: "Pages visitées, temps passé, source de visite",
     themePreference: "Préférences de thème",

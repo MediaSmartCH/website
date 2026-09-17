@@ -89,7 +89,12 @@
     <priority>0.3</priority>
   </url>
 
-  <!-- Support Contract -->
+  <!-- CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
+       L'offre est en cours de refonte : /support-contract renvoie une 301 vers
+       l'accueil et la page est en noindex. Les deux entrées sont conservées
+       telles quelles ; il suffit de les décommenter pour les remettre au
+       sitemap lors de la réactivation (voir "_supportContractDisabled" dans
+       src/shared/seo/route-seo-data.json).
   <url>
     <loc>https://mediasmart.ch/fr/support-contract</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/support-contract"/>
@@ -108,5 +113,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  -->
 
 </urlset>

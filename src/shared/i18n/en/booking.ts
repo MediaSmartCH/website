@@ -2,7 +2,7 @@ import { getBookingEmail } from "@shared/constants/contact";
 
 const booking = {
     title: "Free Consultation",
-    subtitle: "30 minutes to explore your needs together",
+    subtitle: "30 minutes to review what you need",
     duration: "30 min",
 
     selectDate: "Select a date",
@@ -53,9 +53,9 @@ const booking = {
         email: "Email address *",
         emailPlaceholder: "your@email.com",
         message: "Message (optional)",
-        messagePlaceholder: "Tell us about your needs or ask your questions...",
+        messagePlaceholder: "Describe your needs or ask your questions…",
         submitButton: "Confirm booking",
-        submitting: "Confirming...",
+        submitting: "Confirming…",
         backButton: "Back"
     },
 
@@ -72,7 +72,7 @@ const booking = {
         close: "Close"
     },
 
-    loading: "Loading...",
+    loading: "Loading…",
     error: "An error occurred",
     required: "Required field",
     timezone: "Central European Time (CET)",
@@ -87,7 +87,7 @@ const booking = {
         availableSlots: "Available time slots",
         noSlotsAvailable: "No slots available for this date",
         selectDateFirst: "Please select a date first",
-        bookingInProgress: "Booking in progress...",
+        bookingInProgress: "Booking in progress…",
         tryAgain: "Try again"
     },
 
@@ -96,13 +96,13 @@ const booking = {
         loading: "Loading your booking…",
         notFound: "Booking not found",
         notFoundDescription:
-            `The link may have expired or be invalid. If you think this is a mistake, drop us a line at ${getBookingEmail()}.`,
+            `This link may have expired or be invalid. If you think this is a mistake, write to us at ${getBookingEmail()}.`,
         backHome: "Back to home",
         scheduledFor: "Scheduled for",
         with: "with",
         statusCancelled: "Booking cancelled",
         statusCancelledDescription:
-            "This booking has already been cancelled. You can rebook any time.",
+            "This booking has already been cancelled. You can book a new one at any time.",
         bookAgain: "Book again",
         actions: {
             reschedule: "Reschedule",
@@ -114,20 +114,20 @@ const booking = {
             submitting: "Updating…",
             successTitle: "Time updated",
             successDescription:
-                "You'll receive an email with the new meeting details."
+                "You will receive an email with the new meeting details."
         },
         cancel: {
             confirmTitle: "Cancel this booking?",
             confirmDescription:
                 "This action is final. The event will be removed from the calendar and a cancellation email will be sent to you and to MediaSmart.",
             reasonLabel: "Reason (optional)",
-            reasonPlaceholder: "Briefly tell us why if you'd like…",
+            reasonPlaceholder: "Briefly tell us the reason, if you wish…",
             confirmButton: "Yes, cancel",
             keepButton: "Keep booking",
             cancelling: "Cancelling…",
             successTitle: "Booking cancelled",
             successDescription:
-                "Done. You'll receive a cancellation email in a moment."
+                "Done. You will receive a cancellation email shortly."
         }
     }
 };

@@ -81,7 +81,110 @@ const Services = () => {
           <PortfolioGallery />
         </div>
 
-        {/* Service 2 — Maintenance */}
+        {/* Service — Custom web applications (image left, text right) */}
+        <div className="xl:px-[30px] 2xl:px-[60px] flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
+          <div className="w-full lg:w-[48%] flex justify-center items-center"
+            data-aos="fade-left"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="1200">
+            <div className="w-full">
+              <Suspense
+                fallback={
+                  <div className="h-[220px] flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                  </div>
+                }
+              >
+                <DotAnim
+                  anim="it.services.backup"
+                  style={{ width: "100%", height: "auto" }}
+                  crisp
+                  protect
+                />
+              </Suspense>
+            </div>
+          </div>
+          <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
+            <h3
+              className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+            >
+              {t.text("it.serviceApp")}
+            </h3>
+            <RichText
+              as="div"
+              className={`text-body
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  mt-6
+                `}
+              html={t.text("it.descriptionApp")}
+            />
+          </div>
+        </div>
+
+        {/* Service — Redesign and migration (text left, image right) */}
+        <div
+          className={`bg-surface my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
+        >
+          <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px] px-[20px] md:px-[30px] lg:px-0">
+            <div className="w-full lg:w-[50%] 2xl:w-[50%] lg:pl-[50px] 2xl:pl-[100px]">
+              <h3
+                className={`text-heading w-full text-center lg:text-left 2xl:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[45px] 2xl:text-[48px] mb-[8px] xl:mb-[6px] leading-[40px] lg:leading-[50px] xl:leading-[60px]`}
+              >
+                {t.text("it.serviceRedesign")}
+              </h3>
+              <RichText
+                as="div"
+                className={`text-body
+                  it-service-description
+                  text-justify lg:text-left
+                  font-helvetica font-light leading-8
+                  text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]
+                  mt-6
+                `}
+                html={t.text("it.descriptionRedesign")}
+              />
+            </div>
+            <div className="w-full lg:w-[48%] flex justify-center items-center"
+              data-aos="fade-left"
+              data-aos-easing="ease-in-sine"
+              data-aos-duration="1200">
+              <div className="w-full">
+                <Suspense
+                  fallback={
+                    <div className="h-[220px] flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
+                    </div>
+                  }
+                >
+                  <DotAnim
+                    anim="it.services.maintenance"
+                    style={{ width: "100%", height: "auto" }}
+                    crisp
+                    protect
+                  />
+                </Suspense>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ====================================================================
+            SERVICES IT ANNEXES DÉSACTIVÉS — NE PAS SUPPRIMER
+            Le site met désormais en avant la création de sites web et
+            d'applications. Les cinq blocs ci-dessous (maintenance
+            Windows/macOS, optimisation des postes, cybersécurité, sauvegarde
+            et restauration, support et formation) ne sont plus rendus, mais
+            leur balisage et leurs clés de traduction (it.service2..6 /
+            it.description2..6) restent intacts.
+            POUR RÉACTIVER : décommenter le bloc voulu ci-dessous, lui rendre
+            ses balises de commentaire JSX, puis remettre la carte
+            correspondante sur l'accueil (voir la bannière de
+            src/features/home/components/it-overview.tsx).
+
+        === Service 2 — Maintenance ===
         <div className="xl:px-[30px] 2xl:px-[60px] flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
           <div className="w-full lg:w-[48%] flex justify-center items-center"
             data-aos="fade-left"
@@ -124,7 +227,7 @@ const Services = () => {
           </div>
         </div>
 
-        {/* Service 3 — Optimization */}
+        === Service 3 — Optimization ===
         <div
           className={`bg-surface my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
@@ -171,7 +274,7 @@ const Services = () => {
           </div>
         </div>
 
-        {/* Service 4 — Security */}
+        === Service 4 — Security ===
         <div className="xl:px-[30px] 2xl:px-[60px] flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
           <div className="w-full lg:w-[48%] flex justify-center items-center"
             data-aos="fade-left"
@@ -214,7 +317,7 @@ const Services = () => {
           </div>
         </div>
 
-        {/* Service 5 — Backup */}
+        === Service 5 — Backup ===
         <div
           className={`bg-surface my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px]`}
         >
@@ -261,7 +364,7 @@ const Services = () => {
           </div>
         </div>
 
-        {/* Service 6 — Support */}
+        === Service 6 — Support ===
         <div className="xl:px-[30px] 2xl:px-[60px] flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
           <div className="w-full lg:w-[48%] flex justify-center items-center"
             data-aos="fade-left"
@@ -303,6 +406,7 @@ const Services = () => {
             />
           </div>
         </div>
+        */}
       </div>
 
     </div>

@@ -45,7 +45,9 @@ const ROUTES = [
   // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : la route vidéo n'existe plus dans le
   // routeur (offre en pause), la capturer produirait la page 404.
   // '/video-services',
-  '/support-contract',
+  // CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER : la route est neutralisée
+  // dans le routeur (offre en refonte), la capturer produirait l'accueil.
+  // '/support-contract',
   '/privacy-policy',
   '/404',
 ];

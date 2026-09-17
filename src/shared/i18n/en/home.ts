@@ -6,23 +6,23 @@
 // ============================================================================
 const home = {
     heroTitle: "MediaSmart",
-    heroSubtitle: "your IT partner in Switzerland",
+    heroSubtitle: "websites and web applications, built in Switzerland",
     // VIDEO DISABLED — DO NOT DELETE (former mixed video/IT description):
     // heroDescription:
     //     "From professional video production to tailored IT support, MediaSmart combines creativity and technical expertise to bring your ideas to life.",
     heroDescription:
-        "Website creation, maintenance, cybersecurity and support: MediaSmart brings expertise and flexibility to every part of your IT.",
-    itBtn: "Explore IT Services",
+        "Showcase sites, business sites, redesigns and business applications: we design, build and maintain the web tool your organisation needs.",
+    itBtn: "Discover our web services",
     // VIDEO DISABLED — DO NOT DELETE: key kept, the button is no longer rendered.
     videoBtn: "Explore Video Services",
 
-    bookingTitle: "Interested in Booking a Free 30-Minute Consultation?",
+    bookingTitle: "Want to take stock of your IT setup?",
     // VIDEO DISABLED — DO NOT DELETE (former "visual narratives" wording):
     // bookingDescription:
     //     "Embark on your creative journey with MediaSmart through a complimentary, 30-minute consultation. Choose a convenient location for you – be it your home, a public space, or even a virtual meeting – and select a time that aligns with our schedule. Simply provide your preferred meeting details and contact information, and we'll set up the appointment. This session is your opportunity to discuss your ideas with us and discover how we can collaborate to turn your vision into compelling visual narratives.",
     bookingDescription:
-        "Let's review your IT setup in a complimentary 30-minute consultation. Choose a convenient location – your home, your office, or an online meeting – and a time that aligns with our schedule. Just describe your needs and leave your contact details, and we'll set up the appointment. It's your opportunity to explain your situation and see concretely how to make your tools more reliable, more secure and faster.",
-    bookingBtn: "Book your 30-Min Consultation",
+        "Book a free 30-minute consultation. Choose the setting that suits you – your office, your home or an online meeting – and a slot from our availability. Describe your needs in a few lines, leave your contact details, and we confirm the appointment. It is your chance to explain your situation and leave with concrete next steps.",
+    bookingBtn: "Book a 30-min consultation",
 
     partnersTitle: "Our trusted partners",
 
@@ -38,77 +38,123 @@ const home = {
     //   Based in Western Switzerland, we provide businesses, associations, and individuals with modern, flexible, and results-driven services.
     // `,
     aboutDescription: `
-      MediaSmart takes care of your IT from end to end:
+      MediaSmart designs and builds websites and business applications.
       <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li><strong>Websites</strong>, designed, rebuilt and maintained to genuinely serve your business.</li>
-        <li><strong>Infrastructure &amp; workstations</strong>, so your tools stay reliable, secure and high-performing.</li>
-        <li><strong>Security &amp; backups</strong>, so you sleep well and recover fast when something goes wrong.</li>
+        <li><strong>Showcase and business websites</strong>: present your activity, sell online, take bookings.</li>
+        <li><strong>Custom web applications</strong>: an interface and business logic built around your own processes.</li>
+        <li><strong>Redesigns and maintenance</strong>: modernise an existing site, then keep it evolving over time.</li>
       </ul>
-      Based in Western Switzerland, MediaSmart provides businesses, associations, and individuals with modern, flexible, and results-driven services.
+      Based in French-speaking Switzerland, MediaSmart supports SMEs, freelancers and associations with no in-house technical team.
     `,
     soloBadge: "Independent",
     soloTitle: "Behind MediaSmart",
     soloName: "Raphael Rouiller",
-    soloJobTitle: "Founder & Independent Contractor",
+    soloJobTitle: "Founder & independent contractor",
     // VIDEO DISABLED — DO NOT DELETE (former video + IT wording):
     // soloRole: "A single point of contact for both video and IT needs.",
-    soloRole: "A single point of contact for all of your IT needs.",
+    soloRole: "A single point of contact, from design through to go-live.",
     soloLead:
-        "For now, I work solo as an independent professional. That means you speak directly with the person who plans, builds, and delivers your project.",
+        "I currently work alone, as an independent professional. You therefore speak directly with the person who assesses, designs and implements your project.",
     soloDescription:
-        "This deliberately lean setup keeps communication clear, response times fast, and execution consistent. When a project needs extra support, I can bring in trusted specialists without turning the collaboration into a heavy agency process.",
+        "This deliberately lean setup shortens response times, removes intermediaries and keeps the work consistent from the first conversation to go-live. When an assignment calls for a specific skill, I draw on a network of trusted partners.",
     soloStatDirectLabel: "Format",
     soloStatDirectValue: "1 direct contact",
-    soloStatExpertiseLabel: "Expertise",
+    soloStatExpertiseLabel: "Areas",
     // VIDEO DISABLED — DO NOT DELETE (former dual expertise):
     // soloStatExpertiseValue: "Video + IT",
-    soloStatExpertiseValue: "Web + infrastructure",
+    soloStatExpertiseValue: "Websites + applications",
     soloStatLocationLabel: "Base",
-    soloStatLocationValue: "Western Switzerland",
+    soloStatLocationValue: "French-speaking Switzerland",
     soloWorkingTitle: "What this means for you",
     soloHighlights: [
-        "Direct communication from the first conversation to delivery.",
-        "A tailored collaboration without layers of sales handoff or account management.",
-        "Trusted external specialists only when the project genuinely requires them."
+        "A direct contact, from the first conversation through to go-live.",
+        "Precise answers about your own project, with no file passed from one department to another.",
+        "External partners brought in only when the project genuinely calls for it."
     ],
     soloNote:
-        "The goal is not to look bigger than I am, but to stay useful: direct, reliable, and fully involved.",
+        "The goal is not to look bigger than I am, but to be more useful: reachable, clear and involved in every intervention.",
 
     // VIDEO DISABLED — DO NOT DELETE (former title, back when the page had two overviews):
     // ITOverviewTitle: "IT Overview",
-    saasTitle: "Our MediaSmart products",
+    saasTitle: "Our business applications",
     saasDescription:
-        "Two business solutions we build and host ourselves: supplier-invoice tracking and document management.",
-    saasCta: "Explore our products",
+        "Two applications we build and host ourselves: supplier-invoice tracking and document management.",
+    saasCta: "Discover our applications",
 
+    // ------------------------------------------------------------------
+    // Active homepage section: the site leads with website and web
+    // application development. The "ITOverview*" block below stays in
+    // place but is no longer rendered (see the banner above it).
+    // ------------------------------------------------------------------
+    WebOverviewTitle: "Websites and custom web applications",
+    WebOverviewDescription:
+        "Our core business: designing, building and maintaining websites and web applications.",
+    WebOverviewExploreBtn: "See our web services",
+    WebOverviewCards: [
+        {
+            title: "Showcase website",
+            description: "Up to five pages to present your activity, with a contact form, a mobile version and clean SEO foundations."
+        },
+        {
+            title: "Business website",
+            description: "Blog, online shop, booking system, advanced forms and third-party integrations."
+        },
+        {
+            title: "Custom web application",
+            description: "Interface and business logic built for you, user authentication, database design and APIs."
+        },
+        {
+            title: "Redesign and migration",
+            description: "Modernise an existing site without starting over: new interface, content migration, mobile version."
+        },
+        {
+            title: "Maintenance and changes",
+            description: "A 14-day corrective warranty after go-live, then fixes and changes handled on request."
+        },
+        {
+            title: "SEO and performance",
+            description: "Technical work on search visibility and load times, so you get found and stay fast."
+        }
+    ],
+
+    // ==================================================================
+    // SECONDARY IT SERVICES DISABLED — DO NOT DELETE
+    // The site now leads with website and web application development.
+    // The "ITOverview*" block below (maintenance, optimisation,
+    // cybersecurity, backup, support) is no longer rendered: the homepage
+    // shows "WebOverview*" instead. The keys stay for FR/EN parity and for
+    // an immediate rollback.
+    // TO RESTORE: set translationPrefix back to "ITOverview" and reuse the
+    // IT_OVERVIEW_ANIMATIONS list in src/features/home/components/it-overview.tsx.
+    // ==================================================================
     ITOverviewTitle: "Our IT services",
     ITOverviewDescription:
-        "Agile IT services tailored to your needs:",
-    ITOverviewExploreBtn: "Explore More About IT Services",
+        "Websites, workstations, security and support: the services we deliver day to day.",
+    ITOverviewExploreBtn: "See the full list of services",
     ITOverviewCards: [
         {
-            title: "Website creation & redesign",
-            description: "We build and refresh websites that are modern, responsive, and easy to navigate—helping your brand stand out online."
+            title: "Website creation and redesign",
+            description: "We design and modernise websites that load fast, read well on every screen and stay easy for you to update."
         },
         {
-            title: "Windows & macOS maintenance",
-            description: "Regular updates for Windows and macOS keep your systems stable, secure, and running smoothly."
+            title: "Windows and macOS maintenance",
+            description: "System and software updates, clean-up and regular checks keep your workstations stable and up to date."
         },
         {
-            title: "Performance optimization",
-            description: "We fine-tune your devices to boost speed, improve efficiency, and extend their lifespan."
+            title: "Performance optimisation",
+            description: "We identify what is slowing your machines down and fix the configuration to restore a responsive workstation."
         },
         {
-            title: "Cybersecurity & audits",
-            description: "From antivirus setup to firewalls and audits, we protect your systems against digital threats."
+            title: "Cybersecurity and audits",
+            description: "Antivirus, firewalls, network hardening and a review of your weak points, plus the good practices to pass on to your team."
         },
         {
-            title: "Data backup & recovery",
-            description: "Reliable backup and fast recovery options ensure your important files are always safe."
+            title: "Data backup and restore",
+            description: "Regular backups and a clear restore procedure so you can get back to work quickly after an incident."
         },
         {
-            title: "User support & training",
-            description: "We provide hands-on support and simple training so your team can work with confidence."
+            title: "User support and training",
+            description: "Remote or on-site troubleshooting and training on your tools, explained without unnecessary jargon."
         }
     ],
 
@@ -180,38 +226,40 @@ const home = {
     testimonialTitleDescription:
         "Trusted by our clients",
     review: "Tell us your experience",
-    noTestimonial: "No testimonials yet, be the first to leave a review on Google?",
+    noTestimonial: "No testimonials yet. Would you like to be the first to leave a review on Google?",
 
     contactTitle: "Get in touch with us",
     contactName: "Name *",
     contactEmail: "Email *",
-    contactMobile: "Mobile Number",
-    contactMsg: "How can we help? *",
-    contactCheckboxTxt: "I consent to the use of my contact details by MediaSmart to process this request in accordance with the",
-    contactCheckboxPrivacyLink: "Privacy Policy",
+    contactMobile: "Phone number",
+    contactMsg: "Describe your needs *",
+    contactCheckboxTxt: "I agree that MediaSmart may use my contact details to handle this request, in accordance with the",
+    contactCheckboxPrivacyLink: "privacy policy",
     contactCheckboxSuffix: "*",
-    contactBtn: "Submit Now",
-    contactErrorText: "Please agree to the terms.",
-    contactInvalidEmailError: "Please enter a valid Email address.",
-    contactInvalidMobileError: "Please enter a valid mobile number.",
-    contactRequiredEmailError: "Email is required.",
+    contactBtn: "Send message",
+    contactErrorText: "Please accept the terms before sending.",
+    contactInvalidEmailError: "This email address does not look valid.",
+    contactInvalidMobileError: "This phone number does not look valid.",
+    contactRequiredEmailError: "An email address is required.",
     contactRequiredNameError: "Name is required.",
-    contactRequiredMobileError: "Mobile number is required.",
+    contactRequiredMobileError: "A phone number is required.",
     contactRequiredMsgError: "This field is required.",
-    contactRequired: "* Required",
+    contactSecurityError: "The security check did not go through. Reload the page and try again.",
+    contactSendError: "Your message could not be sent right now. Check the details you entered and try again in a moment.",
+    contactRequired: "* Required field",
     contactDone: "Done",
-    contactLoading: "Loading...",
-    contactSuccessTitle: "Message sent!",
-    contactSuccessBody: "Thank you for your message. Our team will get back to you as soon as possible.",
+    contactLoading: "Sending…",
+    contactSuccessTitle: "Message sent",
+    contactSuccessBody: "Thank you for your message. We will get back to you as soon as possible.",
     contactSuccessNew: "Send another message",
     contactIntentQuestion: "Ask a question",
     contactIntentQuote: "Request a quote",
     contactProjectTypeLabel: "Project type *",
     contactProjectTypeRequired: "Please select a project type.",
-    contactProjectVitrine: "Showcase Website",
-    contactProjectBusiness: "Business Website",
-    contactProjectRefonte: "Redesign / Migration",
-    contactProjectApp: "Custom Web App",
-    contactProjectOther: "Other / Not sure"
+    contactProjectVitrine: "Showcase website",
+    contactProjectBusiness: "Business website",
+    contactProjectRefonte: "Redesign / migration",
+    contactProjectApp: "Custom web application",
+    contactProjectOther: "Other / not sure yet"
 };
 export default home;

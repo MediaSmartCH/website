@@ -6,31 +6,31 @@
 // ============================================================================
 const home = {
     heroTitle: "MediaSmart",
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien texte "deux mondes") :
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien texte "deux mondes") :
     // heroSubtitle: "est l'endroit où deux mondes se rencontrent",
-    heroSubtitle: "votre partenaire informatique en Suisse romande",
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne description mixte vidéo/IT) :
+    heroSubtitle: "création de sites web et d'applications en Suisse romande",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne description mixte vidéo/IT) :
     // heroDescription:
     //     "Que ce soit en production vidéo ou en solutions informatiques, MediaSmart vous accompagne avec expertise et flexibilité. Choisissez un service ou combinez-les selon vos besoins.",
     heroDescription:
-        "Création de sites web, maintenance, cybersécurité et support: MediaSmart vous accompagne avec expertise et flexibilité sur l'ensemble de votre informatique.",
-    itBtn: "Explorer les services informatiques",
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : clé conservée, le bouton n'est plus affiché.
+        "Sites vitrines, sites business, refontes et applications métier : nous concevons, développons et maintenons l'outil web dont votre activité a besoin.",
+    itBtn: "Découvrir nos prestations web",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : clé conservée, le bouton n'est plus affiché.
     videoBtn: "Explorer les services vidéo",
 
-    bookingTitle: "Vous souhaitez une consultation gratuite de 30 minutes ?",
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien texte orienté récits visuels) :
+    bookingTitle: "Envie de faire le point sur votre informatique ?",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien texte orienté récits visuels) :
     // bookingDescription:
     //     "Lancez-vous dans votre aventure créative avec MediaSmart grâce à une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – que ce soit chez vous, dans un espace public, ou même en ligne – et sélectionnez un horaire qui correspond à notre disponibilité. Fournissez simplement les détails de la réunion souhaitée et vos coordonnées, et nous organiserons le rendez-vous. Cette session est votre chance de discuter de vos idées avec nous et de découvrir comment nous pouvons collaborer pour transformer votre vision en récits visuels captivants.",
     bookingDescription:
-        "Faisons le point sur votre informatique lors d'une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – chez vous, dans vos locaux ou en ligne – et un horaire qui correspond à nos disponibilités. Décrivez simplement votre besoin et laissez-nous vos coordonnées: nous organisons le rendez-vous. C'est l'occasion d'exposer votre situation et de voir concrètement comment rendre vos outils plus fiables, plus sûrs et plus performants.",
-    bookingBtn: "Réservez votre Consultation de 30 Min",
+        "Réservez une consultation gratuite de 30 minutes. Choisissez le lieu qui vous arrange – vos locaux, votre domicile ou une réunion en ligne – et un créneau parmi nos disponibilités. Décrivez votre besoin en quelques lignes, laissez vos coordonnées, et nous confirmons le rendez-vous. C'est l'occasion d'exposer votre situation et de repartir avec des pistes concrètes.",
+    bookingBtn: "Réserver une consultation de 30 min",
 
     partnersTitle: "Nos partenaires de confiance",
 
     aboutTitle: "À propos de ",
     aboutSubtitle: "MediaSmart",
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne présentation vidéo + informatique) :
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne présentation vidéo + informatique) :
     // aboutDescription: `
     //   MediaSmart est l'endroit où deux mondes se rencontrent.
     //   <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
@@ -40,77 +40,123 @@ const home = {
     //   Basée en Suisse romande, nous fournissons des services modernes, flexibles et axés sur les résultats.
     // `,
     aboutDescription: `
-      MediaSmart, c'est votre informatique prise en main de bout en bout.
+      MediaSmart conçoit et développe des sites web et des applications métier.
       <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li><strong>Sites web</strong>, conçus, refondus et maintenus pour servir vraiment votre activité.</li>
-        <li><strong>Infrastructure &amp; postes de travail</strong>, pour des outils fiables, sécurisés et performants.</li>
-        <li><strong>Sécurité &amp; sauvegardes</strong>, pour dormir tranquille et repartir vite en cas de pépin.</li>
+        <li><strong>Sites vitrines et sites business</strong> : présenter votre activité, vendre en ligne, prendre des réservations.</li>
+        <li><strong>Applications web sur mesure</strong> : une interface et une logique métier construites pour vos propres processus.</li>
+        <li><strong>Refontes et maintenance</strong> : moderniser un site existant, puis le faire évoluer dans la durée.</li>
       </ul>
-      Basée en Suisse romande, MediaSmart fournit des services modernes, flexibles et axés sur les résultats.
+      Basée en Suisse romande, MediaSmart accompagne les PME, les indépendants et les associations qui n'ont pas d'équipe technique interne.
     `,
     soloBadge: "Indépendant",
     soloTitle: "Derrière MediaSmart",
     soloName: "Raphael Rouiller",
-    soloJobTitle: "Fondateur & Prestataire indépendant",
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne formulation vidéo + informatique) :
+    soloJobTitle: "Fondateur & prestataire indépendant",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne formulation vidéo + informatique) :
     // soloRole: "Un interlocuteur unique pour vos besoins en vidéo et en informatique.",
-    soloRole: "Un interlocuteur unique pour l'ensemble de vos besoins informatiques.",
+    soloRole: "Un interlocuteur unique, de la conception à la mise en ligne.",
     soloLead:
-        "Pour l'instant, je travaille seul en tant qu'indépendant. Vous échangez donc directement avec la personne qui conçoit, pilote et livre votre projet.",
+        "Je travaille aujourd'hui seul, en tant qu'indépendant. Vous échangez donc directement avec la personne qui analyse, conçoit et met en œuvre votre projet.",
     soloDescription:
-        "Cette structure volontairement légère me permet d'être plus réactif, plus clair dans les échanges et plus impliqué sur chaque détail. Si une mission demande un renfort spécifique, je peux aussi m'appuyer ponctuellement sur un réseau de partenaires de confiance.",
+        "Cette structure volontairement légère raccourcit les délais de réponse, évite les intermédiaires et garantit un suivi cohérent du premier échange à la mise en service. Lorsqu'une mission demande une compétence particulière, je fais appel à un réseau de partenaires de confiance.",
     soloStatDirectLabel: "Format",
     soloStatDirectValue: "1 interlocuteur unique",
-    soloStatExpertiseLabel: "Expertises",
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne double expertise) :
+    soloStatExpertiseLabel: "Domaines",
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancienne double expertise) :
     // soloStatExpertiseValue: "Vidéo + informatique",
-    soloStatExpertiseValue: "Web + infrastructure",
+    soloStatExpertiseValue: "Sites web + applications",
     soloStatLocationLabel: "Base",
     soloStatLocationValue: "Suisse romande",
     soloWorkingTitle: "Ce que cela change pour vous",
     soloHighlights: [
-        "Un contact direct du premier échange jusqu'à la livraison.",
-        "Un accompagnement sur mesure, sans couches commerciales ni transmission de dossier.",
-        "Des partenaires externes mobilisés seulement lorsque le projet le justifie."
+        "Un contact direct, du premier échange jusqu'à la mise en service.",
+        "Des réponses précises sur votre projet, sans transmission de dossier d'un service à l'autre.",
+        "Des partenaires externes mobilisés uniquement lorsque le projet le justifie."
     ],
     soloNote:
-        "L'objectif n'est pas de paraître plus grand, mais d'être plus utile: simple, fiable et impliqué.",
+        "L'objectif n'est pas de paraître plus grand, mais d'être plus utile : joignable, clair et impliqué sur chaque intervention.",
 
-    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien titre, quand la page avait deux aperçus) :
+    // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien titre, quand la page avait deux aperçus) :
     // ITOverviewTitle: "Aperçu informatique",
-    saasTitle: "Nos produits MediaSmart",
+    saasTitle: "Nos applications métier",
     saasDescription:
-        "Deux solutions métier que nous développons et hébergeons nous-mêmes : le suivi des factures fournisseurs et la gestion documentaire.",
-    saasCta: "Découvrir nos produits",
+        "Deux applications que nous développons et hébergeons nous-mêmes : le suivi des factures fournisseurs et la gestion documentaire.",
+    saasCta: "Découvrir nos applications",
 
+    // ------------------------------------------------------------------
+    // Section active de l'accueil : le site met en avant la création de
+    // sites web et d'applications. Le bloc "ITOverview*" plus bas reste en
+    // place mais n'est plus affiché (voir la bannière qui le précède).
+    // ------------------------------------------------------------------
+    WebOverviewTitle: "Sites web et applications sur mesure",
+    WebOverviewDescription:
+        "Notre métier principal : concevoir, développer et maintenir des sites et des applications web.",
+    WebOverviewExploreBtn: "Voir nos prestations web",
+    WebOverviewCards: [
+        {
+            title: "Site vitrine",
+            description: "Jusqu'à cinq pages pour présenter votre activité, avec formulaire de contact, version mobile et base SEO propre."
+        },
+        {
+            title: "Site business",
+            description: "Blog, boutique en ligne, système de réservation, formulaires avancés et intégrations tierces."
+        },
+        {
+            title: "Application web sur mesure",
+            description: "Interface et logique métier spécifiques, authentification des utilisateurs, base de données et API."
+        },
+        {
+            title: "Refonte et migration",
+            description: "Moderniser un site existant sans repartir de zéro : nouvelle interface, reprise des contenus, version mobile."
+        },
+        {
+            title: "Maintenance et évolutions",
+            description: "Garantie corrective de 14 jours après la mise en ligne, puis corrections et évolutions à la demande."
+        },
+        {
+            title: "Référencement et performances",
+            description: "Optimisation technique du référencement et du temps de chargement, pour être trouvé et rester rapide."
+        }
+    ],
+
+    // ==================================================================
+    // SERVICES IT ANNEXES DÉSACTIVÉS — NE PAS SUPPRIMER
+    // Le site met désormais en avant la création de sites web et
+    // d'applications. Le bloc "ITOverview*" ci-dessous (maintenance,
+    // optimisation, cybersécurité, sauvegarde, support) n'est plus rendu :
+    // l'accueil affiche "WebOverview*" à la place. Les clés restent en
+    // place pour la parité FR/EN et pour une réactivation immédiate.
+    // POUR RÉACTIVER : remettre translationPrefix="ITOverview" et la liste
+    // IT_OVERVIEW_ANIMATIONS dans src/features/home/components/it-overview.tsx.
+    // ==================================================================
     ITOverviewTitle: "Nos services informatiques",
     ITOverviewDescription:
-        "Un service informatique agile, adapté à vos besoins.",
-    ITOverviewExploreBtn: "En savoir plus sur les services informatiques",
+        "Sites web, postes de travail, sécurité et support : les prestations que nous assurons au quotidien.",
+    ITOverviewExploreBtn: "Voir le détail des services",
     ITOverviewCards: [
         {
             title: "Création et refonte de sites web",
-            description: "Nous créons et actualisons des sites Web modernes, réactifs et faciles à naviguer, aidant ainsi votre marque à se démarquer en ligne."
+            description: "Nous concevons et modernisons des sites rapides, lisibles sur tous les écrans et simples à mettre à jour vous-même."
         },
         {
-            title: "Maintenance Windows & macOS",
-            description: "Des mises à jour régulières pour Windows et macOS maintiennent vos systèmes stables, sécurisés et performants."
+            title: "Maintenance Windows et macOS",
+            description: "Mises à jour système et logicielles, nettoyage et contrôles réguliers : vos postes restent stables et à jour."
         },
         {
-            title: "Optimisation de performances",
-            description: "Nous peaufinons vos appareils pour augmenter la vitesse, améliorer l'efficacité et prolonger leur durée de vie."
+            title: "Optimisation des performances",
+            description: "Nous identifions ce qui ralentit vos machines et corrigeons la configuration pour retrouver un poste réactif."
         },
         {
-            title: "Cybersécurité & audits",
-            description: "De la configuration antivirus aux pare-feu et aux audits, nous protégeons vos systèmes contre les menaces numériques."
+            title: "Cybersécurité et audits",
+            description: "Antivirus, pare-feu, sécurisation du réseau et audit des points faibles, avec les bonnes pratiques à transmettre à vos équipes."
         },
         {
-            title: "Sauvegarde & récupération de données",
-            description: "Des options de sauvegarde fiables et de récupération rapide garantissent que vos fichiers importants sont toujours en sécurité."
+            title: "Sauvegarde et restauration des données",
+            description: "Une sauvegarde régulière et une procédure de restauration claire pour reprendre le travail rapidement après un incident."
         },
         {
-            title: "Support & formation utilisateurs",
-            description: "Nous offrons un soutien pratique et une formation simple pour que votre équipe puisse travailler en toute confiance."
+            title: "Support et formation des utilisateurs",
+            description: "Dépannage à distance ou sur site et formation à vos outils, avec des explications sans jargon inutile."
         }
     ],
 
@@ -137,7 +183,7 @@ const home = {
         },
         {
             title: "Location de matériel audiovisuel",
-            description: "Accédez à du matériel vidéo professionnel sans engagement : caméras, éclairage, son. Nous vous assurons les bons outils pour capturer votre vision."
+            description: "Accédez à du matériel vidéo professionnel sans engagement : caméras, éclairage, son. Nous vous assurons les bons outils pour capturer votre vision."
         },
         {
             title: "Photographie d'événements",
@@ -147,37 +193,37 @@ const home = {
 
     faqTitle: "Questions fréquentes",
     tile1: {
-        faqQuestion: "Quels types d'événements MediaSmart peut-il gérer ?",
+        faqQuestion: "Quels types d'événements MediaSmart peut-il gérer ?",
         faqAnswer:
             "MediaSmart est polyvalent dans la gestion d'une grande variété d'événements, y compris des conférences d'entreprise, des mariages, des séminaires éducatifs et des performances en direct. Nous adaptons nos services pour répondre aux exigences uniques de chaque événement.",
     },
     tile2: {
         faqQuestion:
-            "Puis-je utiliser MediaSmart pour un petit événement ?",
+            "Puis-je utiliser MediaSmart pour un petit événement ?",
         faqAnswer:
             "Oui, nous sommes heureux de travailler avec des événements de toutes tailles, des plus intimes aux plus grands. Nous personnalisons nos services pour répondre à vos besoins spécifiques, quelle que soit la taille de votre événement.",
     },
     tile3: {
         faqQuestion:
-            "Comment fonctionne la location d'équipement avec MediaSmart ?",
+            "Comment fonctionne la location d'équipement avec MediaSmart ?",
         faqAnswer:
             "Notre processus de location d'équipement est conçu pour la commodité et la qualité. Indiquez-nous votre besoin lors d'une consultation gratuite de 30 minutes et nous vous proposerons une offre adaptée avec un devis sur mesure.",
     },
     tile4: {
         faqQuestion:
-            "MediaSmart propose-t-il un montage vidéo post-événement ?",
+            "MediaSmart propose-t-il un montage vidéo post-événement ?",
         faqAnswer:
             "Oui, c'est notre spécialité. Notre montage post-événement utilise des méthodes avancées pour convertir vos prises brutes en un rendu final élégant, capturant parfaitement l'âme de votre événement.",
     },
     tile5: {
         faqQuestion:
-            "MediaSmart offre-t-il des services de photo pour mon événement ?",
+            "MediaSmart offre-t-il des services de photo pour mon événement ?",
         faqAnswer:
             "Certainement. Nos services de photographie comprennent la couverture d'événements, des séances de portraits et des séances photo personnalisées pour capturer les moments mémorables de votre occasion.",
     },
     tile6: {
         faqQuestion:
-            "Quelle anticipation pour réserver les services MediaSmart ?",
+            "Quelle anticipation pour réserver les services MediaSmart ?",
         faqAnswer:
             "Nous recommandons de réserver le plus tôt possible, en particulier pour les événements plus importants ou pendant les périodes de pointe. Cela garantit que nous pouvons allouer les ressources et le personnel appropriés pour répondre à vos besoins spécifiques. Cependant, nous nous efforçons également d'accommoder les demandes de dernière minute dans la mesure du possible.",
     },
@@ -186,29 +232,31 @@ const home = {
     testimonialTitleDescription:
         "Ils nous font confiance",
     review: "Partagez votre expérience",
-    noTestimonial: "Aucun témoignage pour l'instant, soyez le premier à laisser un avis sur Google ?",
+    noTestimonial: "Aucun témoignage pour l'instant. Vous souhaitez être le premier à laisser un avis sur Google ?",
 
     contactTitle: "Contactez-nous",
     contactName: "Nom *",
     contactEmail: "Email *",
-    contactMobile: "Numéro de Mobile",
-    contactMsg: "Comment pouvons-nous vous aider ? *",
-    contactCheckboxTxt: "Je consens à l'utilisation de mes coordonnées par MediaSmart pour traiter cette demande conformément à la",
-    contactCheckboxPrivacyLink: "Politique de confidentialité",
+    contactMobile: "Numéro de téléphone",
+    contactMsg: "Décrivez votre besoin *",
+    contactCheckboxTxt: "J'accepte que MediaSmart utilise mes coordonnées pour traiter cette demande, conformément à la",
+    contactCheckboxPrivacyLink: "politique de confidentialité",
     contactCheckboxSuffix: "*",
-    contactBtn: "Envoyer Maintenant",
-    contactErrorText: "Veuillez accepter les termes.",
-    contactInvalidEmailError: "Veuillez entrer une adresse e-mail valide.",
-    contactInvalidMobileError: "Veuillez entrer un numéro de téléphone valide.",
-    contactRequiredEmailError: "L'email est requis.",
+    contactBtn: "Envoyer le message",
+    contactErrorText: "Veuillez accepter les conditions avant d'envoyer.",
+    contactInvalidEmailError: "Cette adresse email ne semble pas valide.",
+    contactInvalidMobileError: "Ce numéro de téléphone ne semble pas valide.",
+    contactRequiredEmailError: "L'adresse email est requise.",
     contactRequiredNameError: "Le nom est requis.",
     contactRequiredMobileError: "Le numéro de téléphone est requis.",
     contactRequiredMsgError: "Ce champ est requis.",
-    contactRequired: "* Obligatoire",
+    contactSecurityError: "La vérification de sécurité n'a pas abouti. Rechargez la page, puis réessayez.",
+    contactSendError: "Impossible d'envoyer votre message pour l'instant. Vérifiez les informations saisies et réessayez dans quelques instants.",
+    contactRequired: "* Champ obligatoire",
     contactDone: "Fait",
-    contactLoading: "Chargement...",
-    contactSuccessTitle: "Message envoyé !",
-    contactSuccessBody: "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais.",
+    contactLoading: "Envoi en cours…",
+    contactSuccessTitle: "Message envoyé",
+    contactSuccessBody: "Merci pour votre message. Nous vous répondons dans les meilleurs délais.",
     contactSuccessNew: "Envoyer un autre message",
     contactIntentQuestion: "Poser une question",
     contactIntentQuote: "Demander un devis",
@@ -216,8 +264,8 @@ const home = {
     contactProjectTypeRequired: "Veuillez sélectionner un type de projet.",
     contactProjectVitrine: "Site vitrine",
     contactProjectBusiness: "Site business",
-    contactProjectRefonte: "Refonte / Migration",
+    contactProjectRefonte: "Refonte / migration",
     contactProjectApp: "Application web sur mesure",
-    contactProjectOther: "Autre / Je ne sais pas encore"
+    contactProjectOther: "Autre / je ne sais pas encore"
 };
 export default home;

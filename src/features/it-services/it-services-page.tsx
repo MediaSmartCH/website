@@ -8,8 +8,27 @@ import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
 import Process from "@features/it-services/components/process";
 import FaqIT from "@features/it-services/components/faq";
-import PracticalInfo from "@features/it-services/components/practical-info";
-import ProjectEstimates from "@features/it-services/components/project-estimates";
+/* ============================================================================
+ * INFORMATIONS PRATIQUES DÉSACTIVÉES — NE PAS SUPPRIMER
+ * La section "Informations pratiques" (tarif horaire, conditions de paiement,
+ * garantie corrective, horaires ouvrés, périmètre inclus/exclu) est mise en
+ * pause en même temps que le contrat de support, dont elle reprenait les
+ * tarifs et vers lequel elle renvoyait. Le composant et ses textes
+ * (it.practicalInfo*, it.hourlyRate*, it.payment*, it.warranty*, it.hours*,
+ * it.scope*) restent en place.
+ * POUR RÉACTIVER : décommenter l'import et le rendu <PracticalInfo /> ci-dessous.
+ * ========================================================================= */
+// import PracticalInfo from "@features/it-services/components/practical-info";
+/* ============================================================================
+ * ESTIMATIONS DE COÛT PROJET DÉSACTIVÉES — NE PAS SUPPRIMER
+ * La section "Estimations de coût projet" (fourchettes de prix par formule,
+ * délais indicatifs, contenu inclus par palier, disclaimer et boutons d'appel
+ * à l'action) est mise en pause. Le composant et ses textes (it.estimates*,
+ * it.estimate*) restent en place, y compris le bandeau des formules de support
+ * déjà commenté à l'intérieur du composant.
+ * POUR RÉACTIVER : décommenter l'import et le rendu <ProjectEstimates /> ci-dessous.
+ * ========================================================================= */
+// import ProjectEstimates from "@features/it-services/components/project-estimates";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
@@ -45,8 +64,12 @@ export default function ITServicesPage() {
       <About />
       <Services />
       <SaasProducts />
-      <PracticalInfo />
-      <ProjectEstimates />
+      {/* INFORMATIONS PRATIQUES DÉSACTIVÉES — NE PAS SUPPRIMER (voir la
+          bannière en tête de fichier). */}
+      {/* <PracticalInfo /> */}
+      {/* ESTIMATIONS DE COÛT PROJET DÉSACTIVÉES — NE PAS SUPPRIMER (voir la
+          bannière en tête de fichier). */}
+      {/* <ProjectEstimates /> */}
       <Process />
       <FaqIT />
       <div className="relative overflow-hidden pt-[40px] md:pt-[50px]">
