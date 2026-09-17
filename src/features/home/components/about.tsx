@@ -66,9 +66,9 @@ const About = () => {
               share a single left edge so the eye follows one axis down the
               card; the illustration balances the column rather than competing
               with it for the reader's attention. */}
-          <div className="mx-auto grid max-w-[1180px] items-center gap-[40px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-[96px] xl:gap-[128px] 2xl:gap-[150px]">
+          <div className="mx-auto grid max-w-[1180px] items-center gap-[40px] xl:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] xl:gap-[128px] 2xl:gap-[150px]">
             <div
-              className="text-center lg:text-left"
+              className="text-center lg:text-left xl:text-left"
               data-aos="fade-right"
               data-aos-duration="1100"
             >
@@ -88,9 +88,10 @@ const About = () => {
                 aria-hidden="true"
               />
 
-              {/* Portrait above the name, both on the column's left edge. */}
-              <div className="flex flex-col items-center gap-4 lg:items-start">
-                <div className="w-[130px] sm:w-[150px]">
+              {/* Portrait to the left of the name, the way a byline reads.
+                  Stacked only on a phone, where there is no room beside it. */}
+              <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
+                <div className="w-[130px] shrink-0 sm:w-[140px] xl:w-[160px]">
                   <div className="relative aspect-square w-full rounded-[26px] bg-[linear-gradient(135deg,#14172D_0%,#304C89_55%,#60B6FF_100%)] p-[2px] shadow-[0_25px_60px_-25px_rgba(20,23,45,0.55)]">
                     <img
                       src={raphaelPhoto}
@@ -111,7 +112,7 @@ const About = () => {
                   </div>
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <h3 className="text-heading font-redDisplay text-[20px] font-bold leading-tight md:text-[24px]">
                     {t.text("home.soloName")}
                   </h3>
@@ -139,7 +140,7 @@ const About = () => {
             </div>
 
             <div
-              className="w-full max-w-[420px] mx-auto lg:max-w-none"
+              className="w-full max-w-[420px] mx-auto lg:max-w-[520px] xl:max-w-none"
               data-aos="fade-left"
               data-aos-duration="1200"
             >
