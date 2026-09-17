@@ -62,34 +62,85 @@ const About = () => {
         <div
           className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] px-[30px] lg:px-[50px] 2xl:px-[80px] py-[35px] lg:py-[50px]`}
         >
-          {/* Heading and intro run across the top, then the illustration and
-              the person share one row underneath. Stacking them as two
-              full-width rows made the section twice as tall for the same
-              content. */}
-          <div className="mx-auto max-w-[1180px]">
-          <div
-            className="max-w-[640px] mx-auto text-center lg:mx-0 lg:text-left"
-            data-aos="fade-up"
-            data-aos-duration="1100"
-          >
-            <h2
-              className={`text-heading font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
-            >
-              {t.text("home.aboutTitle")}
-              <span className="gradient-text">{t.text("home.aboutSubtitle")}</span>
-            </h2>
-            <RichText
-              className={`text-body about-description font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]`}
-              html={t.text("home.aboutDescription")}
-            />
-          </div>
-
-          <div className="mt-[30px] lg:mt-[40px] grid items-center gap-[30px] lg:grid-cols-2 lg:gap-[50px]">
+          {/* One text column, one illustration. Heading, intro and the person
+              share a single left edge so the eye follows one axis down the
+              card; the illustration balances the column rather than competing
+              with it for the reader's attention. */}
+          <div className="mx-auto grid max-w-[1180px] items-center gap-[36px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-[60px]">
             <div
-              // Capped: left to fill its column, the illustration grew to the
-              // height of the card and stranded the person block in whitespace.
-              className="order-2 w-full max-w-[460px] mx-auto lg:order-1 xl:max-w-[520px]"
+              className="text-center lg:text-left"
               data-aos="fade-right"
+              data-aos-duration="1100"
+            >
+              <h2
+                className={`text-heading font-redDisplay font-bold text-[26px] md:text-[28px] lg:text-[32px] xl:text-[38px] 2xl:text-[42px] mb-[6px] leading-[35px] md:leading-[1.1] lg:leading-[1.2] xl:leading-[1.3]`}
+              >
+                {t.text("home.aboutTitle")}
+                <span className="gradient-text">{t.text("home.aboutSubtitle")}</span>
+              </h2>
+              <RichText
+                className={`text-body about-description font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]`}
+                html={t.text("home.aboutDescription")}
+              />
+
+              <div
+                className={`${isLight ? "bg-[#E1E0F5]" : "bg-white/12"} my-[28px] h-px w-full`}
+                aria-hidden="true"
+              />
+
+              {/* Portrait above the name, both on the column's left edge. */}
+              <div className="flex flex-col items-center gap-4 lg:items-start">
+                <div className="w-[130px] sm:w-[150px]">
+                  <div className="relative aspect-square w-full rounded-[26px] bg-[linear-gradient(135deg,#14172D_0%,#304C89_55%,#60B6FF_100%)] p-[2px] shadow-[0_25px_60px_-25px_rgba(20,23,45,0.55)]">
+                    <img
+                      src={raphaelPhoto}
+                      alt={t.text("home.soloName")}
+                      width={640}
+                      height={640}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full rounded-[24px] object-cover object-top select-none"
+                      draggable={false}
+                      onContextMenu={(e) => e.preventDefault()}
+                    />
+                    {/* Transparent overlay prevents right-click save on the photo */}
+                    <div
+                      className="absolute inset-0 rounded-[24px]"
+                      onContextMenu={(e) => e.preventDefault()}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-heading font-redDisplay text-[20px] font-bold leading-tight md:text-[24px]">
+                    {t.text("home.soloName")}
+                  </h3>
+                  <p
+                    className={`${isLight ? "text-[#6B7A99]" : "text-[#A8B4D0]"} mt-1 font-poppins text-[11px] font-medium uppercase tracking-[0.12em]`}
+                  >
+                    {t.text("home.soloJobTitle")}
+                  </p>
+                  <p
+                    className={`${isLight ? "text-[#1D2340]" : "text-white"} mt-3 font-poppins text-[13px] md:text-[14px] font-medium leading-6`}
+                  >
+                    {t.text("home.soloLead")}
+                  </p>
+                  <a
+                    href="https://linkedin.com/in/rphlr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${isLight ? "text-[#2E4D8D] hover:text-[#1a3a7a]" : "text-[#9EDCFF] hover:text-white"} mt-3 inline-flex items-center gap-1.5 font-poppins text-[13px] transition-colors`}
+                  >
+                    <ExternalLink size={14} />
+                    linkedin.com/in/rphlr
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="w-full max-w-[420px] mx-auto lg:max-w-none"
+              data-aos="fade-left"
               data-aos-duration="1200"
             >
               <Suspense
@@ -107,66 +158,8 @@ const About = () => {
                 />
               </Suspense>
             </div>
-
-            {/* The person, as a compact row rather than a section: portrait,
-                name, role, one sentence. */}
-            <div
-              // Portrait above the text at every width: beside it, the name
-              // and the sentence each had to fit a narrow column, and the
-              // block changed shape three times across the breakpoints.
-              className="order-1 flex flex-col items-center gap-5 text-center sm:items-start sm:text-left lg:order-2"
-              data-aos="fade-left"
-              data-aos-duration="1300"
-            >
-              <div className="w-[150px] shrink-0 sm:w-[170px] xl:w-[190px]">
-                <div className="relative aspect-square w-full rounded-[28px] bg-[linear-gradient(135deg,#14172D_0%,#304C89_55%,#60B6FF_100%)] p-[2px] shadow-[0_25px_60px_-25px_rgba(20,23,45,0.55)]">
-                  <img
-                    src={raphaelPhoto}
-                    alt={t.text("home.soloName")}
-                    width={640}
-                    height={640}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full rounded-[26px] object-cover object-top select-none"
-                    draggable={false}
-                    onContextMenu={(e) => e.preventDefault()}
-                  />
-                  {/* Transparent overlay prevents right-click save on the photo */}
-                  <div
-                    className="absolute inset-0 rounded-[26px]"
-                    onContextMenu={(e) => e.preventDefault()}
-                  />
-                </div>
-              </div>
-
-              <div className="min-w-0">
-                <h3 className="text-heading font-redDisplay text-[22px] font-bold leading-tight md:text-[26px]">
-                  {t.text("home.soloName")}
-                </h3>
-                <p
-                  className={`${isLight ? "text-[#6B7A99]" : "text-[#A8B4D0]"} mt-1 font-poppins text-[11px] font-medium uppercase tracking-[0.12em]`}
-                >
-                  {t.text("home.soloJobTitle")}
-                </p>
-                <p
-                  className={`${isLight ? "text-[#1D2340]" : "text-white"} mt-3 font-poppins text-[14px] md:text-[15px] font-medium leading-6`}
-                >
-                  {t.text("home.soloLead")}
-                </p>
-                <a
-                  href="https://linkedin.com/in/rphlr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${isLight ? "text-[#2E4D8D] hover:text-[#1a3a7a]" : "text-[#9EDCFF] hover:text-white"} mt-3 inline-flex items-center gap-1.5 font-poppins text-[13px] transition-colors`}
-                >
-                  <ExternalLink size={14} />
-                  linkedin.com/in/rphlr
-                </a>
-              </div>
-            </div>
           </div>
 
-          </div>
           {/* ====================================================================
               BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
               Les trois vignettes (Format / Domaines / Base) et le panneau des
