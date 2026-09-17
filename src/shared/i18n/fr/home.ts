@@ -40,13 +40,9 @@ const home = {
     //   Basée en Suisse romande, nous fournissons des services modernes, flexibles et axés sur les résultats.
     // `,
     aboutDescription: `
-      MediaSmart conçoit et développe des sites web et des applications métier.
-      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li><strong>Sites vitrines et sites business</strong> : présenter votre activité, vendre en ligne, prendre des réservations.</li>
-        <li><strong>Applications web sur mesure</strong> : une interface et une logique métier construites pour vos propres processus.</li>
-        <li><strong>Refontes et maintenance</strong> : moderniser un site existant, puis le faire évoluer dans la durée.</li>
-      </ul>
-      Basée en Suisse romande, MediaSmart accompagne les PME, les indépendants et les associations qui n'ont pas d'équipe technique interne.
+      MediaSmart travaille avec les PME, les indépendants et les associations qui n'ont pas d'équipe technique interne.
+      <br />
+      Un site vitrine, une boutique en ligne ou un outil construit pour vos propres processus : nous partons de votre fonctionnement réel, et nous restons là après la mise en ligne.
     `,
     soloBadge: "Indépendant",
     soloTitle: "Derrière MediaSmart",
@@ -56,9 +52,9 @@ const home = {
     // soloRole: "Un interlocuteur unique pour vos besoins en vidéo et en informatique.",
     soloRole: "Un interlocuteur unique, de la conception à la mise en ligne.",
     soloLead:
-        "Je travaille aujourd'hui seul, en tant qu'indépendant. Vous échangez donc directement avec la personne qui analyse, conçoit et met en œuvre votre projet.",
+        "Vous parlez directement à la personne qui analyse, conçoit et développe votre projet, du premier échange à la mise en ligne.",
     soloDescription:
-        "Cette structure volontairement légère raccourcit les délais de réponse, évite les intermédiaires et garantit un suivi cohérent du premier échange à la mise en service. Lorsqu'une mission demande une compétence particulière, je fais appel à un réseau de partenaires de confiance.",
+        "Quand une mission demande une compétence particulière, je m'appuie sur un réseau de partenaires de confiance.",
     soloStatDirectLabel: "Format",
     soloStatDirectValue: "1 interlocuteur unique",
     soloStatExpertiseLabel: "Domaines",
@@ -90,7 +86,7 @@ const home = {
     // ------------------------------------------------------------------
     WebOverviewTitle: "Sites web et applications sur mesure",
     WebOverviewDescription:
-        "Notre métier principal : concevoir, développer et maintenir des sites et des applications web.",
+        "Chaque projet est cadré et chiffré avant de démarrer.",
     WebOverviewExploreBtn: "Voir nos prestations web",
     WebOverviewCards: [
         {

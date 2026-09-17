@@ -63,8 +63,8 @@ const PortfolioGallery = () => {
 
   // Preview tiles are image-driven, so we hide items that have no screenshot
   // to show. They still appear in the full modal as text-only cards.
-  // Ordered along PORTFOLIO_CATEGORY_ORDER: our own products first, then the
-  // free tools, then client work.
+  // Client references only — the products and the free tools get their own
+  // section lower on the page (see sortItemsForPreview).
   const previewCandidates = sortItemsForPreview(
     portfolioItems.filter((item) => getItemImages(item).length > 0)
   );
@@ -193,7 +193,7 @@ const PortfolioGallery = () => {
               <div className="pointer-events-none absolute right-[-38px] top-[-38px] h-28 w-28 rounded-full bg-white/10 blur-2xl" />
               <div className="relative">
                 <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/75">
-                  {languageReducer === "fr" ? "Galerie complete" : "Full gallery"}
+                  {languageReducer === "fr" ? "Galerie complète" : "Full gallery"}
                 </p>
                 <p className="mt-5 font-redDisplay text-[24px] font-bold leading-7">
                   {formatRemainingProjects(hiddenProjectsCount, languageReducer)}

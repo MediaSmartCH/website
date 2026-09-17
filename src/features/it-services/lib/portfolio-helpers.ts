@@ -89,16 +89,22 @@ export function groupItemsByCategory(items: PortfolioItem[]): PortfolioGroup[] {
 }
 
 /**
- * Orders items for the preview strip along PORTFOLIO_CATEGORY_ORDER, each
- * category keeping its original order. Our own products lead, because they are
- * the only entries a visitor can buy or try straight away.
+ * Picks what the preview strip shows.
+ *
+ * Client work only, while the full gallery keeps the product-first order. Our
+ * own products and free tools already have their own section further down the
+ * same page, with a fuller pitch and their own buttons; showing them here too
+ * meant a visitor met the same four cards twice in one scroll. Client
+ * references are the one thing the strip can show that is not repeated
+ * anywhere else.
+ *
+ * Falls back to the full list when there is no client entry, so the strip
+ * never renders empty.
  */
 export function sortItemsForPreview(items: PortfolioItem[]): PortfolioItem[] {
-  return [...items].sort(
-    (a, b) =>
-      PORTFOLIO_CATEGORY_ORDER.indexOf(getItemCategory(a)) -
-      PORTFOLIO_CATEGORY_ORDER.indexOf(getItemCategory(b))
-  );
+  const clientWork = items.filter((item) => getItemCategory(item) === "client");
+
+  return clientWork.length > 0 ? clientWork : [...items];
 }
 
 export const PREVIEW_LIMIT = 4;
@@ -177,7 +183,7 @@ export function formatProjectsCount(count: number, language: string): string {
 
 export function formatImageCount(count: number, language: string): string {
   if (language === "fr") {
-    return `${count} ${count > 1 ? "apercus" : "apercu"}`;
+    return `${count} ${count > 1 ? "aperçus" : "aperçu"}`;
   }
 
   return `${count} ${count > 1 ? "previews" : "preview"}`;
@@ -189,7 +195,7 @@ export function formatPreviewCount(
   language: string
 ): string {
   if (language === "fr") {
-    return `Apercu de ${shownCount} sur ${totalCount}`;
+    return `Aperçu de ${shownCount} sur ${totalCount}`;
   }
 
   return `Showing ${shownCount} of ${totalCount}`;

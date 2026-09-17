@@ -133,7 +133,7 @@ describe("counter formatting", () => {
 
   it("reports how many previews of the total are shown", () => {
     expect(formatPreviewCount(4, 9, "en")).toBe("Showing 4 of 9");
-    expect(formatPreviewCount(4, 9, "fr")).toBe("Apercu de 4 sur 9");
+    expect(formatPreviewCount(4, 9, "fr")).toBe("Aperçu de 4 sur 9");
   });
 });
 
@@ -194,29 +194,34 @@ describe("groupItemsByCategory", () => {
 });
 
 describe("sortItemsForPreview", () => {
-  it("follows the section order and keeps the original order inside a category", () => {
-    const sorted = sortItemsForPreview([
+  it("keeps client work only, in its original order", () => {
+    const preview = sortItemsForPreview([
+      item("saas-1", "saas"),
       item("client-1", "client"),
       item("free-1", "free"),
-      item("saas-1", "saas"),
       item("client-2", "client"),
-      item("saas-2", "saas"),
     ]);
 
-    expect(sorted.map((entry) => entry.id)).toEqual([
-      "saas-1",
-      "saas-2",
-      "free-1",
-      "client-1",
-      "client-2",
-    ]);
+    expect(preview.map((entry) => entry.id)).toEqual(["client-1", "client-2"]);
+  });
+
+  it("treats an entry with no category as client work", () => {
+    const preview = sortItemsForPreview([item("saas-1", "saas"), item("legacy")]);
+
+    expect(preview.map((entry) => entry.id)).toEqual(["legacy"]);
+  });
+
+  it("falls back to every item when there is no client work", () => {
+    const preview = sortItemsForPreview([item("saas-1", "saas"), item("free-1", "free")]);
+
+    expect(preview.map((entry) => entry.id)).toEqual(["saas-1", "free-1"]);
   });
 
   it("does not mutate its input", () => {
-    const items = [item("client-1", "client"), item("saas-1", "saas")];
+    const items = [item("free-1", "free"), item("saas-1", "saas")];
     sortItemsForPreview(items);
 
-    expect(items.map((entry) => entry.id)).toEqual(["client-1", "saas-1"]);
+    expect(items.map((entry) => entry.id)).toEqual(["free-1", "saas-1"]);
   });
 });
 

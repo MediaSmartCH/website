@@ -10,13 +10,11 @@ const it = {
     itServicesAboutDescription: `
         A website or an application should <b> serve your business, not complicate it. </b>
         <br />
-        We start from how you actually operate before writing a single line of code: what your visitors need to find, what your team needs to be able to do, and what has to stay easy to update.
-        <br />
-        Small businesses, associations or freelancers: you get a written scope, a detailed quote and <b> a single point of contact from the first conversation to go-live. </b>
+        So we start from how you actually operate: what your visitors need to find, what your team needs to be able to do, and what has to stay easy to update. You get a written scope and a detailed quote before any development starts.
         `,
 
     itServicesTitle: `<span> Our </span> web services`,
-    itServicesDescription: "From a showcase site to a business application, here is what we design and build:",
+    itServicesDescription: "Three services, depending on whether you start from scratch, from a business need, or from a site to take over.",
 
     // ------------------------------------------------------------------
     // MediaSmart SaaS products — highlighted outside the portfolio, because
@@ -26,7 +24,7 @@ const it = {
     // ------------------------------------------------------------------
     saasTitle: `<span> Our business </span> applications`,
     saasDescription:
-        "Beyond bespoke projects, we build and run our own applications. Hosted in Switzerland and designed for organisations without an in-house IT team, they are operational from the day they are installed.",
+        "We also build and run our own applications, hosted in Switzerland and operational from the day they are installed.",
     saasDemoCta: "See the demo",
     saasBookCta: "Request a demo",
     saasProducts: [
@@ -322,7 +320,7 @@ const it = {
         },
         {
             title: "Analysis",
-            description: "We examine your existing setup, flag the risks and cost what needs fixing.",
+            description: "We review what is already there, flag the blockers and cost the work.",
         },
         {
             title: "Proposal",

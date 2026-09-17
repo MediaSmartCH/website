@@ -1,5 +1,9 @@
 import React, { lazy, Suspense } from "react";
-import { Briefcase, CheckCircle2, ExternalLink, MapPin, User } from "lucide-react";
+// BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
+// Briefcase, CheckCircle2, MapPin et User n'illustraient que les trois vignettes
+// de statistiques et le panneau des bénéfices, tous deux commentés plus bas.
+// import { Briefcase, CheckCircle2, ExternalLink, MapPin, User } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
@@ -20,24 +24,37 @@ const About = () => {
 
   const t = useTranslations(languageReducer);
   const isLight = themeReducer === "light";
-  const soloStats = [
-    {
-      icon: User,
-      label: t.text("home.soloStatDirectLabel"),
-      value: t.text("home.soloStatDirectValue"),
-    },
-    {
-      icon: Briefcase,
-      label: t.text("home.soloStatExpertiseLabel"),
-      value: t.text("home.soloStatExpertiseValue"),
-    },
-    {
-      icon: MapPin,
-      label: t.text("home.soloStatLocationLabel"),
-      value: t.text("home.soloStatLocationValue"),
-    },
-  ];
-  const soloHighlights = t.array<string>("home.soloHighlights", []);
+  /* ==========================================================================
+   * BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
+   * La présentation disait cinq fois la même chose : le badge "Indépendant",
+   * la ligne de rôle, le paragraphe "je travaille seul", la vignette
+   * "1 interlocuteur unique" et le panneau des bénéfices répétaient tous
+   * l'unicité de l'interlocuteur. Les vignettes et le panneau ne sont plus
+   * rendus ; la photo prend la place gagnée.
+   * Les clés (home.soloStat*, home.soloHighlights, home.soloWorkingTitle,
+   * home.soloNote, home.soloBadge, home.soloRole) restent dans les deux
+   * dictionnaires.
+   * POUR RÉACTIVER : décommenter ces deux listes et les deux blocs de rendu
+   * marqués plus bas.
+   * ====================================================================== */
+  // const soloStats = [
+  //   {
+  //     icon: User,
+  //     label: t.text("home.soloStatDirectLabel"),
+  //     value: t.text("home.soloStatDirectValue"),
+  //   },
+  //   {
+  //     icon: Briefcase,
+  //     label: t.text("home.soloStatExpertiseLabel"),
+  //     value: t.text("home.soloStatExpertiseValue"),
+  //   },
+  //   {
+  //     icon: MapPin,
+  //     label: t.text("home.soloStatLocationLabel"),
+  //     value: t.text("home.soloStatLocationValue"),
+  //   },
+  // ];
+  // const soloHighlights = t.array<string>("home.soloHighlights", []);
 
   return (
     <div id="about" className="scroll-mt-[120px]">
@@ -103,64 +120,73 @@ const About = () => {
           <div className="absolute -top-16 right-0 h-44 w-44 rounded-full bg-[#59C3FF]/15 blur-3xl" />
           <div className="absolute -bottom-12 left-8 h-36 w-36 rounded-full bg-[#7A6BFF]/10 blur-3xl" />
 
-          <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+          {/* Portrait first and large: the point of this block is that a person
+              answers, so the person is what a visitor should see. The copy is
+              two sentences — everything else repeated them. */}
+          <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-12">
             <div
-              className={`${isLight ? "border-white bg-white/75" : "border-white/10 bg-white/5"} rounded-[24px] border p-5 md:p-7 backdrop-blur-sm`}
-              data-aos="fade-up"
+              className="mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:mx-0"
+              data-aos="fade-right"
               data-aos-duration="1100"
             >
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-                <div className="relative mx-auto h-[110px] w-[110px] shrink-0 sm:mx-0">
-                  <div className="relative h-full w-full rounded-[32px] bg-[linear-gradient(135deg,#14172D_0%,#304C89_55%,#60B6FF_100%)] p-[1px] shadow-[0_25px_60px_-25px_rgba(20,23,45,0.55)]">
-                    <img
-                      src={raphaelPhoto}
-                      alt="Raphael Rouiller"
-                      width={640}
-                      height={640}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full rounded-[31px] object-cover object-top select-none"
-                      draggable={false}
-                      onContextMenu={(e) => e.preventDefault()}
-                    />
-                    {/* Transparent overlay prevents right-click save on the photo */}
-                    <div className="absolute inset-0 rounded-[31px]" onContextMenu={(e) => e.preventDefault()} />
-                  </div>
-                </div>
-
-                <div className="text-center sm:text-left">
-                  <h3
-                    className={`text-heading font-redDisplay text-[28px] font-bold leading-tight md:text-[34px]`}
-                  >
-                    {t.text("home.soloName")}
-                  </h3>
-                  <p className={`${isLight ? "text-[#6B7A99]" : "text-[#A8B4D0]"} mt-0.5 font-poppins text-[13px] font-medium uppercase tracking-[0.12em]`}>
-                    {t.text("home.soloJobTitle")}
-                  </p>
-                  <p className={`${isLight ? "text-[#425071]" : "text-[#D8DEF6]"} mt-2 font-poppins text-sm md:text-base leading-6`}>
-                    {t.text("home.soloRole")}
-                  </p>
-                  <a
-                    href="https://linkedin.com/in/rphlr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${isLight ? "text-[#2E4D8D] hover:text-[#1a3a7a]" : "text-[#9EDCFF] hover:text-white"} mt-3 inline-flex items-center gap-1.5 font-poppins text-sm transition-colors`}
-                  >
-                    <ExternalLink size={15} />
-                    linkedin.com/in/rphlr
-                  </a>
-                </div>
+              <div className="relative aspect-square w-full rounded-[36px] bg-[linear-gradient(135deg,#14172D_0%,#304C89_55%,#60B6FF_100%)] p-[2px] shadow-[0_35px_80px_-30px_rgba(20,23,45,0.6)]">
+                <img
+                  src={raphaelPhoto}
+                  alt={t.text("home.soloName")}
+                  width={640}
+                  height={640}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full rounded-[34px] object-cover object-top select-none"
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
+                />
+                {/* Transparent overlay prevents right-click save on the photo */}
+                <div className="absolute inset-0 rounded-[34px]" onContextMenu={(e) => e.preventDefault()} />
               </div>
+            </div>
 
-              <div className="mt-8 space-y-4">
-                <p className={`${isLight ? "text-[#1D2340]" : "text-white"} font-poppins text-base md:text-lg font-medium leading-7`}>
-                  {t.text("home.soloLead")}
-                </p>
-                <p className={`${isLight ? "text-[#4C4966]" : "text-[#D8D8E9]"} font-poppins text-sm md:text-base leading-7`}>
-                  {t.text("home.soloDescription")}
-                </p>
-              </div>
+            <div
+              className="text-center lg:text-left"
+              data-aos="fade-left"
+              data-aos-duration="1200"
+            >
+              <h3 className="text-heading font-redDisplay text-[30px] font-bold leading-tight md:text-[38px] 2xl:text-[42px]">
+                {t.text("home.soloName")}
+              </h3>
+              <p className={`${isLight ? "text-[#6B7A99]" : "text-[#A8B4D0]"} mt-1 font-poppins text-[13px] font-medium uppercase tracking-[0.12em]`}>
+                {t.text("home.soloJobTitle")}
+              </p>
 
+              <p className={`${isLight ? "text-[#1D2340]" : "text-white"} mt-5 max-w-[620px] font-poppins text-base md:text-lg font-medium leading-7 mx-auto lg:mx-0`}>
+                {t.text("home.soloLead")}
+              </p>
+              <p className={`${isLight ? "text-[#4C4966]" : "text-[#D8D8E9]"} mt-3 max-w-[620px] font-poppins text-sm md:text-base leading-7 mx-auto lg:mx-0`}>
+                {t.text("home.soloDescription")}
+              </p>
+
+              <a
+                href="https://linkedin.com/in/rphlr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${isLight ? "text-[#2E4D8D] hover:text-[#1a3a7a]" : "text-[#9EDCFF] hover:text-white"} mt-5 inline-flex items-center gap-1.5 font-poppins text-sm transition-colors`}
+              >
+                <ExternalLink size={15} />
+                linkedin.com/in/rphlr
+              </a>
+            </div>
+          </div>
+
+          {/* ====================================================================
+              BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
+              Les trois vignettes (Format / Domaines / Base) et le panneau des
+              bénéfices redisaient ce que la photo et les deux phrases ci-dessus
+              disent déjà. Leur balisage et leurs clés restent intacts.
+              POUR RÉACTIVER : décommenter le bloc ci-dessous, lui rendre ses
+              balises de commentaire JSX, et décommenter soloStats /
+              soloHighlights en tête de composant.
+
+              === Stats: Format / Domaines / Base ===
               <div className="mt-8 grid gap-3 sm:grid-cols-3">
                 {soloStats.map(({ icon: Icon, label, value }) => (
                   <div
@@ -179,43 +205,43 @@ const About = () => {
                   </div>
                 ))}
               </div>
-            </div>
 
-            <div
-              className={`${isLight ? "border-white bg-white/65" : "border-white/10 bg-[#0F1325]/25"} rounded-[24px] border p-5 md:p-7 backdrop-blur-sm`}
-              data-aos="fade-up"
-              data-aos-duration="1250"
-            >
-              <div className="flex items-center gap-3">
-                <div className={`${isLight ? "bg-[#EEF4FF] text-[#2E4D8D]" : "bg-white/10 text-[#A8E1FF]"} flex h-10 w-10 items-center justify-center rounded-full`}>
-                  <Briefcase size={18} />
-                </div>
-                <h4 className={`text-heading font-redDisplay text-[24px] font-bold leading-tight`}>
-                  {t.text("home.soloWorkingTitle")}
-                </h4>
-              </div>
-
-              <div className="mt-6 space-y-3">
-                {soloHighlights.map((highlight) => (
-                  <div
-                    key={highlight}
-                    className={`${isLight ? "border-[#E9EDF8] bg-white/80" : "border-white/10 bg-white/5"} flex items-start gap-3 rounded-[18px] border p-4`}
-                  >
-                    <CheckCircle2 className={`text-accent mt-0.5 shrink-0`} size={18} />
-                    <p className={`text-body font-poppins text-sm md:text-[15px] leading-6`}>
-                      {highlight}
-                    </p>
+              === Panel: "Ce que cela change pour vous" ===
+              <div
+                className={`${isLight ? "border-white bg-white/65" : "border-white/10 bg-[#0F1325]/25"} rounded-[24px] border p-5 md:p-7 backdrop-blur-sm`}
+                data-aos="fade-up"
+                data-aos-duration="1250"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`${isLight ? "bg-[#EEF4FF] text-[#2E4D8D]" : "bg-white/10 text-[#A8E1FF]"} flex h-10 w-10 items-center justify-center rounded-full`}>
+                    <Briefcase size={18} />
                   </div>
-                ))}
-              </div>
+                  <h4 className={`text-heading font-redDisplay text-[24px] font-bold leading-tight`}>
+                    {t.text("home.soloWorkingTitle")}
+                  </h4>
+                </div>
 
-              <div className={`${isLight ? "border-[#D9E8FF] bg-[#F4F9FF]" : "border-white/10 bg-[#11182D]/65"} mt-6 rounded-[20px] border p-5`}>
-                <p className={`${isLight ? "text-[#24304A]" : "text-[#F1F4FF]"} font-poppins text-sm md:text-base leading-6`}>
-                  {t.text("home.soloNote")}
-                </p>
+                <div className="mt-6 space-y-3">
+                  {soloHighlights.map((highlight) => (
+                    <div
+                      key={highlight}
+                      className={`${isLight ? "border-[#E9EDF8] bg-white/80" : "border-white/10 bg-white/5"} flex items-start gap-3 rounded-[18px] border p-4`}
+                    >
+                      <CheckCircle2 className={`text-accent mt-0.5 shrink-0`} size={18} />
+                      <p className={`text-body font-poppins text-sm md:text-[15px] leading-6`}>
+                        {highlight}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className={`${isLight ? "border-[#D9E8FF] bg-[#F4F9FF]" : "border-white/10 bg-[#11182D]/65"} mt-6 rounded-[20px] border p-5`}>
+                  <p className={`${isLight ? "text-[#24304A]" : "text-[#F1F4FF]"} font-poppins text-sm md:text-base leading-6`}>
+                    {t.text("home.soloNote")}
+                  </p>
+                </div>
               </div>
-            </div>
-          </div>
+          ==================================================================== */}
         </div>
       </div>
     </div>

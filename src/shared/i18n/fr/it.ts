@@ -10,13 +10,11 @@ const it = {
     itServicesAboutDescription: `
         Un site ou une application doit <b> servir votre activité, pas vous compliquer la vie. </b>
         <br />
-        Nous partons de votre fonctionnement réel avant d'écrire la moindre ligne de code : ce que vos visiteurs doivent trouver, ce que vos équipes doivent pouvoir faire, ce qui doit rester simple à mettre à jour.
-        <br />
-        PME, associations ou indépendants : vous obtenez un périmètre écrit, un devis détaillé et <b> un interlocuteur unique du premier échange à la mise en ligne. </b>
+        Nous partons donc de votre fonctionnement réel : ce que vos visiteurs doivent trouver, ce que vos équipes doivent pouvoir faire, ce qui doit rester simple à mettre à jour. Vous recevez un périmètre écrit et un devis détaillé avant que le développement commence.
         `,
 
     itServicesTitle: `<span> Nos </span> prestations web`,
-    itServicesDescription: "Du site vitrine à l'application métier, voici ce que nous concevons et développons :",
+    itServicesDescription: "Trois prestations, selon que vous partiez de zéro, d'un besoin métier ou d'un site à reprendre.",
 
     // ------------------------------------------------------------------
     // Produits SaaS MediaSmart — mis en avant hors portfolio, parce que ce
@@ -26,7 +24,7 @@ const it = {
     // ------------------------------------------------------------------
     saasTitle: `<span> Nos applications </span> métier`,
     saasDescription:
-        "Au-delà des projets sur mesure, nous développons et exploitons nos propres applications. Hébergées en Suisse et pensées pour des structures sans service informatique interne, elles sont opérationnelles dès l'installation.",
+        "Nous développons et exploitons aussi nos propres applications, hébergées en Suisse et opérationnelles dès l'installation.",
     saasDemoCta: "Voir la démo",
     saasBookCta: "Demander une démo",
     saasProducts: [
@@ -323,7 +321,7 @@ const it = {
         },
         {
             title: "Analyse",
-            description: "Nous examinons votre installation existante, relevons les risques et chiffrons ce qu'il faut corriger.",
+            description: "Nous examinons l'existant, relevons les points bloquants et chiffrons le travail.",
         },
         {
             title: "Proposition",

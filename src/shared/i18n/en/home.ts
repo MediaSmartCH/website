@@ -38,13 +38,9 @@ const home = {
     //   Based in Western Switzerland, we provide businesses, associations, and individuals with modern, flexible, and results-driven services.
     // `,
     aboutDescription: `
-      MediaSmart designs and builds websites and business applications.
-      <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li><strong>Showcase and business websites</strong>: present your activity, sell online, take bookings.</li>
-        <li><strong>Custom web applications</strong>: an interface and business logic built around your own processes.</li>
-        <li><strong>Redesigns and maintenance</strong>: modernise an existing site, then keep it evolving over time.</li>
-      </ul>
-      Based in French-speaking Switzerland, MediaSmart supports SMEs, freelancers and associations with no in-house technical team.
+      MediaSmart works with SMEs, freelancers and associations that have no in-house technical team.
+      <br />
+      A showcase site, an online shop or a tool built around your own processes: we start from how you actually operate, and we stay around after go-live.
     `,
     soloBadge: "Independent",
     soloTitle: "Behind MediaSmart",
@@ -54,9 +50,9 @@ const home = {
     // soloRole: "A single point of contact for both video and IT needs.",
     soloRole: "A single point of contact, from design through to go-live.",
     soloLead:
-        "I currently work alone, as an independent professional. You therefore speak directly with the person who assesses, designs and implements your project.",
+        "You speak directly with the person who assesses, designs and builds your project, from the first conversation through to go-live.",
     soloDescription:
-        "This deliberately lean setup shortens response times, removes intermediaries and keeps the work consistent from the first conversation to go-live. When an assignment calls for a specific skill, I draw on a network of trusted partners.",
+        "When an assignment calls for a specific skill, I draw on a network of trusted partners.",
     soloStatDirectLabel: "Format",
     soloStatDirectValue: "1 direct contact",
     soloStatExpertiseLabel: "Areas",
@@ -88,7 +84,7 @@ const home = {
     // ------------------------------------------------------------------
     WebOverviewTitle: "Websites and custom web applications",
     WebOverviewDescription:
-        "Our core business: designing, building and maintaining websites and web applications.",
+        "Every project is scoped and quoted before it starts.",
     WebOverviewExploreBtn: "See our web services",
     WebOverviewCards: [
         {
