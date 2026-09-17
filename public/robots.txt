@@ -11,11 +11,19 @@ Allow: /
 User-agent: DuckDuckBot
 Allow: /
 
+# AI assistants fetching a page because someone asked about it.
+# These are the retrieval agents, not the training crawlers: they fetch on a
+# user's request so the assistant can cite the page in an answer. Allowing them
+# is what makes the site quotable in ChatGPT and Perplexity; the crawlers that
+# collect pages to train a model stay blocked below.
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 # Block AI training crawlers and generic scrapers
 User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
 Disallow: /
 
 User-agent: Google-Extended
@@ -31,9 +39,6 @@ User-agent: ClaudeBot
 Disallow: /
 
 User-agent: CCBot
-Disallow: /
-
-User-agent: PerplexityBot
 Disallow: /
 
 User-agent: Bytespider
