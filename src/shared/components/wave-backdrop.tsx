@@ -26,15 +26,15 @@ const WaveBackdrop: React.FC<WaveBackdropProps> = ({
       >
         <defs>
           <linearGradient id={fillGradientId} x1="0" y1="0" x2="0" y2="1">
-            {/* Dark: fully opaque #2B284C, the exact colour the header paints
-                with — an alpha here would composite over the page background
-                and land a couple of points off, which is visible as a seam
-                where the wave meets the header. Light is a deliberate tint
-                over a white header, so it keeps its alpha.
-                Pinned by wave-backdrop.test.ts. */}
+            {/* Dark reads the surface token the header paints with, rather
+                than repeating its value, and paints it opaque: an alpha here
+                composites over the page background and lands a couple of
+                points short of the header, which shows as a seam where the two
+                meet. Light is a deliberate tint over a white header, not a
+                continuation of it, so it keeps its own colour and alpha. */}
             <stop
               offset="0%"
-              stopColor={isLight ? "#F4F1FF" : "#2B284C"}
+              stopColor={isLight ? "#F4F1FF" : "var(--palette-night-900)"}
               stopOpacity={isLight ? "0.88" : "1"}
             />
             <stop
