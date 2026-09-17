@@ -116,20 +116,6 @@
       "screenshotUrls": ["https://www.arml.ch"]
     },
     {
-      "id": "mediasmart-games",
-      "category": "free",
-      "title": {
-        "fr": "MediaSmart Lab – Mini-jeux Telegram",
-        "en": "MediaSmart Lab – Telegram mini-games"
-      },
-      "description": {
-        "fr": "Plateforme de mini-jeux en ligne gratuits, jouables directement dans le navigateur ou en tant que mini-app Telegram. Scores synchronisés via un bot Telegram dédié, classements en direct et expérience pensée mobile-first.",
-        "en": "A free mini-games platform playable directly in the browser or as a Telegram mini-app. Scores are synced via a dedicated Telegram bot, with live leaderboards and a mobile-first experience."
-      },
-      "url": "https://apps.mediasmart.ch",
-      "images": ["/portfolio/mediasmart-games-0.jpg"]
-    },
-    {
       "id": "cc-voice",
       "category": "free",
       "title": {
@@ -147,6 +133,20 @@
       },
       "launchDate": "2027-01-01T00:00:00+01:00",
       "images": ["/portfolio/cc-voice-0.jpg"]
+    },
+    {
+      "id": "mediasmart-games",
+      "category": "free",
+      "title": {
+        "fr": "MediaSmart Lab – Mini-jeux Telegram",
+        "en": "MediaSmart Lab – Telegram mini-games"
+      },
+      "description": {
+        "fr": "Plateforme de mini-jeux en ligne gratuits, jouables directement dans le navigateur ou en tant que mini-app Telegram. Scores synchronisés via un bot Telegram dédié, classements en direct et expérience pensée mobile-first.",
+        "en": "A free mini-games platform playable directly in the browser or as a Telegram mini-app. Scores are synced via a dedicated Telegram bot, with live leaderboards and a mobile-first experience."
+      },
+      "url": "https://apps.mediasmart.ch",
+      "images": ["/portfolio/mediasmart-games-0.jpg"]
     },
     {
       "id": "ged-mediasmart",
