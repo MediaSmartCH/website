@@ -26,13 +26,16 @@ const WaveBackdrop: React.FC<WaveBackdropProps> = ({
       >
         <defs>
           <linearGradient id={fillGradientId} x1="0" y1="0" x2="0" y2="1">
-            {/* The first stop matches .hero-bg / .hero-bg-dark exactly, so the
-                wave and the backdrop behind the header read as one tint. The
-                light pair was already identical; the dark one was 0.02 short. */}
+            {/* Dark: fully opaque #2B284C, the exact colour the header paints
+                with — an alpha here would composite over the page background
+                and land a couple of points off, which is visible as a seam
+                where the wave meets the header. Light is a deliberate tint
+                over a white header, so it keeps its alpha.
+                Pinned by wave-backdrop.test.ts. */}
             <stop
               offset="0%"
               stopColor={isLight ? "#F4F1FF" : "#2B284C"}
-              stopOpacity={isLight ? "0.88" : "0.92"}
+              stopOpacity={isLight ? "0.88" : "1"}
             />
             <stop
               offset="62%"
