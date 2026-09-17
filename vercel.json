@@ -4,6 +4,7 @@
   "installCommand": "pnpm install --frozen-lockfile --prod=false",
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
+  "trailingSlash": false,
   "fluid": true,
   "git": {
     "deploymentEnabled": {
