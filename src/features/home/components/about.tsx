@@ -60,13 +60,13 @@ const About = () => {
     <div id="about" className="scroll-mt-[120px]">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] py-[40px] mx-auto">
         <div
-          className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] px-[30px] lg:px-[50px] 2xl:px-[80px] py-[35px] lg:py-[50px]`}
+          className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] px-[28px] md:px-[40px] lg:px-[64px] xl:px-[80px] 2xl:px-[100px] py-[44px] lg:py-[64px] xl:py-[76px]`}
         >
           {/* One text column, one illustration. Heading, intro and the person
               share a single left edge so the eye follows one axis down the
               card; the illustration balances the column rather than competing
               with it for the reader's attention. */}
-          <div className="mx-auto grid max-w-[1180px] items-center gap-[36px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-[60px]">
+          <div className="mx-auto grid max-w-[1180px] items-center gap-[40px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-[72px] xl:gap-[90px]">
             <div
               className="text-center lg:text-left"
               data-aos="fade-right"
@@ -84,7 +84,7 @@ const About = () => {
               />
 
               <div
-                className={`${isLight ? "bg-[#E1E0F5]" : "bg-white/12"} my-[28px] h-px w-full`}
+                className={`${isLight ? "bg-[#E1E0F5]" : "bg-white/12"} my-[34px] h-px w-full`}
                 aria-hidden="true"
               />
 
