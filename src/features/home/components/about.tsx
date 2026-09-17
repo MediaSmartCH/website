@@ -123,7 +123,7 @@ const About = () => {
           {/* Portrait first and large: the point of this block is that a person
               answers, so the person is what a visitor should see. The copy is
               two sentences — everything else repeated them. */}
-          <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-12">
+          <div className="relative z-10 mx-auto grid max-w-[880px] items-center gap-8 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)] lg:gap-12">
             <div
               className="mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:mx-0"
               data-aos="fade-right"
@@ -158,10 +158,10 @@ const About = () => {
                 {t.text("home.soloJobTitle")}
               </p>
 
-              <p className={`${isLight ? "text-[#1D2340]" : "text-white"} mt-5 max-w-[620px] font-poppins text-base md:text-lg font-medium leading-7 mx-auto lg:mx-0`}>
+              <p className={`${isLight ? "text-[#1D2340]" : "text-white"} mt-5 font-poppins text-base md:text-lg font-medium leading-7`}>
                 {t.text("home.soloLead")}
               </p>
-              <p className={`${isLight ? "text-[#4C4966]" : "text-[#D8D8E9]"} mt-3 max-w-[620px] font-poppins text-sm md:text-base leading-7 mx-auto lg:mx-0`}>
+              <p className={`${isLight ? "text-[#4C4966]" : "text-[#D8D8E9]"} mt-3 font-poppins text-sm md:text-base leading-7`}>
                 {t.text("home.soloDescription")}
               </p>
 

@@ -72,7 +72,7 @@ const home = {
 
     // VIDEO DISABLED — DO NOT DELETE (former title, back when the page had two overviews):
     // ITOverviewTitle: "IT Overview",
-    saasTitle: "Our business applications",
+    saasTitle: `<span>Our business</span> applications`,
     saasDescription:
         "Two applications we build and host ourselves: supplier-invoice tracking and document management.",
     saasCta: "Discover our applications",
@@ -82,7 +82,7 @@ const home = {
     // application development. The "ITOverview*" block below stays in
     // place but is no longer rendered (see the banner above it).
     // ------------------------------------------------------------------
-    WebOverviewTitle: "Websites and custom web applications",
+    WebOverviewTitle: `<span>Websites</span> and custom web applications`,
     WebOverviewDescription:
         "Every project is scoped and quoted before it starts.",
     WebOverviewExploreBtn: "See our web services",

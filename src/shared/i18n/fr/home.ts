@@ -74,7 +74,7 @@ const home = {
 
     // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien titre, quand la page avait deux aperçus) :
     // ITOverviewTitle: "Aperçu informatique",
-    saasTitle: "Nos applications métier",
+    saasTitle: `<span>Nos applications</span> métier`,
     saasDescription:
         "Deux applications que nous développons et hébergeons nous-mêmes : le suivi des factures fournisseurs et la gestion documentaire.",
     saasCta: "Découvrir nos applications",
@@ -84,7 +84,7 @@ const home = {
     // sites web et d'applications. Le bloc "ITOverview*" plus bas reste en
     // place mais n'est plus affiché (voir la bannière qui le précède).
     // ------------------------------------------------------------------
-    WebOverviewTitle: "Sites web et applications sur mesure",
+    WebOverviewTitle: `<span>Sites web et applications</span> sur mesure`,
     WebOverviewDescription:
         "Chaque projet est cadré et chiffré avant de démarrer.",
     WebOverviewExploreBtn: "Voir nos prestations web",

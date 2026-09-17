@@ -9,7 +9,15 @@
 
 import { Link } from "react-router-dom";
 
+import portfolioContent from "@features/it-services/data/it-portfolio.json";
+import {
+  getItemImages,
+  resolveLocalizedField,
+  type PortfolioData,
+} from "@features/it-services/lib/portfolio-helpers";
 import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
+
+import RichText from "@shared/components/rich-text";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
@@ -32,41 +40,77 @@ export default function SaasOverview() {
   const { L } = useLangLink();
 
   const products = t.array<SaasProductCopy>("it.saasProducts");
+  // Screenshot and access badge come from the portfolio data, the same source
+  // the full section on the services page reads.
+  const portfolioItems = (portfolioContent as PortfolioData).items ?? [];
 
   if (products.length === 0) return null;
 
   return (
     <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[20px] pb-[50px]">
-      <h2 className="text-heading-strong w-full text-center mx-auto font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]">
-        {t.text("home.saasTitle")}
-      </h2>
+      <RichText
+        as="h2"
+        className="text-heading-strong it-service-title w-full text-center mx-auto font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]"
+        html={t.text("home.saasTitle")}
+      />
       <p className="text-body mx-auto mt-2 max-w-[820px] text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px]">
         {t.text("home.saasDescription")}
       </p>
 
+      {/* Cards carry their screenshot, like every other card grid on the site:
+          as plain bordered text boxes they read as placeholders sitting between
+          two gradient buttons. */}
       <div
-        className="mt-[34px] grid justify-center gap-5"
+        className="mt-[34px] grid justify-center gap-6"
         style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 360px))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 420px))",
         }}
       >
-        {products.map((product, index) => (
-          <Link
-            key={product.id}
-            to={`${L("/it-services")}#saas`}
-            onMouseEnter={preloadITServices}
-            className={`flex h-full flex-col rounded-[20px] border p-5 transition duration-300 hover:-translate-y-1 ${classes.card}`}
-            data-aos="fade-up"
-            data-aos-delay={index * 120}
-          >
-            <h3 className={`${classes.strongText} font-redDisplay text-[19px] font-bold leading-6`}>
-              {product.name}
-            </h3>
-            <p className={`${classes.mutedText} mt-2 font-helvetica text-[13px] font-light leading-6`}>
-              {product.tagline}
-            </p>
-          </Link>
-        ))}
+        {products.map((product, index) => {
+          const source = portfolioItems.find((item) => item.id === product.id);
+          const image = source ? getItemImages(source)[0] : undefined;
+          const badge = source?.accessNote
+            ? resolveLocalizedField(source.accessNote, languageReducer)
+            : null;
+
+          return (
+            <Link
+              key={product.id}
+              to={`${L("/it-services")}#saas`}
+              onMouseEnter={preloadITServices}
+              className={`group flex h-full flex-col overflow-hidden rounded-[24px] border transition duration-300 hover:-translate-y-1 ${classes.card}`}
+              data-aos="fade-up"
+              data-aos-delay={index * 120}
+            >
+              {image && (
+                <div className={`aspect-[16/10] w-full overflow-hidden border-b ${classes.imageShell}`}>
+                  <img
+                    src={image}
+                    alt={product.name}
+                    className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+
+              <div className="flex flex-1 flex-col p-6">
+                {badge && (
+                  <span
+                    className={`mb-3 inline-block w-fit rounded-full border px-3 py-1 text-[11px] font-medium leading-tight ${classes.isLight ? "border-[#D9DCF2] bg-[#EEF0FF] text-[#2C3A87]" : "border-white/10 bg-white/5 text-[#DAD7FF]"}`}
+                  >
+                    {badge}
+                  </span>
+                )}
+                <h3 className={`${classes.strongText} font-redDisplay text-[20px] font-bold leading-6`}>
+                  {product.name}
+                </h3>
+                <p className={`${classes.mutedText} mt-2 font-helvetica text-[14px] font-light leading-6`}>
+                  {product.tagline}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
       </div>
 
       <div className="mt-[34px] flex justify-center w-full">
