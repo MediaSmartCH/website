@@ -36,6 +36,7 @@ import ProjectTypeDropdown from "@features/contact/components/project-type-dropd
 import ContactInfoPanel from "@features/contact/components/contact-info-panel";
 import ContactSuccess from "@features/contact/components/contact-success";
 import { logger } from "@shared/lib/logger";
+import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 
 const ContactInner = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -52,6 +53,16 @@ const ContactInner = () => {
   const [intent, setIntent] = React.useState<"question" | "quote">("question");
   const [projectType, setProjectType] = React.useState("");
   const [projectTypeValid, setProjectTypeValid] = React.useState(true);
+
+  // AOS runs with its mutation observer disabled, and the homepage mounts this
+  // section lazily — after AOS has already scanned the page. Without a refresh
+  // on mount, the info panel keeps the pre-animation state its data-aos gives
+  // it (opacity 0, shifted left) for good, so the address, phone and social
+  // links never appear. The services page imports this section eagerly, which
+  // is why it only went missing on the homepage.
+  React.useEffect(() => {
+    refreshAosAnimations();
+  }, []);
 
   // Listen for external "contact-intent" events so other components can pre-select
   // the question/quote toggle (e.g. a CTA button on another section).
