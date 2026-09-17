@@ -34,6 +34,13 @@
   --palette-paper-500: #d8d8e9;
 
   /* Night — dark surfaces */
+  /* The dark surface: the header, the backdrop behind it and the wave behind a
+     section all paint this, so they read as one continuous surface. The wave
+     reads it through var(); two places still hard-code the literal because
+     they cannot reference a custom property — the navbar's Tailwind class in
+     shared/components/navbar.tsx, and the SVG data URI in .hero-bg-dark
+     (styles/sections.css). Both must be opaque: an alpha composites over the
+     page background and lands short of the header. */
   --palette-night-900: #2b284c;
 
   /* Neutral greys, matching Tailwind's scale so migrated values stay identical */
