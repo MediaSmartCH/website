@@ -66,9 +66,9 @@ const About = () => {
               share a single left edge so the eye follows one axis down the
               card; the illustration balances the column rather than competing
               with it for the reader's attention. */}
-          <div className="mx-auto grid max-w-[1180px] items-center gap-[40px] xl:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] xl:gap-[128px] 2xl:gap-[150px]">
+          <div className="grid w-full items-center gap-[40px] xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:gap-[80px] 2xl:gap-[100px]">
             <div
-              className="text-center lg:text-left xl:text-left"
+              className="w-full max-w-[620px] mx-auto text-center lg:mx-0 lg:text-left xl:max-w-[640px]"
               data-aos="fade-right"
               data-aos-duration="1100"
             >
@@ -140,7 +140,7 @@ const About = () => {
             </div>
 
             <div
-              className="w-full max-w-[420px] mx-auto lg:max-w-[520px] xl:max-w-none"
+              className="w-full max-w-[420px] mx-auto lg:max-w-[560px] xl:mx-0 xl:ml-auto xl:max-w-none"
               data-aos="fade-left"
               data-aos-duration="1200"
             >
