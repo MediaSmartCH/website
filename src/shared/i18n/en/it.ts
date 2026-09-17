@@ -92,41 +92,36 @@ const it = {
 
     service1: "Website creation and redesign",
     description1: `
-        Your website is often the <b> first contact </b> between your organisation and your clients. We build it fast, secure and readable on desktop, tablet and mobile.
-        <br />
+        Often the <b> first contact </b> between your organisation and your clients. Fast, secure, readable on every screen, and simple to keep updated yourself.
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Showcase sites to present your activity and your services. </li>
         <li> Fuller sites: forms, blog, booking or online shop. </li>
-        <li> Technical SEO work so you can be found on Google. </li>
+        <li> Technical SEO work. </li>
         </ul>
-        We hand over a site you can keep updated yourself, and stay available for later changes.
         `,
     // Active web services, rendered on /it-services right after "service1".
     // They cover the same scope already described in the estimates section
     // (custom application, redesign / migration).
     serviceApp: "Custom web applications",
     descriptionApp: `
-        When a website is no longer enough, we build the tool that actually matches your organisation, instead of bending your processes around generic software.
-        <br />
+        When a website is no longer enough, we build the tool that matches your organisation, instead of bending your processes around generic software.
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Interface and business logic designed around your own processes. </li>
-        <li> User authentication and access-rights management. </li>
+        <li> Interface and business logic designed around your processes. </li>
+        <li> Authentication and access-rights management. </li>
         <li> Database design and administration. </li>
         <li> API development, or integration with the tools you already use. </li>
         </ul>
-        Every project starts with a scoping analysis, followed by a detailed quote. The two applications we run today, supplier-invoice tracking and document management, both came out of that process.
+        Our own two applications, supplier-invoice tracking and document management, came out of that process.
         `,
     serviceRedesign: "Website redesign and migration",
     descriptionRedesign: `
-        A site that still works but has aged does not need to be rebuilt from scratch. We keep what holds up and replace what gets in the way.
-        <br />
+        An ageing site does not need rebuilding from scratch: a review costs what has to be redone and what can be kept.
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Visual redesign and a review of the navigation paths. </li>
+        <li> Visual redesign and a review of the navigation. </li>
         <li> Migration of the existing content. </li>
         <li> Load-time optimisation. </li>
         <li> Updated display on mobile and tablet. </li>
         </ul>
-        We start with a review of the current site, so we can cost precisely what has to be rebuilt and what can be kept.
         `,
 
     // ==================================================================
@@ -313,27 +308,27 @@ const it = {
     supportPremiumNote: "After-hours and weekend rates apply beyond the included 2h/year.",
 
     itServicesProcessTitle: `How an <span> assignment </span> runs`,
-    itServicesProcessDescription: "Five steps, from first contact through to follow-up after go-live:",
+    itServicesProcessDescription: "From first contact through to follow-up after go-live.",
     processData: [
         {
             title: "Consultation",
-            description: "We review your situation, your constraints and what you actually expect.",
+            description: "Your goals, your constraints, what you actually expect.",
         },
         {
             title: "Analysis",
-            description: "We review what is already there, flag the blockers and cost the work.",
+            description: "We examine what is there and cost the work.",
         },
         {
             title: "Proposal",
-            description: "You receive a detailed quote, with scope, timeline and what is and is not included.",
+            description: "A detailed quote: scope, timeline, what is and is not included.",
         },
         {
             title: "Implementation",
-            description: "We deploy with minimal disruption, outside production hours when necessary.",
+            description: "Go-live, outside production hours when necessary.",
         },
         {
             title: "Follow-up",
-            description: "After go-live we handle updates, fixes and support, with or without a contract.",
+            description: "Fixes under warranty, then changes on request.",
         },
     ],
     supportPageTitle: `Support <span>contract</span>`,

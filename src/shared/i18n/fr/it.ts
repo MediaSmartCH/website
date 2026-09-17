@@ -92,41 +92,36 @@ const it = {
 
     service1: "Création et refonte de sites web",
     description1: `
-        Votre site est souvent le <b> premier contact </b> entre votre organisation et vos clients. Nous le concevons rapide, sécurisé et lisible sur ordinateur, tablette et mobile.
-        <br />
+        Souvent le <b> premier contact </b> entre votre organisation et vos clients. Rapide, sécurisé, lisible sur tous les écrans, et simple à mettre à jour vous-même.
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
         <li> Sites vitrines pour présenter votre activité et vos prestations. </li>
         <li> Sites plus complets : formulaires, blog, réservation ou boutique en ligne. </li>
-        <li> Optimisation technique du référencement (SEO) pour être trouvé sur Google. </li>
+        <li> Optimisation technique du référencement (SEO). </li>
         </ul>
-        Nous livrons un site que vous pouvez faire vivre vous-même, et nous restons disponibles pour les évolutions.
         `,
     // Prestations web actives, rendues sur la page /it-services juste après
     // "service1". Elles reprennent le périmètre déjà décrit dans la section
     // des estimations (application sur mesure, refonte / migration).
     serviceApp: "Applications web sur mesure",
     descriptionApp: `
-        Quand un site ne suffit plus, nous développons l'outil qui correspond réellement à votre organisation, plutôt que d'adapter vos processus à un logiciel générique.
-        <br />
+        Quand un site ne suffit plus, nous développons l'outil qui correspond à votre organisation, plutôt que d'adapter vos processus à un logiciel générique.
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Interface et logique métier conçues pour vos propres processus. </li>
-        <li> Authentification des utilisateurs et gestion des droits d'accès. </li>
+        <li> Interface et logique métier conçues pour vos processus. </li>
+        <li> Authentification et gestion des droits d'accès. </li>
         <li> Conception et administration de la base de données. </li>
         <li> Développement ou intégration d'API avec vos outils existants. </li>
         </ul>
-        Chaque projet commence par une analyse du besoin, suivie d'un devis détaillé. Les deux applications que nous exploitons aujourd'hui, le suivi des factures fournisseurs et la gestion documentaire, sont nées de cette démarche.
+        Nos deux applications, le suivi des factures fournisseurs et la gestion documentaire, sont nées de cette démarche.
         `,
     serviceRedesign: "Refonte et migration de sites",
     descriptionRedesign: `
-        Un site qui fonctionne encore mais qui a vieilli n'a pas besoin d'être repris de zéro. Nous gardons ce qui tient et remplaçons ce qui freine.
-        <br />
+        Un site vieillissant n'a pas besoin d'être repris de zéro : un état des lieux chiffre ce qui doit être refait et ce qui peut être conservé.
         <ul className="list-disc pl-5 space-y-2 text-justify lg:text-left">
-        <li> Refonte visuelle et revue des parcours de navigation. </li>
+        <li> Refonte visuelle et revue de la navigation. </li>
         <li> Reprise et migration des contenus existants. </li>
         <li> Optimisation du temps de chargement. </li>
-        <li> Mise à niveau de l'affichage sur mobile et tablette. </li>
+        <li> Mise à niveau sur mobile et tablette. </li>
         </ul>
-        Nous commençons par un état des lieux du site actuel, afin de chiffrer précisément ce qui doit être refait et ce qui peut être conservé.
         `,
 
     // ==================================================================
@@ -314,27 +309,27 @@ const it = {
     supportPremiumNote: "Les tarifs hors horaires et week-end s'appliquent au-delà des 2h/an incluses.",
 
     itServicesProcessTitle: `Le <span> déroulement </span> d'une mission`,
-    itServicesProcessDescription: "Cinq étapes, de la prise de contact au suivi après mise en service :",
+    itServicesProcessDescription: "De la prise de contact au suivi après mise en ligne.",
     processData: [
         {
             title: "Consultation",
-            description: "Nous faisons le point sur votre situation, vos contraintes et ce que vous attendez concrètement.",
+            description: "Vos objectifs, vos contraintes, ce que vous attendez concrètement.",
         },
         {
             title: "Analyse",
-            description: "Nous examinons l'existant, relevons les points bloquants et chiffrons le travail.",
+            description: "Nous examinons l'existant et chiffrons le travail.",
         },
         {
             title: "Proposition",
-            description: "Vous recevez un devis détaillé, avec le périmètre, les délais et ce qui est inclus ou non.",
+            description: "Un devis détaillé : périmètre, délais, ce qui est inclus ou non.",
         },
         {
             title: "Mise en œuvre",
-            description: "Nous déployons en limitant au maximum les interruptions, en dehors des heures de production si nécessaire.",
+            description: "Mise en ligne, en dehors des heures de production si nécessaire.",
         },
         {
             title: "Suivi",
-            description: "Après la mise en service, nous assurons les mises à jour, les corrections et le support, avec ou sans contrat.",
+            description: "Corrections sous garantie, puis évolutions à la demande.",
         },
     ],
     supportPageTitle: `Contrat de <span>support</span>`,

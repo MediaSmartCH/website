@@ -66,6 +66,7 @@ const About = () => {
               the person share one row underneath. Stacking them as two
               full-width rows made the section twice as tall for the same
               content. */}
+          <div className="mx-auto max-w-[1180px]">
           <div
             className="max-w-[640px] mx-auto text-center lg:mx-0 lg:text-left"
             data-aos="fade-up"
@@ -85,7 +86,9 @@ const About = () => {
 
           <div className="mt-[30px] lg:mt-[40px] grid items-center gap-[30px] lg:grid-cols-2 lg:gap-[50px]">
             <div
-              className="order-2 w-full max-w-[460px] mx-auto lg:order-1 lg:max-w-none"
+              // Capped: left to fill its column, the illustration grew to the
+              // height of the card and stranded the person block in whitespace.
+              className="order-2 w-full max-w-[460px] mx-auto lg:order-1 xl:max-w-[520px]"
               data-aos="fade-right"
               data-aos-duration="1200"
             >
@@ -164,6 +167,7 @@ const About = () => {
             </div>
           </div>
 
+          </div>
           {/* ====================================================================
               BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
               Les trois vignettes (Format / Domaines / Base) et le panneau des
