@@ -92,9 +92,6 @@ export function groupItemsByCategory(items: PortfolioItem[]): PortfolioGroup[] {
  * Orders the preview strip along PORTFOLIO_CATEGORY_ORDER, each category
  * keeping its original order: our own products, then the free tools, then
  * client work.
- *
- * PREVIEW_LIMIT is sized so all three groups reach the strip — cutting it
- * shorter would drop client work off the end entirely.
  */
 export function sortItemsForPreview(items: PortfolioItem[]): PortfolioItem[] {
   return [...items].sort(
@@ -105,11 +102,11 @@ export function sortItemsForPreview(items: PortfolioItem[]): PortfolioItem[] {
 }
 
 /**
- * Six, not four: the strip leads with the two products and the two free tools,
- * so a smaller limit would leave no room for the client references that follow
- * them.
+ * Four tiles plus the "full gallery" teaser, which is what the row fits
+ * cleanly. The strip leads with the two products and the two free tools, so at
+ * this limit client references live in the full gallery rather than the strip.
  */
-export const PREVIEW_LIMIT = 6;
+export const PREVIEW_LIMIT = 4;
 export const SCROLLABLE_GALLERY_THRESHOLD = 3;
 
 // Returns the resolved image paths for a portfolio item, preferring generated screenshot paths

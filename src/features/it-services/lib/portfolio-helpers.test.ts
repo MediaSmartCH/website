@@ -13,7 +13,6 @@ import {
   sortItemsForPreview,
   getSafeExternalUrl,
   PORTFOLIO_CATEGORY_ORDER,
-  PREVIEW_LIMIT,
   resolveLocalizedField,
   resolveScreenshotUrl,
   truncateText,
@@ -224,22 +223,6 @@ describe("sortItemsForPreview", () => {
     sortItemsForPreview(items);
 
     expect(items.map((entry) => entry.id)).toEqual(["client-1", "saas-1"]);
-  });
-
-  it("keeps room for client work within the preview limit", () => {
-    // The strip leads with the products and the free tools; the limit has to
-    // leave room for the client references, or they never reach the page.
-    const preview = sortItemsForPreview([
-      item("saas-1", "saas"),
-      item("saas-2", "saas"),
-      item("free-1", "free"),
-      item("free-2", "free"),
-      item("client-1", "client"),
-      item("client-2", "client"),
-      item("client-3", "client"),
-    ]).slice(0, PREVIEW_LIMIT);
-
-    expect(preview.filter((entry) => getItemCategory(entry) === "client")).not.toHaveLength(0);
   });
 });
 
