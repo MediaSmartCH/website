@@ -14,12 +14,15 @@ Allow: /
 # AI assistants fetching a page because someone asked about it.
 # These are the retrieval agents, not the training crawlers: they fetch on a
 # user's request so the assistant can cite the page in an answer. Allowing them
-# is what makes the site quotable in ChatGPT and Perplexity; the crawlers that
-# collect pages to train a model stay blocked below.
+# is what makes the site quotable in ChatGPT, Perplexity and Claude; the crawlers
+# that collect pages to train a model stay blocked below.
 User-agent: ChatGPT-User
 Allow: /
 
 User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
 Allow: /
 
 # Block AI training crawlers and generic scrapers
@@ -30,9 +33,6 @@ User-agent: Google-Extended
 Disallow: /
 
 User-agent: anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
 Disallow: /
 
 User-agent: ClaudeBot
