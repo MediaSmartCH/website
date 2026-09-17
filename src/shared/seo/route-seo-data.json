@@ -29,7 +29,7 @@
   },
   "routeKeyByPath": {
     "/": "home",
-    "/it-services": "it-services",
+    "/web-development": "web-development",
     "/privacy-policy": "privacy-policy",
     "/legal-notice": "legal-notice",
     "/terms": "terms",
@@ -44,7 +44,7 @@
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - création de sites web et d'applications"
       },
-      "it-services": {
+      "web-development": {
         "pageName": "Création de sites web et d'applications",
         "title": "Création de sites web et d'applications en Suisse romande | MediaSmart",
         "description": "Sites vitrines, sites business, refontes et migrations, applications web sur mesure : conception, développement et maintenance pour les PME, indépendants et associations de Suisse romande.",
@@ -105,7 +105,7 @@
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - IT services"
       },
-      "it-services": {
+      "web-development": {
         "pageName": "Website and application development",
         "title": "Website and Web Application Development in Switzerland | MediaSmart",
         "description": "Showcase sites, business websites, redesigns and migrations, custom web applications: design, development and maintenance for SMEs, freelancers and associations in French-speaking Switzerland.",

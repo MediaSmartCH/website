@@ -120,7 +120,7 @@ export default function SupportContractPage() {
       <div className="fixed top-[73px] md:top-[100px] left-0 right-0 z-40 pointer-events-none">
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto pt-[10px]">
           <Link
-            to={L("/it-services")}
+            to={L("/web-development")}
             className={`pointer-events-auto group inline-flex items-center gap-[6px] font-poppins text-[13px] font-medium px-[14px] py-[7px] rounded-full backdrop-blur-sm transition-all duration-200 -translate-x-[10px]
               ${isLight
                 ? "bg-[#EEE9FF]/80 text-[#5f75f5] border border-[#c4b8ff]/60 hover:bg-[#E4DCFF]/90"

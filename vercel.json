@@ -123,6 +123,16 @@
       "statusCode": 301
     },
     {
+      "source": "/fr/it-services",
+      "destination": "/fr/web-development",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/it-services",
+      "destination": "/en/web-development",
+      "statusCode": 301
+    },
+    {
       "source": "/",
       "destination": "/fr",
       "permanent": true
@@ -138,12 +148,12 @@
       "destination": "/generated-pages/en.html"
     },
     {
-      "source": "/fr/it-services",
-      "destination": "/generated-pages/fr-it-services.html"
+      "source": "/fr/web-development",
+      "destination": "/generated-pages/fr-web-development.html"
     },
     {
-      "source": "/en/it-services",
-      "destination": "/generated-pages/en-it-services.html"
+      "source": "/en/web-development",
+      "destination": "/generated-pages/en-web-development.html"
     },
     {
       "source": "/fr/privacy-policy",

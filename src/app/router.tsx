@@ -78,6 +78,23 @@ const RedirectToHome: React.FC = () => {
   return <Navigate to={buildLocalizedPath(normalizeLanguage(lang), "/")} replace />;
 };
 
+/* ============================================================================
+ * ANCIENNE URL — NE PAS SUPPRIMER SANS VÉRIFIER LES LIENS ENTRANTS
+ * /:lang/it-services a été renommée en /:lang/web-development. On redirige vers
+ * la nouvelle page plutôt que vers l'accueil : Google transfère ainsi
+ * l'ancienneté et le positionnement de l'ancienne adresse à la nouvelle, là où
+ * une redirection vers l'accueil serait traitée comme une « soft 404 ».
+ * ============================================================================ */
+const RedirectToWebDevelopment: React.FC = () => {
+  const { lang } = useParams<{ lang?: string }>();
+  return (
+    <Navigate
+      to={buildLocalizedPath(normalizeLanguage(lang), "/web-development")}
+      replace
+    />
+  );
+};
+
 const routes: RouteObject[] = [
   // Bare "/" immediately redirects to the default locale prefix.
   { path: "/", element: <Navigate to={`/${DEFAULT_LANGUAGE}`} replace /> },
@@ -90,7 +107,15 @@ const routes: RouteObject[] = [
         element: <LayoutWrapper />,
         children: [
           { index: true, element: Wrap(<Homepage />) },
-          { path: "it-services", element: Wrap(<ITServicesPage />) },
+          { path: "web-development", element: Wrap(<ITServicesPage />) },
+          /* ANCIENNE URL — /it-services a été renommée en /web-development.
+             Vercel répond une 301 en production (voir "redirects" dans
+             vercel.json), mais elle ne s'applique ni en dev, ni en preview, ni
+             lors d'une navigation interne : sans cette redirection côté
+             routeur, l'ancienne adresse tomberait sur la 404 partout ailleurs.
+             À garder tant que d'anciens liens ou des résultats Google pointent
+             dessus. */
+          { path: "it-services", element: <RedirectToWebDevelopment /> },
           /* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
              La page vidéo n'est plus rendue : l'URL renvoie vers l'accueil.
              Vercel répond déjà une 301 (voir "redirects" dans vercel.json), mais

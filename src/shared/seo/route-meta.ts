@@ -23,7 +23,7 @@ export const NOINDEX_ROBOTS =
 
 type RouteSeoKey =
   | "home"
-  | "it-services"
+  | "web-development"
   | "video-services"
   | "privacy-policy"
   | "legal-notice"
@@ -190,7 +190,7 @@ const buildStructuredData = (
 
 // Resolves the full SEO metadata for a given URL path and language.
 // Strips the language prefix before looking up the route key so that
-// "/fr/it-services" and "/en/it-services" both resolve to "it-services".
+// "/fr/web-development" and "/en/web-development" both resolve to "web-development".
 // Structured data is omitted entirely for non-indexable pages (e.g. 404).
 export const resolveRouteSeo = (
   pathname: string,

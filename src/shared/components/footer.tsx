@@ -47,7 +47,7 @@ const Footer = () => {
             <li className="" data-aos="fade-down" data-aos-duration="900">
               <Link
                 className="text-[#fff] hover:text-[#5f75f5]"
-                to={L("/it-services")}
+                to={L("/web-development")}
               >
                 {t.text("footer.navItem2")}
               </Link>
