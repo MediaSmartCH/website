@@ -154,6 +154,22 @@
       "destination": "/generated-pages/en-privacy-policy.html"
     },
     {
+      "source": "/fr/legal-notice",
+      "destination": "/generated-pages/fr-legal-notice.html"
+    },
+    {
+      "source": "/en/legal-notice",
+      "destination": "/generated-pages/en-legal-notice.html"
+    },
+    {
+      "source": "/fr/terms",
+      "destination": "/generated-pages/fr-terms.html"
+    },
+    {
+      "source": "/en/terms",
+      "destination": "/generated-pages/en-terms.html"
+    },
+    {
       "source": "/fr/404",
       "destination": "/generated-pages/fr-404.html"
     },

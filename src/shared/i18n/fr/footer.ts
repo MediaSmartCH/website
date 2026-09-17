@@ -12,6 +12,8 @@ const footer = {
     navItem4: "À propos",
     navItem5: "Témoignages",
     navItem6: "Politique de confidentialité",
+    navItem7: "Mentions légales",
+    navItem8: "Conditions générales",
     linkedinAlt: "MediaSmart sur LinkedIn",
     instagramAlt: "MediaSmart sur Instagram",
     telegramAlt: "Contacter MediaSmart sur Telegram",

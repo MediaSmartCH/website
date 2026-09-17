@@ -17,6 +17,8 @@ const SECTION_EXPORTS: Record<string, string> = {
   UnderConstruction: "underconstruction",
   booking: "booking",
   privacy: "privacy",
+  legal: "legal",
+  terms: "terms",
 };
 
 /**

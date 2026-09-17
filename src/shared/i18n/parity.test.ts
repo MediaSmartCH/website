@@ -35,6 +35,8 @@ const SECTIONS = [
   "underconstruction",
   "booking",
   "privacy",
+  "legal",
+  "terms",
 ] as const;
 
 const frBundle = fr as unknown as Node;

@@ -11,6 +11,8 @@ const footer = {
     navItem4: "About",
     navItem5: "Testimonials",
     navItem6: "Privacy policy",
+    navItem7: "Legal notice",
+    navItem8: "Terms and conditions",
     linkedinAlt: "MediaSmart on LinkedIn",
     instagramAlt: "MediaSmart on Instagram",
     telegramAlt: "Contact MediaSmart on Telegram",

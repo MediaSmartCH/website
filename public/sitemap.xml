@@ -89,6 +89,44 @@
     <priority>0.3</priority>
   </url>
 
+  <!-- Legal notice & terms -->
+  <url>
+    <loc>https://mediasmart.ch/fr/legal-notice</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/legal-notice"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/legal-notice"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/legal-notice"/>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mediasmart.ch/en/legal-notice</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/legal-notice"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/legal-notice"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/legal-notice"/>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mediasmart.ch/fr/terms</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/terms"/>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://mediasmart.ch/en/terms</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/terms"/>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
   <!-- CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
        L'offre est en cours de refonte : /support-contract renvoie une 301 vers
        l'accueil et la page est en noindex. Les deux entrées sont conservées

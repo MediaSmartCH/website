@@ -30,6 +30,8 @@ const Homepage = lazy(() => import("@features/home/home-page"));
 // const VideoServicesPage = lazy(() => import("@features/video-services/video-services-page"));
 const ITServicesPage = lazy(() => import("@features/it-services/it-services-page"));
 const PrivacyPolicyPage = lazy(() => import("@features/privacy-policy/privacy-policy-page"));
+const LegalNoticePage = lazy(() => import("@features/legal/legal-notice-page"));
+const TermsPage = lazy(() => import("@features/legal/terms-page"));
 const Error404Page = lazy(() => import("@features/error/error-404-page"));
 /* ============================================================================
  * CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
@@ -100,6 +102,8 @@ const routes: RouteObject[] = [
           { path: "video-services", element: <RedirectToHome /> },
           // { path: "video-services", element: Wrap(<VideoServicesPage />) },
           { path: "privacy-policy", element: Wrap(<PrivacyPolicyPage />) },
+          { path: "legal-notice", element: Wrap(<LegalNoticePage />) },
+          { path: "terms", element: Wrap(<TermsPage />) },
           /* CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
              Même mécanique que la vidéo : Vercel répond une 301 en production
              (voir "redirects" dans vercel.json), et cette redirection côté

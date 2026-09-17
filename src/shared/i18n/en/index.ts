@@ -8,3 +8,5 @@ export { default as cookies } from "@shared/i18n/en/cookies";
 export { default as underconstruction } from "@shared/i18n/en/underconstruction";
 export { default as booking } from "@shared/i18n/en/booking"
 export { default as privacy } from "@shared/i18n/en/privacy"
+export { default as legal } from "@shared/i18n/en/legal"
+export { default as terms } from "@shared/i18n/en/terms"

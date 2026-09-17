@@ -31,6 +31,8 @@
     "/": "home",
     "/it-services": "it-services",
     "/privacy-policy": "privacy-policy",
+    "/legal-notice": "legal-notice",
+    "/terms": "terms",
     "/404": "not-found"
   },
   "routeSeoByLanguage": {
@@ -64,6 +66,20 @@
         "description": "Consultez la politique de confidentialité de MediaSmart: données collectées, cookies, finalités de traitement, conservation et droits des utilisateurs.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - politique de confidentialité"
+      },
+      "legal-notice": {
+        "pageName": "Mentions légales",
+        "title": "Mentions légales | MediaSmart",
+        "description": "Éditeur du site, hébergement, propriété intellectuelle et contact: les mentions légales de MediaSmart, Raphael Rouiller, Aproz (Nendaz).",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - mentions légales"
+      },
+      "terms": {
+        "pageName": "Conditions générales",
+        "title": "Conditions générales | MediaSmart",
+        "description": "Devis, tarif horaire, conditions de paiement, garantie corrective et périmètre des prestations de création de sites web et d'applications MediaSmart.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - conditions générales"
       },
       "support-contract": {
         "pageName": "Contrat de support",
@@ -111,6 +127,20 @@
         "description": "Read MediaSmart's privacy policy covering collected data, cookies, processing purposes, retention periods and user rights.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart privacy policy"
+      },
+      "legal-notice": {
+        "pageName": "Legal notice",
+        "title": "Legal notice | MediaSmart",
+        "description": "Site publisher, hosting, intellectual property and contact details: the legal notice for MediaSmart, Raphael Rouiller, Aproz (Nendaz), Switzerland.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart legal notice"
+      },
+      "terms": {
+        "pageName": "Terms and conditions",
+        "title": "Terms and Conditions | MediaSmart",
+        "description": "Quotes, hourly rates, payment terms, corrective warranty and project scope for MediaSmart website and web application work.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart terms and conditions"
       },
       "support-contract": {
         "pageName": "Support Contract",
