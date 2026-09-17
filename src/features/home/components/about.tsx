@@ -111,11 +111,10 @@ const About = () => {
             {/* The person, as a compact row rather than a section: portrait,
                 name, role, one sentence. */}
             <div
-              // Row when the column is wide enough for it, stacked otherwise.
-              // Between lg and xl this column is only about a third of the
-              // viewport, where a portrait beside text squeezes the name onto
-              // three lines.
-              className="order-1 flex flex-col items-center gap-5 text-center sm:flex-row sm:items-center sm:text-left lg:flex-col lg:items-start lg:text-left xl:flex-row xl:items-center lg:order-2"
+              // Portrait above the text at every width: beside it, the name
+              // and the sentence each had to fit a narrow column, and the
+              // block changed shape three times across the breakpoints.
+              className="order-1 flex flex-col items-center gap-5 text-center sm:items-start sm:text-left lg:order-2"
               data-aos="fade-left"
               data-aos-duration="1300"
             >
