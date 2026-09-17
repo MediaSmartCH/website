@@ -109,21 +109,17 @@ const About = () => {
           </div>
         </div>
       </div>
-      <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] pt-[10px] pb-[30px] mx-auto">
-        <div
-          className={`${isLight
-            ? "border-[#E8E4F7] bg-[linear-gradient(135deg,#FFFFFF_0%,#F7F5FF_50%,#EDF6FF_100%)]"
-            : "border-white/10 bg-[linear-gradient(135deg,#1F1B38_0%,#2B284C_52%,#1A223C_100%)]"
-            } relative overflow-hidden rounded-[24px] border p-5 md:p-8 lg:p-10`}
-        >
-          {/* Decorative blurred blobs for visual depth */}
-          <div className="absolute -top-16 right-0 h-44 w-44 rounded-full bg-[#59C3FF]/15 blur-3xl" />
-          <div className="absolute -bottom-12 left-8 h-36 w-36 rounded-full bg-[#7A6BFF]/10 blur-3xl" />
+      {/* No panel of its own: the section above already sits in a surface card,
+          and wrapping this one in a second bordered gradient made it read as a
+          widget pasted onto the page. The portrait and the two sentences sit
+          straight on the page background, like the services sections do.
 
-          {/* Portrait first and large: the point of this block is that a person
-              answers, so the person is what a visitor should see. The copy is
-              two sentences — everything else repeated them. */}
-          <div className="relative z-10 mx-auto grid max-w-[880px] items-center gap-8 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)] lg:gap-12">
+          Portrait first and large: the point of this block is that a person
+          answers, so the person is what a visitor should see. The copy is two
+          sentences — everything else repeated them. */}
+      <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] pt-[20px] pb-[50px] mx-auto">
+        <div>
+          <div className="mx-auto grid max-w-[880px] items-center gap-8 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)] lg:gap-12">
             <div
               className="mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:mx-0"
               data-aos="fade-right"
