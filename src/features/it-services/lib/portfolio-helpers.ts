@@ -89,25 +89,27 @@ export function groupItemsByCategory(items: PortfolioItem[]): PortfolioGroup[] {
 }
 
 /**
- * Picks what the preview strip shows.
+ * Orders the preview strip along PORTFOLIO_CATEGORY_ORDER, each category
+ * keeping its original order: our own products, then the free tools, then
+ * client work.
  *
- * Client work only, while the full gallery keeps the product-first order. Our
- * own products and free tools already have their own section further down the
- * same page, with a fuller pitch and their own buttons; showing them here too
- * meant a visitor met the same four cards twice in one scroll. Client
- * references are the one thing the strip can show that is not repeated
- * anywhere else.
- *
- * Falls back to the full list when there is no client entry, so the strip
- * never renders empty.
+ * PREVIEW_LIMIT is sized so all three groups reach the strip — cutting it
+ * shorter would drop client work off the end entirely.
  */
 export function sortItemsForPreview(items: PortfolioItem[]): PortfolioItem[] {
-  const clientWork = items.filter((item) => getItemCategory(item) === "client");
-
-  return clientWork.length > 0 ? clientWork : [...items];
+  return [...items].sort(
+    (a, b) =>
+      PORTFOLIO_CATEGORY_ORDER.indexOf(getItemCategory(a)) -
+      PORTFOLIO_CATEGORY_ORDER.indexOf(getItemCategory(b))
+  );
 }
 
-export const PREVIEW_LIMIT = 4;
+/**
+ * Six, not four: the strip leads with the two products and the two free tools,
+ * so a smaller limit would leave no room for the client references that follow
+ * them.
+ */
+export const PREVIEW_LIMIT = 6;
 export const SCROLLABLE_GALLERY_THRESHOLD = 3;
 
 // Returns the resolved image paths for a portfolio item, preferring generated screenshot paths

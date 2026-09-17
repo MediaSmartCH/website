@@ -63,8 +63,8 @@ const PortfolioGallery = () => {
 
   // Preview tiles are image-driven, so we hide items that have no screenshot
   // to show. They still appear in the full modal as text-only cards.
-  // Client references only — the products and the free tools get their own
-  // section lower on the page (see sortItemsForPreview).
+  // Our own products first, then the free tools, then client work
+  // (see sortItemsForPreview).
   const previewCandidates = sortItemsForPreview(
     portfolioItems.filter((item) => getItemImages(item).length > 0)
   );
