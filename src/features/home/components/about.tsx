@@ -68,7 +68,11 @@ const About = () => {
               with it for the reader's attention. */}
           <div className="grid w-full items-center gap-[40px] xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:gap-[80px] 2xl:gap-[100px]">
             <div
-              className="w-full max-w-[620px] mx-auto text-center lg:mx-0 lg:text-left xl:max-w-[640px]"
+              // Centred while the section is a single column, and only pinned to the
+              // left once the illustration sits beside it at xl. The text itself
+              // goes left-aligned from lg, where the lines are long enough that
+              // centring them would hurt reading.
+              className="w-full max-w-[620px] mx-auto text-center lg:text-left xl:mx-0 xl:max-w-[640px]"
               data-aos="fade-right"
               data-aos-duration="1100"
             >
