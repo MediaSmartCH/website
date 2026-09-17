@@ -188,11 +188,11 @@
       "destination": "/generated-pages/en-404.html"
     },
     {
-      "source": "/fr/(.*)",
+      "source": "/fr/booking/manage",
       "destination": "/generated-pages/fr.html"
     },
     {
-      "source": "/en/(.*)",
+      "source": "/en/booking/manage",
       "destination": "/generated-pages/en.html"
     }
   ],
