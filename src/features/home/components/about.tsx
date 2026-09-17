@@ -66,7 +66,7 @@ const About = () => {
               share a single left edge so the eye follows one axis down the
               card; the illustration balances the column rather than competing
               with it for the reader's attention. */}
-          <div className="mx-auto grid max-w-[1180px] items-center gap-[40px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-[72px] xl:gap-[90px]">
+          <div className="mx-auto grid max-w-[1180px] items-center gap-[40px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-[96px] xl:gap-[128px] 2xl:gap-[150px]">
             <div
               className="text-center lg:text-left"
               data-aos="fade-right"
