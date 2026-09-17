@@ -11,6 +11,10 @@ const BACKDROP_HEIGHTS: Record<string, string> = {
   "/video-services": "h-[900px] md:h-[1040px] lg:h-[1160px] xl:h-[1240px]",
   "/support-contract": "h-[820px] md:h-[940px] lg:h-[1040px] xl:h-[1160px] 2xl:h-[1260px]",
   "/privacy-policy": "h-[760px] md:h-[860px] lg:h-[960px] xl:h-[1080px] 2xl:h-[1180px]",
+  // The two other text-only legal pages share the privacy policy's proportions:
+  // same heading block, same measure, so the wave breaks at the same point.
+  "/legal-notice": "h-[760px] md:h-[860px] lg:h-[960px] xl:h-[1080px] 2xl:h-[1180px]",
+  "/terms": "h-[760px] md:h-[860px] lg:h-[960px] xl:h-[1080px] 2xl:h-[1180px]",
 };
 
 const normalizePathname = (pathname: string) => {
