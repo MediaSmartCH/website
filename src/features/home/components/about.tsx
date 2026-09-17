@@ -107,19 +107,23 @@ const About = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      {/* No panel of its own: the section above already sits in a surface card,
-          and wrapping this one in a second bordered gradient made it read as a
-          widget pasted onto the page. The portrait and the two sentences sit
-          straight on the page background, like the services sections do.
 
-          Portrait first and large: the point of this block is that a person
-          answers, so the person is what a visitor should see. The copy is two
-          sentences — everything else repeated them. */}
-      <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] pt-[20px] pb-[50px] mx-auto">
-        <div>
-          <div className="mx-auto grid max-w-[880px] items-center gap-8 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)] lg:gap-12">
+          {/* The person belongs in "About MediaSmart", not in a block of its
+              own: who answers is part of what the company is. Inside the same
+              surface, separated by a rule rather than by a second panel.
+
+              Portrait first and large: the point is that a person answers, so
+              the person is what a visitor should see. The copy is two
+              sentences — everything else repeated them. */}
+          <div className="px-[30px] 2xl:px-[80px]">
+            <div
+              className={`${isLight ? "bg-[#E1E0F5]" : "bg-white/12"} mx-auto mt-[40px] mb-[40px] h-px w-full max-w-[880px]`}
+              aria-hidden="true"
+            />
+          </div>
+
+          <div className="px-[30px] 2xl:px-[80px]">
+            <div className="mx-auto grid max-w-[880px] items-center gap-8 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)] lg:gap-12">
             <div
               className="mx-auto w-full max-w-[280px] sm:max-w-[320px] lg:mx-0"
               data-aos="fade-right"
@@ -170,8 +174,8 @@ const About = () => {
                 <ExternalLink size={15} />
                 linkedin.com/in/rphlr
               </a>
+              </div>
             </div>
-          </div>
 
           {/* ====================================================================
               BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
@@ -238,6 +242,7 @@ const About = () => {
                 </div>
               </div>
           ==================================================================== */}
+          </div>
         </div>
       </div>
     </div>

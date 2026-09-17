@@ -47,7 +47,11 @@ export default function SaasOverview() {
   if (products.length === 0) return null;
 
   return (
-    <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[20px] pb-[50px]">
+    /* Same surface card as the "About MediaSmart" section: the teaser used to
+       sit flat on the page between two gradient buttons, which read as a gap
+       rather than a section. */
+    <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] py-[40px] mx-auto">
+      <div className="bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] px-[25px] md:px-[40px] lg:px-[50px] py-[40px] lg:py-[50px]">
       <RichText
         as="h2"
         className="text-heading-strong it-service-title w-full text-center mx-auto font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]"
@@ -119,6 +123,7 @@ export default function SaasOverview() {
             <span className="custom-btn-inner">{t.text("home.saasCta")}</span>
           </button>
         </Link>
+      </div>
       </div>
     </div>
   );

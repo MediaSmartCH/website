@@ -26,6 +26,7 @@ import {
 import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
 
 import RichText from "@shared/components/rich-text";
+import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 
@@ -56,10 +57,18 @@ export default function SaasProducts() {
   if (products.length === 0) return null;
 
   return (
-    <div
-      id="saas"
-      className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[40px] md:pt-[50px] md:pb-[50px] mx-auto scroll-mt-[120px]"
-    >
+    <div id="saas" className="relative overflow-hidden scroll-mt-[120px]">
+      {/* Wave wash behind the section, as the booking block lower on the page
+          does: the products grid otherwise sits on flat white between two
+          sections that both have a background of their own. */}
+      <WaveBackdrop
+        theme={themeReducer}
+        className="top-0 h-[520px] md:h-[600px] lg:h-[660px] xl:h-[720px]"
+      />
+
+      <div
+        className="relative z-10 w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[40px] md:pt-[50px] md:pb-[50px] mx-auto"
+      >
       <RichText
         as="h2"
         className="text-heading-strong it-service-title w-full text-center mx-auto font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]"
@@ -283,6 +292,7 @@ export default function SaasProducts() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
