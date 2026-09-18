@@ -22,6 +22,14 @@
     "moduleResolution": "node16",
     "target": "es2022",
     "types": ["node"],
+    // Pinned rather than left to default. The builder has a second code path
+    // that copies these options into a tsconfig written to a temp directory
+    // and runs tsc against that; the default type roots are derived from the
+    // config file's own location, so from /tmp they resolve to nothing and
+    // `types: ["node"]` fails with TS2688. TypeScript 6 still takes the other
+    // path, so this is dormant — it stops being dormant under a native
+    // compiler. Resolution only; nothing here reaches the emit.
+    "typeRoots": ["../node_modules/@types"],
     "allowJs": true,
     "checkJs": false,
     "esModuleInterop": true,
