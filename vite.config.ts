@@ -6,6 +6,8 @@ import { defineConfig, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+import { skewProtection } from "./vite-plugins/skew-protection";
+
 const _require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -126,8 +128,18 @@ const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
     })()
   : {};
 
+/**
+ * Set by Vercel at build time. Empty everywhere else, which leaves both the
+ * runtime constant below and the URL pinning inert.
+ */
+const deploymentId = process.env.VERCEL_DEPLOYMENT_ID ?? "";
+
 export default defineConfig(async () => {
-  const plugins: PluginOption[] = [dotLottieWasmPlugin(), react()];
+  const plugins: PluginOption[] = [
+    dotLottieWasmPlugin(),
+    react(),
+    skewProtection(deploymentId),
+  ];
 
   // Load the bundle analyzer lazily so normal builds never try to require
   // an ESM-only dependency while Vite is bundling this config file.
@@ -147,7 +159,7 @@ export default defineConfig(async () => {
   return {
     envPrefix: ["VITE_", "REACT_APP_"],
     define: {
-      __VERCEL_DEPLOYMENT_ID__: JSON.stringify(process.env.VERCEL_DEPLOYMENT_ID ?? ""),
+      __VERCEL_DEPLOYMENT_ID__: JSON.stringify(deploymentId),
     },
     plugins,
     server: {

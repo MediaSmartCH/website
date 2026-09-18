@@ -281,14 +281,29 @@ Three layers, because no single one covers it:
 
 2. **Skew Protection keeps the old files reachable**, which is the remedy
    Vercel designed for this and the one that stops the 404 from happening at
-   all. It is a project setting, not repository configuration:
+   all. Enabling it is a project setting, not repository configuration —
+   *Settings → Advanced → Skew Protection*, or:
 
    ```bash
    vercel project protection enable website --skew --skew-max-age 2592000
    ```
 
-   The app already sends `x-deployment-id` on its API calls
-   (`fetchWithDeployment`), which is the matching half for the functions.
+   Enabling it is not enough on its own. Vercel serves a previous deployment
+   only when the request says which one it wants, and a static build says
+   nothing: measured on production, a freshly deployed page sets no `__vdpl`
+   cookie and its HTML carries no deployment id. Two halves supply it:
+
+   - **API calls** send `x-deployment-id` (`fetchWithDeployment`).
+   - **Route chunks** carry `?dpl=<id>`, written into their URLs at build time
+     by `vite-plugins/skew-protection.ts`. Only chunks no document loads directly are
+     marked, so the long-lived vendor chunks keep one URL across deployments
+     and stay in visitors' caches.
+
+   The cookie Vercel documents for this is deliberately not used. Measured
+   against production, a request carrying `__vdpl` is served the **document**
+   from that deployment, not just its assets — so a browser that set the cookie
+   itself would keep being handed the old HTML, with no reload able to bring it
+   back to the current deployment.
 
 3. **A poisoned CDN entry has to be purged.** If a CDN cached a 404 for a file
    that now exists, neither of the above helps: the reload asks for the same
