@@ -6,6 +6,8 @@ import { defineConfig, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+import { HERO_POSTER_BUCKETS } from "./src/shared/config/poster-sizes";
+
 const _require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -101,6 +103,87 @@ function dotLottieWasmPlugin(): Plugin {
   };
 }
 
+/**
+ * Preloads the home page's LCP image.
+ *
+ * The hero shows a poster — the animation's own first frame — and Chrome
+ * measured it as the LCP element of /fr. Its URL is content-hashed and only
+ * resolved once `dot-anim` runs, four levels deep in the module graph
+ * (html -> bootstrap -> home-page -> dot-anim), so the browser could not
+ * discover it until late: 1486ms of "resource load delay" against 29ms of
+ * actual download, and a failing `lcp-discovery` audit. Emitting the hashed URL
+ * into the HTML turns that delay into a preload the browser starts immediately.
+ *
+ * Deliberately the *only* preload here. Preloading the two above-the-fold
+ * webfonts and modulepreloading the route's chunks both measured slower on a
+ * throttled mobile connection: they are 70KB that competes for bandwidth with
+ * the render-blocking CSS, and with `font-display: swap` the fonts do not gate
+ * the first paint anyway.
+ *
+ * Only the light variant is preloaded — the default theme for a first-time
+ * visitor, which is the case that pays the cold-start cost.
+ */
+function heroPosterPreloadPlugin(): Plugin {
+  // Every width the hero poster was generated at; the filename carries it.
+  const HERO_POSTER = /(^|\/)Home_light-(\d+)-[\w-]+\.webp$/;
+  // The home page is the only route rendering the hero; the others would pay
+  // for a poster they never show.
+  const HOME_PAGES = new Set(["index", "fr", "en"]);
+
+  return {
+    name: "hero-poster-preload",
+    enforce: "post",
+    transformIndexHtml: {
+      order: "post",
+      handler(html, ctx) {
+        if (!HOME_PAGES.has(path.basename(ctx.filename, ".html"))) return;
+        if (!ctx.bundle) return;
+
+        const built = Object.keys(ctx.bundle)
+          .map((name) => {
+            const match = HERO_POSTER.exec(name);
+            return match ? { name, width: Number(match[2]) } : undefined;
+          })
+          .filter((entry): entry is { name: string; width: number } => !!entry)
+          .sort((a, b) => a.width - b.width);
+
+        if (!built.length) return;
+
+        const pick = (want: number) =>
+          (built.find((entry) => entry.width >= want) ?? built[built.length - 1]).name;
+
+        // One preload per bucket, carrying the same media condition the
+        // <picture> uses. The conditions are mutually exclusive, so exactly one
+        // fires — and it is necessarily the file the image then displays.
+        // An imagesrcset preload cannot promise that: the scanner resolves `w`
+        // descriptors on its own and, under Lighthouse's 2.625 mobile density,
+        // picked a different candidate than layout did and fetched both.
+        const links = HERO_POSTER_BUCKETS.map(
+          (bucket) =>
+            `<link rel="preload" as="image" href="/${pick(bucket.width)}" media="${bucket.media}" fetchpriority="high">`
+        ).join("\n  ");
+
+        // Inserted after the viewport meta by hand rather than through a tag
+        // descriptor, because position matters here and `head-prepend` puts
+        // these *before* it. Until that meta is parsed the layout viewport is
+        // the 980px default, so on a phone the scanner read `(min-width:
+        // 768px)` as true and preloaded the wide bucket as well as the narrow
+        // one — both files, which is the waste these buckets exist to avoid.
+        const viewport = /<meta[^>]+name="viewport"[^>]*>/.exec(html);
+        if (!viewport) {
+          this.warn("viewport meta not found; skipping hero poster preload");
+          return;
+        }
+
+        return html.replace(
+          viewport[0],
+          `${viewport[0]}\n  ${links}`
+        );
+      },
+    },
+  };
+}
+
 const generatedPagesDir = path.resolve(__dirname, "generated-pages");
 const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
   ? (() => {
@@ -127,7 +210,11 @@ const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
   : {};
 
 export default defineConfig(async () => {
-  const plugins: PluginOption[] = [dotLottieWasmPlugin(), react()];
+  const plugins: PluginOption[] = [
+    dotLottieWasmPlugin(),
+    react(),
+    heroPosterPreloadPlugin(),
+  ];
 
   // Load the bundle analyzer lazily so normal builds never try to require
   // an ESM-only dependency while Vite is bundling this config file.

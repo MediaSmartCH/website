@@ -1,3 +1,11 @@
+import {
+  CARD_SIZES,
+  FEATURE_SIZES,
+  HERO_POSTER_BUCKETS,
+  HERO_POSTER_FALLBACK_WIDTH,
+  HERO_SIZES,
+} from "@shared/config/poster-sizes";
+
 type LottieAssetModule = { default: string };
 type LottieVariantLoader = () => Promise<LottieAssetModule>;
 type ResourceStatus = "pending" | "resolved" | "rejected";
@@ -114,10 +122,12 @@ export const LOTTIE_KEYS = Object.keys(LOTTIE_LOADERS) as LottieKey[];
  * Poster stems, relative to `assets/lotties/posters` and without the
  * `_light` / `_dark` suffix.
  *
- * A poster is the animation's first frame, flattened to a ~14kB WebP. DotAnim
+ * A poster is the animation's first frame, flattened to a ~45kB WebP. DotAnim
  * paints it the moment a slot appears, so the box is never empty while the
- * DotLottie runtime and the animation file are still on their way. Regenerate
- * with `node scripts/generate-lottie-posters.mjs` after touching a .lottie.
+ * DotLottie runtime and the animation file are still on their way — and when
+ * animations are switched off it is all that gets rendered, which is why it is
+ * sized to hold up on its own rather than just to cover a gap. Regenerate with
+ * `node scripts/generate-lottie-posters.mjs` after touching a .lottie.
  */
 const LOTTIE_POSTER_STEM: Record<LottieKey, string> = {
   "home.hero": "home/Home",
@@ -152,9 +162,115 @@ const POSTER_URLS = import.meta.glob<string>(
   { eager: true, query: "?url", import: "default" }
 );
 
-function readPosterUrl(stem: string, variant: "light" | "dark") {
-  return POSTER_URLS[`../../assets/lotties/posters/${stem}_${variant}.webp`];
+/**
+ * Poster URLs grouped by stem and variant, widest last.
+ *
+ * Each poster is generated at several widths (see
+ * scripts/generate-lottie-posters.mjs) and the filename carries the width, so
+ * the catalogue is rebuilt from the glob rather than restated by hand.
+ */
+const POSTER_SETS = (() => {
+  const sets = new Map<string, { width: number; url: string }[]>();
+
+  for (const [path, url] of Object.entries(POSTER_URLS)) {
+    const match = /posters\/(.+)-(\d+)\.webp$/.exec(path);
+    if (!match) continue;
+
+    const [, key, width] = match;
+    const entries = sets.get(key) ?? [];
+    entries.push({ width: Number(width), url });
+    sets.set(key, entries);
+  }
+
+  for (const entries of sets.values()) {
+    entries.sort((a, b) => a.width - b.width);
+  }
+
+  return sets;
+})();
+
+export type PosterSource = {
+  /** Fallback for anything that ignores srcSet; the middle width, not the widest. */
+  src: string;
+  srcSet: string;
+  sizes: string;
+  /**
+   * Set only for the preloaded hero, which selects by media query instead of by
+   * srcset so the preload scanner and layout cannot disagree. When present the
+   * poster renders as a <picture> and these come first.
+   */
+  sources?: { media: string; url: string }[];
+};
+
+/** Nearest available width at or above `want`, falling back to the widest. */
+function pickWidth(entries: { width: number; url: string }[], want: number) {
+  return (entries.find((entry) => entry.width >= want) ?? entries[entries.length - 1]).url;
 }
+
+function readPoster(
+  stem: string,
+  variant: "light" | "dark",
+  sizes: string,
+  artDirected = false
+): PosterSource | undefined {
+  const entries = POSTER_SETS.get(`${stem}_${variant}`);
+  if (!entries?.length) return undefined;
+
+  const sources = artDirected
+    ? HERO_POSTER_BUCKETS.map((bucket) => ({
+        media: bucket.media,
+        url: pickWidth(entries, bucket.width),
+      }))
+    : undefined;
+
+  if (sources) {
+    return {
+      src: pickWidth(entries, HERO_POSTER_FALLBACK_WIDTH),
+      srcSet: "",
+      sizes: "",
+      sources,
+    };
+  }
+
+  return {
+    // A browser without srcset support gets a mid width rather than the widest:
+    // it is the one that cannot tell us what it needs, so it should not be
+    // handed the heaviest file by default.
+    src: entries[Math.min(1, entries.length - 1)].url,
+    srcSet: entries.map((entry) => `${entry.url} ${entry.width}w`).join(", "),
+    sizes,
+  };
+}
+
+/**
+ * Which width profile each slot uses; the profiles themselves, and the
+ * measurements behind them, live in poster-sizes.ts. A slot with no entry falls
+ * back to the feature profile.
+ */
+
+const LOTTIE_POSTER_SIZES: Partial<Record<LottieKey, string>> = {
+  "home.hero": HERO_SIZES,
+  "it.hero": HERO_SIZES,
+  "video.header": HERO_SIZES,
+
+  "home.about": FEATURE_SIZES,
+  "it.about": FEATURE_SIZES,
+  "it.process": FEATURE_SIZES,
+
+  "it.services.website": CARD_SIZES,
+  "it.services.maintenance": CARD_SIZES,
+  "it.services.optimization": CARD_SIZES,
+  "it.services.security": CARD_SIZES,
+  "it.services.backup": CARD_SIZES,
+  "it.services.support": CARD_SIZES,
+
+  "video.editing": CARD_SIZES,
+  "video.live": CARD_SIZES,
+  "video.photography": CARD_SIZES,
+  "video.rental": CARD_SIZES,
+  "video.retransmission": CARD_SIZES,
+  "video.production": CARD_SIZES,
+};
 
 // The React canvas player does not inherit the source animation footprint the
 // same way the old SVG web component did. Keeping the native dimensions here
@@ -280,10 +396,18 @@ export function getLottiePresentation(key: LottieKey) {
  * Falls back to the light poster for keys that have no dark variant, mirroring
  * how `resolveLoader` picks the animation file itself.
  */
-export function getLottiePoster(key: LottieKey, theme: string): string | undefined {
+export function getLottiePoster(
+  key: LottieKey,
+  theme: string
+): PosterSource | undefined {
   const stem = LOTTIE_POSTER_STEM[key];
   if (!stem) return undefined;
 
-  const preferred = theme === "dark" ? readPosterUrl(stem, "dark") : undefined;
-  return preferred ?? readPosterUrl(stem, "light");
+  const sizes = LOTTIE_POSTER_SIZES[key] ?? FEATURE_SIZES;
+  // The hero is the page's LCP element and the only poster we preload, so it
+  // is the only one that needs the media-query treatment.
+  const artDirected = key === "home.hero";
+  const preferred =
+    theme === "dark" ? readPoster(stem, "dark", sizes, artDirected) : undefined;
+  return preferred ?? readPoster(stem, "light", sizes, artDirected);
 }

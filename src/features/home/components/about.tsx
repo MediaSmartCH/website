@@ -121,7 +121,7 @@ const About = () => {
                     {t.text("home.soloName")}
                   </h3>
                   <p
-                    className={`${isLight ? "text-[#6B7A99]" : "text-[#A8B4D0]"} mt-1 font-poppins text-[11px] font-medium uppercase tracking-[0.12em]`}
+                    className={`${isLight ? "text-[#5F6E8C]" : "text-[#A8B4D0]"} mt-1 font-poppins text-[11px] font-medium uppercase tracking-[0.12em]`}
                   >
                     {t.text("home.soloJobTitle")}
                   </p>

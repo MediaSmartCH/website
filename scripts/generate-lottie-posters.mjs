@@ -2,7 +2,9 @@
  * Renders the first frame of every .lottie file to a small WebP "poster".
  *
  * DotAnim shows that poster the instant a slot appears and swaps in the live
- * player once it has drawn its first frame. Without it, the box stays empty for
+ * player once it has drawn its first frame — and with animations switched off
+ * the poster is the only thing rendered, so it has to look right at full
+ * display size, not merely fill the box. Without it, the box stays empty for
  * as long as the DotLottie runtime (~1.7MB of WASM) plus the animation file
  * take to arrive — measured at 1.7s on a fast machine and 4.5s on a CPU four
  * times slower, which a quick scroll easily outruns.
@@ -30,10 +32,28 @@ const root = resolve(__dirname, '..');
 const lottieRoot = join(root, 'src/assets/lotties');
 const posterRoot = join(lottieRoot, 'posters');
 
-/** Long edge of the generated poster, in pixels. */
-const POSTER_LONG_EDGE = 440;
-/** WebP quality. Flat vector art stays clean well below the default. */
-const POSTER_QUALITY = 0.72;
+/**
+ * Long edges to render, in pixels.
+ *
+ * One file per width, offered to the browser through a srcset so it fetches the
+ * one it actually needs instead of always the largest. Measured on the hero,
+ * which is the page's LCP element:
+ *
+ *   phone 360 @3x      310 CSS px ->  930 device px
+ *   Lighthouse mobile  362 CSS px ->  950 device px
+ *   Lighthouse desktop 863 CSS px ->  863 device px
+ *   desktop 1920 @2x  1200 CSS px -> 2400 device px
+ *
+ * So 1000 covers both Lighthouse profiles almost exactly, 700 covers the
+ * smaller card slots on a 1x desktop, and 1400 stays for high-density desktops.
+ * A width larger than the animation's own drawn size is skipped rather than
+ * upscaled.
+ */
+const POSTER_LONG_EDGES = [700, 1000, 1400];
+/** WebP quality. Flat vector art stays clean well below the default, and at
+ *  this size the extra pixels buy more perceived sharpness than the bitrate
+ *  would — 1400/0.62 and 1100/0.78 weigh the same. */
+const POSTER_QUALITY = 0.62;
 
 const MIME = {
   '.js': 'text/javascript',
@@ -172,21 +192,29 @@ try {
     const rel = relative(lottieRoot, file);
     const target = join(posterRoot, rel.replace(/\.lottie$/, '.webp'));
 
-    const result = await page.evaluate(
-      renderPoster,
-      `${origin}/${encodeURI(relative(root, file).split('\\').join('/'))}`,
-      POSTER_LONG_EDGE,
-      POSTER_QUALITY,
-    );
+    const src = `${origin}/${encodeURI(relative(root, file).split('\\').join('/'))}`;
+    const rendered = [];
+    let widest = 0;
 
-    const bytes = Buffer.from(result.dataUrl.split(',')[1], 'base64');
-    await mkdir(dirname(target), { recursive: true });
-    await writeFile(target, bytes);
-    totalBytes += bytes.length;
+    for (const longEdge of POSTER_LONG_EDGES) {
+      // Re-render rather than downscale: the art is vector, so drawing it at the
+      // target size is sharper than resampling the 1400px raster would be.
+      const result = await page.evaluate(renderPoster, src, longEdge, POSTER_QUALITY);
 
-    console.log(
-      `  ${rel.padEnd(42)} ${String(result.width).padStart(4)}×${String(result.height).padEnd(4)} ${(bytes.length / 1024).toFixed(1)} kB`,
-    );
+      // Past the animation's own drawn size there is nothing left to resolve,
+      // and a wider file would just be the same picture with more bytes.
+      if (result.width <= widest) break;
+      widest = result.width;
+
+      const bytes = Buffer.from(result.dataUrl.split(',')[1], 'base64');
+      const variant = target.replace(/\.webp$/, `-${result.width}.webp`);
+      await mkdir(dirname(variant), { recursive: true });
+      await writeFile(variant, bytes);
+      totalBytes += bytes.length;
+      rendered.push(`${result.width}×${result.height} ${(bytes.length / 1024).toFixed(1)}kB`);
+    }
+
+    console.log(`  ${rel.padEnd(42)} ${rendered.join('  ')}`);
   }
 
   console.log(`\n${files.length} posters, ${(totalBytes / 1024).toFixed(0)} kB au total`);
