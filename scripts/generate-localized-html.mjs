@@ -120,10 +120,7 @@ ${alternateLocaleBlock}  <meta data-rh="true" name="twitter:card" content="summa
   <meta data-rh="true" name="twitter:description" content="${escapeHtml(seo.description)}" />
   <meta data-rh="true" name="twitter:image" content="${escapeHtml(seo.imageUrl)}" />
   <meta data-rh="true" name="twitter:image:alt" content="${escapeHtml(seo.shareImageAlt)}" />
-${alternateLinks}${canonicalLink}  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Red+Hat+Display:wght@300..700&display=swap" rel="stylesheet" />
-  <link rel="icon" href="/favicon.ico" />
+${alternateLinks}${canonicalLink}  <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/logo192.png" />
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#0f0e1a" />

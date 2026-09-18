@@ -1,303 +1,75 @@
-import React, { memo, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
-import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
+import React, { lazy, memo, Suspense, useEffect, useMemo, useRef, useState } from "react";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import {
   getLottieAspectRatio,
   getLottiePoster,
   getLottiePresentation,
-  LottieKey,
-  preloadLottieSrc,
-  readLottieSrc,
 } from "@shared/config/lotties";
+import {
+  type DotAnimProps,
+  hasAnim,
+  LottiePoster,
+} from "@shared/components/dot-anim-shared";
 
-// Point the WASM runtime to the locally-bundled file so DotLottie never
-// fetches from an external CDN, which the production CSP would block.
-setWasmUrl(dotLottieWasmUrl);
+export type { DotAnimProps };
 
-type Base = {
-  className?: string;
-  style?: React.CSSProperties;
-  autoplay?: boolean;
-  loop?: boolean;
-  protect?: boolean;
-  crisp?: boolean;
-};
-
-// Two usage modes:
-// - ByKeyProps: pass a named key from LOTTIE_LOADERS and let DotAnim resolve
-//   the correct src + dimensions automatically (preferred for site animations).
-// - BySrcProps: pass raw file URLs directly. SECURITY: only pass URLs that
-//   come from bundled assets (import statements). Never pass user-controlled
-//   strings here — the DotLottie player executes the file content as code.
-type ByKeyProps = Base & { anim: LottieKey; light?: never; dark?: never };
-type BySrcProps = Base & { light: string; dark?: string; anim?: never };
-export type DotAnimProps = ByKeyProps | BySrcProps;
-
-// Type guard to distinguish between the two usage modes at runtime.
-function hasAnim(p: DotAnimProps): p is ByKeyProps {
-  return (p as ByKeyProps).anim !== undefined;
-}
-
-function selectSrc(theme: string, pair: { light: string; dark?: string }) {
-  return theme === "dark" && pair.dark ? pair.dark : pair.light;
-}
-
-type PosterProps = {
-  src: string;
-  /** Same scale the player applies, so the still frame lands on the same pixels. */
-  scale?: number;
-  /** Off-screen slots defer their poster; an imminent one loads right away. */
-  eager?: boolean;
-};
 
 /**
- * The animation's first frame, filling its box.
+ * The player, and with it the whole DotLottie runtime, in its own chunk.
  *
- * Decorative, so it stays out of the accessibility tree: the animations carry
- * no information the surrounding copy does not already give.
+ * It used to be a static import in this module, which made every slot — even
+ * one only showing a poster — pull in ~334KB of player code. On the homepage
+ * that put it on the critical path of the first paint, since the hero renders
+ * a DotAnim, and Lighthouse attributed 2.9s of script evaluation to it on a
+ * throttled mobile CPU.
+ *
+ * Splitting it means the poster path costs nothing but the poster: the chunk is
+ * requested only once a slot has both come into range and been cleared by
+ * whenRuntimeIsFree(), and the Suspense boundary below keeps the poster up
+ * while it arrives.
  */
-function LottiePoster({ src, scale = 1, eager = false }: PosterProps) {
+const MemoizedPlayer = lazy(() =>
+  import("@shared/components/dot-anim-player").catch(() => ({
+    // A tab left open across a deployment asks for the previous build's
+    // filename and gets a 404. Routes reload to recover (see chunk-recovery),
+    // which is the right call for a page the visitor asked for — but this chunk
+    // only ever carries decoration, so it degrades to the still frame instead.
+    // Without this the rejection would reach the error boundary and take the
+    // page down over an animation.
+    default: PosterOnlyPlayer,
+  }))
+);
+
+/** Stands in for the player when its chunk cannot be fetched. */
+function PosterOnlyPlayer(props: DotAnimProps) {
+  const theme = useAppSelector((state) => state.theme.currentTheme);
+  const animKey = hasAnim(props) ? props.anim : undefined;
+
+  const posterUrl = animKey ? getLottiePoster(animKey, theme) : undefined;
+
+  if (!animKey || !posterUrl) return null;
+
   return (
-    <img
-      src={src}
-      alt=""
-      aria-hidden={true}
-      draggable={false}
-      loading={eager ? "eager" : "lazy"}
-      decoding="async"
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{
-        objectFit: "contain",
-        transform: scale === 1 ? undefined : `scale(${scale})`,
-        transformOrigin: "center center",
-      }}
+    <LottiePoster
+      src={posterUrl}
+      scale={getLottiePresentation(animKey)?.scale}
+      eager
     />
   );
 }
 
-function DotAnimPlayer(props: DotAnimProps) {
-  const theme = useAppSelector((state) => state.theme.currentTheme);
-  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
-  const animKey = hasAnim(props) ? props.anim : undefined;
-  const staticPair = hasAnim(props)
-    ? undefined
-    : { light: props.light, dark: props.dark };
-  const intrinsicAspectRatio = animKey ? getLottieAspectRatio(animKey) : undefined;
-  const presentation = animKey ? getLottiePresentation(animKey) : undefined;
-
-  // stableTheme only advances once the next animation source is ready, so the
-  // player keeps rendering the current file instead of flashing a fallback.
-  const [stableTheme, setStableTheme] = useState(theme);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [dotLottieInstance, setDotLottieInstance] = useState<DotLottie | null>(null);
-  // The poster stays up until the canvas has actually drawn something. "load"
-  // is too early: it only means the file was parsed, and the canvas is still
-  // blank at that point.
-  const [hasPainted, setHasPainted] = useState(false);
-
-  const {
-    className,
-    style,
-    autoplay: autoplayProp = true,
-    loop = true,
-    protect = false,
-    // The SVG renderer is now the only code path we ship. Keep the prop so
-    // existing call sites do not need to change.
-    crisp: _crisp = true,
-  } = props;
-
-  const autoplay = autoplayProp && animationsEnabled;
-
-  // Cap DPR at 2 to avoid excessive raster cost on high-density displays (e.g. 3x on some Android devices)
-  // without any noticeable quality loss. Falls back to 1 in SSR environments where window is undefined.
-  const renderConfig = useMemo(() => {
-    if (typeof window === "undefined") {
-      return { autoResize: true, devicePixelRatio: 1 };
-    }
-
-    return {
-      autoResize: true,
-      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-    };
-  }, []);
-
-  // When the global theme changes, preload the new animation variant before
-  // switching. This prevents the player from briefly showing a blank frame
-  // between the old and new file. A minimum 220ms opacity transition gives the
-  // fade-out time to complete even if the fetch resolves instantly.
-  useEffect(() => {
-    if (theme === stableTheme) {
-      return;
-    }
-
-    let cancelled = false;
-    const startTime = Date.now();
-
-    const syncTheme = async () => {
-      setIsTransitioning(true);
-
-      try {
-        if (animKey) {
-          await preloadLottieSrc(animKey, theme);
-        }
-
-        // Ensure the fade-out has at least 220ms to complete.
-        const elapsed = Date.now() - startTime;
-        const remaining = Math.max(0, 220 - elapsed);
-
-        if (remaining > 0) {
-          await new Promise((resolve) => setTimeout(resolve, remaining));
-        }
-
-        if (!cancelled) {
-          setStableTheme(theme);
-        }
-      } finally {
-        if (!cancelled) {
-          setIsTransitioning(false);
-        }
-      }
-    };
-
-    syncTheme();
-
-    // If the component unmounts or theme changes again before the transition
-    // completes, cancel the pending state updates to avoid stale setState calls.
-    return () => {
-      cancelled = true;
-    };
-  }, [animKey, stableTheme, theme]);
-
-  useEffect(() => {
-    if (!dotLottieInstance) return;
-
-    const handleRender = () => setHasPainted(true);
-    dotLottieInstance.addEventListener("render", handleRender);
-
-    return () => dotLottieInstance.removeEventListener("render", handleRender);
-  }, [dotLottieInstance]);
-
-  // Imperatively pause/play when the global animations toggle changes so the
-  // change takes effect immediately without remounting the player.
-  useEffect(() => {
-    if (!dotLottieInstance) return;
-    if (animationsEnabled && autoplayProp) {
-      dotLottieInstance.play();
-    } else {
-      dotLottieInstance.pause();
-    }
-  }, [animationsEnabled, autoplayProp, dotLottieInstance]);
-
-  const src = animKey
-    ? readLottieSrc(animKey, stableTheme)
-    : staticPair
-      ? selectSrc(stableTheme, staticPair)
-      : undefined;
-
-  // Only keyed animations have a poster; raw-src callers pass their own markup.
-  const posterUrl = animKey ? getLottiePoster(animKey, stableTheme) : undefined;
-  // The player below is keyed on the source, so switching theme mounts a fresh
-  // canvas that is blank again. Without this the poster would stay hidden over
-  // it, which is the gap the poster exists to cover.
-  useEffect(() => {
-    setHasPainted(false);
-  }, [src]);
-
-  const wrapperStyle = useMemo<React.CSSProperties>(() => {
-    const nextStyle: React.CSSProperties = {
-      display: "block",
-      ...style,
-    };
-
-    if (intrinsicAspectRatio && nextStyle.aspectRatio === undefined) {
-      nextStyle.aspectRatio = `${intrinsicAspectRatio}`;
-    }
-
-    return nextStyle;
-  }, [intrinsicAspectRatio, style]);
-
-  const playerStyle = useMemo<React.CSSProperties>(() => {
-    const scale = presentation?.scale ?? 1;
-
-    return {
-      width: "100%",
-      height: "100%",
-      display: "block",
-      transform: scale === 1 ? undefined : `scale(${scale})`,
-      transformOrigin: "center center",
-    };
-  }, [presentation?.scale]);
-
-  const prevent = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
-  return (
-    <div
-      className={`relative ${className || ""}`}
-      style={{
-        ...wrapperStyle,
-        userSelect: protect ? "none" : undefined,
-        WebkitUserSelect: protect ? "none" : undefined,
-        WebkitTouchCallout: protect ? "none" : undefined,
-        touchAction: protect ? "pan-x pan-y" : undefined,
-        transition: "opacity 0.3s ease",
-        opacity: isTransitioning ? 0.7 : 1,
-      }}
-      onContextMenu={protect ? prevent : undefined}
-      onDragStart={protect ? prevent : undefined}
-      draggable={protect ? false : undefined}
-    >
-      {/* dotLottie-react is the maintained React integration from LottieFiles.
-          We keep interpolation disabled and cap DPR a bit on mobile to reduce
-          raster cost without noticeably degrading the animation. */}
-      <DotLottieReact
-        key={`${src}-${stableTheme}`}
-        src={src}
-        autoplay={autoplay}
-        loop={loop}
-        useFrameInterpolation={false}
-        renderConfig={renderConfig}
-        layout={{
-          fit: presentation?.fit ?? "contain",
-          align: presentation?.align ?? [0.5, 0.5],
-        }}
-        style={playerStyle}
-        dotLottieRefCallback={setDotLottieInstance}
-      />
-
-      {/* Sits above the canvas, not below it: until the first frame is drawn the
-          canvas is fully transparent, so anything behind it would show through. */}
-      {posterUrl && !hasPainted && (
-        <LottiePoster src={posterUrl} scale={presentation?.scale} eager={true} />
-      )}
-
-      {/* Transparent overlay that intercepts all pointer/touch events to prevent
-          right-click saving or dragging the animation when protect is enabled. */}
-      {protect && (
-        <div
-          aria-hidden={true}
-          className="absolute inset-0"
-          onContextMenu={prevent}
-          onDragStart={prevent}
-          onMouseDown={prevent}
-          onTouchStart={prevent}
-          onTouchMove={prevent}
-          onTouchEnd={prevent}
-          style={{ background: "transparent", pointerEvents: "auto" }}
-        />
-      )}
-    </div>
-  );
-}
-
-const MemoizedPlayer = memo(DotAnimPlayer);
-
 // How early (in px) before entering the viewport an animation starts loading.
 const PRELOAD_MARGIN = "400px 0px";
+
+/**
+ * The wider margin applied once the page has gone idle.
+ *
+ * Roughly a screenful and a half of runway below the fold, which covers the
+ * distance a flick scroll travels before the player could paint, without
+ * mounting animations the reader may never reach.
+ */
+const IDLE_PRELOAD_MARGIN = "1200px 0px";
 
 /**
  * Ceiling on how long a placeholder may stay empty once the page has painted.
@@ -326,6 +98,70 @@ function scheduleIdleMount(callback: () => void): () => void {
 
   const handle = window.setTimeout(callback, IDLE_MOUNT_TIMEOUT_MS);
   return () => window.clearTimeout(handle);
+}
+
+/**
+ * How long the player may wait for a quiet main thread before mounting anyway.
+ *
+ * Longer than IDLE_MOUNT_TIMEOUT_MS on purpose: that one races a scroll, this
+ * one races the page load, which is the slower of the two.
+ */
+const RUNTIME_BUDGET_TIMEOUT_MS = 2500;
+
+/**
+ * Resolves once the page has painted and the main thread has had a free slot.
+ *
+ * Mounting DotLottie costs ~2.8s of script evaluation on a throttled mobile
+ * CPU — measured as the single largest main-thread item on the homepage, more
+ * than the whole rest of the app combined. The above-the-fold animation used to
+ * pay that during the first paint, because its slot intersects the viewport on
+ * mount and the viewport gate let it through immediately.
+ *
+ * Waiting costs nothing visually: every slot already renders the animation's
+ * own first frame as a poster, so the box is filled the entire time. All the
+ * gate changes is *when* the frames start moving.
+ *
+ * Shared at module level so a page full of slots waits on one signal rather
+ * than scheduling a callback each.
+ */
+let runtimeBudget: Promise<void> | undefined;
+
+function whenRuntimeIsFree(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+
+  runtimeBudget ??= new Promise<void>((resolve) => {
+    let settled = false;
+    const done = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+
+    const timer = window.setTimeout(done, RUNTIME_BUDGET_TIMEOUT_MS);
+
+    // Two frames puts this after the first paint has actually been committed,
+    // not merely scheduled; the idle callback then waits for a gap in the work
+    // that paint kicked off.
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        if (typeof requestIdleCallback === "function") {
+          requestIdleCallback(
+            () => {
+              window.clearTimeout(timer);
+              done();
+            },
+            { timeout: RUNTIME_BUDGET_TIMEOUT_MS }
+          );
+          return;
+        }
+
+        window.clearTimeout(timer);
+        done();
+      })
+    );
+  });
+
+  return runtimeBudget;
 }
 
 type PosterBoxProps = {
@@ -373,6 +209,22 @@ function DotAnim(props: DotAnimProps) {
   const [inView, setInView] = useState(
     () => typeof IntersectionObserver === "undefined"
   );
+  // Whether the main thread has room for the player yet. Separate from inView
+  // so the two questions stay independent: "should this slot animate?" and
+  // "can the page afford to start it right now?".
+  const [runtimeReady, setRuntimeReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    whenRuntimeIsFree().then(() => {
+      if (!cancelled) setRuntimeReady(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (inView) return;
@@ -400,12 +252,35 @@ function DotAnim(props: DotAnimProps) {
 
     observer.observe(element);
 
-    // Whichever comes first: the animation nears the viewport, or the page goes
-    // idle. The second arm is what stops a fast scroll from outrunning the gate.
-    const cancelIdleMount = scheduleIdleMount(() => setInView(true));
+    // Second arm: once the page is idle, widen the margin so the next screenful
+    // or two is already warm when a fast scroll outruns PRELOAD_MARGIN.
+    //
+    // This used to mount every remaining slot unconditionally. On the homepage
+    // that meant eight DotLottie players — the hero, the "about" animation and
+    // the six service cards — all instantiating within the same idle callback,
+    // which Lighthouse attributed 2.9s of script evaluation to on a throttled
+    // mobile CPU. Slots further down than IDLE_PRELOAD_MARGIN gain nothing from
+    // mounting early: they keep showing their poster, which is the animation's
+    // own first frame, until the reader actually approaches them.
+    let idleObserver: IntersectionObserver | undefined;
+
+    const cancelIdleMount = scheduleIdleMount(() => {
+      idleObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            setInView(true);
+            idleObserver?.disconnect();
+          }
+        },
+        { rootMargin: IDLE_PRELOAD_MARGIN }
+      );
+
+      idleObserver.observe(element);
+    });
 
     return () => {
       observer.disconnect();
+      idleObserver?.disconnect();
       cancelIdleMount();
     };
   }, [inView]);
@@ -420,7 +295,7 @@ function DotAnim(props: DotAnimProps) {
     return nextStyle;
   }, [intrinsicAspectRatio, style]);
 
-  if (inView) {
+  if (inView && runtimeReady) {
     // The boundary belongs here rather than at the thirteen call sites: reading
     // the animation URL suspends, and without a nearer boundary each of them
     // fell back to a spinner — the empty-looking box this poster replaces.

@@ -33,6 +33,12 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const [isOpen, setIsOpen] = React.useState(false);
 
   const activeLanguage = getLanguageConfig(currentLanguage);
+
+  // The trigger shows the language code ("FR"), so the accessible name has to
+  // contain it: a speech-recognition user says what they see, and a name that
+  // omits the visible label leaves the control unreachable by voice. This is
+  // WCAG 2.5.3 Label in Name, which axe reports as label-content-name-mismatch.
+  const triggerAriaLabel = `${ariaLabel} : ${activeLanguage.shortLabel}`;
   const isLightTheme = currentTheme === "light";
 
   // Size-variant token sets — keeps inline style logic out of JSX.
@@ -139,7 +145,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         onClick={openPicker}
         onPointerEnter={warmLanguages}
         onFocus={warmLanguages}
-        aria-label={ariaLabel}
+        aria-label={triggerAriaLabel}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         className={`inline-flex items-center gap-2 rounded-full border backdrop-blur-md transition-colors duration-200 ${sizeConfig.triggerPadding} ${triggerClasses}`}

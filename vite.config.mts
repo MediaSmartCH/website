@@ -2,7 +2,7 @@ import fs from "fs";
 import { createHash } from "crypto";
 import { createRequire } from "module";
 import { fileURLToPath } from "url";
-import { defineConfig, Plugin, PluginOption } from "vite";
+import { defineConfig, HtmlTagDescriptor, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
@@ -101,6 +101,63 @@ function dotLottieWasmPlugin(): Plugin {
   };
 }
 
+/**
+ * Preloads the home page's LCP image.
+ *
+ * The hero shows a poster — the animation's own first frame — and Chrome
+ * measured it as the LCP element of /fr. Its URL is content-hashed and only
+ * resolved once `dot-anim` runs, four levels deep in the module graph
+ * (html -> bootstrap -> home-page -> dot-anim), so the browser could not
+ * discover it until late: 1486ms of "resource load delay" against 29ms of
+ * actual download, and a failing `lcp-discovery` audit. Emitting the hashed URL
+ * into the HTML turns that delay into a preload the browser starts immediately.
+ *
+ * Deliberately the *only* preload here. Preloading the two above-the-fold
+ * webfonts and modulepreloading the route's chunks both measured slower on a
+ * throttled mobile connection: they are 70KB that competes for bandwidth with
+ * the render-blocking CSS, and with `font-display: swap` the fonts do not gate
+ * the first paint anyway.
+ *
+ * Only the light variant is preloaded — the default theme for a first-time
+ * visitor, which is the case that pays the cold-start cost.
+ */
+function heroPosterPreloadPlugin(): Plugin {
+  const HERO_POSTER = /Home_light-[\w-]+\.webp$/;
+  // The home page is the only route rendering the hero; the others would pay
+  // for a poster they never show.
+  const HOME_PAGES = new Set(["index", "fr", "en"]);
+
+  return {
+    name: "hero-poster-preload",
+    enforce: "post",
+    transformIndexHtml: {
+      order: "post",
+      handler(html, ctx) {
+        if (!HOME_PAGES.has(path.basename(ctx.filename, ".html"))) return;
+
+        const poster = ctx.bundle
+          ? Object.keys(ctx.bundle).find((name) => HERO_POSTER.test(name))
+          : undefined;
+
+        if (!poster) return;
+
+        const tag: HtmlTagDescriptor = {
+          tag: "link",
+          injectTo: "head-prepend",
+          attrs: {
+            rel: "preload",
+            as: "image",
+            href: `/${poster}`,
+            fetchpriority: "high",
+          },
+        };
+
+        return [tag];
+      },
+    },
+  };
+}
+
 const generatedPagesDir = path.resolve(__dirname, "generated-pages");
 const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
   ? (() => {
@@ -127,7 +184,11 @@ const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
   : {};
 
 export default defineConfig(async () => {
-  const plugins: PluginOption[] = [dotLottieWasmPlugin(), react()];
+  const plugins: PluginOption[] = [
+    dotLottieWasmPlugin(),
+    react(),
+    heroPosterPreloadPlugin(),
+  ];
 
   // Load the bundle analyzer lazily so normal builds never try to require
   // an ESM-only dependency while Vite is bundling this config file.
