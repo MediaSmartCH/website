@@ -204,6 +204,8 @@ function DotAnim(props: DotAnimProps) {
   const presentation = animKey ? getLottiePresentation(animKey) : undefined;
   const posterUrl = animKey ? getLottiePoster(animKey, theme) : undefined;
 
+  const animationsEnabled = useAppSelector((state) => state.animations.enabled);
+
   const placeholderRef = useRef<HTMLDivElement | null>(null);
   // Browsers without IntersectionObserver render the player straight away.
   const [inView, setInView] = useState(
@@ -213,6 +215,11 @@ function DotAnim(props: DotAnimProps) {
   // so the two questions stay independent: "should this slot animate?" and
   // "can the page afford to start it right now?".
   const [runtimeReady, setRuntimeReady] = useState(false);
+  // Whether this slot has ever had a live player. Switching animations off
+  // pauses a running player where it stands rather than tearing it down, so
+  // the frame on screen is the one the reader was looking at — unmounting it
+  // would snap the art back to frame zero.
+  const [hasPlayed, setHasPlayed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -225,6 +232,10 @@ function DotAnim(props: DotAnimProps) {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (inView && runtimeReady && animationsEnabled) setHasPlayed(true);
+  }, [animationsEnabled, inView, runtimeReady]);
 
   useEffect(() => {
     if (inView) return;
@@ -295,7 +306,13 @@ function DotAnim(props: DotAnimProps) {
     return nextStyle;
   }, [intrinsicAspectRatio, style]);
 
-  if (inView && runtimeReady) {
+  // A slot that never got a player keeps the poster instead of loading one:
+  // with animations off the runtime would pull ~1.7MB of WASM and the animation
+  // file only to sit on a paused first frame, on exactly the devices that asked
+  // for less work. The poster *is* that first frame, so it stands in for the
+  // whole player rather than merely covering for it. A slot that did get one
+  // keeps it, frozen mid-animation.
+  if (inView && runtimeReady && (animationsEnabled || hasPlayed)) {
     // The boundary belongs here rather than at the thirteen call sites: reading
     // the animation URL suspends, and without a nearer boundary each of them
     // fell back to a spinner — the empty-looking box this poster replaces.
@@ -323,6 +340,9 @@ function DotAnim(props: DotAnimProps) {
       style={placeholderStyle}
       posterUrl={posterUrl}
       scale={presentation?.scale}
+      // Nothing is coming to replace it, so it is worth fetching up front
+      // rather than at scroll time.
+      eager={animationsEnabled || hasPlayed ? undefined : inView}
     />
   );
 }

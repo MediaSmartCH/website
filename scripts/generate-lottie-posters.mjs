@@ -2,7 +2,9 @@
  * Renders the first frame of every .lottie file to a small WebP "poster".
  *
  * DotAnim shows that poster the instant a slot appears and swaps in the live
- * player once it has drawn its first frame. Without it, the box stays empty for
+ * player once it has drawn its first frame — and with animations switched off
+ * the poster is the only thing rendered, so it has to look right at full
+ * display size, not merely fill the box. Without it, the box stays empty for
  * as long as the DotLottie runtime (~1.7MB of WASM) plus the animation file
  * take to arrive — measured at 1.7s on a fast machine and 4.5s on a CPU four
  * times slower, which a quick scroll easily outruns.
@@ -31,9 +33,11 @@ const lottieRoot = join(root, 'src/assets/lotties');
 const posterRoot = join(lottieRoot, 'posters');
 
 /** Long edge of the generated poster, in pixels. */
-const POSTER_LONG_EDGE = 440;
-/** WebP quality. Flat vector art stays clean well below the default. */
-const POSTER_QUALITY = 0.72;
+const POSTER_LONG_EDGE = 1400;
+/** WebP quality. Flat vector art stays clean well below the default, and at
+ *  this size the extra pixels buy more perceived sharpness than the bitrate
+ *  would — 1400/0.62 and 1100/0.78 weigh the same. */
+const POSTER_QUALITY = 0.62;
 
 const MIME = {
   '.js': 'text/javascript',

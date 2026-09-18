@@ -114,10 +114,12 @@ export const LOTTIE_KEYS = Object.keys(LOTTIE_LOADERS) as LottieKey[];
  * Poster stems, relative to `assets/lotties/posters` and without the
  * `_light` / `_dark` suffix.
  *
- * A poster is the animation's first frame, flattened to a ~14kB WebP. DotAnim
+ * A poster is the animation's first frame, flattened to a ~45kB WebP. DotAnim
  * paints it the moment a slot appears, so the box is never empty while the
- * DotLottie runtime and the animation file are still on their way. Regenerate
- * with `node scripts/generate-lottie-posters.mjs` after touching a .lottie.
+ * DotLottie runtime and the animation file are still on their way — and when
+ * animations are switched off it is all that gets rendered, which is why it is
+ * sized to hold up on its own rather than just to cover a gap. Regenerate with
+ * `node scripts/generate-lottie-posters.mjs` after touching a .lottie.
  */
 const LOTTIE_POSTER_STEM: Record<LottieKey, string> = {
   "home.hero": "home/Home",

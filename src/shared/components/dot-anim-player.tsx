@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
 import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
 
@@ -16,6 +16,11 @@ import {
   LottiePoster,
   selectSrc,
 } from "@shared/components/dot-anim-shared";
+import {
+  pruneDetached,
+  registerPlayer,
+  setPlaybackEnabled,
+} from "@shared/components/dot-anim-playback";
 
 // Point the WASM runtime to the locally-bundled file so DotLottie never
 // fetches from an external CDN, which the production CSP would block.
@@ -123,16 +128,45 @@ function DotAnimPlayer(props: DotAnimProps) {
     return () => dotLottieInstance.removeEventListener("render", handleRender);
   }, [dotLottieInstance]);
 
-  // Imperatively pause/play when the global animations toggle changes so the
-  // change takes effect immediately without remounting the player.
+  // The preference is applied through the shared registry rather than to the
+  // instance this component happens to hold, so a flip reaches every live
+  // instance at once — including any the component never learned about.
+  useEffect(() => {
+    setPlaybackEnabled(animationsEnabled);
+  }, [animationsEnabled]);
+
+  // Read inside the ref callback, which the library keeps stable for the
+  // lifetime of the canvas and therefore cannot see a fresh prop.
+  const autoplayPropRef = useRef(autoplayProp);
+  autoplayPropRef.current = autoplayProp;
+
+  // Register on creation, release on teardown. The registry puts each instance
+  // into the state the preference calls for straight away, so one created
+  // while animations are off never gets a chance to autoplay.
+  const handleInstance = useCallback((instance: DotLottie | null) => {
+    // A replaced instance is deliberately left registered. The library hands a
+    // second one over without first reporting a teardown for the first — which
+    // is what StrictMode's double attach produces — and that first one is
+    // still drawing on the same canvas. Dropping it here is precisely how the
+    // visible animation used to escape the toggle; the registry keeps it under
+    // control instead, and prunes it once its canvas leaves the document.
+    if (instance) {
+      registerPlayer(instance, autoplayPropRef.current);
+    } else {
+      // The canvas has gone; drop everything that was drawing on it.
+      pruneDetached();
+    }
+    setDotLottieInstance(instance);
+  }, []);
+
+  // Keeps the registry's copy of this slot's autoplay intent true. Nothing is
+  // unregistered on cleanup: an instance leaves the registry when its canvas
+  // leaves the document, which is the only signal that tells a superseded
+  // instance apart from a live one.
   useEffect(() => {
     if (!dotLottieInstance) return;
-    if (animationsEnabled && autoplayProp) {
-      dotLottieInstance.play();
-    } else {
-      dotLottieInstance.pause();
-    }
-  }, [animationsEnabled, autoplayProp, dotLottieInstance]);
+    registerPlayer(dotLottieInstance, autoplayProp);
+  }, [autoplayProp, dotLottieInstance]);
 
   const src = animKey
     ? readLottieSrc(animKey, stableTheme)
@@ -210,7 +244,7 @@ function DotAnimPlayer(props: DotAnimProps) {
           align: presentation?.align ?? [0.5, 0.5],
         }}
         style={playerStyle}
-        dotLottieRefCallback={setDotLottieInstance}
+        dotLottieRefCallback={handleInstance}
       />
 
       {/* Sits above the canvas, not below it: until the first frame is drawn the
