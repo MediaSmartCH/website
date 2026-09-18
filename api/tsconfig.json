@@ -1,0 +1,33 @@
+{
+  // Vercel compiles the functions in this directory with the nearest tsconfig.
+  // Without this file that is the root config — the browser one — whose
+  // `module: esnext` emits ESM `import` statements. The repository has no
+  // `"type": "module"`, so Node loads those .js files as CommonJS and the very
+  // first import is a syntax error. Node 22 masked it by reparsing the file as
+  // ESM when the CommonJS parse failed; Node 24 does not, and every function
+  // answered 500.
+  //
+  // Only the module format is set here. An earlier version of this file
+  // extended ../tsconfig.api.json and brought its strictness with it, which
+  // made Vercel's build log noisier for no gain (#73 reverted it for that
+  // reason). This one changes what is emitted, nothing about what is checked.
+  //
+  // `pnpm typecheck` still runs ../tsconfig.api.json, which also covers the
+  // tests — they use top-level await and must stay ESM, hence the exclude.
+  // Everything here exists to emit loadable output and to keep the build log
+  // readable. Deliberately no `strict`: this file must not re-litigate what
+  // ../tsconfig.api.json already checks locally.
+  "compilerOptions": {
+    "module": "node16",
+    "moduleResolution": "node16",
+    "target": "es2022",
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "include": ["./**/*"],
+  "exclude": ["**/*.test.ts", "_tests/**"]
+}
