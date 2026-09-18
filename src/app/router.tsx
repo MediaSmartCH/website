@@ -14,25 +14,26 @@ import LangLayout from "@app/layout/lang-layout";
 import ErrorBoundary from "@app/layout/error-boundary";
 
 import PreLoader from "@shared/components/preloader";
+import { withChunkRecovery } from "@shared/lib/chunk-recovery";
 import {
   buildLocalizedPath,
   DEFAULT_LANGUAGE,
   normalizeLanguage,
 } from "@shared/config/languages";
 
-const Homepage = lazy(() => import("@features/home/home-page"));
+const Homepage = lazy(withChunkRecovery(() => import("@features/home/home-page")));
 /* ============================================================================
  * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
  * Le volet "services vidéo" est mis en pause : le site ne communique plus que
  * sur l'informatique. Tout le code ci-dessous reste volontairement en place
  * pour pouvoir réactiver l'offre vidéo en décommentant simplement ce bloc.
  * ============================================================================ */
-// const VideoServicesPage = lazy(() => import("@features/video-services/video-services-page"));
-const ITServicesPage = lazy(() => import("@features/it-services/it-services-page"));
-const PrivacyPolicyPage = lazy(() => import("@features/privacy-policy/privacy-policy-page"));
-const LegalNoticePage = lazy(() => import("@features/legal/legal-notice-page"));
-const TermsPage = lazy(() => import("@features/legal/terms-page"));
-const Error404Page = lazy(() => import("@features/error/error-404-page"));
+// const VideoServicesPage = lazy(withChunkRecovery(() => import("@features/video-services/video-services-page")));
+const ITServicesPage = lazy(withChunkRecovery(() => import("@features/it-services/it-services-page")));
+const PrivacyPolicyPage = lazy(withChunkRecovery(() => import("@features/privacy-policy/privacy-policy-page")));
+const LegalNoticePage = lazy(withChunkRecovery(() => import("@features/legal/legal-notice-page")));
+const TermsPage = lazy(withChunkRecovery(() => import("@features/legal/terms-page")));
+const Error404Page = lazy(withChunkRecovery(() => import("@features/error/error-404-page")));
 /* ============================================================================
  * CONTRAT DE SUPPORT DÉSACTIVÉ — NE PAS SUPPRIMER
  * L'offre de contrat de support est en cours de refonte. La page, ses textes
@@ -42,8 +43,8 @@ const Error404Page = lazy(() => import("@features/error/error-404-page"));
  * suivre la marche à suivre décrite dans "_supportContractDisabled"
  * (src/shared/seo/route-seo-data.json).
  * ========================================================================= */
-// const SupportContractPage = lazy(() => import("@features/support-contract/support-contract-page"));
-const BookingManagePage = lazy(() => import("@features/booking/booking-manage-page"));
+// const SupportContractPage = lazy(withChunkRecovery(() => import("@features/support-contract/support-contract-page")));
+const BookingManagePage = lazy(withChunkRecovery(() => import("@features/booking/booking-manage-page")));
 
 // Wraps a page node in an ErrorBoundary and a Suspense with a full-page loader fallback.
 const Wrap = (node: React.ReactNode) => (

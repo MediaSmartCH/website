@@ -249,6 +249,57 @@ To rotate the secret, add the new value in Cloudflare first, then change it in
 Vercel; there is a brief window where both must be accepted, so rotate with
 enforcement off if the traffic matters.
 
+## Immutable assets and cached 404s
+
+`vercel.json` gives `/assets/(.*)` a one-year `immutable` cache. That is
+Vercel's own documented pattern and it is correct for the files themselves:
+their names carry a content hash, so a given name never changes meaning.
+
+It has a sharp edge. Vercel applies configured headers by **path**, with no way
+to condition on the response status, so a **404 under `/assets/` is served with
+the same one-year `immutable` header**. Any CDN or browser that asks for an
+asset while it is missing caches that 404 for a year:
+
+```
+GET /assets/does-not-exist.js
+→ 404
+→ cache-control: public, max-age=31536000, immutable
+```
+
+A missing asset is not hypothetical. Route code is loaded on demand, chunk
+names change with every deployment, and a browser tab left open still holds the
+previous deployment's HTML — so it asks for a file that is gone.
+
+Three layers, because no single one covers it:
+
+1. **The app recovers itself.** `withChunkRecovery` (`src/shared/lib/`) wraps
+   every `React.lazy` import: a failed chunk load reloads the page once, which
+   fetches the current HTML and with it the current chunk names. Once per
+   session — a reload loop would be worse than the error page it avoids — and
+   it does nothing when `sessionStorage` is unavailable, because then there is
+   nothing to stop the loop with.
+
+2. **Skew Protection keeps the old files reachable**, which is the remedy
+   Vercel designed for this and the one that stops the 404 from happening at
+   all. It is a project setting, not repository configuration:
+
+   ```bash
+   vercel project protection enable website --skew --skew-max-age 2592000
+   ```
+
+   The app already sends `x-deployment-id` on its API calls
+   (`fetchWithDeployment`), which is the matching half for the functions.
+
+3. **A poisoned CDN entry has to be purged.** If a CDN cached a 404 for a file
+   that now exists, neither of the above helps: the reload asks for the same
+   file and gets the same cached 404. Purge it — in Cloudflare, *Caching →
+   Configuration → Purge Everything*; on Vercel, `vercel cache purge --type cdn`.
+   Cloudflare caches per datacenter, so the symptom can appear in one region and
+   not another; check `cf-ray` when a report does not reproduce.
+
+   This is also why probing asset URLs that are expected to 404 is not free: the
+   probe itself is what plants the entry.
+
 ## Animation Security
 
 ### WASM execution
