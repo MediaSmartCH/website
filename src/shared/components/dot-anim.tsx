@@ -4,6 +4,7 @@ import { useAppSelector } from "@shared/hooks/store-hooks";
 import {
   getLottieAspectRatio,
   getLottiePoster,
+  type PosterSource,
   getLottiePresentation,
 } from "@shared/config/lotties";
 import {
@@ -46,13 +47,13 @@ function PosterOnlyPlayer(props: DotAnimProps) {
   const theme = useAppSelector((state) => state.theme.currentTheme);
   const animKey = hasAnim(props) ? props.anim : undefined;
 
-  const posterUrl = animKey ? getLottiePoster(animKey, theme) : undefined;
+  const poster = animKey ? getLottiePoster(animKey, theme) : undefined;
 
-  if (!animKey || !posterUrl) return null;
+  if (!animKey || !poster) return null;
 
   return (
     <LottiePoster
-      src={posterUrl}
+      poster={poster}
       scale={getLottiePresentation(animKey)?.scale}
       eager
     />
@@ -167,17 +168,17 @@ function whenRuntimeIsFree(): Promise<void> {
 type PosterBoxProps = {
   className?: string;
   style: React.CSSProperties;
-  posterUrl?: string;
+  poster?: PosterSource;
   scale?: number;
   eager?: boolean;
   ref?: React.Ref<HTMLDivElement>;
 };
 
 /** The animation's box, showing its still frame and nothing else. */
-function PosterBox({ className, style, posterUrl, scale, eager, ref }: PosterBoxProps) {
+function PosterBox({ className, style, poster, scale, eager, ref }: PosterBoxProps) {
   return (
     <div ref={ref} aria-hidden={true} className={`relative ${className || ""}`} style={style}>
-      {posterUrl && <LottiePoster src={posterUrl} scale={scale} eager={eager} />}
+      {poster && <LottiePoster poster={poster} scale={scale} eager={eager} />}
     </div>
   );
 }
@@ -202,7 +203,7 @@ function DotAnim(props: DotAnimProps) {
   const animKey = hasAnim(props) ? props.anim : undefined;
   const intrinsicAspectRatio = animKey ? getLottieAspectRatio(animKey) : undefined;
   const presentation = animKey ? getLottiePresentation(animKey) : undefined;
-  const posterUrl = animKey ? getLottiePoster(animKey, theme) : undefined;
+  const poster = animKey ? getLottiePoster(animKey, theme) : undefined;
 
   const animationsEnabled = useAppSelector((state) => state.animations.enabled);
 
@@ -322,7 +323,7 @@ function DotAnim(props: DotAnimProps) {
           <PosterBox
             className={className}
             style={placeholderStyle}
-            posterUrl={posterUrl}
+            poster={poster}
             scale={presentation?.scale}
             eager={true}
           />
@@ -338,7 +339,7 @@ function DotAnim(props: DotAnimProps) {
       ref={placeholderRef}
       className={className}
       style={placeholderStyle}
-      posterUrl={posterUrl}
+      poster={poster}
       scale={presentation?.scale}
       // Nothing is coming to replace it, so it is worth fetching up front
       // rather than at scroll time.

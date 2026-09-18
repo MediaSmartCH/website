@@ -1,6 +1,6 @@
 import React from "react";
 
-import { LottieKey } from "@shared/config/lotties";
+import { LottieKey, PosterSource } from "@shared/config/lotties";
 
 type Base = {
   className?: string;
@@ -31,7 +31,7 @@ function selectSrc(theme: string, pair: { light: string; dark?: string }) {
 }
 
 type PosterProps = {
-  src: string;
+  poster: PosterSource;
   /** Same scale the player applies, so the still frame lands on the same pixels. */
   scale?: number;
   /** Off-screen slots defer their poster; an imminent one loads right away. */
@@ -44,10 +44,12 @@ type PosterProps = {
  * Decorative, so it stays out of the accessibility tree: the animations carry
  * no information the surrounding copy does not already give.
  */
-function LottiePoster({ src, scale = 1, eager = false }: PosterProps) {
-  return (
+function LottiePoster({ poster, scale = 1, eager = false }: PosterProps) {
+  const image = (
     <img
-      src={src}
+      src={poster.src}
+      srcSet={poster.srcSet || undefined}
+      sizes={poster.sizes || undefined}
       alt=""
       aria-hidden={true}
       draggable={false}
@@ -60,6 +62,19 @@ function LottiePoster({ src, scale = 1, eager = false }: PosterProps) {
         transformOrigin: "center center",
       }}
     />
+  );
+
+  if (!poster.sources) return image;
+
+  // <picture> is display:inline and establishes no containing block, so the
+  // absolutely-positioned img still resolves against the slot as before.
+  return (
+    <picture>
+      {poster.sources.map((source) => (
+        <source key={source.media} media={source.media} srcSet={source.url} />
+      ))}
+      {image}
+    </picture>
   );
 }
 export { LottiePoster, hasAnim, selectSrc };

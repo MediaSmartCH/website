@@ -6,6 +6,8 @@ import { defineConfig, HtmlTagDescriptor, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+import { HERO_POSTER_BUCKETS } from "./src/shared/config/poster-sizes";
+
 const _require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -122,7 +124,8 @@ function dotLottieWasmPlugin(): Plugin {
  * visitor, which is the case that pays the cold-start cost.
  */
 function heroPosterPreloadPlugin(): Plugin {
-  const HERO_POSTER = /Home_light-[\w-]+\.webp$/;
+  // Every width the hero poster was generated at; the filename carries it.
+  const HERO_POSTER = /(^|\/)Home_light-(\d+)-[\w-]+\.webp$/;
   // The home page is the only route rendering the hero; the others would pay
   // for a poster they never show.
   const HOME_PAGES = new Set(["index", "fr", "en"]);
@@ -134,25 +137,48 @@ function heroPosterPreloadPlugin(): Plugin {
       order: "post",
       handler(html, ctx) {
         if (!HOME_PAGES.has(path.basename(ctx.filename, ".html"))) return;
+        if (!ctx.bundle) return;
 
-        const poster = ctx.bundle
-          ? Object.keys(ctx.bundle).find((name) => HERO_POSTER.test(name))
-          : undefined;
+        const built = Object.keys(ctx.bundle)
+          .map((name) => {
+            const match = HERO_POSTER.exec(name);
+            return match ? { name, width: Number(match[2]) } : undefined;
+          })
+          .filter((entry): entry is { name: string; width: number } => !!entry)
+          .sort((a, b) => a.width - b.width);
 
-        if (!poster) return;
+        if (!built.length) return;
 
-        const tag: HtmlTagDescriptor = {
-          tag: "link",
-          injectTo: "head-prepend",
-          attrs: {
-            rel: "preload",
-            as: "image",
-            href: `/${poster}`,
-            fetchpriority: "high",
-          },
-        };
+        const pick = (want: number) =>
+          (built.find((entry) => entry.width >= want) ?? built[built.length - 1]).name;
 
-        return [tag];
+        // One preload per bucket, carrying the same media condition the
+        // <picture> uses. The conditions are mutually exclusive, so exactly one
+        // fires — and it is necessarily the file the image then displays.
+        // An imagesrcset preload cannot promise that: the scanner resolves `w`
+        // descriptors on its own and, under Lighthouse's 2.625 mobile density,
+        // picked a different candidate than layout did and fetched both.
+        const links = HERO_POSTER_BUCKETS.map(
+          (bucket) =>
+            `<link rel="preload" as="image" href="/${pick(bucket.width)}" media="${bucket.media}" fetchpriority="high">`
+        ).join("\n  ");
+
+        // Inserted after the viewport meta by hand rather than through a tag
+        // descriptor, because position matters here and `head-prepend` puts
+        // these *before* it. Until that meta is parsed the layout viewport is
+        // the 980px default, so on a phone the scanner read `(min-width:
+        // 768px)` as true and preloaded the wide bucket as well as the narrow
+        // one — both files, which is the waste these buckets exist to avoid.
+        const viewport = /<meta[^>]+name="viewport"[^>]*>/.exec(html);
+        if (!viewport) {
+          this.warn("viewport meta not found; skipping hero poster preload");
+          return;
+        }
+
+        return html.replace(
+          viewport[0],
+          `${viewport[0]}\n  ${links}`
+        );
       },
     },
   };

@@ -175,7 +175,7 @@ function DotAnimPlayer(props: DotAnimProps) {
       : undefined;
 
   // Only keyed animations have a poster; raw-src callers pass their own markup.
-  const posterUrl = animKey ? getLottiePoster(animKey, stableTheme) : undefined;
+  const poster = animKey ? getLottiePoster(animKey, stableTheme) : undefined;
   // The player below is keyed on the source, so switching theme mounts a fresh
   // canvas that is blank again. Without this the poster would stay hidden over
   // it, which is the gap the poster exists to cover.
@@ -249,8 +249,8 @@ function DotAnimPlayer(props: DotAnimProps) {
 
       {/* Sits above the canvas, not below it: until the first frame is drawn the
           canvas is fully transparent, so anything behind it would show through. */}
-      {posterUrl && !hasPainted && (
-        <LottiePoster src={posterUrl} scale={presentation?.scale} eager={true} />
+      {poster && !hasPainted && (
+        <LottiePoster poster={poster} scale={presentation?.scale} eager={true} />
       )}
 
       {/* Transparent overlay that intercepts all pointer/touch events to prevent
