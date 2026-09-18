@@ -2,7 +2,7 @@ import fs from "fs";
 import { createHash } from "crypto";
 import { createRequire } from "module";
 import { fileURLToPath } from "url";
-import { defineConfig, HtmlTagDescriptor, Plugin, PluginOption } from "vite";
+import { defineConfig, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
