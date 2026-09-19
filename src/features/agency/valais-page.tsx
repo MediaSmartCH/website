@@ -1,33 +1,27 @@
 /**
  * /web-agency-valais.
  *
- * Not the Suisse romande page with the place name swapped. What is on it is
- * what is only true here: where the office actually is, which clients in the
- * canton are online, and the working calendar — the Valais public holidays the
- * lead times are counted against.
+ * Whether MediaSmart is a web agency based in Valais, and what that means in
+ * practice. Nothing else: the prestations, the method and the general
+ * questions are the homepage's, answered once there.
  *
- * There is no "where we work" section on this page. The hero says Dorénaz, the
- * local section's last item says we also work beyond the canton, and the FAQ
- * answers it in full — a fourth statement of the same fact was a section that
- * existed to hold a link. That link now sits with the local section, where a
- * reader has just been told what the canton means to us.
+ * What stays is what is only true here — the office in Dorénaz, the Valais
+ * clients who are online, the working calendar counted against the canton's
+ * own public holidays — and the links to where the rest lives.
  */
 
 import React from "react";
 
 import Contact from "@features/contact/components/contact-section";
 import Booking from "@features/booking/components/booking-cta";
-import Process from "@features/it-services/components/process";
 
 import {
   LandingHero,
   LandingLink,
   LandingLocalFacts,
   LandingSection,
-  LandingServiceRows,
   LandingWave,
   type LandingCard,
-  type LandingServiceRow,
 } from "@features/agency/components/landing-blocks";
 import WorkPreview from "@features/work/components/work-preview";
 import { WORK_BASE_PATH } from "@features/work/lib/work-routes";
@@ -44,14 +38,6 @@ import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 /** The two clients established in the canton, named on this page for that reason. */
 const VALAIS_CLIENT_IDS = ["jocolor", "soclean4u"];
 
-/** The homepage's own pairing for these same four subjects, no repeats. */
-const SERVICE_VISUALS: LandingServiceRow["visual"][] = [
-  { anim: "it.services.website" },
-  { anim: "it.services.security" },
-  { anim: "it.services.backup" },
-  { anim: "it.services.maintenance" },
-];
-
 export default function ValaisPage() {
   useScrollToHash();
 
@@ -61,10 +47,6 @@ export default function ValaisPage() {
   React.useEffect(() => {
     refreshAosAnimations();
   }, []);
-
-  const serviceRows: LandingServiceRow[] = t
-    .array<LandingCard>("agency.valaisServices")
-    .map((card, index) => ({ ...card, visual: SERVICE_VISUALS[index] }));
 
   return (
     <>
@@ -77,10 +59,15 @@ export default function ValaisPage() {
         intro={t.text("agency.valaisIntro")}
         anim="it.about"
         actions={
-          <BookingButton
-            className="hero-btn custom-btn w-[280px] h-[48px] flex items-center justify-center text-center rounded-[5px] text-white font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px]"
-            text={t.text("agency.ctaButton")}
-          />
+          <>
+            <BookingButton
+              className="hero-btn custom-btn w-[280px] h-[48px] flex items-center justify-center text-center rounded-[5px] text-white font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px]"
+              text={t.text("agency.ctaButton")}
+            />
+            <LandingLink to="#services" inline>
+              {t.text("agency.servicesCta")}
+            </LandingLink>
+          </>
         }
       />
 
@@ -88,30 +75,20 @@ export default function ValaisPage() {
         id="local"
         title={t.text("agency.valaisLocalTitle")}
         facts={t.array<LandingCard>("agency.valaisLocal")}
-        link={
+      />
+
+      {/* The two clients the section above names by name. */}
+      <LandingSection id="work" title={t.text("agency.proofTitle")}>
+        <WorkPreview ids={VALAIS_CLIENT_IDS} />
+        <div className="w-full flex flex-wrap justify-center gap-[14px] mt-[30px] lg:mt-[40px]">
+          <LandingLink to={WORK_BASE_PATH} inline>
+            {t.text("agency.proofCta")}
+          </LandingLink>
           <LandingLink to="/web-agency-switzerland" inline>
             {t.text("agency.romandieLinkLabel")}
           </LandingLink>
-        }
-      />
-
-      {/* The Valais clients lead here, right after the section that names
-          them: the facts above say JoColor and SoClean4U, and these are those
-          two sites. */}
-      <LandingSection id="work" title={t.text("agency.proofTitle")}>
-        <WorkPreview ids={VALAIS_CLIENT_IDS} />
-        <LandingLink to={WORK_BASE_PATH}>{t.text("agency.proofCta")}</LandingLink>
+        </div>
       </LandingSection>
-
-      <LandingSection id="services" title={t.text("agency.valaisServicesTitle")}>
-        <LandingServiceRows rows={serviceRows} />
-        <LandingLink to="#services">{t.text("agency.servicesCta")}</LandingLink>
-      </LandingSection>
-
-      <Process
-        title={t.text("agency.methodTitle")}
-        description={t.text("agency.methodDescription")}
-      />
 
       <FaqSection
         title={t.text("agency.faqTitle")}

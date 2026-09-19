@@ -40,7 +40,7 @@ const work = {
 
     moreTitle: "Continuer la visite",
     otherProjects: "Voir d'autres projets",
-    servicesCta: "Nos prestations de création de sites web",
+    servicesCta: "Découvrir nos prestations web & apps",
     previousProject: "Projet précédent",
     nextProject: "Projet suivant",
 

@@ -36,6 +36,11 @@ const agency = {
     valaisLinkLabel: "Notre activité en Valais",
     romandieLinkLabel: "Notre activité en Suisse romande",
     regionalLinksTitle: "Où nous travaillons",
+    // Sous les deux cartes régionales : la proximité est un argument, pas
+    // une condition. Sans cette ligne, deux cartes "Suisse romande" et
+    // "Valais" laissent penser qu'on ne prend rien d'autre.
+    beyondRegionText: "Votre entreprise est ailleurs en Suisse ou à l'étranger\u00a0? La conception, le développement et le suivi se font à distance, comme pour la plupart de nos projets.",
+    beyondRegionCta: "Parler de votre projet",
     regionalLinksDescription: "Deux pages détaillées : ce que nous réalisons, comment se déroule un projet, et où nous intervenons.",
     regionalLinks: [
         {
@@ -123,26 +128,35 @@ const agency = {
         Le siège est à Dorénaz, dans le Bas-Valais. Les échanges se font en français ou en anglais, et les horaires ouvrés sont du lundi au vendredi, de 07h00 à 18h00.
         `,
 
+    romandiePresenceTitle: "Notre présence en Suisse romande",
+    romandiePresence: [
+        {
+            title: "Basés à Dorénaz, en Valais",
+            description: "Le siège est dans le Bas-Valais. C'est de là que part le travail et que s'organisent les déplacements.",
+        },
+        {
+            title: "Des clients dans plusieurs cantons",
+            description: "Des PME, des indépendants et des associations, rencontrés en Valais, dans le canton de Vaud, à Genève et à Fribourg.",
+        },
+        {
+            title: "Rendez-vous sur place ou en ligne",
+            description: "Un premier échange peut se tenir dans vos locaux lorsque le déplacement se justifie, ou en visioconférence.",
+        },
+        {
+            title: "Le travail lui-même se fait à distance",
+            description: "Conception, développement et suivi n'imposent pas d'être voisins : des clients ailleurs en Suisse et à l'étranger sont pris en charge de la même manière.",
+        },
+        {
+            title: "Une base technique pensée pour être trouvée",
+            description: "Les sites sont conçus avec une structure optimisée pour les moteurs de recherche et pour les moteurs de réponse IA.",
+        },
+    ],
+
     romandieFaq: [
         {
             faqQuestion: "Quelle agence choisir pour créer un site web en Suisse romande ?",
             faqAnswer:
                 "Il n'existe pas de réponse unique : cela dépend de votre budget, de la complexité du projet et de qui assurera le suivi. Quatre points méritent d'être vérifiés avant de signer — qui réalise concrètement le travail, ce que le devis inclut et exclut, ce qui se passe après la mise en ligne, et si des réalisations sont consultables en ligne. MediaSmart est une raison individuelle basée en Valais : un interlocuteur unique, un périmètre écrit avant le démarrage, une garantie corrective de 14 jours, et des sites clients publiquement accessibles.",
-        },
-        {
-            faqQuestion: "Qui peut développer à la fois un site web et une application en Suisse romande ?",
-            faqAnswer:
-                "Beaucoup de prestataires font l'un ou l'autre. MediaSmart fait les deux : sites vitrines et sites business d'un côté, applications web sur mesure avec base de données, authentification et API de l'autre. C'est la même personne qui conçoit le site et l'outil métier, ce qui évite d'avoir à faire dialoguer deux prestataires lorsque les deux doivent fonctionner ensemble.",
-        },
-        {
-            faqQuestion: "Combien coûte la création d'un site internet en Suisse ?",
-            faqAnswer:
-                "Le prix dépend du nombre de pages, des fonctionnalités (boutique, réservation, espace membre), des intégrations avec vos outils existants et de la quantité de contenu à reprendre. MediaSmart facture 140 CHF/h en tarif standard et établit un devis détaillé après analyse du besoin, avant tout démarrage. La rédaction des contenus, les traductions, les photos et les vidéos ne sont pas comprises par défaut.",
-        },
-        {
-            faqQuestion: "Quelle différence entre un site web, une application web et une application mobile ?",
-            faqAnswer:
-                "Un site web présente de l'information et se consulte : pages, articles, formulaire de contact. Une application web s'utilise pour faire quelque chose — saisir, chercher, valider, suivre un dossier — depuis un navigateur, avec des comptes utilisateurs et une base de données. Une application mobile s'installe depuis un magasin d'applications et s'exécute sur le téléphone. MediaSmart réalise les deux premières.",
         },
         {
             faqQuestion: "Faut-il être en Suisse romande pour travailler avec MediaSmart ?",
@@ -156,7 +170,7 @@ const agency = {
     valaisLead:
         "MediaSmart est basée à Dorénaz, en Valais. Nous créons des sites internet et développons des applications web pour les entreprises, les indépendants et les associations du canton — et nous sommes sur place pour en parler.",
     valaisIntro: `
-        Travailler avec un prestataire du canton change deux choses concrètes : un rendez-vous ne demande pas d'organiser un déplacement, et le calendrier de travail suit le vôtre, jours fériés valaisans compris.
+        Travailler avec un prestataire du canton change deux choses concrètes : un rendez-vous ne demande pas d'organiser un déplacement, et le calendrier de travail suit le vôtre, jours fériés valaisans compris. Les sites sont conçus avec une base technique optimisée pour les moteurs de recherche et pour les moteurs de réponse IA.
         `,
 
     valaisLocalTitle: "Notre ancrage dans le canton",
@@ -214,19 +228,9 @@ const agency = {
                 "Non. Le siège est en Valais, à Dorénaz, et c'est dans le canton que se concentrent les rendez-vous sur place. Nous rencontrons aussi nos clients dans les cantons de Vaud, Genève et Fribourg, et le développement comme le suivi se faisant à distance, nous travaillons avec des clients partout en Suisse et à l'étranger.",
         },
         {
-            faqQuestion: "Peut-on se rencontrer avant de s'engager ?",
-            faqAnswer:
-                "Oui. La première consultation dure 30 minutes, elle est gratuite et sans engagement. Elle peut se tenir dans vos locaux, à votre domicile ou en ligne, selon ce qui vous arrange. Vous recevez ensuite un devis détaillé sous 48 heures.",
-        },
-        {
             faqQuestion: "Quels types d'entreprises valaisannes accompagnez-vous ?",
             faqAnswer:
                 "Des PME, des indépendants et des associations qui n'ont pas d'équipe technique interne. Parmi les sites que nous avons réalisés figurent une entreprise de peinture en bâtiment, une société de nettoyage, un cabinet d'architecture, une officiante laïque et plusieurs associations.",
-        },
-        {
-            faqQuestion: "Créez-vous aussi des applications, ou seulement des sites ?",
-            faqAnswer:
-                "Les deux. Au-delà des sites vitrines et des sites business, nous développons des applications web sur mesure avec base de données, authentification et intégrations. Deux de nos propres applications — un tableau de bord d'analyse des factures fournisseurs et une gestion documentaire hébergée sur le réseau interne du client — sont nées de ce type de besoin.",
         },
     ],
 };

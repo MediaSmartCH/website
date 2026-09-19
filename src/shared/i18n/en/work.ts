@@ -38,7 +38,7 @@ const work = {
 
     moreTitle: "Keep looking around",
     otherProjects: "See other projects",
-    servicesCta: "Our website and application services",
+    servicesCta: "See our web & app services",
     previousProject: "Previous project",
     nextProject: "Next project",
 

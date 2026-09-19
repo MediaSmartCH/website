@@ -1,34 +1,30 @@
 /**
- * The pillar page: "création de sites web et d'applications en Suisse romande".
+ * /web-agency-switzerland.
  *
- * It answers the question someone actually types — which supplier can build a
- * website and an application here — rather than describing services in the
- * abstract. Everything on it is checkable somewhere else on the site: the
- * services against the homepage services section, the method against it too,
- * the area against the FAQ, the work against /projects.
+ * This page answers one question: does MediaSmart work in Suisse romande, and
+ * from where. That is all it is for.
  *
- * It is composed out of the site's own sections rather than page-specific
- * ones: the services page's `Process`, its FAQ section, and the homepage's
- * booking block under a wave. The contact form closes the page, as it does on
- * the services page, so a visitor who has read this far need not navigate to
- * write.
+ * It used to answer several others as well — what we build, how we work, how a
+ * project runs, what it costs — each of which the homepage now answers once,
+ * properly, for every visitor. Repeating them here made a long page whose
+ * value was its length rather than its subject, and gave a reader the same
+ * text twice depending on which door they came through. Those sections are
+ * gone; what is left is the part that is only true of this page, and links to
+ * where the rest lives.
  */
 
 import React from "react";
 
 import Contact from "@features/contact/components/contact-section";
 import Booking from "@features/booking/components/booking-cta";
-import Process from "@features/it-services/components/process";
 
 import {
-  LandingFeature,
   LandingHero,
   LandingLink,
+  LandingLocalFacts,
   LandingSection,
-  LandingServiceRows,
   LandingWave,
   type LandingCard,
-  type LandingServiceRow,
 } from "@features/agency/components/landing-blocks";
 import WorkPreview from "@features/work/components/work-preview";
 import { WORK_BASE_PATH } from "@features/work/lib/work-routes";
@@ -42,24 +38,8 @@ import { useTranslations } from "@shared/i18n/translator";
 import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 
-/**
- * One animation per service, in the order the dictionary lists them, and no
- * two the same.
- *
- * The pairing is the homepage's own: its six service cards attach these same
- * six animations to these same six subjects, so a reader meeting "application
- * web sur mesure" here sees what they saw there. An earlier version drew four
- * of these as flat SVGs; the animations exist, and they are what gives the
- * site its character.
- */
-const SERVICE_VISUALS: LandingServiceRow["visual"][] = [
-  { anim: "it.services.website" },
-  { anim: "it.services.backup" },
-  { anim: "it.services.maintenance" },
-  { anim: "it.services.optimization" },
-  { anim: "it.services.security" },
-  { anim: "it.services.support" },
-];
+/** Three references, not a second gallery: /projects is the gallery. */
+const ROMANDIE_CLIENT_IDS = ["cc-wk", "jocolor", "lechoixdesmots"];
 
 export default function SuisseRomandePage() {
   useScrollToHash();
@@ -71,69 +51,34 @@ export default function SuisseRomandePage() {
     refreshAosAnimations();
   }, []);
 
-  const serviceRows: LandingServiceRow[] = t
-    .array<LandingCard>("agency.romandieServices")
-    .map((card, index) => ({ ...card, visual: SERVICE_VISUALS[index] }));
-
   return (
     <>
-      {/* The services-page hero animation: the page is about building sites
-          and applications, which is what it depicts. */}
       <LandingHero
         title={t.text("agency.romandieTitle")}
         lead={t.text("agency.romandieLead")}
         intro={t.text("agency.romandieIntro")}
         anim="it.hero"
         actions={
-          <BookingButton
-            className="hero-btn custom-btn w-[280px] h-[48px] flex items-center justify-center text-center rounded-[5px] text-white font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px]"
-            text={t.text("agency.ctaButton")}
-          />
+          <>
+            <BookingButton
+              className="hero-btn custom-btn w-[280px] h-[48px] flex items-center justify-center text-center rounded-[5px] text-white font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px]"
+              text={t.text("agency.ctaButton")}
+            />
+            <LandingLink to="#services" inline>
+              {t.text("agency.servicesCta")}
+            </LandingLink>
+          </>
         }
       />
 
-      <LandingSection id="services" title={t.text("agency.servicesTitle")}>
-        <LandingServiceRows rows={serviceRows} />
-        <LandingLink to="#services">{t.text("agency.servicesCta")}</LandingLink>
-      </LandingSection>
-
-      <LandingFeature anim="it.about" title={t.text("agency.romandieWhyTitle")}>
-        <ul className="flex flex-col gap-[18px]">
-          {t.array<LandingCard>("agency.romandieWhy").map((item, index) => (
-            <li
-              key={item.title}
-              data-aos="fade-up"
-              data-aos-duration="1100"
-              data-aos-delay={index * 70}
-              data-aos-easing="ease-in-sine"
-            >
-              <h3 className="text-heading-strong font-redDisplay font-bold text-[17px] xl:text-[19px] mb-[4px]">
-                {item.title}
-              </h3>
-              <p className="text-body font-poppins font-light text-[13px] xl:text-[15px] leading-relaxed">
-                {item.description}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </LandingFeature>
-
-      {/* The services page's own process section, reading the same five steps
-          from the same keys — one presentation of them on the whole site. */}
-      <Process
-        title={t.text("agency.methodTitle")}
-        description={t.text("agency.methodDescription")}
+      <LandingLocalFacts
+        id="presence"
+        title={t.text("agency.romandiePresenceTitle")}
+        facts={t.array<LandingCard>("agency.romandiePresence")}
       />
 
-      {/*
-        "Où nous intervenons" used to sit after this, restating the cantons the
-        hero and the FAQ both already name and existing mostly to hold the link
-        to the Valais page. The section is gone and the link sits here, beside
-        the work — where a reader who has just seen the projects is closest to
-        wanting the one canton we say most about.
-      */}
       <LandingSection id="work" title={t.text("agency.proofTitle")}>
-        <WorkPreview />
+        <WorkPreview ids={ROMANDIE_CLIENT_IDS} />
         <div className="w-full flex flex-wrap justify-center gap-[14px] mt-[30px] lg:mt-[40px]">
           <LandingLink to={WORK_BASE_PATH} inline>
             {t.text("agency.proofCta")}
@@ -144,6 +89,8 @@ export default function SuisseRomandePage() {
         </div>
       </LandingSection>
 
+      {/* Two questions, both about the place. Price, lead times and the
+          difference between a site and an app are the homepage's to answer. */}
       <FaqSection
         title={t.text("agency.faqTitle")}
         items={t.array<FaqItem>("agency.romandieFaq")}

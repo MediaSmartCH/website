@@ -31,7 +31,7 @@ const PATHS = ["/web-agency-switzerland", "/web-agency-valais"];
 export default function RegionalLinks() {
   const language = useAppSelector((state) => state.language.currentLanguage);
   const t = useTranslations(language);
-  const { L } = useLangLink();
+  const { L, Lhash } = useLangLink();
 
   const links = t.array<RegionalLink>("agency.regionalLinks");
 
@@ -62,13 +62,36 @@ export default function RegionalLinks() {
             <p className="text-body font-poppins font-light text-[13px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] leading-relaxed grow">
               {link.description}
             </p>
-            {/* A span, not a nested link: the card is the link. */}
-            <span className="custom-btn custom-btn-in-card mt-[22px] flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
+            {/* A span, not a nested link: the card is the link. Centred in
+                its block — the copy stays left-aligned, where it reads best,
+                but two buttons on the same line should share an axis. */}
+            <span className="custom-btn custom-btn-in-card mt-[22px] mx-auto flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
               {link.label}
               <ArrowIcon />
             </span>
           </Link>
         ))}
+      </div>
+
+      {/* Proximity is what these two cards argue for; this line makes sure it
+          does not read as a limit. Quiet on purpose — a third card headed
+          "International" would answer a question nobody asked twice as loudly. */}
+      <div
+        className="mt-[26px] lg:mt-[32px] flex flex-col items-center gap-[14px] text-center"
+        data-aos="fade-up"
+        data-aos-duration="1100"
+        data-aos-easing="ease-in-sine"
+      >
+        <p className="text-body font-poppins font-light text-[13px] md:text-[14px] xl:text-[15px] w-full lg:w-[68%]">
+          {t.text("agency.beyondRegionText")}
+        </p>
+        <Link
+          to={Lhash("#contact")}
+          className="custom-btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
+        >
+          {t.text("agency.beyondRegionCta")}
+          <ArrowIcon />
+        </Link>
       </div>
     </section>
   );

@@ -41,7 +41,6 @@ import { useTranslations } from "@shared/i18n/translator";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 import ArrowIcon from "@shared/components/arrow-icon";
 import ImageLightbox from "@shared/components/image-lightbox";
-import BackLink from "@shared/components/back-link";
 import Error404Page from "@features/error/error-404-page";
 
 export default function WorkDetailPage() {
@@ -100,10 +99,6 @@ export default function WorkDetailPage() {
               data-aos-duration="1100"
               data-aos-easing="ease-in-sine"
             >
-              <BackLink to={WORK_BASE_PATH} className="mb-[16px]">
-                {t.text("work.backToIndex")}
-              </BackLink>
-
               <h1 className="text-heading w-full text-center lg:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[34px] xl:text-[40px] 2xl:text-[44px] mb-[16px] leading-[36px] lg:leading-[44px] xl:leading-[54px]">
                 {title}
               </h1>
@@ -207,54 +202,62 @@ export default function WorkDetailPage() {
         is what a reader at the bottom of one project actually wants.
       */}
       <LandingSection id="more" title={t.text("work.moreTitle")}>
-        <div className="flex flex-wrap items-center justify-center gap-[14px]">
-          <Link
-            to={L(WORK_BASE_PATH)}
-            className="custom-btn middle-out flex min-h-[44px] items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white"
-          >
-            {t.text("work.otherProjects")}
-            <ArrowIcon />
-          </Link>
-          <Link
-            to={L("#services")}
-            className="custom-btn-outline flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
-          >
-            {t.text("work.servicesCta")}
-            <ArrowIcon />
-          </Link>
-        </div>
+        {/*
+          One line, one axis. The two actions sit in the middle and the two
+          neighbours at the edges, all vertically centred — before this the
+          previous/next pair hung below the buttons and read as a second,
+          unrelated block. They stay quiet text links on purpose: four buttons
+          of equal weight would make none of them the obvious next step.
 
-        {(previous || next) && (
-          <nav
-            aria-label={t.text("work.moreTitle")}
-            className="mt-[30px] flex flex-col gap-[12px] sm:flex-row sm:items-center sm:justify-between"
-          >
-            {previous ? (
-              <Link
-                to={L(caseStudyPath(previous.id))}
-                className="text-body font-poppins text-[13px] xl:text-[14px] hover:text-heading-strong transition-colors"
-              >
-                <span className="block text-[12px] opacity-70">
-                  {t.text("work.previousProject")}
-                </span>
-                ← {resolveLocalizedField(previous.title, language)}
-              </Link>
-            ) : (
-              <span />
-            )}
-            {next && (
-              <Link
-                to={L(caseStudyPath(next.id))}
-                className="text-body font-poppins text-[13px] xl:text-[14px] hover:text-heading-strong transition-colors sm:text-right"
-              >
-                <span className="block text-[12px] opacity-70">
-                  {t.text("work.nextProject")}
-                </span>
-                {resolveLocalizedField(next.title, language)} →
-              </Link>
-            )}
-          </nav>
-        )}
+          On a phone the row becomes a column and the actions come first,
+          because that is the order of importance once nothing is side by side.
+        */}
+        <div className="flex flex-col gap-[22px] lg:flex-row lg:items-center lg:justify-between lg:gap-[24px]">
+          {previous ? (
+            <Link
+              to={L(caseStudyPath(previous.id))}
+              className="order-2 lg:order-1 lg:w-[24%] text-body font-poppins text-[13px] xl:text-[14px] transition-colors hover:text-heading-strong"
+            >
+              <span className="block text-[12px] opacity-70">
+                {t.text("work.previousProject")}
+              </span>
+              ← {resolveLocalizedField(previous.title, language)}
+            </Link>
+          ) : (
+            <span className="hidden lg:block lg:w-[24%]" />
+          )}
+
+          <div className="order-1 lg:order-2 flex flex-wrap items-center justify-center gap-[14px]">
+            <Link
+              to={L(WORK_BASE_PATH)}
+              className="custom-btn middle-out flex min-h-[44px] items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white"
+            >
+              {t.text("work.otherProjects")}
+              <ArrowIcon />
+            </Link>
+            <Link
+              to={L("#services")}
+              className="custom-btn-outline flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
+            >
+              {t.text("work.servicesCta")}
+              <ArrowIcon />
+            </Link>
+          </div>
+
+          {next ? (
+            <Link
+              to={L(caseStudyPath(next.id))}
+              className="order-3 lg:w-[24%] text-body font-poppins text-[13px] xl:text-[14px] transition-colors hover:text-heading-strong lg:text-right"
+            >
+              <span className="block text-[12px] opacity-70">
+                {t.text("work.nextProject")}
+              </span>
+              {resolveLocalizedField(next.title, language)} →
+            </Link>
+          ) : (
+            <span className="hidden lg:block lg:w-[24%]" />
+          )}
+        </div>
       </LandingSection>
 
       <LandingWave>

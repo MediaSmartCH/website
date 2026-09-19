@@ -28,6 +28,11 @@ const agency = {
     valaisLinkLabel: "What we do in Valais",
     romandieLinkLabel: "What we do across French-speaking Switzerland",
     regionalLinksTitle: "Where we work",
+    // Under the two regional cards: proximity is an argument, not a
+    // condition. Two cards naming two regions and nothing else read as a
+    // restriction.
+    beyondRegionText: "Based elsewhere in Switzerland, or abroad? Design, development and follow-up happen remotely, as they do on most of our projects.",
+    beyondRegionCta: "Talk about your project",
     regionalLinksDescription: "Two pages in detail: what we build, how a project runs, and where we work.",
     regionalLinks: [
         {
@@ -115,26 +120,35 @@ const agency = {
         The office is in Dorénaz, in Bas-Valais. We work in French or English, and business hours are Monday to Friday, 07:00 to 18:00.
         `,
 
+    romandiePresenceTitle: "Where we are, and how we work",
+    romandiePresence: [
+        {
+            title: "Based in Dorénaz, Valais",
+            description: "The office is in Bas-Valais. That is where the work starts from and where journeys are planned.",
+        },
+        {
+            title: "Clients across several cantons",
+            description: "SMEs, freelancers and associations, met in Valais, Vaud, Geneva and Fribourg.",
+        },
+        {
+            title: "Meetings on site or online",
+            description: "A first conversation can happen at your premises when the journey is worth it, or over video.",
+        },
+        {
+            title: "The work itself happens remotely",
+            description: "Design, development and follow-up do not require being neighbours: clients elsewhere in Switzerland and abroad are handled the same way.",
+        },
+        {
+            title: "A technical base built to be found",
+            description: "Sites are built with a structure optimised for search engines and for AI answer engines.",
+        },
+    ],
+
     romandieFaq: [
         {
             faqQuestion: "Which agency should I choose to build a website in French-speaking Switzerland?",
             faqAnswer:
                 "There is no single answer: it depends on your budget, the complexity of the project and who will look after it afterwards. Four things are worth checking before signing — who actually does the work, what the quote includes and excludes, what happens after launch, and whether you can look at previous work online. MediaSmart is a sole proprietorship based in Valais: one point of contact, a written scope before work starts, a 14-day corrective warranty, and client sites that are publicly accessible.",
-        },
-        {
-            faqQuestion: "Who can build both a website and an application in French-speaking Switzerland?",
-            faqAnswer:
-                "Many suppliers do one or the other. MediaSmart does both: showcase and business websites on one side, custom web applications with a database, authentication and APIs on the other. The same person designs the site and the business tool, which avoids having two suppliers negotiate with each other when the two have to work together.",
-        },
-        {
-            faqQuestion: "How much does a website cost in Switzerland?",
-            faqAnswer:
-                "It depends on the number of pages, the features (shop, booking, member area), the integrations with your existing tools and how much content has to be migrated. MediaSmart charges CHF 140/h at the standard rate and issues a detailed quote after reviewing the need, before any work starts. Copywriting, translation, photography and video are not included by default.",
-        },
-        {
-            faqQuestion: "What is the difference between a website, a web application and a mobile app?",
-            faqAnswer:
-                "A website presents information and is read: pages, articles, a contact form. A web application is used to do something — enter, search, approve, follow a case — from a browser, with user accounts and a database. A mobile app is installed from an app store and runs on the phone itself. MediaSmart builds the first two.",
         },
         {
             faqQuestion: "Do I have to be in French-speaking Switzerland to work with MediaSmart?",
@@ -148,7 +162,7 @@ const agency = {
     valaisLead:
         "MediaSmart is based in Dorénaz, Valais. We build websites and web applications for businesses, freelancers and associations across the canton — and we are near enough to come and talk about it.",
     valaisIntro: `
-        Working with a supplier from the canton changes two practical things: a meeting does not require organising a journey, and the working calendar follows yours, Valais public holidays included.
+        Working with a supplier from the canton changes two practical things: a meeting does not require organising a journey, and the working calendar follows yours, Valais public holidays included. Sites are built with a technical base optimised for search engines and for AI answer engines.
         `,
 
     valaisLocalTitle: "Our footing in the canton",
@@ -206,19 +220,9 @@ const agency = {
                 "No. The office is in Valais, in Dorénaz, and on-site meetings are concentrated in the canton. We also meet clients in the cantons of Vaud, Geneva and Fribourg, and since development and follow-up are done remotely, we work with clients throughout Switzerland and abroad.",
         },
         {
-            faqQuestion: "Can we meet before committing to anything?",
-            faqAnswer:
-                "Yes. The first consultation lasts 30 minutes, free and with no commitment. It can take place at your premises, at your home or online, whichever suits you. You then receive a detailed quote within 48 hours.",
-        },
-        {
             faqQuestion: "What kinds of Valais businesses do you work with?",
             faqAnswer:
                 "SMEs, freelancers and associations without an in-house technical team. The sites we have built include a building-painting company, a cleaning company, an architecture firm, a secular ceremony officiant and several associations.",
-        },
-        {
-            faqQuestion: "Do you build applications too, or only websites?",
-            faqAnswer:
-                "Both. Beyond showcase and business websites, we build custom web applications with a database, authentication and integrations. Two of our own applications — a supplier-invoice analytics dashboard and a document management system hosted on the client's internal network — came out of exactly that kind of need.",
         },
     ],
 };
