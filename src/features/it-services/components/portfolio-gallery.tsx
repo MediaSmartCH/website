@@ -5,7 +5,7 @@ import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import { useModalScrollLock } from "@features/it-services/hooks/use-modal-scroll-lock";
 import PortfolioModal from "@features/it-services/components/portfolio-modal";
 import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
-import { formatPreviewCount, formatProjectsCount, formatRemainingProjects, formatRemainingProjectsCta, getItemCategory, getItemImages, getSafeExternalUrl, portfolioCategoryKey, PREVIEW_LIMIT, resolveLocalizedField, sortItemsForPreview, truncateText, type LightboxImage, type PortfolioData } from "@features/it-services/lib/portfolio-helpers";
+import { formatPreviewCount, formatProjectsCount, formatRemainingProjects, formatRemainingProjectsCta, getItemCategory, getItemImages, getPreviewDimClass, getSafeExternalUrl, portfolioCategoryKey, PREVIEW_LIMIT, resolveLocalizedField, sortItemsForPreview, truncateText, type LightboxImage, type PortfolioData } from "@features/it-services/lib/portfolio-helpers";
 
 import { useTranslations } from "@shared/i18n/translator";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
@@ -121,7 +121,7 @@ const PortfolioGallery = () => {
               languageReducer
             );
             const safeItemUrl = getSafeExternalUrl(item.url);
-            const previewImages = getItemImages(item);
+            const previewImages = getItemImages(item, { dark: !classes.isLight });
 
             const previewCard = (
               <>
@@ -129,7 +129,7 @@ const PortfolioGallery = () => {
                   <img
                     src={previewImages[0]}
                     alt={title}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${getPreviewDimClass(item, classes.isLight)}`}
                     loading="lazy"
                   />
                 </div>

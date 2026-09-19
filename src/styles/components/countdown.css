@@ -24,9 +24,11 @@
 }
 
 .launch-countdown-dark {
-  /* Matches the dark card surface (portfolio-theme-classes), so the tiles read
-     as cut out of the card rather than dropped on top of it. */
-  --countdown-fill: rgba(255, 255, 255, 0.05);
+  /* A shade above the dark card surface (#201D39 in portfolio-theme-classes),
+     so the tiles lift off the card. It has to be OPAQUE: the fill is painted
+     over the gradient border layer, and a translucent one lets that gradient
+     flood the whole tile — which is what made the digits unreadable. */
+  --countdown-fill: #2a2748;
   --countdown-edge: 0.55;
   /* Same gradient lightened, for the same reason, against the dark tile. */
   --countdown-digit-from: #d98cff;

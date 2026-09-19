@@ -148,6 +148,18 @@ export function getItemImages(
   return options.dark && item.hasDarkPreview ? paths.map(toDarkVariant) : paths;
 }
 
+/**
+ * Class dimming a preview that has no dark twin, so a bright screenshot does
+ * not glare out of a dark card. Empty in the light theme, and empty for an
+ * item whose preview already follows the theme.
+ */
+export function getPreviewDimClass(
+  item: PortfolioItem | undefined,
+  isLight: boolean
+): string {
+  return !isLight && !item?.hasDarkPreview ? "brightness-90" : "";
+}
+
 /** Accepts a URL only when it is http(s), so a javascript: entry cannot reach an href. */
 export function getSafeExternalUrl(value?: string): string | null {
   if (!value) {

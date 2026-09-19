@@ -8,6 +8,7 @@ import {
   getInlineGalleryClassName,
   getItemCategory,
   getItemImages,
+  getPreviewDimClass,
   groupItemsByCategory,
   portfolioCategoryKey,
   sortItemsForPreview,
@@ -121,6 +122,24 @@ describe("getItemImages", () => {
         { dark: true }
       )
     ).toEqual(["/portfolio/x-0-dark.jpg"]);
+  });
+});
+
+describe("getPreviewDimClass", () => {
+  const base = { id: "x", title: "t", description: "d" };
+
+  it("dims a light-only preview in the dark theme only", () => {
+    expect(getPreviewDimClass(base, false)).toBe("brightness-90");
+    expect(getPreviewDimClass(base, true)).toBe("");
+  });
+
+  it("leaves a preview that follows the theme alone", () => {
+    expect(getPreviewDimClass({ ...base, hasDarkPreview: true }, false)).toBe("");
+  });
+
+  it("treats a missing item as light-only", () => {
+    expect(getPreviewDimClass(undefined, false)).toBe("brightness-90");
+    expect(getPreviewDimClass(undefined, true)).toBe("");
   });
 });
 
