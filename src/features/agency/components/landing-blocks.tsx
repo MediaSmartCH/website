@@ -284,18 +284,31 @@ export function LandingLink({
   to,
   children,
   inline = false,
+  size = "default",
 }: {
   to: string;
   children: React.ReactNode;
   /** Drops the centring wrapper, for use inside a column that sets its own. */
   inline?: boolean;
+  /**
+   * "hero" matches the booking button it stands next to in a hero, which is
+   * taller and set in Helvetica. Side by side at the default size the two were
+   * 44px against 48px in two different typefaces, which is exactly the kind of
+   * near-miss that reads as a mistake.
+   */
+  size?: "default" | "hero";
 }) {
   const { L } = useLangLink();
+
+  const sizing =
+    size === "hero"
+      ? "hero-btn h-[48px] px-[24px] font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px] rounded-[5px]"
+      : "min-h-[44px] px-[18px] font-poppins text-[14px] font-medium";
 
   const link = (
     <Link
       to={L(to)}
-      className="custom-btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
+      className={`custom-btn-outline inline-flex items-center justify-center gap-2 ${sizing}`}
     >
       {children}
       <ArrowIcon />
@@ -477,10 +490,14 @@ export function LandingServiceRows({ rows }: { rows: LandingServiceRow[] }) {
  * Local facts, as a list rather than a wall of cards.
  *
  * This section used to be four large filled rectangles, one per fact, which
- * gave four short sentences the weight of four services. They are now entries
- * in a two-column list, each opening with a short gradient rule instead of a
- * background — the same gradient the site uses for its numerals and its links.
- * The band behind them does the separating a card was doing.
+ * gave four short sentences the weight of four services. They are now plain
+ * entries in a two-column list.
+ *
+ * Nothing draws a box around them: an earlier version put a short gradient
+ * rule above each title and a tinted band behind the lot, which added a motif
+ * the site does not otherwise use and a rectangle with visible edges. What is
+ * left is the wave, which is how every other section of the site separates
+ * itself from the one above.
  */
 export function LandingLocalFacts({
   id,
@@ -496,14 +513,13 @@ export function LandingLocalFacts({
   const theme = useAppSelector((state) => state.theme.currentTheme);
 
   return (
-    <div className="relative w-full section-band py-[30px] md:py-[40px] lg:py-[56px] my-[30px] lg:my-[50px] overflow-hidden">
-      {/* The site's own wave behind the band. On the regional pages this is
-          the only section between the hero and the projects, and as a plain
-          tinted rectangle it read as a list someone had pasted in. Same
-          component, same proportions as everywhere else. */}
+    <div className="relative w-full py-[40px] md:py-[50px] lg:py-[64px] overflow-hidden">
+      {/* The site's own wave, kept shallow: on these pages this is the only
+          section between the hero and the projects, and it needs separating
+          from them without a band's hard edges. */}
       <WaveBackdrop
         theme={theme}
-        className="top-[-40px] h-[360px] md:h-[420px] lg:h-[460px] opacity-70"
+        className="top-[-30px] h-[300px] md:h-[340px] lg:h-[380px] opacity-60"
       />
       <section id={id} className={`${CONTAINER} relative z-10`}>
         <h2
@@ -524,13 +540,6 @@ export function LandingLocalFacts({
               data-aos-delay={(index % 2) * 80}
               data-aos-easing="ease-in-sine"
             >
-              <span
-                className="block h-[3px] w-[38px] rounded-full mb-[14px]"
-                style={{
-                  background: "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)",
-                }}
-                aria-hidden="true"
-              />
               <h3 className="text-heading-strong font-redDisplay font-bold text-[18px] lg:text-[20px] xl:text-[22px] mb-[8px]">
                 {fact.title}
               </h3>

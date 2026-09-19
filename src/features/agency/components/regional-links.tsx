@@ -19,6 +19,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import ArrowIcon from "@shared/components/arrow-icon";
+import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { useTranslations } from "@shared/i18n/translator";
@@ -30,6 +31,7 @@ const PATHS = ["/web-agency-switzerland", "/web-agency-valais"];
 
 export default function RegionalLinks() {
   const language = useAppSelector((state) => state.language.currentLanguage);
+  const theme = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(language);
   const { L, Lhash } = useLangLink();
 
@@ -74,34 +76,36 @@ export default function RegionalLinks() {
       </div>
 
       {/* Proximity is what these two cards argue for; this line makes sure it
-          does not read as a limit. It sits on the site's own tinted band with
-          a gradient rule above it, so it belongs to the section rather than
-          being dropped underneath it — and it stays a line and a button, not
-          a third card headed "International" answering twice as loudly a
-          question nobody asked. */}
-      <div
-        className="section-band mt-[30px] lg:mt-[40px] rounded-[15px] xl:rounded-[20px] px-6 py-[26px] lg:px-10 lg:py-[32px] flex flex-col items-center gap-[16px] text-center"
-        data-aos="fade-up"
-        data-aos-duration="1100"
-        data-aos-easing="ease-in-sine"
-      >
-        <span
-          className="block h-[3px] w-[38px] rounded-full"
-          style={{
-            background: "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)",
-          }}
-          aria-hidden="true"
+          does not read as a limit. It stays a line and a button rather than a
+          third card headed "International", answering twice as loudly a
+          question nobody asked.
+
+          A rounded tinted panel was tried here and made it a card again —
+          exactly what it must not be. It now sits on the page itself, over a
+          shallow wave, with room around it: the shape the site's own closing
+          calls to action have. */}
+      <div className="relative mt-[24px] lg:mt-[34px] overflow-hidden py-[40px] lg:py-[54px]">
+        <WaveBackdrop
+          theme={theme}
+          className="top-[-10px] h-[220px] md:h-[250px] lg:h-[280px] opacity-60"
         />
-        <p className="text-body font-poppins font-light text-[13px] md:text-[14px] xl:text-[15px] w-full lg:w-[70%]">
-          {t.text("agency.beyondRegionText")}
-        </p>
-        <Link
-          to={Lhash("#contact")}
-          className="custom-btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
+        <div
+          className="relative z-10 flex flex-col items-center gap-[18px] text-center"
+          data-aos="fade-up"
+          data-aos-duration="1100"
+          data-aos-easing="ease-in-sine"
         >
-          {t.text("agency.beyondRegionCta")}
-          <ArrowIcon />
-        </Link>
+          <p className="text-body font-poppins font-light text-[13px] md:text-[14px] xl:text-[15px] w-full lg:w-[66%]">
+            {t.text("agency.beyondRegionText")}
+          </p>
+          <Link
+            to={Lhash("#contact")}
+            className="custom-btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
+          >
+            {t.text("agency.beyondRegionCta")}
+            <ArrowIcon />
+          </Link>
+        </div>
       </div>
     </section>
   );

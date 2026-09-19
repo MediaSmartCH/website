@@ -64,7 +64,7 @@ export default function SuisseRomandePage() {
               className="hero-btn custom-btn w-[280px] h-[48px] flex items-center justify-center text-center rounded-[5px] text-white font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px]"
               text={t.text("agency.ctaButton")}
             />
-            <LandingLink to="#services" inline>
+            <LandingLink to="#services" inline size="hero">
               {t.text("agency.servicesCta")}
             </LandingLink>
           </>

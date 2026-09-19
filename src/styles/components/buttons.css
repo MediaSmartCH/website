@@ -74,25 +74,28 @@
  * It is now the same button, turned down: same fill, same radius, same
  * height and padding from the call site, same white label, same lift and
  * darkening on hover, same press. Only the colour differs — the brand
- * gradient taken down into its deeper end, so the pair reads as one loud and
- * one quiet rather than one button and one link.
+ * gradient held back a step, so the pair reads as one loud and one quiet
+ * rather than one button and one link.
  *
- * The dark theme lightens it a step: the same deep violet that reads as
- * "quieter" on white disappears into #14172D.
+ * The stops sit between the pale outline this replaced and a first attempt
+ * that went too dark: white on #9a3fdb measures 5.11:1 and on #5468c9 5.00:1,
+ * both clear of the 4.5:1 the 14px label needs, while staying visibly quieter
+ * than the primary's #b514fd -> #5f75f5.
+ *
+ * One gradient for both themes. The earlier dark-theme override existed
+ * because a near-black violet vanished into #14172D; at this lightness it
+ * does not, and a filled button's label contrast does not depend on the page
+ * behind it anyway.
  */
 .custom-btn-outline {
   position: relative;
   overflow: hidden;
   border-radius: 5px;
-  background: linear-gradient(90deg, #6b2f9e 1.42%, #3d4a9e 97.8%);
+  background: linear-gradient(90deg, #9a3fdb 1.42%, #5468c9 97.8%);
   font-family: "Poppins", sans-serif;
   color: #fff;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.AppDark .custom-btn-outline {
-  background: linear-gradient(90deg, #7f43b8 1.42%, #4d5cbe 97.8%);
 }
 
 /* The same darkening veil the primary uses, so the two hover identically. */
@@ -108,7 +111,7 @@
 .custom-btn-outline:hover {
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(77, 92, 190, 0.35);
+  box-shadow: 0 8px 20px rgba(84, 104, 201, 0.35);
 }
 
 .custom-btn-outline:hover::after {
@@ -117,7 +120,7 @@
 
 .custom-btn-outline:active {
   transform: translateY(0) scale(0.97);
-  box-shadow: 0 3px 8px rgba(77, 92, 190, 0.25);
+  box-shadow: 0 3px 8px rgba(84, 104, 201, 0.25);
 }
 
 /*
