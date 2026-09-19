@@ -1,5 +1,4 @@
 import React, { useEffect, useId, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
 
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import { useModalScrollLock } from "@features/it-services/hooks/use-modal-scroll-lock";
@@ -8,6 +7,7 @@ import { getPortfolioThemeClasses } from "@features/it-services/lib/portfolio-th
 import { formatPreviewCount, formatProjectsCount, formatRemainingProjects, formatRemainingProjectsCta, getItemCategory, getItemImages, getPreviewDimClass, getSafeExternalUrl, portfolioCategoryKey, PREVIEW_LIMIT, resolveLocalizedField, sortItemsForPreview, truncateText, type LightboxImage, type PortfolioData } from "@features/it-services/lib/portfolio-helpers";
 
 import { useTranslations } from "@shared/i18n/translator";
+import ImageLightbox from "@shared/components/image-lightbox";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
 
 const PortfolioGallery = () => {
@@ -39,15 +39,16 @@ const PortfolioGallery = () => {
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        // Lightbox layers above the portfolio modal; close the topmost
-        // surface first instead of dismissing both at once.
-        if (lightbox) {
-          setLightbox(null);
-        } else {
-          setIsModalOpen(false);
-        }
-      }
+      if (event.key !== "Escape") return;
+
+      // The lightbox layers above this modal and closes itself on Escape. It
+      // stops the event before this runs, but only for a real key press, where
+      // its capture-phase listener on `window` comes first. This guard makes
+      // the rule hold whatever the listener order: close the topmost surface,
+      // never both at once.
+      if (lightbox) return;
+
+      setIsModalOpen(false);
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -223,40 +224,17 @@ const PortfolioGallery = () => {
           onOpenImage={setLightbox}
         />
       )}
-      {lightbox &&
-        createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={lightbox.alt}
-            onClick={(event) => {
-              // Click on backdrop = close. Clicks bubbled from the image
-              // itself are ignored thanks to the target===currentTarget check
-              // (same pattern as the booking modal).
-              if (event.target === event.currentTarget) {
-                setLightbox(null);
-              }
-            }}
-            className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 sm:p-8"
-          >
-            <button
-              type="button"
-              onClick={() => setLightbox(null)}
-              aria-label={t.text("it.portfolioCloseImage")}
-              className="absolute top-4 right-4 z-[100001] flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-            >
-              <span aria-hidden="true" className="text-2xl leading-none">
-                ×
-              </span>
-            </button>
-            <img
-              src={lightbox.src}
-              alt={lightbox.alt}
-              className="max-h-full max-w-full rounded-2xl object-contain shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]"
-            />
-          </div>,
-          document.body,
-        )}
+      {lightbox && (
+        <ImageLightbox
+          images={[lightbox]}
+          index={0}
+          onIndexChange={() => undefined}
+          onClose={() => setLightbox(null)}
+          closeLabel={t.text("it.portfolioCloseImage")}
+          previousLabel={t.text("work.previousImage")}
+          nextLabel={t.text("work.nextImage")}
+        />
+      )}
     </>
   );
 };

@@ -16,8 +16,10 @@ import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { getLottieAspectRatio, type LottieKey } from "@shared/config/lotties";
-
-import rightArrow from "@assets/icons/rightArrow.svg";
+import ArrowIcon from "@shared/components/arrow-icon";
+import SectionIllustration, {
+  type IllustrationName,
+} from "@shared/components/illustrations/section-illustration";
 
 // Hoisted to module scope: declaring lazy() inside a component body creates a
 // new component type on every render, which remounts the Lottie player. Same
@@ -271,14 +273,15 @@ export function LandingCards({
 /**
  * A secondary way on to another page.
  *
- * Written as a sentence naming its destination — "Découvrir notre activité en
- * Valais" rather than "En savoir plus" — because the anchor text is the only
+ * Written as a sentence naming its destination — "Notre activité en Valais"
+ * rather than "En savoir plus" — because the anchor text is the only
  * description a search engine gets of what sits at the other end.
  *
- * Styled as a quiet button with an arrow rather than an underlined `<a>`: at
- * the foot of a wide section a bare link reads as a loose end. The arrow is
- * the site's own `rightArrow` icon, and it nudges on hover the way the rest of
- * the site's affordances do.
+ * It is `custom-btn-outline`, the site's existing secondary button, with the
+ * site's existing arrow. An earlier version of this invented its own border,
+ * radius, padding and hover, which is one more button style than the site
+ * needs; `buttons.css` already owns all four, and owns the
+ * `prefers-reduced-motion` rule that stills them.
  */
 export function LandingLink({
   to,
@@ -295,17 +298,10 @@ export function LandingLink({
   const link = (
     <Link
       to={L(to)}
-      className="group inline-flex items-center gap-[10px] rounded-[5px] border border-current/20 px-[20px] h-[44px] text-heading-strong font-poppins font-normal text-[13px] xl:text-[14px] 2xl:text-[15px] transition duration-300 hover:border-current/40"
+      className="custom-btn-outline inline-flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
     >
-      <span>{children}</span>
-      <img
-        src={rightArrow}
-        alt=""
-        aria-hidden="true"
-        width="16"
-        height="16"
-        className="w-[14px] h-[14px] transition-transform duration-300 group-hover:translate-x-[3px]"
-      />
+      {children}
+      <ArrowIcon />
     </Link>
   );
 
@@ -386,7 +382,15 @@ export function LandingFeature({
 }
 
 export interface LandingServiceRow extends LandingCard {
-  anim: LottieKey;
+  /**
+   * The row's visual: an animation from the catalogue when one actually means
+   * what the row says, an inline drawing when none does.
+   *
+   * No page uses the same value twice — an illustration repeated two rows
+   * apart reads as an oversight, and that is what filling the gaps with the
+   * nearest animation produced.
+   */
+  visual: { anim: LottieKey } | { illustration: IllustrationName };
 }
 
 /**
@@ -435,23 +439,27 @@ export function LandingServiceRows({ rows }: { rows: LandingServiceRow[] }) {
               {/* Capped rather than full-bleed: at 1440 an uncapped animation
                   in a half-width column grew past the height of the copy
                   beside it and became the subject of the row. */}
-              <div className="w-full max-w-[420px] xl:max-w-[460px]">
-                <Suspense
-                  fallback={
-                    <div
-                      className="w-full"
-                      style={{ aspectRatio: getLottieAspectRatio(row.anim) }}
-                      aria-hidden="true"
+              <div className="w-full max-w-[420px] xl:max-w-[460px] text-heading">
+                {"anim" in row.visual ? (
+                  <Suspense
+                    fallback={
+                      <div
+                        className="w-full"
+                        style={{ aspectRatio: getLottieAspectRatio(row.visual.anim) }}
+                        aria-hidden="true"
+                      />
+                    }
+                  >
+                    <DotAnim
+                      anim={row.visual.anim}
+                      style={{ width: "100%", height: "auto" }}
+                      crisp
+                      protect
                     />
-                  }
-                >
-                  <DotAnim
-                    anim={row.anim}
-                    style={{ width: "100%", height: "auto" }}
-                    crisp
-                    protect
-                  />
-                </Suspense>
+                  </Suspense>
+                ) : (
+                  <SectionIllustration name={row.visual.illustration} />
+                )}
               </div>
             </div>
           </div>

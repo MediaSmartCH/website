@@ -33,6 +33,7 @@ const agency = {
     valaisLinkLabel: "Notre activité en Valais",
     romandieLinkLabel: "Notre activité en Suisse romande",
     regionalLinksTitle: "Où nous travaillons",
+    regionalLinksDescription: "Deux pages détaillées : ce que nous réalisons, comment se déroule un projet, et où nous intervenons.",
     regionalLinks: [
         {
             title: "Sites web et applications en Suisse romande",

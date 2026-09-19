@@ -36,7 +36,6 @@ import BookingButton from "@features/booking/components/booking-button";
 
 import FaqSection from "@shared/components/faq-section";
 import type { FaqItem } from "@shared/components/faq-accordion";
-import type { LottieKey } from "@shared/config/lotties";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
@@ -45,12 +44,12 @@ import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 /** The two clients established in the canton, named on this page for that reason. */
 const VALAIS_CLIENT_IDS = ["jocolor", "soclean4u"];
 
-/** One illustration per service, in the order the dictionary lists them. */
-const SERVICE_ANIMS: LottieKey[] = [
-  "it.services.website",
-  "it.services.website",
-  "it.services.optimization",
-  "it.services.optimization",
+/** One visual per service, in the order the dictionary lists them, no repeats. */
+const SERVICE_VISUALS: LandingServiceRow["visual"][] = [
+  { anim: "it.services.website" },
+  { illustration: "business" },
+  { illustration: "app" },
+  { anim: "it.services.optimization" },
 ];
 
 export default function ValaisPage() {
@@ -65,7 +64,7 @@ export default function ValaisPage() {
 
   const serviceRows: LandingServiceRow[] = t
     .array<LandingCard>("agency.valaisServices")
-    .map((card, index) => ({ ...card, anim: SERVICE_ANIMS[index] }));
+    .map((card, index) => ({ ...card, visual: SERVICE_VISUALS[index] }));
 
   return (
     <>

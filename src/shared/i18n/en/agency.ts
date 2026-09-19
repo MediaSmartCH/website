@@ -27,6 +27,7 @@ const agency = {
     valaisLinkLabel: "What we do in Valais",
     romandieLinkLabel: "What we do across French-speaking Switzerland",
     regionalLinksTitle: "Where we work",
+    regionalLinksDescription: "Two pages in detail: what we build, how a project runs, and where we work.",
     regionalLinks: [
         {
             title: "Websites and applications in French-speaking Switzerland",

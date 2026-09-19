@@ -22,6 +22,7 @@ import { caseStudyPath } from "@features/work/lib/work-routes";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { useTranslations } from "@shared/i18n/translator";
+import ArrowIcon from "@shared/components/arrow-icon";
 
 export default function WorkCard({
   item,
@@ -78,6 +79,7 @@ export default function WorkCard({
   const shell =
     "group bg-surface rounded-[15px] xl:rounded-[20px] p-4 md:p-5 h-full block transition duration-300 hover:-translate-y-[3px]";
 
+
   return (
     <div
       data-aos="fade-up"
@@ -88,8 +90,14 @@ export default function WorkCard({
       {linkToDetail ? (
         <Link to={L(caseStudyPath(item.id))} className={shell}>
           {body}
-          <span className="gradient-text font-poppins font-medium text-[13px] xl:text-[14px] inline-block mt-[14px] underline underline-offset-4">
+          {/* A span, not a link: the whole card is already the link. That is
+              exactly what `custom-btn-in-card` exists for — the card's hover
+              drives the button's lift and the arrow's nudge, because the
+              button's own :hover never fires when the pointer is elsewhere on
+              the card. */}
+          <span className="custom-btn custom-btn-in-card mt-[14px] flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
             {t.text("work.cardCta")}
+            <ArrowIcon />
           </span>
         </Link>
       ) : (

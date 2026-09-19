@@ -22,14 +22,17 @@ const work = {
     cardCta: "View the project",
     visitSite: "Visit the site",
     backToIndex: "All our work",
+    previousImage: "Previous image",
+    nextImage: "Next image",
     previewsTitle: "Previews",
     previewAlt: "Site preview",
 
-    detailAboutTitle: "The project",
-    detailServicesTitle: "Related service",
-    detailServicesDescription:
-        "This project falls under our website and web application development work.",
-    detailServicesCta: "See this service in detail",
+
+    moreTitle: "Keep looking around",
+    otherProjects: "See other projects",
+    servicesCta: "Our website and application services",
+    previousProject: "Previous project",
+    nextProject: "Next project",
 
     ctaTitle: "A comparable project?",
     ctaDescription:

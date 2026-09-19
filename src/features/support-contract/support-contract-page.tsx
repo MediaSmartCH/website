@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info, ArrowLeft } from "lucide-react";
+import { Shield, Zap, Star, AlertTriangle, Clock, CheckCircle2, Info } from "lucide-react";
 
 import Contact from "@features/contact/components/contact-section";
 
@@ -8,7 +7,7 @@ import RichText from "@shared/components/rich-text";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 import { useTranslations } from "@shared/i18n/translator";
-import { useLangLink } from "@shared/hooks/use-localized-path";
+import BackLink from "@shared/components/back-link";
 
 const STANDARD_HOURLY_RATE = 140;
 
@@ -16,7 +15,6 @@ export default function SupportContractPage() {
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(languageReducer);
-  const { L } = useLangLink();
   const isLight = themeReducer === "light";
 
   const [hasAnimated, setHasAnimated] = React.useState(false);
@@ -119,18 +117,10 @@ export default function SupportContractPage() {
     <>
       <div className="fixed top-[73px] md:top-[100px] left-0 right-0 z-40 pointer-events-none">
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto pt-[10px]">
-          <Link
-            to={L("/web-development")}
-            className={`pointer-events-auto group inline-flex items-center gap-[6px] font-poppins text-[13px] font-medium px-[14px] py-[7px] rounded-full backdrop-blur-sm transition-all duration-200 -translate-x-[10px]
-              ${isLight
-                ? "bg-[#EEE9FF]/80 text-[#5f75f5] border border-[#c4b8ff]/60 hover:bg-[#E4DCFF]/90"
-                : "bg-[#2B284C]/80 text-[#A89FFF] border border-[#6B5FBB]/50 hover:bg-[#332E5C]/90"
-              }`}
-          >
-            <ArrowLeft size={13} className="transition-transform duration-200 group-hover:-translate-x-0.5" />
-            {/* Strip any leading arrow character that may exist in the translation string */}
+          <BackLink to="/web-development">
+            {/* Strip any leading arrow character the translation may carry. */}
             {t.text("it.supportPageBackLink").replace(/^←\s*/, "")}
-          </Link>
+          </BackLink>
         </div>
       </div>
 

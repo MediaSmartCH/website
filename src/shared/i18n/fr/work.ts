@@ -24,14 +24,17 @@ const work = {
     cardCta: "Voir le projet",
     visitSite: "Visiter le site",
     backToIndex: "Toutes nos réalisations",
+    previousImage: "Image précédente",
+    nextImage: "Image suivante",
     previewsTitle: "Aperçus",
     previewAlt: "Aperçu du site",
 
-    detailAboutTitle: "Le projet",
-    detailServicesTitle: "Prestation concernée",
-    detailServicesDescription:
-        "Ce projet relève de nos prestations de création de sites web et d'applications.",
-    detailServicesCta: "Voir le détail de cette prestation",
+
+    moreTitle: "Continuer la visite",
+    otherProjects: "Voir d'autres projets",
+    servicesCta: "Nos prestations de création de sites web",
+    previousProject: "Projet précédent",
+    nextProject: "Projet suivant",
 
     ctaTitle: "Un projet comparable ?",
     ctaDescription:

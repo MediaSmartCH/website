@@ -134,46 +134,6 @@
       "statusCode": 301
     },
     {
-      "source": "/fr/agence-web-suisse-romande",
-      "destination": "/fr/web-agency-switzerland",
-      "statusCode": 301
-    },
-    {
-      "source": "/fr/agence-web-valais",
-      "destination": "/fr/web-agency-valais",
-      "statusCode": 301
-    },
-    {
-      "source": "/fr/realisations/:slug",
-      "destination": "/fr/projects/:slug",
-      "statusCode": 301
-    },
-    {
-      "source": "/fr/realisations",
-      "destination": "/fr/projects",
-      "statusCode": 301
-    },
-    {
-      "source": "/en/agence-web-suisse-romande",
-      "destination": "/en/web-agency-switzerland",
-      "statusCode": 301
-    },
-    {
-      "source": "/en/agence-web-valais",
-      "destination": "/en/web-agency-valais",
-      "statusCode": 301
-    },
-    {
-      "source": "/en/realisations/:slug",
-      "destination": "/en/projects/:slug",
-      "statusCode": 301
-    },
-    {
-      "source": "/en/realisations",
-      "destination": "/en/projects",
-      "statusCode": 301
-    },
-    {
       "source": "/",
       "destination": "/fr",
       "permanent": true

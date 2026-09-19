@@ -37,27 +37,28 @@ import BookingButton from "@features/booking/components/booking-button";
 
 import FaqSection from "@shared/components/faq-section";
 import type { FaqItem } from "@shared/components/faq-accordion";
-import RichText from "@shared/components/rich-text";
-import type { LottieKey } from "@shared/config/lotties";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 
 /**
- * One illustration per service, in the order the dictionary lists them.
+ * One visual per service, in the order the dictionary lists them, and no two
+ * the same.
  *
- * Paired by meaning: the website animation for building sites and
- * applications, the optimisation one for redesigns and performance, the
- * support one for the hosted applications and the follow-up afterwards.
+ * Three rows get an animation that genuinely means what they say. The other
+ * three get an inline drawing: the catalogue has nothing for a custom
+ * application, for technical SEO or for a hosted business tool, and the first
+ * draft papered over that by repeating the nearest animation — so the page
+ * showed the same picture twice, two rows apart, three times over.
  */
-const SERVICE_ANIMS: LottieKey[] = [
-  "it.services.website",
-  "it.services.website",
-  "it.services.optimization",
-  "it.services.optimization",
-  "it.services.support",
-  "it.services.support",
+const SERVICE_VISUALS: LandingServiceRow["visual"][] = [
+  { anim: "it.services.website" },
+  { illustration: "app" },
+  { anim: "it.services.optimization" },
+  { illustration: "seo" },
+  { illustration: "hosting" },
+  { anim: "it.services.support" },
 ];
 
 export default function SuisseRomandePage() {
@@ -72,7 +73,7 @@ export default function SuisseRomandePage() {
 
   const serviceRows: LandingServiceRow[] = t
     .array<LandingCard>("agency.romandieServices")
-    .map((card, index) => ({ ...card, anim: SERVICE_ANIMS[index] }));
+    .map((card, index) => ({ ...card, visual: SERVICE_VISUALS[index] }));
 
   return (
     <>
@@ -129,22 +130,22 @@ export default function SuisseRomandePage() {
         <LandingLink to={WORK_BASE_PATH}>{t.text("agency.proofCta")}</LandingLink>
       </LandingSection>
 
-      <LandingFeature
-        anim="it.services.website"
+      {/* No illustration here on purpose. Every animation that means anything
+          on this page is already on it — the hero, the three service rows, the
+          "why" block and the process section — and the only one left that
+          would fit was the one the first service row uses. A repeat two
+          screens apart reads as an oversight, so this section carries its own
+          weight with the band behind it instead. */}
+      <LandingSection
+        id="area"
         title={t.text("agency.areaTitle")}
-        reverse
+        description={t.text("agency.romandieAreaDescription")}
+        tinted
       >
-        <RichText
-          as="div"
-          className="text-body font-helvetica font-light leading-7 text-[13px] xl:text-[15px] 2xl:text-[16px] text-center lg:text-left"
-          html={t.text("agency.romandieAreaDescription")}
-        />
-        <div className="w-full flex justify-center lg:justify-start mt-[24px]">
-          <LandingLink to="/web-agency-valais" inline>
-            {t.text("agency.valaisLinkLabel")}
-          </LandingLink>
-        </div>
-      </LandingFeature>
+        <LandingLink to="/web-agency-valais">
+          {t.text("agency.valaisLinkLabel")}
+        </LandingLink>
+      </LandingSection>
 
       <FaqSection
         title={t.text("agency.faqTitle")}

@@ -30,6 +30,7 @@ import RichText from "@shared/components/rich-text";
 import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
+import ArrowIcon from "@shared/components/arrow-icon";
 
 /** Shape of one entry in the `it.saasProducts` translation array. */
 type SaasProductCopy = {
@@ -48,26 +49,6 @@ type SaasFreeToolCopy = Pick<SaasProductCopy, "id" | "name" | "tagline">;
  * Inline rather than an icon dependency: one glyph, and it has to inherit the
  * button's colour and slide on hover.
  */
-function ArrowIcon() {
-  return (
-    <svg
-      className="custom-btn-arrow"
-      width="14"
-      height="14"
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M3 8h9" />
-      <path d="M8.5 4.5 12 8l-3.5 3.5" />
-    </svg>
-  );
-}
 
 export default function SaasProducts() {
   const languageReducer = useAppSelector(

@@ -21,7 +21,12 @@ import {
   getSafeExternalUrl,
   resolveLocalizedField,
 } from "@features/it-services/lib/portfolio-helpers";
-import { findCaseStudy, WORK_BASE_PATH } from "@features/work/lib/work-routes";
+import {
+  adjacentCaseStudies,
+  caseStudyPath,
+  findCaseStudy,
+  WORK_BASE_PATH,
+} from "@features/work/lib/work-routes";
 
 import Booking from "@features/booking/components/booking-cta";
 import {
@@ -34,6 +39,9 @@ import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { useTranslations } from "@shared/i18n/translator";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
+import ArrowIcon from "@shared/components/arrow-icon";
+import ImageLightbox from "@shared/components/image-lightbox";
+import BackLink from "@shared/components/back-link";
 import Error404Page from "@features/error/error-404-page";
 
 export default function WorkDetailPage() {
@@ -44,9 +52,14 @@ export default function WorkDetailPage() {
   const { L } = useLangLink();
 
   const item = findCaseStudy(slug);
+  const { previous, next } = adjacentCaseStudies(slug);
+
+  // null when the viewer is closed; otherwise the index being shown.
+  const [openImage, setOpenImage] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     refreshAosAnimations();
+    setOpenImage(null);
   }, [slug]);
 
   // An unknown slug is a page that does not exist, and has to say so with a
@@ -67,6 +80,11 @@ export default function WorkDetailPage() {
 
   const [firstPreview, ...otherPreviews] = previews;
 
+  const lightboxImages = previews.map((src, index) => ({
+    src,
+    alt: `${title} — ${t.text("work.previewAlt")} ${index + 1}`,
+  }));
+
   return (
     <>
       {/* Two columns rather than a centred block of text: the project's own
@@ -82,12 +100,9 @@ export default function WorkDetailPage() {
               data-aos-duration="1100"
               data-aos-easing="ease-in-sine"
             >
-              <Link
-                to={L(WORK_BASE_PATH)}
-                className="gradient-text font-poppins font-medium text-[13px] xl:text-[14px] underline underline-offset-4 inline-block mb-[14px]"
-              >
+              <BackLink to={WORK_BASE_PATH} className="mb-[16px]">
                 {t.text("work.backToIndex")}
-              </Link>
+              </BackLink>
 
               <h1 className="text-heading w-full text-center lg:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[34px] xl:text-[40px] 2xl:text-[44px] mb-[16px] leading-[36px] lg:leading-[44px] xl:leading-[54px]">
                 {title}
@@ -125,18 +140,25 @@ export default function WorkDetailPage() {
                 data-aos-duration="1200"
                 data-aos-easing="ease-in-sine"
               >
-                <img
-                  src={firstPreview}
-                  alt={`${title} — ${t.text("work.previewAlt")}`}
-                  width="1440"
-                  height="900"
-                  // The one image above the fold on this page, so it loads
-                  // eagerly and at high priority; the rest stay lazy.
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                  className={`w-full rounded-[14px] xl:rounded-[18px] shadow-[0_18px_48px_rgba(20,23,45,0.16)] ${getPreviewDimClass(item, isLight)}`}
-                />
+                <button
+                  type="button"
+                  onClick={() => setOpenImage(0)}
+                  aria-label={`${title} — ${t.text("work.previewAlt")} 1`}
+                  className="group block w-full overflow-hidden rounded-[14px] xl:rounded-[18px] shadow-[0_18px_48px_rgba(20,23,45,0.16)]"
+                >
+                  <img
+                    src={firstPreview}
+                    alt={`${title} — ${t.text("work.previewAlt")}`}
+                    width="1440"
+                    height="900"
+                    // The one image above the fold on this page, so it loads
+                    // eagerly and at high priority; the rest stay lazy.
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                    className={`w-full transition duration-500 group-hover:scale-[1.02] ${getPreviewDimClass(item, isLight)}`}
+                  />
+                </button>
               </div>
             )}
           </div>
@@ -147,38 +169,92 @@ export default function WorkDetailPage() {
         <LandingSection id="previews" title={t.text("work.previewsTitle")} tinted>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px] lg:gap-[24px]">
             {otherPreviews.map((preview, index) => (
-              <img
+              <button
                 key={preview}
-                src={preview}
-                alt={`${title} — ${t.text("work.previewAlt")} ${index + 2}`}
-                width="1440"
-                height="900"
-                loading="lazy"
-                decoding="async"
-                className={`w-full rounded-[14px] border border-current/10 ${getPreviewDimClass(item, isLight)}`}
+                type="button"
+                // +1 because the hero holds the first preview.
+                onClick={() => setOpenImage(index + 1)}
+                aria-label={`${title} — ${t.text("work.previewAlt")} ${index + 2}`}
+                className="group block w-full overflow-hidden rounded-[14px] border border-current/10"
                 data-aos="fade-up"
                 data-aos-duration="1200"
                 data-aos-delay={(index % 2) * 90}
                 data-aos-easing="ease-in-sine"
-              />
+              >
+                <img
+                  src={preview}
+                  alt={`${title} — ${t.text("work.previewAlt")} ${index + 2}`}
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                  className={`w-full transition duration-500 group-hover:scale-[1.02] ${getPreviewDimClass(item, isLight)}`}
+                />
+              </button>
             ))}
           </div>
         </LandingSection>
       )}
 
-      <LandingSection
-        id="service"
-        title={t.text("work.detailServicesTitle")}
-        description={t.text("work.detailServicesDescription")}
-      >
-        <div className="w-full flex justify-center">
+      {/*
+        This was a section whose only content was a link to /web-development,
+        under a heading announcing it. The link is worth keeping — that page is
+        a real destination, and it is where this project's work is described —
+        but it did not need a section of its own, and "Voir le détail de cette
+        prestation" named the click rather than the destination.
+
+        It now sits in a row with the way back to the rest of the work, which
+        is what a reader at the bottom of one project actually wants.
+      */}
+      <LandingSection id="more" title={t.text("work.moreTitle")}>
+        <div className="flex flex-wrap items-center justify-center gap-[14px]">
+          <Link
+            to={L(WORK_BASE_PATH)}
+            className="custom-btn middle-out flex min-h-[44px] items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white"
+          >
+            {t.text("work.otherProjects")}
+            <ArrowIcon />
+          </Link>
           <Link
             to={L("/web-development")}
-            className="gradient-text font-poppins font-medium text-[14px] xl:text-[15px] underline underline-offset-4 py-[10px]"
+            className="custom-btn-outline flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
           >
-            {t.text("work.detailServicesCta")}
+            {t.text("work.servicesCta")}
+            <ArrowIcon />
           </Link>
         </div>
+
+        {(previous || next) && (
+          <nav
+            aria-label={t.text("work.moreTitle")}
+            className="mt-[30px] flex flex-col gap-[12px] sm:flex-row sm:items-center sm:justify-between"
+          >
+            {previous ? (
+              <Link
+                to={L(caseStudyPath(previous.id))}
+                className="text-body font-poppins text-[13px] xl:text-[14px] hover:text-heading-strong transition-colors"
+              >
+                <span className="block text-[12px] opacity-70">
+                  {t.text("work.previousProject")}
+                </span>
+                ← {resolveLocalizedField(previous.title, language)}
+              </Link>
+            ) : (
+              <span />
+            )}
+            {next && (
+              <Link
+                to={L(caseStudyPath(next.id))}
+                className="text-body font-poppins text-[13px] xl:text-[14px] hover:text-heading-strong transition-colors sm:text-right"
+              >
+                <span className="block text-[12px] opacity-70">
+                  {t.text("work.nextProject")}
+                </span>
+                {resolveLocalizedField(next.title, language)} →
+              </Link>
+            )}
+          </nav>
+        )}
       </LandingSection>
 
       <LandingWave>
@@ -190,6 +266,18 @@ export default function WorkDetailPage() {
       </LandingWave>
 
       <Contact />
+
+      {openImage !== null && (
+        <ImageLightbox
+          images={lightboxImages}
+          index={openImage}
+          onIndexChange={setOpenImage}
+          onClose={() => setOpenImage(null)}
+          closeLabel={t.text("it.portfolioCloseImage")}
+          previousLabel={t.text("work.previousImage")}
+          nextLabel={t.text("work.nextImage")}
+        />
+      )}
     </>
   );
 }

@@ -43,3 +43,27 @@ export const WORK_PATHS: string[] = [
 /** The project behind a slug, or undefined when the URL names none. */
 export const findCaseStudy = (slug: string | undefined): PortfolioItem | undefined =>
   CASE_STUDY_ITEMS.find((item) => item.id === slug);
+
+/**
+ * The projects either side of this one, wrapping at both ends.
+ *
+ * Wrapping rather than stopping: the list is a handful of items in no
+ * meaningful order, so a dead end at each end would be a disabled button
+ * explaining nothing. Returns null for both when there is only one project.
+ */
+export const adjacentCaseStudies = (
+  slug: string | undefined
+): { previous: PortfolioItem | null; next: PortfolioItem | null } => {
+  const index = CASE_STUDY_ITEMS.findIndex((item) => item.id === slug);
+
+  if (index === -1 || CASE_STUDY_ITEMS.length < 2) {
+    return { previous: null, next: null };
+  }
+
+  const count = CASE_STUDY_ITEMS.length;
+
+  return {
+    previous: CASE_STUDY_ITEMS[(index - 1 + count) % count],
+    next: CASE_STUDY_ITEMS[(index + 1) % count],
+  };
+};
