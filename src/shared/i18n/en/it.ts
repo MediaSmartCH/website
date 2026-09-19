@@ -433,8 +433,8 @@ const it = {
         faqAnswer: "Book a free 30-minute consultation through our online tool. We review your situation together, then you receive a detailed quote within 48 hours, with no commitment.",
     },
     itFaq7: {
-        faqQuestion: "Do you optimise sites for ChatGPT and AI answer engines?",
-        faqAnswer: "Yes, as far as the site itself allows. Beyond technical SEO — structure, indexability, loading times — we make the content easy to read and to quote: a clear heading hierarchy, self-contained answers, structured data, and company details that match from one page to the next. That is what GEO and AEO mean. Nobody can guarantee that an assistant will cite a particular site: the aim is to be discoverable and understandable, not to promise a recommendation.",
+        faqQuestion: "Are your sites built to be understood and cited by AI?",
+        faqAnswer: "Yes, as far as the site itself can influence it. Alongside technical SEO, we structure the content so that answer engines and AI assistants can read, interpret and quote it: a clear hierarchy, self-contained answers, structured data, and company details that stay consistent from one page to the next. That is what GEO and AEO refer to. No agency can guarantee that an AI will cite a particular site; the aim is to make it as discoverable and as easy to understand as possible.",
     },
 };
 export default it;
