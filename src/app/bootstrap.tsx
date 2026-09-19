@@ -32,11 +32,21 @@ if (import.meta.env.DEV) {
 export async function bootstrap() {
   await ensureLocale(resolveInitialLanguage());
 
-  const root = ReactDOM.createRoot(
-    document.getElementById("root") as HTMLElement
-  );
+  const container = document.getElementById("root") as HTMLElement;
 
-  root.render(
+  // The built pages ship their content already rendered (see
+  // scripts/prerender.mjs), so `container` is not empty here: the visitor has
+  // a painted page before this line runs, and so does a crawler that never
+  // reaches it.
+  //
+  // React still renders over it rather than hydrating it. Hydration needs the
+  // build-time markup to match this tree exactly, down to the wrapper `App`
+  // puts around everything — and `App` cannot run at build time, because it
+  // mounts a browser router. Reproducing its shell by hand in the prerenderer
+  // would work until the day someone edits `app.tsx`, and then fail silently
+  // at hydration for every visitor. Rendering fresh costs one frame, replaces
+  // markup with identical markup, and cannot drift.
+  ReactDOM.createRoot(container).render(
     <React.StrictMode>
       <Provider store={store}>
         <App />

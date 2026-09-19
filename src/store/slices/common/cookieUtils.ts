@@ -19,6 +19,10 @@ export const DEFAULT_CONSENT_PREFERENCES: ConsentPreferences = {
 // SameSite=Lax prevents the cookie from being sent on cross-site requests while
 // still allowing it on top-level navigations (e.g. OAuth redirects).
 export function setCookie(name: string, value: string, days: number) {
+  // The build-time renderer runs these reducers in Node, where there is no
+  // document to write to. Nothing to persist there, and nothing to read back.
+  if (typeof document === "undefined") return;
+
   let expires = "";
   if (Number.isFinite(days) && days > 0) {
     const date = new Date();
@@ -33,6 +37,8 @@ export function setCookie(name: string, value: string, days: number) {
 }
 
 export function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+
   const nameEQ = name + "=";
   const parts = document.cookie.split(";");
 
