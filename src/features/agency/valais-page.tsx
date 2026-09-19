@@ -105,7 +105,7 @@ export default function ValaisPage() {
 
       <LandingSection id="services" title={t.text("agency.valaisServicesTitle")}>
         <LandingServiceRows rows={serviceRows} />
-        <LandingLink to="/web-development">{t.text("agency.servicesCta")}</LandingLink>
+        <LandingLink to="#services">{t.text("agency.servicesCta")}</LandingLink>
       </LandingSection>
 
       <Process

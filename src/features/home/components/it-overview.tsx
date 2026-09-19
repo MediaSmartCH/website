@@ -40,7 +40,7 @@ export default function ITOverview() {
     <OverviewSection
       translationPrefix="WebOverview"
       animations={WEB_OVERVIEW_ANIMATIONS}
-      exploreHref="web-development"
+      exploreHref="#services"
       preloadRoute={preloadITServices}
       textAnimation="fade-up"
       spacingClassName="pt-[50px] lg:pt-[50px] xl:pt-[50px] pb-[40px]"

@@ -84,13 +84,6 @@ export default function NavbarMobile({
               {t.text("navbar.navItem1")}
             </Link>
             <Link
-              to={L("/web-development")}
-              onClick={onCloseMenu}
-              className={`text-heading-invert rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
-            >
-              {t.text("navbar.navItem2")}
-            </Link>
-            <Link
               to={L("/projects")}
               onClick={onCloseMenu}
               className={`text-heading-invert rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}

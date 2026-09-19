@@ -216,7 +216,7 @@ export default function WorkDetailPage() {
             <ArrowIcon />
           </Link>
           <Link
-            to={L("/web-development")}
+            to={L("#services")}
             className="custom-btn-outline flex min-h-[44px] items-center justify-center gap-2 px-[18px] font-poppins text-[14px] font-medium"
           >
             {t.text("work.servicesCta")}

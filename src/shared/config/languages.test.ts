@@ -60,7 +60,7 @@ describe("LANGUAGE_PREFIX_REGEX", () => {
 describe("stripLanguageFromPath", () => {
   it("removes the language prefix", () => {
     expect(stripLanguageFromPath("/fr/about")).toBe("/about");
-    expect(stripLanguageFromPath("/en/web-development")).toBe("/web-development");
+    expect(stripLanguageFromPath("/en/projects")).toBe("/projects");
   });
 
   it("leaves paths without a prefix unchanged", () => {

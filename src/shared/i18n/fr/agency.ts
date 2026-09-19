@@ -18,6 +18,9 @@ const agency = {
     methodTitle: "Comment se déroule un projet",
     methodDescription:
         "Le même déroulement pour tous les projets, du premier échange au suivi après mise en ligne.",
+    // SECTION "OÙ NOUS INTERVENONS" RETIRÉE — clés conservées.
+    // Le hero, la liste locale et la FAQ nommaient déjà les cantons ; la
+    // section ne portait plus qu'un lien, déplacé à côté des réalisations.
     areaTitle: "Où nous intervenons",
     proofTitle: "Des projets déjà en ligne",
     proofCta: "Voir nos réalisations en détail",
@@ -135,11 +138,6 @@ const agency = {
             faqQuestion: "Combien coûte la création d'un site internet en Suisse ?",
             faqAnswer:
                 "Le prix dépend du nombre de pages, des fonctionnalités (boutique, réservation, espace membre), des intégrations avec vos outils existants et de la quantité de contenu à reprendre. MediaSmart facture 140 CHF/h en tarif standard et établit un devis détaillé après analyse du besoin, avant tout démarrage. La rédaction des contenus, les traductions, les photos et les vidéos ne sont pas comprises par défaut.",
-        },
-        {
-            faqQuestion: "Combien de temps faut-il pour créer un site web ou une application ?",
-            faqAnswer:
-                "Comptez 2 à 4 semaines pour un site vitrine, et généralement 6 à 16 semaines pour une application web sur mesure ou une refonte importante, selon le périmètre. Le planning est fixé avec vous au démarrage du projet.",
         },
         {
             faqQuestion: "Quelle différence entre un site web, une application web et une application mobile ?",

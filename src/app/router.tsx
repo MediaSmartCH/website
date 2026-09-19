@@ -29,7 +29,6 @@ const Homepage = lazy(withChunkRecovery(() => import("@features/home/home-page")
  * pour pouvoir réactiver l'offre vidéo en décommentant simplement ce bloc.
  * ============================================================================ */
 // const VideoServicesPage = lazy(withChunkRecovery(() => import("@features/video-services/video-services-page")));
-const ITServicesPage = lazy(withChunkRecovery(() => import("@features/it-services/it-services-page")));
 const PrivacyPolicyPage = lazy(withChunkRecovery(() => import("@features/privacy-policy/privacy-policy-page")));
 const LegalNoticePage = lazy(withChunkRecovery(() => import("@features/legal/legal-notice-page")));
 const TermsPage = lazy(withChunkRecovery(() => import("@features/legal/terms-page")));
@@ -83,23 +82,6 @@ const RedirectToHome: React.FC = () => {
   return <Navigate to={buildLocalizedPath(normalizeLanguage(lang), "/")} replace />;
 };
 
-/* ============================================================================
- * ANCIENNE URL — NE PAS SUPPRIMER SANS VÉRIFIER LES LIENS ENTRANTS
- * /:lang/it-services a été renommée en /:lang/web-development. On redirige vers
- * la nouvelle page plutôt que vers l'accueil : Google transfère ainsi
- * l'ancienneté et le positionnement de l'ancienne adresse à la nouvelle, là où
- * une redirection vers l'accueil serait traitée comme une « soft 404 ».
- * ============================================================================ */
-const RedirectToWebDevelopment: React.FC = () => {
-  const { lang } = useParams<{ lang?: string }>();
-  return (
-    <Navigate
-      to={buildLocalizedPath(normalizeLanguage(lang), "/web-development")}
-      replace
-    />
-  );
-};
-
 const routes: RouteObject[] = [
   // Bare "/" immediately redirects to the default locale prefix.
   { path: "/", element: <Navigate to={`/${DEFAULT_LANGUAGE}`} replace /> },
@@ -112,15 +94,14 @@ const routes: RouteObject[] = [
         element: <LayoutWrapper />,
         children: [
           { index: true, element: Wrap(<Homepage />) },
-          { path: "web-development", element: Wrap(<ITServicesPage />) },
-          /* ANCIENNE URL — /it-services a été renommée en /web-development.
+          /* ANCIENNE URL — NE PAS SUPPRIMER SANS VÉRIFIER LES LIENS ENTRANTS
+             /it-services pointait vers /web-development, qui a été fusionnée
+             dans l'accueil. La redirection va donc directement à l'accueil
+             plutôt que d'enchaîner deux sauts, exactement comme video-services.
              Vercel répond une 301 en production (voir "redirects" dans
-             vercel.json), mais elle ne s'applique ni en dev, ni en preview, ni
-             lors d'une navigation interne : sans cette redirection côté
-             routeur, l'ancienne adresse tomberait sur la 404 partout ailleurs.
-             À garder tant que d'anciens liens ou des résultats Google pointent
-             dessus. */
-          { path: "it-services", element: <RedirectToWebDevelopment /> },
+             vercel.json) ; cette route couvre le dev, la preview et la
+             navigation interne. */
+          { path: "it-services", element: <RedirectToHome /> },
           /* Pages régionales. Les slugs sont en français dans les deux langues,
              comme toutes les autres routes du site : `routeKeyByPath` associe un
              chemin unique aux deux locales, et les hreflang relient les deux

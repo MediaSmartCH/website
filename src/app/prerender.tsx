@@ -39,7 +39,6 @@ import { Provider } from "react-redux";
 import Layout from "@app/layout/site-layout";
 
 import Homepage from "@features/home/home-page";
-import ITServicesPage from "@features/it-services/it-services-page";
 import PrivacyPolicyPage from "@features/privacy-policy/privacy-policy-page";
 import LegalNoticePage from "@features/legal/legal-notice-page";
 import TermsPage from "@features/legal/terms-page";
@@ -73,7 +72,6 @@ registerLocale("en", enMessages as never);
  */
 const PAGE_BY_PATH: Record<string, React.ComponentType> = {
   "/": Homepage,
-  "/web-development": ITServicesPage,
   "/web-agency-switzerland": SuisseRomandePage,
   "/web-agency-valais": ValaisPage,
   [WORK_BASE_PATH]: WorkIndexPage,
@@ -105,7 +103,6 @@ export const PRERENDERED_PATHS = Object.keys(PAGE_BY_PATH);
  */
 export const PAGE_MODULE_BY_PATH: Record<string, string> = {
   "/": "src/features/home/home-page.tsx",
-  "/web-development": "src/features/it-services/it-services-page.tsx",
   "/web-agency-switzerland": "src/features/agency/suisse-romande-page.tsx",
   "/web-agency-valais": "src/features/agency/valais-page.tsx",
   [WORK_BASE_PATH]: "src/features/work/work-index-page.tsx",

@@ -29,7 +29,6 @@
   },
   "routeKeyByPath": {
     "/": "home",
-    "/web-development": "web-development",
     "/web-agency-switzerland": "agency-romandie",
     "/web-agency-valais": "agency-valais",
     "/projects": "work",
@@ -45,16 +44,17 @@
         "title": "MediaSmart | Création de sites web et d'applications en Suisse romande",
         "description": "MediaSmart conçoit et développe des sites vitrines, des sites business et des applications web sur mesure pour les PME, indépendants et associations de Suisse romande.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - création de sites web et d'applications"
-      },
-      "web-development": {
-        "pageName": "Création de sites web et d'applications",
-        "title": "Création de sites web et d'applications en Suisse romande | MediaSmart",
-        "description": "Sites vitrines, sites business, refontes et migrations, applications web sur mesure : conception, développement et maintenance pour les PME, indépendants et associations de Suisse romande.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - services informatiques",
-        "serviceType": "Création de sites web, refonte et développement d'applications web",
-        "faqKeys": ["itFaq1", "itFaq2", "itFaq3", "itFaq4", "itFaq5", "itFaq6"]
+        "shareImageAlt": "MediaSmart - création de sites web et d'applications",
+        "faqKeys": [
+          "itFaq1",
+          "itFaq2",
+          "itFaq3",
+          "itFaq4",
+          "itFaq5",
+          "itFaq6"
+        ],
+        "faqSection": "it",
+        "serviceType": "Création de sites web, refonte et développement d'applications web"
       },
       "video-services": {
         "pageName": "Services vidéo",
@@ -100,7 +100,9 @@
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - agence web en Suisse romande",
         "serviceType": "Création de sites web et développement d'applications web en Suisse romande",
-        "faqKeys": ["romandieFaq"],
+        "faqKeys": [
+          "romandieFaq"
+        ],
         "faqSection": "agency"
       },
       "agency-valais": {
@@ -110,7 +112,9 @@
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - agence web en Valais",
         "serviceType": "Création de sites web et développement d'applications web en Valais",
-        "faqKeys": ["valaisFaq"],
+        "faqKeys": [
+          "valaisFaq"
+        ],
         "faqSection": "agency"
       },
       "work": {
@@ -141,16 +145,17 @@
         "title": "MediaSmart | Website and web application development in Switzerland",
         "description": "MediaSmart designs and builds showcase sites, business websites and custom web applications for SMEs, freelancers and associations in French-speaking Switzerland.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - IT services"
-      },
-      "web-development": {
-        "pageName": "Website and application development",
-        "title": "Website and Web Application Development in Switzerland | MediaSmart",
-        "description": "Showcase sites, business websites, redesigns and migrations, custom web applications: design, development and maintenance for SMEs, freelancers and associations in French-speaking Switzerland.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart website and application development",
-        "serviceType": "Website creation, redesign and web application development",
-        "faqKeys": ["itFaq1", "itFaq2", "itFaq3", "itFaq4", "itFaq5", "itFaq6"]
+        "shareImageAlt": "MediaSmart - IT services",
+        "faqKeys": [
+          "itFaq1",
+          "itFaq2",
+          "itFaq3",
+          "itFaq4",
+          "itFaq5",
+          "itFaq6"
+        ],
+        "faqSection": "it",
+        "serviceType": "Website creation, redesign and web application development"
       },
       "video-services": {
         "pageName": "Video Services",
@@ -196,7 +201,9 @@
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - web agency in French-speaking Switzerland",
         "serviceType": "Website creation and web application development in French-speaking Switzerland",
-        "faqKeys": ["romandieFaq"],
+        "faqKeys": [
+          "romandieFaq"
+        ],
         "faqSection": "agency"
       },
       "agency-valais": {
@@ -206,7 +213,9 @@
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - web agency in Valais",
         "serviceType": "Website creation and web application development in Valais",
-        "faqKeys": ["valaisFaq"],
+        "faqKeys": [
+          "valaisFaq"
+        ],
         "faqSection": "agency"
       },
       "work": {

@@ -117,7 +117,7 @@ export default function SupportContractPage() {
     <>
       <div className="fixed top-[73px] md:top-[100px] left-0 right-0 z-40 pointer-events-none">
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] mx-auto pt-[10px]">
-          <BackLink to="/web-development">
+          <BackLink to="/">
             {/* Strip any leading arrow character the translation may carry. */}
             {t.text("it.supportPageBackLink").replace(/^←\s*/, "")}
           </BackLink>

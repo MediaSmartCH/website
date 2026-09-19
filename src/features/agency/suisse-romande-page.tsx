@@ -4,7 +4,7 @@
  * It answers the question someone actually types — which supplier can build a
  * website and an application here — rather than describing services in the
  * abstract. Everything on it is checkable somewhere else on the site: the
- * services against /web-development, the method against the process section,
+ * services against the homepage services section, the method against it too,
  * the area against the FAQ, the work against /projects.
  *
  * It is composed out of the site's own sections rather than page-specific
@@ -94,7 +94,7 @@ export default function SuisseRomandePage() {
 
       <LandingSection id="services" title={t.text("agency.servicesTitle")}>
         <LandingServiceRows rows={serviceRows} />
-        <LandingLink to="/web-development">{t.text("agency.servicesCta")}</LandingLink>
+        <LandingLink to="#services">{t.text("agency.servicesCta")}</LandingLink>
       </LandingSection>
 
       <LandingFeature anim="it.about" title={t.text("agency.romandieWhyTitle")}>
@@ -125,26 +125,23 @@ export default function SuisseRomandePage() {
         description={t.text("agency.methodDescription")}
       />
 
+      {/*
+        "Où nous intervenons" used to sit after this, restating the cantons the
+        hero and the FAQ both already name and existing mostly to hold the link
+        to the Valais page. The section is gone and the link sits here, beside
+        the work — where a reader who has just seen the projects is closest to
+        wanting the one canton we say most about.
+      */}
       <LandingSection id="work" title={t.text("agency.proofTitle")}>
         <WorkPreview />
-        <LandingLink to={WORK_BASE_PATH}>{t.text("agency.proofCta")}</LandingLink>
-      </LandingSection>
-
-      {/* No illustration here on purpose. Every animation that means anything
-          on this page is already on it — the hero, the three service rows, the
-          "why" block and the process section — and the only one left that
-          would fit was the one the first service row uses. A repeat two
-          screens apart reads as an oversight, so this section carries its own
-          weight with the band behind it instead. */}
-      <LandingSection
-        id="area"
-        title={t.text("agency.areaTitle")}
-        description={t.text("agency.romandieAreaDescription")}
-        tinted
-      >
-        <LandingLink to="/web-agency-valais">
-          {t.text("agency.valaisLinkLabel")}
-        </LandingLink>
+        <div className="w-full flex flex-wrap justify-center gap-[14px] mt-[30px] lg:mt-[40px]">
+          <LandingLink to={WORK_BASE_PATH} inline>
+            {t.text("agency.proofCta")}
+          </LandingLink>
+          <LandingLink to="/web-agency-valais" inline>
+            {t.text("agency.valaisLinkLabel")}
+          </LandingLink>
+        </div>
       </LandingSection>
 
       <FaqSection

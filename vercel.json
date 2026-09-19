@@ -125,12 +125,12 @@
     },
     {
       "source": "/fr/it-services",
-      "destination": "/fr/web-development",
+      "destination": "/fr",
       "statusCode": 301
     },
     {
       "source": "/en/it-services",
-      "destination": "/en/web-development",
+      "destination": "/en",
       "statusCode": 301
     },
     {
@@ -147,14 +147,6 @@
     {
       "source": "/en",
       "destination": "/generated-pages/en.html"
-    },
-    {
-      "source": "/fr/web-development",
-      "destination": "/generated-pages/fr-web-development.html"
-    },
-    {
-      "source": "/en/web-development",
-      "destination": "/generated-pages/en-web-development.html"
     },
     {
       "source": "/fr/web-agency-switzerland",

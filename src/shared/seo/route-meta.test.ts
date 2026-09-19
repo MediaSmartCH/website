@@ -49,8 +49,8 @@ describe("organization node", () => {
 });
 
 describe("faq node", () => {
-  it("quotes the questions the page actually renders", () => {
-    const faq = nodeOf("/fr/web-development", "FAQPage") as Record<string, never>;
+  it("quotes the questions the homepage actually renders", () => {
+    const faq = nodeOf("/fr", "FAQPage") as Record<string, never>;
     const questions = (faq.mainEntity as unknown as { name: string }[]).map(
       (entry) => entry.name
     );
@@ -59,9 +59,23 @@ describe("faq node", () => {
     expect(questions[0]).toBe(frMessages.it.itFaq1.faqQuestion);
   });
 
+  it("quotes the regional page's own questions, not the homepage's", () => {
+    const faq = nodeOf("/fr/web-agency-switzerland", "FAQPage") as Record<string, never>;
+    const questions = (faq.mainEntity as unknown as { name: string }[]).map(
+      (entry) => entry.name
+    );
+
+    expect(questions).toEqual(
+      frMessages.agency.romandieFaq.map((entry) => entry.faqQuestion)
+    );
+    // The lead-time question lived here and on the homepage word for word; one
+    // FAQ answering a question is the point of having one.
+    expect(questions).not.toContain(frMessages.it.itFaq4.faqQuestion);
+  });
+
   it("is absent from pages with no FAQ", () => {
-    expect(nodeOf("/fr", "FAQPage")).toBeUndefined();
     expect(nodeOf("/fr/terms", "FAQPage")).toBeUndefined();
+    expect(nodeOf("/fr/projects", "FAQPage")).toBeUndefined();
   });
 });
 

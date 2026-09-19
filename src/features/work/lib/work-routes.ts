@@ -2,7 +2,7 @@
  * The URL of every project that gets its own page.
  *
  * Only client work does. Our own products and the free tools are presented on
- * the index and on /web-development, where they belong: a page per product
+ * the index and on the homepage, where they belong: a page per product
  * would say the same thing twice, and the free tools change too often to be
  * worth an indexed URL each.
  *

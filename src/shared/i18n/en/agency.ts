@@ -12,6 +12,7 @@ const agency = {
     methodTitle: "How a project runs",
     methodDescription:
         "The same sequence on every project, from the first conversation to the follow-up after launch.",
+    // "WHERE WE WORK" SECTION REMOVED — keys kept, see the French file.
     areaTitle: "Where we work",
     proofTitle: "Projects already online",
     proofCta: "See our work in detail",
@@ -129,11 +130,6 @@ const agency = {
             faqQuestion: "How much does a website cost in Switzerland?",
             faqAnswer:
                 "It depends on the number of pages, the features (shop, booking, member area), the integrations with your existing tools and how much content has to be migrated. MediaSmart charges CHF 140/h at the standard rate and issues a detailed quote after reviewing the need, before any work starts. Copywriting, translation, photography and video are not included by default.",
-        },
-        {
-            faqQuestion: "How long does it take to build a website or an application?",
-            faqAnswer:
-                "Allow 2 to 4 weeks for a showcase site, and generally 6 to 16 weeks for a custom web application or a substantial redesign, depending on scope. The schedule is agreed with you when the project starts.",
         },
         {
             faqQuestion: "What is the difference between a website, a web application and a mobile app?",
