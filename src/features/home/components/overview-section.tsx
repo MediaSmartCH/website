@@ -73,7 +73,7 @@ export default function OverviewSection({
 
       <div className="flex flex-wrap justify-center gap-[30px] lg:gap-[20px] xl:gap-[30px] 2xl:gap-[40px] my-[40px] md:my-[50px]">
         {cards.map((card, index) => (
-          <div key={index} className={OVERVIEW_CARD_WIDTH}>
+          <div key={index} className={`${OVERVIEW_CARD_WIDTH} flex`}>
             <OverviewCard
               title={card.title}
               description={card.description}

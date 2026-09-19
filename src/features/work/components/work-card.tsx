@@ -74,7 +74,7 @@ export default function WorkCard({
       <h3 className="text-heading-strong font-redDisplay font-bold text-[17px] lg:text-[18px] xl:text-[20px] mb-[8px]">
         {title}
       </h3>
-      <p className="text-body font-poppins font-light text-[13px] xl:text-[14px] leading-relaxed">
+      <p className="text-body font-poppins font-light text-[13px] xl:text-[14px] leading-relaxed grow">
         {description}
       </p>
     </>
@@ -83,12 +83,15 @@ export default function WorkCard({
   // The lift on hover is the one the homepage overview cards use; the preview
   // scaling under it is what makes a card of screenshots feel like a link to a
   // site rather than a tile.
+  // flex-col so the call to action sits at the bottom of every card in a row
+  // rather than wherever its description happens to end.
   const shell =
-    "group bg-surface rounded-[15px] xl:rounded-[20px] p-4 md:p-5 h-full block transition duration-300 hover:-translate-y-[3px]";
+    "group bg-surface rounded-[15px] xl:rounded-[20px] p-4 md:p-5 h-full flex flex-col transition duration-300 hover:-translate-y-[3px]";
 
 
   return (
     <div
+      className="h-full"
       data-aos="fade-up"
       data-aos-duration="1200"
       data-aos-delay={(index % 3) * 90}
@@ -102,9 +105,13 @@ export default function WorkCard({
               drives the button's lift and the arrow's nudge, because the
               button's own :hover never fires when the pointer is elsewhere on
               the card. */}
-          <span className="custom-btn custom-btn-in-card mt-[14px] flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
-            {t.text("work.cardCta")}
-            <ArrowIcon />
+          {/* The wrapper carries the mt-auto, not the button: padding on the
+              button itself would shift its label off centre. */}
+          <span className="mt-auto block pt-[16px]">
+            <span className="custom-btn custom-btn-in-card flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
+              {t.text("work.cardCta")}
+              <ArrowIcon />
+            </span>
           </span>
         </Link>
       ) : status ? (

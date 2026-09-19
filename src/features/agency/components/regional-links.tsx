@@ -74,15 +74,25 @@ export default function RegionalLinks() {
       </div>
 
       {/* Proximity is what these two cards argue for; this line makes sure it
-          does not read as a limit. Quiet on purpose — a third card headed
-          "International" would answer a question nobody asked twice as loudly. */}
+          does not read as a limit. It sits on the site's own tinted band with
+          a gradient rule above it, so it belongs to the section rather than
+          being dropped underneath it — and it stays a line and a button, not
+          a third card headed "International" answering twice as loudly a
+          question nobody asked. */}
       <div
-        className="mt-[26px] lg:mt-[32px] flex flex-col items-center gap-[14px] text-center"
+        className="section-band mt-[30px] lg:mt-[40px] rounded-[15px] xl:rounded-[20px] px-6 py-[26px] lg:px-10 lg:py-[32px] flex flex-col items-center gap-[16px] text-center"
         data-aos="fade-up"
         data-aos-duration="1100"
         data-aos-easing="ease-in-sine"
       >
-        <p className="text-body font-poppins font-light text-[13px] md:text-[14px] xl:text-[15px] w-full lg:w-[68%]">
+        <span
+          className="block h-[3px] w-[38px] rounded-full"
+          style={{
+            background: "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)",
+          }}
+          aria-hidden="true"
+        />
+        <p className="text-body font-poppins font-light text-[13px] md:text-[14px] xl:text-[15px] w-full lg:w-[70%]">
           {t.text("agency.beyondRegionText")}
         </p>
         <Link

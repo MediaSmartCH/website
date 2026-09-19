@@ -87,7 +87,10 @@ export default function WorkIndexPage() {
           description={`${t.text("work.indexProgressDescription")} — ${inProgressCount}.`}
           tinted
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[18px] lg:gap-[24px]">
+          {/* Two cards in a three-column grid sat against the left edge of a
+              wide empty band. Capped and centred, they read as a pair rather
+              than as the start of a row nobody finished. */}
+          <div className="mx-auto grid w-full max-w-[860px] grid-cols-1 gap-[18px] sm:grid-cols-2 lg:gap-[24px]">
             {inProgress.map((item, index) => (
               <WorkCard
                 key={item.id}

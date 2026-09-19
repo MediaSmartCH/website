@@ -493,9 +493,19 @@ export function LandingLocalFacts({
   facts: LandingCard[];
   link?: React.ReactNode;
 }) {
+  const theme = useAppSelector((state) => state.theme.currentTheme);
+
   return (
-    <div className="relative w-full section-band py-[30px] md:py-[40px] lg:py-[56px] my-[30px] lg:my-[50px]">
-      <section id={id} className={CONTAINER}>
+    <div className="relative w-full section-band py-[30px] md:py-[40px] lg:py-[56px] my-[30px] lg:my-[50px] overflow-hidden">
+      {/* The site's own wave behind the band. On the regional pages this is
+          the only section between the hero and the projects, and as a plain
+          tinted rectangle it read as a list someone had pasted in. Same
+          component, same proportions as everywhere else. */}
+      <WaveBackdrop
+        theme={theme}
+        className="top-[-40px] h-[360px] md:h-[420px] lg:h-[460px] opacity-70"
+      />
+      <section id={id} className={`${CONTAINER} relative z-10`}>
         <h2
           className="text-heading w-full text-center font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[42px] 2xl:text-[46px] mb-[34px] lg:mb-[48px]"
           data-aos="fade-up"
