@@ -63,6 +63,84 @@
   box-shadow: 0 3px 8px rgba(181, 20, 253, 0.25);
 }
 
+/*
+ * Secondary action next to a .custom-btn: the same brand gradient, but as a
+ * hairline border and on the label instead of as a fill, so the pair reads as
+ * one primary and one secondary rather than two competing buttons.
+ *
+ * The border needs two stacked backgrounds (padding-box fill, border-box
+ * gradient); the fill sits in a custom property so the dark theme differs by
+ * one declaration.
+ */
+.custom-btn-outline {
+  --outline-btn-fill: transparent;
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background:
+    linear-gradient(var(--outline-btn-fill), var(--outline-btn-fill)) padding-box,
+    linear-gradient(90deg, rgba(181, 20, 253, 0.55) 1.42%, rgba(95, 117, 245, 0.55) 97.8%)
+      border-box;
+  font-family: "Poppins", sans-serif;
+  color: #2c3a87;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.AppDark .custom-btn-outline {
+  color: #dad7ff;
+}
+
+.custom-btn-outline:hover {
+  --outline-btn-fill: rgba(95, 117, 245, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(95, 117, 245, 0.22);
+}
+
+.AppDark .custom-btn-outline:hover {
+  --outline-btn-fill: rgba(154, 168, 255, 0.14);
+}
+
+.custom-btn-outline:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 3px 8px rgba(95, 117, 245, 0.18);
+}
+
+/*
+ * Primary CTA inside a card that is itself the link: the button is a span, so
+ * its own :hover never fires when the pointer is elsewhere on the card. The
+ * card lifts the button instead.
+ */
+.group:hover .custom-btn-in-card {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(181, 20, 253, 0.35);
+}
+
+.group:hover .custom-btn-in-card::after {
+  opacity: 1;
+}
+
+.custom-btn-in-card .custom-btn-arrow {
+  transition: transform 0.25s ease;
+}
+
+.group:hover .custom-btn-in-card .custom-btn-arrow {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-btn-outline,
+  .custom-btn-in-card,
+  .custom-btn-in-card .custom-btn-arrow {
+    transition: none;
+  }
+
+  .group:hover .custom-btn-in-card,
+  .group:hover .custom-btn-in-card .custom-btn-arrow {
+    transform: none;
+  }
+}
+
 /* booking */
 .custom-btn2 {
   overflow: hidden;

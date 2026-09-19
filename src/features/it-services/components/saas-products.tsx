@@ -42,6 +42,32 @@ type SaasProductCopy = {
 /** Free tools: name and pitch only, no feature list and no sales CTA. */
 type SaasFreeToolCopy = Pick<SaasProductCopy, "id" | "name" | "tagline">;
 
+/**
+ * Trailing arrow on the card CTAs, marking them as a way out of the page.
+ * Inline rather than an icon dependency: one glyph, and it has to inherit the
+ * button's colour and slide on hover.
+ */
+function ArrowIcon() {
+  return (
+    <svg
+      className="custom-btn-arrow"
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M3 8h9" />
+      <path d="M8.5 4.5 12 8l-3.5 3.5" />
+    </svg>
+  );
+}
+
 export default function SaasProducts() {
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
@@ -86,7 +112,9 @@ export default function SaasProducts() {
       >
         {products.map((product, index) => {
           const source = portfolioItems.find((item) => item.id === product.id);
-          const image = source ? getItemImages(source)[0] : undefined;
+          const image = source
+            ? getItemImages(source, { dark: !classes.isLight })[0]
+            : undefined;
           const demoUrl = getSafeExternalUrl(source?.url);
           const badge = source?.accessNote
             ? resolveLocalizedField(source.accessNote, languageReducer)
@@ -104,7 +132,14 @@ export default function SaasProducts() {
                   <img
                     src={image}
                     alt={product.name}
-                    className="h-full w-full object-cover object-top"
+                    // A light-only screenshot glares against the dark card;
+                    // dimming it keeps the card readable without pretending
+                    // the site has a dark theme it does not have.
+                    className={`h-full w-full object-cover object-top ${
+                      !classes.isLight && !source?.hasDarkPreview
+                        ? "brightness-90"
+                        : ""
+                    }`}
                     loading="lazy"
                   />
                 </div>
@@ -153,13 +188,14 @@ export default function SaasProducts() {
                       href={demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="custom-btn middle-out flex min-h-[40px] items-center justify-center rounded-[5px] px-[18px] font-poppins text-[14px] font-light text-white"
+                      className="custom-btn middle-out flex min-h-[44px] items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white"
                     >
                       {t.text("it.saasDemoCta")}
+                      <ArrowIcon />
                     </a>
                   )}
                   <BookingButton
-                    className={`flex min-h-[40px] items-center justify-center rounded-[5px] border px-[18px] font-poppins text-[14px] font-light transition duration-200 ${classes.isLight ? "border-[#D9DCF2] text-[#2C3A87] hover:bg-[#EEF0FF]" : "border-white/15 text-[#DAD7FF] hover:bg-white/10"}`}
+                    className="custom-btn-outline flex min-h-[44px] items-center justify-center px-[18px] font-poppins text-[14px] font-medium"
                     text={t.text("it.saasBookCta")}
                   />
                 </div>
@@ -199,7 +235,9 @@ export default function SaasProducts() {
             {freeTools.map((tool, index) => {
               const source = portfolioItems.find((item) => item.id === tool.id);
               const toolUrl = getSafeExternalUrl(source?.url);
-              const toolImage = source ? getItemImages(source)[0] : undefined;
+              const toolImage = source
+                ? getItemImages(source, { dark: !classes.isLight })[0]
+                : undefined;
               const toolBadge = source?.accessNote
                 ? resolveLocalizedField(source.accessNote, languageReducer)
                 : null;
@@ -214,7 +252,11 @@ export default function SaasProducts() {
                         // Centre-cropped, like the portfolio tiles: anchoring to
                         // the top of these screenshots frames a sign-in dialog
                         // rather than the tool itself.
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                        className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${
+                          !classes.isLight && !source?.hasDarkPreview
+                            ? "brightness-90"
+                            : ""
+                        }`}
                         loading="lazy"
                       />
                     </div>
@@ -253,10 +295,15 @@ export default function SaasProducts() {
                         even when one pitch is longer, as in the block above. */}
                     {toolUrl && (
                       <div className="mt-auto pt-6">
-                        <span
-                          className={`${classes.isLight ? "border-[#D9DCF2] text-[#2C3A87] group-hover:bg-[#EEF0FF]" : "border-white/15 text-[#DAD7FF] group-hover:bg-white/10"} flex min-h-[40px] w-fit items-center justify-center rounded-[5px] border px-[18px] font-poppins text-[14px] font-light transition duration-200`}
-                        >
-                          {t.text("it.saasFreeCta")}
+                        {/* The only action on this card, so it takes the
+                            primary treatment the paid products use. It is a
+                            span inside the card link: the lift and the arrow
+                            come from the card hover (.custom-btn-in-card). */}
+                        <span className="custom-btn custom-btn-in-card flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
+                          <span className="custom-btn-inner flex items-center gap-2">
+                            {t.text("it.saasFreeCta")}
+                            <ArrowIcon />
+                          </span>
                         </span>
                       </div>
                     )}

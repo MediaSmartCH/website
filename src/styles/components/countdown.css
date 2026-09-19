@@ -1,0 +1,107 @@
+/**
+ * Launch countdown tiles (features/it-services/components/launch-countdown).
+ *
+ * Three things need real CSS rather than Tailwind classes:
+ *   - the brand gradient as a 1px border, which takes two stacked backgrounds
+ *     clipped to padding-box and border-box;
+ *   - tabular figures, so the seconds tile keeps its width on every tick;
+ *   - the light/dark tile fill, held in one custom property so the two themes
+ *     differ by one line.
+ *
+ * Both themes read the brand gradient of the buttons and the section headings
+ * (#b514fd → #5f75f5). The digits take a darkened/lightened version of it:
+ * they are text, so they have to clear 4.5:1 against the tile, which the raw
+ * pair does not in either theme.
+ */
+
+.launch-countdown {
+  --countdown-fill: #ffffff;
+  --countdown-edge: 0.42;
+  /* The brand gradient, darkened until the digits clear 4.5:1 on white: the
+     raw #b514fd/#5f75f5 pair sits at 4.7 and 3.9, and these are read as text. */
+  --countdown-digit-from: #8f0fc8;
+  --countdown-digit-to: #4055c9;
+}
+
+.launch-countdown-dark {
+  /* Matches the dark card surface (portfolio-theme-classes), so the tiles read
+     as cut out of the card rather than dropped on top of it. */
+  --countdown-fill: rgba(255, 255, 255, 0.05);
+  --countdown-edge: 0.55;
+  /* Same gradient lightened, for the same reason, against the dark tile. */
+  --countdown-digit-from: #d98cff;
+  --countdown-digit-to: #9aa8ff;
+}
+
+.launch-countdown-rule {
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+}
+
+.launch-countdown-unit {
+  display: flex;
+  min-width: 52px;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 7px 10px 6px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background:
+    linear-gradient(var(--countdown-fill), var(--countdown-fill)) padding-box,
+    linear-gradient(
+        135deg,
+        rgba(181, 20, 253, var(--countdown-edge)),
+        rgba(95, 117, 245, var(--countdown-edge))
+      )
+      border-box;
+}
+
+.launch-countdown-value {
+  background: linear-gradient(
+    90deg,
+    var(--countdown-digit-from) 1.42%,
+    var(--countdown-digit-to) 97.8%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Red Hat Display", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  /* Digits of equal width: without this the row re-flows every second. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.launch-countdown-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Reached the date: a live pill rather than four empty tiles. */
+.launch-countdown-live {
+  border: 1px solid rgba(95, 117, 245, 0.45);
+  background: rgba(95, 117, 245, 0.1);
+  color: #2c3a87;
+}
+
+.AppDark .launch-countdown-live {
+  border-color: rgba(154, 168, 255, 0.4);
+  background: rgba(154, 168, 255, 0.12);
+  color: #dad7ff;
+}
+
+.launch-countdown-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+}

@@ -72,7 +72,9 @@ export default function SaasOverview() {
       >
         {products.map((product, index) => {
           const source = portfolioItems.find((item) => item.id === product.id);
-          const image = source ? getItemImages(source)[0] : undefined;
+          const image = source
+            ? getItemImages(source, { dark: !classes.isLight })[0]
+            : undefined;
           const badge = source?.accessNote
             ? resolveLocalizedField(source.accessNote, languageReducer)
             : null;
@@ -91,7 +93,14 @@ export default function SaasOverview() {
                   <img
                     src={image}
                     alt={product.name}
-                    className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
+                    // A light-only screenshot glares against the dark card;
+                    // dimming it keeps the card readable without pretending
+                    // the site has a dark theme it does not have.
+                    className={`h-full w-full object-cover object-top transition duration-500 group-hover:scale-105 ${
+                      !classes.isLight && !source?.hasDarkPreview
+                        ? "brightness-90"
+                        : ""
+                    }`}
                     loading="lazy"
                   />
                 </div>
