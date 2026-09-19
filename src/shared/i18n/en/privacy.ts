@@ -8,7 +8,7 @@ const privacy = {
     s1Title: "1. Data Controller",
     s1Name: "MediaSmart – Raphael Rouiller",
     s1LegalForm: "Legal form: Sole proprietorship (not registered in the Commercial Register)",
-    s1Address: "Address: Rue des Prumus 21, 1994 Aproz (Nendaz), Switzerland",
+    s1Address: "Address: Rue des Cloubeaux 6C, 1905 Dorénaz, Valais, Switzerland",
     s1Email: "Email:",
     s1Phone: "Phone:",
 

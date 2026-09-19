@@ -51,7 +51,9 @@
         "en": "Presentation website for a secular officiant offering personalized ceremonies and tailored support. The site highlights a human-centered approach focused on listening, writing and creating meaningful custom ceremonies."
       },
       "url": "https://lechoixdesmots.ch",
-      "screenshotUrls": ["https://lechoixdesmots.ch"]
+      "screenshotUrls": [
+        "https://lechoixdesmots.ch"
+      ]
     },
     {
       "id": "soclean4u",
@@ -65,55 +67,33 @@
         "en": "Showcase website for a cleaning company operating in the Chablais VS/VD region. The content highlights key services for hotels, holiday apartments, offices and concierge needs, with a layout focused on service visibility and quick contact."
       },
       "url": "https://www.soclean4u.ch",
-      "screenshotUrls": ["https://www.soclean4u.ch"]
-    },
-    {
-      "id": "actions-suisse",
-      "category": "client",
-      "title": {
-        "fr": "Actions Suisse – Média et retransmission d’événements",
-        "en": "Actions Suisse – Media and live event streaming"
-      },
-      "description": {
-        "fr": "Site média dédié à la diffusion d’actualités, de contenus vidéo et à la retransmission d’événements en direct. La plateforme met en avant des articles, des projets éditoriaux et des actions citoyennes dans une structure pensée pour consulter les contenus et suivre l’activité du média.",
-        "en": "Media website dedicated to news publishing, video content and live event streaming. The platform highlights articles, editorial projects and civic actions through a structure designed to make content easy to browse and follow."
-      },
-      "url": "https://actions-suisse.ch",
       "screenshotUrls": [
-        "https://actions-suisse.ch/home/",
-        "/articles/",
-        "/projets/",
-        "/actions-citoyennes/",
-        "/#contact"
+        "https://www.soclean4u.ch"
       ]
     },
     {
-      "id": "chateau-castalia",
-      "category": "client",
+      "id": "oqoa",
+      "category": "in-progress",
       "title": {
-        "fr": "Château Castalia – Lieu d’événements et patrimoine historique",
-        "en": "Château Castalia – Historic event venue"
+        "fr": "OQOA",
+        "en": "OQOA"
       },
       "description": {
-        "fr": "Site de présentation du Château Castalia, un domaine historique situé à Cressier (Fribourg). La plateforme met en valeur le lieu, son histoire et les services proposés pour l’organisation d’événements et de réceptions dans un cadre patrimonial unique.",
-        "en": "Presentation website for Château Castalia, a historic estate located in Cressier (Fribourg). The platform highlights the venue, its history and the services offered for events and receptions in a unique heritage setting."
-      },
-      "url": "https://www.chateaucastalia.com",
-      "screenshotUrls": ["https://www.chateaucastalia.com"]
+        "fr": "Site actuellement en développement par MediaSmart, pour le domaine oqoa.ch.",
+        "en": "Website currently in development by MediaSmart, for the oqoa.ch domain."
+      }
     },
     {
-      "id": "arml",
-      "category": "client",
+      "id": "inbati",
+      "category": "in-progress",
       "title": {
-        "fr": "ARML – Association Romande des Médias Libres",
-        "en": "ARML – Romandy Association of Independent Media"
+        "fr": "Inbati",
+        "en": "Inbati"
       },
       "description": {
-        "fr": "Site institutionnel de l’Association Romande des Médias Libres. L’organisation rassemble des acteurs du journalisme indépendant en Suisse romande afin de promouvoir une information diversifiée, favoriser la collaboration entre médias et soutenir des projets éditoriaux communs.",
-        "en": "Institutional website for the Romandy Association of Independent Media. The organization brings together independent media actors in French-speaking Switzerland to promote diverse journalism, collaboration between outlets and shared editorial projects."
-      },
-      "url": "https://www.arml.ch",
-      "screenshotUrls": ["https://www.arml.ch"]
+        "fr": "Site actuellement en développement par MediaSmart, pour le domaine inbati.ch.",
+        "en": "Website currently in development by MediaSmart, for the inbati.ch domain."
+      }
     },
     {
       "id": "cc-voice",
@@ -132,7 +112,9 @@
         "en": "Early access"
       },
       "launchDate": "2027-01-01T00:00:00+01:00",
-      "images": ["/portfolio/cc-voice-0.jpg"]
+      "images": [
+        "/portfolio/cc-voice-0.jpg"
+      ]
     },
     {
       "id": "mediasmart-games",
@@ -147,8 +129,35 @@
       },
       "url": "https://apps.mediasmart.ch",
       "hasDarkPreview": true,
-      "previewViewport": { "width": 412, "height": 820, "deviceScaleFactor": 2 },
-      "images": ["/portfolio/mediasmart-games-0.jpg"]
+      "previewViewport": {
+        "width": 412,
+        "height": 820,
+        "deviceScaleFactor": 2
+      },
+      "images": [
+        "/portfolio/mediasmart-games-0.jpg"
+      ]
+    },
+    {
+      "id": "url-copier",
+      "category": "free",
+      "title": {
+        "fr": "CopyLink Pro – Extension Firefox",
+        "en": "CopyLink Pro – Firefox extension"
+      },
+      "description": {
+        "fr": "Extension Firefox publiée par MediaSmart. Elle copie l'URL de la page courante par raccourci clavier (Cmd+Shift+C / Ctrl+Shift+C) ou via le menu contextuel, avec une confirmation visuelle discrète dans la page. Interface en français et en anglais, aucune donnée collectée, code source ouvert sous licence MIT.",
+        "en": "Firefox extension published by MediaSmart. It copies the current page's URL with a keyboard shortcut (Cmd+Shift+C / Ctrl+Shift+C) or from the context menu, with a discreet in-page confirmation. French and English interface, no data collected, open source under the MIT licence."
+      },
+      "url": "https://addons.mozilla.org/fr/firefox/addon/url-copier/",
+      "sourceUrl": "https://github.com/rphlr/url-copier",
+      "accessNote": {
+        "fr": "Gratuit sur Firefox Add-ons",
+        "en": "Free on Firefox Add-ons"
+      },
+      "images": [
+        "/portfolio/url-copier-0.jpg"
+      ]
     },
     {
       "id": "ged-mediasmart",
@@ -165,18 +174,20 @@
         "fr": "Solution sur mesure – démo sur demande",
         "en": "Bespoke solution – demo on request"
       },
-      "images": ["/portfolio/ged-mediasmart-0.jpg"]
+      "images": [
+        "/portfolio/ged-mediasmart-0.jpg"
+      ]
     },
     {
       "id": "cc-factures-dashboard",
       "category": "saas",
       "title": {
-        "fr": "Dashboard Factures Fournisseurs",
-        "en": "Supplier invoices dashboard"
+        "fr": "Tableau de bord des dépenses fournisseurs",
+        "en": "Supplier spend dashboard – Invoice analytics"
       },
       "description": {
-        "fr": "Tableau de bord d’analyse des factures fournisseurs : KPIs mensuels, top fournisseurs, comparaison de périodes, drill-down par dossier et export CSV. Authentification Microsoft 365, ingestion depuis SharePoint. Une démo gratuite est accessible en ligne sur dashboard-depenses.mediasmart.ch : cliquez sur « Visiter le site » pour parcourir l’interface avec des données fictives.",
-        "en": "Supplier-invoice analytics dashboard: monthly KPIs, top suppliers, period-over-period comparisons, per-file drill-down and CSV export. Microsoft 365 authentication, SharePoint ingestion. A free demo is live at dashboard-depenses.mediasmart.ch: click ‘Visit site’ to explore the interface with synthetic data."
+        "fr": "Tableau de bord d’analyse des dépenses fournisseurs : indicateurs clés, évolution mensuelle, top fournisseurs et top sociétés, comparaison de deux périodes, détail par fournisseur et par facture, filtres par société, statut et exercice, export CSV et impression. Les factures refusées ou incomplètes sont écartées des totaux et regroupées dans une liste « à traiter ». Une démo gratuite est accessible en ligne sur dashboard-depenses.mediasmart.ch : cliquez sur « Visiter le site » pour parcourir l’interface avec des données fictives.",
+        "en": "Supplier spend analytics dashboard: key figures, monthly trend, top suppliers and top companies, two-period comparison, per-supplier and per-invoice detail, filters by company, status and financial year, CSV export and printing. Refused or incomplete invoices are kept out of the totals and grouped in a ‘to process’ list. A free demo is live at dashboard-depenses.mediasmart.ch: click ‘Visit site’ to explore the interface with synthetic data."
       },
       "url": "https://dashboard-depenses.mediasmart.ch/mock",
       "accessNote": {

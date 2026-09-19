@@ -27,7 +27,7 @@ const terms = {
     // 1. Champ d'application
     s1Title: "1. Champ d'application",
     s1Desc:
-        "Les présentes conditions régissent les prestations de conception, de développement et de mise en ligne de sites web et d'applications web réalisées par MediaSmart – Raphael Rouiller, raison individuelle dont le siège est à Aproz (Nendaz), Valais.",
+        "Les présentes conditions régissent les prestations de conception, de développement et de mise en ligne de sites web et d'applications web réalisées par MediaSmart – Raphael Rouiller, raison individuelle dont le siège est à Dorénaz, Valais.",
     s1Quote:
         "Elles sont portées à la connaissance du client avant l'acceptation du devis et font partie intégrante du contrat.",
 

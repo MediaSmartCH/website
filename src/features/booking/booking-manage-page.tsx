@@ -79,7 +79,7 @@ const BookingManagePage: React.FC = () => {
   if (loading) {
     return (
       <ManageShell theme={theme}>
-        <div className={`rounded-3xl p-10 sm:p-12 ${surface} flex flex-col items-center gap-3 text-center`}>
+        <div className={`rounded-3xl p-6 sm:p-12 ${surface} flex flex-col items-center gap-3 text-center`}>
           <Loader2 size={28} strokeWidth={2.2} className={`animate-spin ${subtle}`} />
           <p className={`font-poppins text-[14px] ${subtle}`}>{t.text('booking.manage.loading')}</p>
         </div>
@@ -90,7 +90,7 @@ const BookingManagePage: React.FC = () => {
   if (errorStatus !== null || !booking) {
     return (
       <ManageShell theme={theme}>
-        <div className={`rounded-3xl p-10 sm:p-12 ${surface} flex flex-col items-center text-center`}>
+        <div className={`rounded-3xl p-6 sm:p-12 ${surface} flex flex-col items-center text-center`}>
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#dc2626]/10">
             <AlertCircle size={26} strokeWidth={2.2} className="text-[#dc2626]" />
           </div>
@@ -156,7 +156,7 @@ const BookingManagePage: React.FC = () => {
   if (booking.status === 'cancelled') {
     return (
       <ManageShell theme={theme}>
-        <div className={`rounded-3xl p-10 sm:p-12 ${surface} flex flex-col items-center text-center`}>
+        <div className={`rounded-3xl p-6 sm:p-12 ${surface} flex flex-col items-center text-center`}>
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#dc2626]/10">
             <XCircle size={26} strokeWidth={2.2} className="text-[#dc2626]" />
           </div>
@@ -214,7 +214,7 @@ const BookingManagePage: React.FC = () => {
   // Overview --------------------------------------------------------------
   return (
     <ManageShell theme={theme}>
-      <div className={`rounded-3xl p-8 sm:p-10 ${surface}`}>
+      <div className={`rounded-3xl p-6 sm:p-10 ${surface}`}>
         <p className="font-redDisplay font-bold text-[22px] sm:text-[28px]">
           {t.text('booking.manage.title')}
         </p>

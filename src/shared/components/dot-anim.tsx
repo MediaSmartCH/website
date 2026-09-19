@@ -246,9 +246,18 @@ function DotAnim(props: DotAnimProps) {
 
     // A zero-area target can never report a meaningful intersection, so mount
     // straight away rather than risk an animation that never appears.
+    //
+    // Unless it is hidden. A `display: none` ancestor also measures 0x0, and
+    // taking that as "mount it anyway" is how an animation switched off for
+    // phones still downloaded its .lottie and instantiated a player behind
+    // an element nobody can see. `getClientRects()` separates the two cases:
+    // a hidden element generates no boxes at all, a rendered but zero-sized
+    // one generates exactly one. If it is later shown, the observer picks it
+    // up then — this effect re-runs and layout changes are what the observer
+    // reports on.
     const { width, height } = element.getBoundingClientRect();
     if (width === 0 && height === 0) {
-      setInView(true);
+      if (element.getClientRects().length > 0) setInView(true);
       return;
     }
 

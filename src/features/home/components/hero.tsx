@@ -15,13 +15,8 @@ type NetworkInformationLike = {
 };
 
 const Hero = () => {
-  const { L } = useLangLink();
+  const { Lhash } = useLangLink();
   const [useLightweightVisual, setUseLightweightVisual] = React.useState(false);
-
-  // Prefetch route chunks on hover to reduce navigation latency
-  const preloadITServices = () => {
-    import("@features/it-services/it-services-page");
-  };
 
   /* ==========================================================================
    * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
@@ -91,7 +86,10 @@ const Hero = () => {
           </p>
           <div className="w-full justify-center flex items-center gap-3 md:gap-5 flex-wrap px-[20px]"
           >
-            <Link to={L("/web-development")} onMouseEnter={preloadITServices}>
+            {/* The services section now lives on this page, so this is an
+                in-page anchor rather than a route: useScrollToHash does the
+                smooth scroll and accounts for the fixed header. */}
+            <Link to={Lhash("#services")}>
               <button
                 className="
                   hero-btn custom-btn

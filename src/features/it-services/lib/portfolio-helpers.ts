@@ -12,19 +12,26 @@
 export type SupportedLanguage = "fr" | "en";
 
 /**
- * How a portfolio entry is grouped in the gallery.
+ * How a portfolio entry is grouped.
  *
- * - "client"  — sites and applications built for a client
- * - "saas"    — MediaSmart's own products, sold and hosted by us
- * - "free"    — tools we publish freely (no account, no invoicing)
+ * - "client"      — sites and applications delivered for a client
+ * - "in-progress" — a client project we are building right now, shown as such
+ *                   rather than alongside finished work
+ * - "saas"        — MediaSmart's own products, sold and hosted by us
+ * - "free"        — tools we publish freely (no account, no invoicing)
  *
  * Entries without an explicit category fall back to "client", which keeps
  * older JSON rows valid.
  */
-export type PortfolioCategory = "client" | "saas" | "free";
+export type PortfolioCategory = "client" | "in-progress" | "saas" | "free";
 
 /** Display order of the gallery sections. */
-export const PORTFOLIO_CATEGORY_ORDER: PortfolioCategory[] = ["saas", "free", "client"];
+export const PORTFOLIO_CATEGORY_ORDER: PortfolioCategory[] = [
+  "saas",
+  "free",
+  "client",
+  "in-progress",
+];
 
 const KNOWN_CATEGORIES = new Set<string>(PORTFOLIO_CATEGORY_ORDER);
 export type LocalizedField = string | Partial<Record<SupportedLanguage, string>>;
@@ -34,6 +41,15 @@ export interface PortfolioItem {
   title: LocalizedField;
   description: LocalizedField;
   url?: string;
+  /**
+   * The tool's own public source repository, when it has one.
+   *
+   * Only set from a repository verified public — the value is what makes the
+   * "source code" link appear on a free-tool card, and it is what
+   * `scripts/fetch-tool-stats.mjs` reads to know whose stars to count. A tool
+   * whose code is not open simply has no `sourceUrl`.
+   */
+  sourceUrl?: string;
   images?: string[];
   screenshotUrls?: string[];
   /**

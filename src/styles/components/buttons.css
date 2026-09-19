@@ -64,46 +64,63 @@
 }
 
 /*
- * Secondary action next to a .custom-btn: the same brand gradient, but as a
- * hairline border and on the label instead of as a fill, so the pair reads as
- * one primary and one secondary rather than two competing buttons.
+ * Secondary action next to a .custom-btn.
  *
- * The border needs two stacked backgrounds (padding-box fill, border-box
- * gradient); the fill sits in a custom property so the dark theme differs by
- * one declaration.
+ * It used to be an outline — a hairline gradient border with the label in
+ * violet on nothing. Beside the filled primary it read as a different species
+ * of control rather than a quieter one, and in the light theme the pale
+ * lavender barely registered as a button at all.
+ *
+ * It is now the same button, turned down: same fill, same radius, same
+ * height and padding from the call site, same white label, same lift and
+ * darkening on hover, same press. Only the colour differs — the brand
+ * gradient held back a step, so the pair reads as one loud and one quiet
+ * rather than one button and one link.
+ *
+ * The stops sit between the pale outline this replaced and a first attempt
+ * that went too dark: white on #9a3fdb measures 5.11:1 and on #5468c9 5.00:1,
+ * both clear of the 4.5:1 the 14px label needs, while staying visibly quieter
+ * than the primary's #b514fd -> #5f75f5.
+ *
+ * One gradient for both themes. The earlier dark-theme override existed
+ * because a near-black violet vanished into #14172D; at this lightness it
+ * does not, and a filled button's label contrast does not depend on the page
+ * behind it anyway.
  */
 .custom-btn-outline {
-  --outline-btn-fill: transparent;
   position: relative;
-  border: 1px solid transparent;
+  overflow: hidden;
   border-radius: 5px;
-  background:
-    linear-gradient(var(--outline-btn-fill), var(--outline-btn-fill)) padding-box,
-    linear-gradient(90deg, rgba(181, 20, 253, 0.55) 1.42%, rgba(95, 117, 245, 0.55) 97.8%)
-      border-box;
+  background: linear-gradient(90deg, #9a3fdb 1.42%, #5468c9 97.8%);
   font-family: "Poppins", sans-serif;
-  color: #2c3a87;
+  color: #fff;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.AppDark .custom-btn-outline {
-  color: #dad7ff;
+/* The same darkening veil the primary uses, so the two hover identically. */
+.custom-btn-outline::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .custom-btn-outline:hover {
-  --outline-btn-fill: rgba(95, 117, 245, 0.1);
+  color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(95, 117, 245, 0.22);
+  box-shadow: 0 8px 20px rgba(84, 104, 201, 0.35);
 }
 
-.AppDark .custom-btn-outline:hover {
-  --outline-btn-fill: rgba(154, 168, 255, 0.14);
+.custom-btn-outline:hover::after {
+  opacity: 1;
 }
 
 .custom-btn-outline:active {
   transform: translateY(0) scale(0.97);
-  box-shadow: 0 3px 8px rgba(95, 117, 245, 0.18);
+  box-shadow: 0 3px 8px rgba(84, 104, 201, 0.25);
 }
 
 /*

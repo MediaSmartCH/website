@@ -239,3 +239,5 @@ SECURITY-AUDIT.md
 
 # Claude Code local settings and worktrees
 .claude/
+
+.prerender/

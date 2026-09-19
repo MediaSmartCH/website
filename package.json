@@ -41,10 +41,10 @@
     "dev": "node scripts/clean-workspace.mjs && vite",
     "api": "node scripts/dev-api.mjs",
     "google:token": "node scripts/google-oauth-token.mjs",
-    "build": "node scripts/generate-localized-html.mjs && vite build && node scripts/emit-static-404.mjs",
+    "build": "node scripts/fetch-tool-stats.mjs && node scripts/generate-localized-html.mjs && vite build && node scripts/prerender.mjs && node scripts/emit-static-404.mjs",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.api.json",
     "preview": "vite preview",
-    "analyze": "node scripts/generate-localized-html.mjs && cross-env ANALYZE=true vite build && node scripts/emit-static-404.mjs",
+    "analyze": "node scripts/fetch-tool-stats.mjs && node scripts/generate-localized-html.mjs && cross-env ANALYZE=true vite build && node scripts/prerender.mjs && node scripts/emit-static-404.mjs",
     "clean": "node scripts/clean-workspace.mjs",
     "clean:dry-run": "node scripts/clean-workspace.mjs --dry-run --verbose",
     "test": "vitest run",
@@ -55,7 +55,8 @@
     "vercel:sync:domains": "node scripts/sync-vercel-domain-settings.mjs",
     "vercel:sync:domains:dry-run": "node scripts/sync-vercel-domain-settings.mjs --dry-run",
     "vercel:sync": "pnpm run vercel:sync:project && pnpm run vercel:sync:domains",
-    "vercel:sync:dry-run": "pnpm run vercel:sync:project:dry-run && pnpm run vercel:sync:domains:dry-run"
+    "vercel:sync:dry-run": "pnpm run vercel:sync:project:dry-run && pnpm run vercel:sync:domains:dry-run",
+    "tools:stats": "node scripts/fetch-tool-stats.mjs"
   },
   "eslintConfig": {
     "extends": [

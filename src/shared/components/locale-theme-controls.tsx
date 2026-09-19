@@ -48,7 +48,7 @@ const LocaleThemeControls: React.FC<LocaleThemeControlsProps> = ({
   animationsEnabled,
   onAnimationsToggle,
 }) => (
-  <div className={`flex items-center gap-2 ${className ?? ""}`}>
+  <div className={`flex items-center gap-2 max-[419px]:gap-1.5 ${className ?? ""}`}>
     <LanguageSelector
       currentLanguage={currentLanguage}
       currentTheme={currentTheme}

@@ -125,12 +125,12 @@
     },
     {
       "source": "/fr/it-services",
-      "destination": "/fr/web-development",
+      "destination": "/fr",
       "statusCode": 301
     },
     {
       "source": "/en/it-services",
-      "destination": "/en/web-development",
+      "destination": "/en",
       "statusCode": 301
     },
     {
@@ -149,12 +149,60 @@
       "destination": "/generated-pages/en.html"
     },
     {
-      "source": "/fr/web-development",
-      "destination": "/generated-pages/fr-web-development.html"
+      "source": "/fr/web-agency-switzerland",
+      "destination": "/generated-pages/fr-web-agency-switzerland.html"
     },
     {
-      "source": "/en/web-development",
-      "destination": "/generated-pages/en-web-development.html"
+      "source": "/fr/web-agency-valais",
+      "destination": "/generated-pages/fr-web-agency-valais.html"
+    },
+    {
+      "source": "/fr/projects",
+      "destination": "/generated-pages/fr-projects.html"
+    },
+    {
+      "source": "/fr/projects/cc-wk",
+      "destination": "/generated-pages/fr-projects-cc-wk.html"
+    },
+    {
+      "source": "/fr/projects/jocolor",
+      "destination": "/generated-pages/fr-projects-jocolor.html"
+    },
+    {
+      "source": "/fr/projects/lechoixdesmots",
+      "destination": "/generated-pages/fr-projects-lechoixdesmots.html"
+    },
+    {
+      "source": "/fr/projects/soclean4u",
+      "destination": "/generated-pages/fr-projects-soclean4u.html"
+    },
+    {
+      "source": "/en/web-agency-switzerland",
+      "destination": "/generated-pages/en-web-agency-switzerland.html"
+    },
+    {
+      "source": "/en/web-agency-valais",
+      "destination": "/generated-pages/en-web-agency-valais.html"
+    },
+    {
+      "source": "/en/projects",
+      "destination": "/generated-pages/en-projects.html"
+    },
+    {
+      "source": "/en/projects/cc-wk",
+      "destination": "/generated-pages/en-projects-cc-wk.html"
+    },
+    {
+      "source": "/en/projects/jocolor",
+      "destination": "/generated-pages/en-projects-jocolor.html"
+    },
+    {
+      "source": "/en/projects/lechoixdesmots",
+      "destination": "/generated-pages/en-projects-lechoixdesmots.html"
+    },
+    {
+      "source": "/en/projects/soclean4u",
+      "destination": "/generated-pages/en-projects-soclean4u.html"
     },
     {
       "source": "/fr/privacy-policy",

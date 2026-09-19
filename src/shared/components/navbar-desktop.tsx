@@ -79,18 +79,18 @@ export default function NavbarDesktop({
           className=""
           data-aos="fade-down"
           data-aos-easing="ease-in-sine"
-          data-aos-duration="1100"
+          data-aos-duration="1200"
         >
           <div className="btn-test from-bottom">
             <Link
-              to={L("/web-development")}
+              to={L("/projects")}
               className={
                 themeReducer === "light"
                   ? "text-[#14172D] hover:text-[#fff]"
                   : "text-[#FFFFFF] hover:text-[#fff]"
               }
             >
-              {t.text("navbar.navItem2")}
+              {t.text("navbar.navWork")}
             </Link>
           </div>
         </li>

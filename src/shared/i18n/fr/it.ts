@@ -30,12 +30,17 @@ const it = {
     saasProducts: [
         {
             id: "cc-factures-dashboard",
-            name: "Dashboard Factures Fournisseurs",
-            tagline: "Suivez vos dépenses fournisseurs, mois par mois et fournisseur par fournisseur",
+            // Le nom que le produit se donne lui-même (titre de page et pied
+            // de page de dashboard-depenses.mediasmart.ch). SharePoint et
+            // Microsoft 365 étaient l'origine des données d'un déploiement,
+            // pas une exigence du produit : le site ne les présente plus
+            // comme telles.
+            name: "Tableau de bord de dépenses",
+            tagline: "Analysez vos dépenses fournisseurs, mois par mois et fournisseur par fournisseur",
             highlights: [
-                "KPIs mensuels, top fournisseurs et comparaison de périodes",
-                "Connexion Microsoft 365 et ingestion directe depuis SharePoint",
-                "Drill-down par dossier et export CSV en un clic",
+                "Indicateurs clés, évolution mensuelle et top fournisseurs",
+                "Import de vos données, multi-sociétés et comparaison de périodes",
+                "Détail par fournisseur et par facture, export CSV",
             ],
         },
         {
@@ -58,19 +63,48 @@ const it = {
     launchCountdownSeconds: "s",
     launchCountdownLive: "Ouvert au public",
     saasFreeTitle: `<span>En accès</span> libre`,
+    // Repli lorsqu'un outil ne nomme pas son propre bouton. Chaque outil le
+    // nomme, justement parce que « Ouvrir l'outil » trois fois de suite ne dit
+    // à personne où il atterrit.
     saasFreeCta: "Ouvrir l'outil",
     saasFreeDescription:
         "Des outils que nous mettons à disposition de tous, sans compte ni facturation.",
+    // Chiffres publiés par Mozilla, relevés au build (voir
+    // scripts/fetch-addon-stats.mjs). Rien n'est écrit ici en dur.
+    saasStatRatingSr: "Note moyenne sur 5 :",
+    saasStatReviewsOne: "avis",
+    saasStatReviews: "avis",
+    saasStatUsersOne: "utilisateur",
+    saasStatUsers: "utilisateurs",
+    // Lien vers le dépôt public d'un outil. N'apparaît que si le dépôt est
+    // réellement public : le nombre d'étoiles vient de l'API GitHub, relevé
+    // au build comme les chiffres Mozilla.
+    saasSourceLabel: "Code source",
+    saasStatStarsOne: "étoile",
+    saasStatStars: "étoiles",
     saasFreeTools: [
+        {
+            id: "url-copier",
+            name: "CopyLink Pro",
+            tagline: "Copiez instantanément l'URL de la page courante avec un raccourci clavier, ou depuis le menu contextuel. Aucune donnée collectée.",
+            cta: "Voir sur Firefox Add-ons",
+            // Les raccourcis publiés sur la fiche Mozilla, tels quels.
+            shortcuts: [
+                { platform: "macOS", keys: "Cmd + Shift + C" },
+                { platform: "Windows / Linux", keys: "Ctrl + Shift + C" },
+            ],
+        },
         {
             id: "cc-voice",
             name: "Voice Studio",
             tagline: "Clonage et synthèse vocale, calculés sur nos propres machines plutôt que dans le cloud. Ouverture publique en préparation.",
+            cta: "Ouvrir Voice Studio",
         },
         {
             id: "mediasmart-games",
             name: "MediaSmart Lab",
             tagline: "Nos mini-jeux et expérimentations web, librement accessibles.",
+            cta: "Ouvrir MediaSmart Lab",
         },
     ],
 
@@ -99,7 +133,7 @@ const it = {
         <li> Optimisation technique du référencement (SEO). </li>
         </ul>
         `,
-    // Prestations web actives, rendues sur la page /web-development juste après
+    // Prestations web actives, rendues dans la section services de l'accueil, juste après
     // "service1". Elles reprennent le périmètre déjà décrit dans la section
     // des estimations (application sur mesure, refonte / migration).
     serviceApp: "Applications web sur mesure",
@@ -111,7 +145,7 @@ const it = {
         <li> Conception et administration de la base de données. </li>
         <li> Développement ou intégration d'API avec vos outils existants. </li>
         </ul>
-        Nos deux applications, le suivi des factures fournisseurs et la gestion documentaire, sont nées de cette démarche.
+        Nos deux applications, l'analyse des factures fournisseurs et la gestion documentaire, sont nées de cette démarche.
         `,
     serviceRedesign: "Refonte et migration de sites",
     descriptionRedesign: `
@@ -364,7 +398,7 @@ const it = {
     ],
     supportPageCtaTitle: "Une question sur le contrat de support ?",
     supportPageCtaDesc: "Écrivez-nous pour déterminer le niveau adapté à votre activité ou obtenir un devis.",
-    supportPageBackLink: "← Retour aux services informatiques",
+    supportPageBackLink: "← Retour à l'accueil",
     supportPageMoreInfo: "Plus d'info",
     supportMostPopular: "Le plus populaire",
 
@@ -398,6 +432,10 @@ const it = {
     itFaq6: {
         faqQuestion: "Comment se déroule le premier contact ?",
         faqAnswer: "Réservez une consultation gratuite de 30 minutes via notre outil en ligne. Nous faisons le point sur votre situation, puis vous recevez un devis détaillé sous 48 heures, sans engagement.",
+    },
+    itFaq7: {
+        faqQuestion: "Vos sites sont-ils optimisés pour être compris et cités par les IA\u00a0?",
+        faqAnswer: "Oui, dans la mesure où cela dépend du site. En complément du SEO technique, nous structurons les contenus pour qu'ils soient faciles à comprendre, à interpréter et à citer par les moteurs de réponse et les assistants IA : hiérarchie claire, réponses autonomes, données structurées et informations cohérentes d'une page à l'autre. C'est ce qu'on appelle le GEO et l'AEO. Aucune agence ne peut garantir qu'une IA citera un site précis ; l'objectif est de maximiser sa découvrabilité et sa compréhension.",
     },
 };
 export default it;

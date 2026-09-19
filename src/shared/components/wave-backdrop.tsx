@@ -19,8 +19,28 @@ const WaveBackdrop: React.FC<WaveBackdropProps> = ({
       className={`pointer-events-none absolute left-[-6%] w-[112%] overflow-hidden ${className}`}
       aria-hidden="true"
     >
+      {/*
+        Wider than its frame on a narrow screen, so the curve stays a curve.
+
+        `preserveAspectRatio="none"` stretches the 1600x760 viewBox to whatever
+        box it is given. On a phone that box is roughly 420x460, which squashes
+        the horizontal run 2.3x harder than the vertical drop and turns the
+        wave into an oblique line. Holding the svg at a floor of 840px shows a
+        narrower window of the same path — one crest and one trough across the
+        viewport instead of the whole thing — which is the shape this is meant
+        to be.
+
+        `max(840px, 100%)` rather than a percentage: a percentage ladder is
+        not monotone. Stepping 200% down to 150% at a breakpoint makes the
+        curve STEEPER as the screen gets wider, which is backwards. A pixel
+        floor keeps the horizontal scale constant across the whole phone band,
+        then hands over to 100% at about 750px — by which point the frame is
+        already wider than the floor, so the two meet without a seam. At md
+        and above it is `w-full`, byte for byte what desktop has always
+        rendered.
+      */}
       <svg
-        className="absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-[max(840px,100%)] md:w-full"
         viewBox="0 0 1600 760"
         preserveAspectRatio="none"
       >

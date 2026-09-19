@@ -15,7 +15,7 @@ const legal = {
     s1Title: "1. Site publisher",
     s1Name: "MediaSmart – Raphael Rouiller",
     s1LegalForm: "Legal form: sole proprietorship (not entered in the Commercial Register)",
-    s1Address: "Address: Rue des Prumus 21, 1994 Aproz (Nendaz), Switzerland",
+    s1Address: "Address: Rue des Cloubeaux 6C, 1905 Dorénaz, Valais, Switzerland",
     s1Email: "Email:",
     s1Phone: "Phone:",
     s1Publisher: "Responsible for publication: Raphael Rouiller",

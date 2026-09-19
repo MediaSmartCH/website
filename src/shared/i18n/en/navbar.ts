@@ -9,6 +9,7 @@ const navbar = {
   // VIDEO DISABLED — DO NOT DELETE: key kept, link removed from the menu.
   navItem3: "Video services",
   navItem4: "About",
+  navWork: "Our work",
   navItem5: "Testimonials",
   navbarButton: "Book an appointment",
   openMenu: "Open menu",
