@@ -72,6 +72,11 @@ const it = {
             name: "MediaSmart Lab",
             tagline: "Our mini-games and web experiments, freely accessible.",
         },
+        {
+            id: "url-copier",
+            name: "CopyLink Pro",
+            tagline: "Our Firefox extension: copy the current page's URL with a keyboard shortcut or from the context menu, with no data collected.",
+        },
     ],
 
     portfolioTxt: "Our work",

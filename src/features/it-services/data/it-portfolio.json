@@ -139,6 +139,26 @@
       ]
     },
     {
+      "id": "url-copier",
+      "category": "free",
+      "title": {
+        "fr": "CopyLink Pro – Extension Firefox",
+        "en": "CopyLink Pro – Firefox extension"
+      },
+      "description": {
+        "fr": "Extension Firefox publiée par MediaSmart. Elle copie l'URL de la page courante par raccourci clavier (Cmd+Shift+C / Ctrl+Shift+C) ou via le menu contextuel, avec une confirmation visuelle discrète dans la page. Interface en français et en anglais, aucune donnée collectée, code source ouvert sous licence MIT.",
+        "en": "Firefox extension published by MediaSmart. It copies the current page's URL with a keyboard shortcut (Cmd+Shift+C / Ctrl+Shift+C) or from the context menu, with a discreet in-page confirmation. French and English interface, no data collected, open source under the MIT licence."
+      },
+      "url": "https://addons.mozilla.org/fr/firefox/addon/url-copier/",
+      "accessNote": {
+        "fr": "Gratuit sur Firefox Add-ons",
+        "en": "Free on Firefox Add-ons"
+      },
+      "images": [
+        "/portfolio/url-copier-0.jpg"
+      ]
+    },
+    {
       "id": "ged-mediasmart",
       "category": "saas",
       "title": {

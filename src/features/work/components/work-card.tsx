@@ -117,20 +117,13 @@ export default function WorkCard({
       ) : status ? (
         /*
           A project under way has no screenshot to show — there is nothing
-          finished to photograph — so the card leads with the state instead of
-          an empty frame: the site's gradient as a rule across the top, the
-          badge, then the name. It is the same surface, radius and type as
-          every other card; only what fills it differs, which is the point.
+          finished to photograph — so the card leads with the badge instead of
+          an empty frame. It carried a straight gradient rule across the top
+          until that motif turned out to be a stranger to the site; the wave
+          above the pair does that work now, in the site's own language.
         */
-        <div className={`${shell} relative overflow-hidden`}>
-          <span
-            className="absolute inset-x-0 top-0 h-[4px]"
-            style={{
-              background: "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)",
-            }}
-            aria-hidden="true"
-          />
-          <span className="mt-[10px] mb-[14px] inline-flex items-center gap-[7px] rounded-[999px] border border-current/20 px-[12px] py-[6px] font-poppins text-[12px] xl:text-[13px] text-body">
+        <div className={shell}>
+          <span className="mb-[14px] inline-flex items-center gap-[7px] rounded-[999px] border border-current/20 px-[12px] py-[6px] font-poppins text-[12px] xl:text-[13px] text-body">
             <span
               className="h-[7px] w-[7px] rounded-full"
               style={{

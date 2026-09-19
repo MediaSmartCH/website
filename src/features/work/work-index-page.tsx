@@ -29,6 +29,7 @@ import {
 import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
 
+import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
@@ -43,6 +44,7 @@ export default function WorkIndexPage() {
   useScrollToHash();
 
   const language = useAppSelector((state) => state.language.currentLanguage);
+  const theme = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(language);
 
   React.useEffect(() => {
@@ -87,6 +89,16 @@ export default function WorkIndexPage() {
           description={`${t.text("work.indexProgressDescription")} — ${inProgressCount}.`}
           tinted
         >
+          {/* The site's wave introduces the pair, where each card used to
+              carry a straight gradient rule of its own — a motif that belonged
+              to nothing else here. One curve for the section, not two. */}
+          <div
+            className="relative mb-[26px] h-[90px] overflow-hidden md:h-[110px]"
+            aria-hidden="true"
+          >
+            <WaveBackdrop theme={theme} className="top-0 h-[230px] md:h-[270px]" />
+          </div>
+
           {/* Two cards in a three-column grid sat against the left edge of a
               wide empty band. Capped and centred, they read as a pair rather
               than as the start of a row nobody finished. */}

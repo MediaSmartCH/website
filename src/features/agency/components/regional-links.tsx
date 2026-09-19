@@ -19,7 +19,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import ArrowIcon from "@shared/components/arrow-icon";
-import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { useTranslations } from "@shared/i18n/translator";
@@ -31,7 +30,6 @@ const PATHS = ["/web-agency-switzerland", "/web-agency-valais"];
 
 export default function RegionalLinks() {
   const language = useAppSelector((state) => state.language.currentLanguage);
-  const theme = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(language);
   const { L, Lhash } = useLangLink();
 
@@ -80,17 +78,13 @@ export default function RegionalLinks() {
           third card headed "International", answering twice as loudly a
           question nobody asked.
 
-          A rounded tinted panel was tried here and made it a card again —
-          exactly what it must not be. It now sits on the page itself, over a
-          shallow wave, with room around it: the shape the site's own closing
-          calls to action have. */}
-      <div className="relative mt-[24px] lg:mt-[34px] overflow-hidden py-[40px] lg:py-[54px]">
-        <WaveBackdrop
-          theme={theme}
-          className="top-[-10px] h-[220px] md:h-[250px] lg:h-[280px] opacity-60"
-        />
+          A rounded tinted panel was tried here, then a shallow wave; both put
+          something behind the words and both read as a band. There is nothing
+          behind them now — the page, the space around them, and the two lines
+          themselves. */}
+      <div className="mt-[30px] lg:mt-[44px] py-[20px] lg:py-[28px]">
         <div
-          className="relative z-10 flex flex-col items-center gap-[18px] text-center"
+          className="flex flex-col items-center gap-[18px] text-center"
           data-aos="fade-up"
           data-aos-duration="1100"
           data-aos-easing="ease-in-sine"

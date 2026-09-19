@@ -114,6 +114,8 @@ export default function SaasProducts() {
                   <img
                     src={image}
                     alt={product.name}
+                    width="1440"
+                    height="900"
                     className={`h-full w-full object-cover object-top ${getPreviewDimClass(source, classes.isLight)}`}
                     loading="lazy"
                   />
@@ -224,6 +226,8 @@ export default function SaasProducts() {
                       <img
                         src={toolImage}
                         alt={tool.name}
+                        width="1440"
+                        height="900"
                         // Centre-cropped, like the portfolio tiles: anchoring to
                         // the top of these screenshots frames a sign-in dialog
                         // rather than the tool itself.

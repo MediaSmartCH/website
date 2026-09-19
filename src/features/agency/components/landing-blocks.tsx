@@ -513,13 +513,13 @@ export function LandingLocalFacts({
   const theme = useAppSelector((state) => state.theme.currentTheme);
 
   return (
-    <div className="relative w-full py-[40px] md:py-[50px] lg:py-[64px] overflow-hidden">
-      {/* The site's own wave, kept shallow: on these pages this is the only
-          section between the hero and the projects, and it needs separating
-          from them without a band's hard edges. */}
+    <div className="relative w-full py-[60px] md:py-[80px] lg:py-[100px] overflow-hidden">
+      {/* The site's own wave, at the size and strength it has above a closing
+          call to action. At 60% and two-thirds the height it was there to be
+          found rather than seen, which is not what a wave is for. */}
       <WaveBackdrop
         theme={theme}
-        className="top-[-30px] h-[300px] md:h-[340px] lg:h-[380px] opacity-60"
+        className="top-[20px] h-[460px] md:top-[0px] md:h-[500px] lg:h-[540px] xl:h-[580px]"
       />
       <section id={id} className={`${CONTAINER} relative z-10`}>
         <h2
