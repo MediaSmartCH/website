@@ -17,22 +17,22 @@ const BACKDROP_HEIGHTS: Record<string, string> = {
   "/terms": "h-[760px] md:h-[860px] lg:h-[960px] xl:h-[1080px] 2xl:h-[1180px]",
   // The regional pages open like the services page — heading, lead, then an
   // animation — so the wave breaks at the same point.
-  "/agence-web-suisse-romande":
+  "/web-agency-switzerland":
     "h-[900px] md:h-[1040px] lg:h-[1160px] xl:h-[1240px]",
-  "/agence-web-valais": "h-[900px] md:h-[1040px] lg:h-[1160px] xl:h-[1240px]",
+  "/web-agency-valais": "h-[900px] md:h-[1040px] lg:h-[1160px] xl:h-[1240px]",
   // Text-only openings, like the legal pages: the visuals start lower down.
-  "/realisations": "h-[760px] md:h-[860px] lg:h-[960px] xl:h-[1080px] 2xl:h-[1180px]",
+  "/projects": "h-[760px] md:h-[860px] lg:h-[960px] xl:h-[1080px] 2xl:h-[1180px]",
 };
 
 /**
  * Paths whose children share the parent's backdrop.
  *
- * A project page is `/realisations/<projet>`, which no exact key can match and
+ * A project page is `/projects/<projet>`, which no exact key can match and
  * which would otherwise open on a bare white page — the one thing that made
  * these pages look bolted on.
  */
 const BACKDROP_PREFIXES: Array<[string, string]> = [
-  ["/realisations/", BACKDROP_HEIGHTS["/realisations"]],
+  ["/projects/", BACKDROP_HEIGHTS["/projects"]],
 ];
 
 const normalizePathname = (pathname: string) => {

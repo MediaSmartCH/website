@@ -1,6 +1,6 @@
 // ============================================================================
 // RÉALISATIONS
-// Chrome des pages /realisations et /realisations/<projet>. Les titres et les
+// Chrome des pages /projects et /projects/<projet>. Les titres et les
 // descriptions des projets eux-mêmes ne sont pas ici : ils vivent déjà dans
 // src/features/it-services/data/it-portfolio.json, dans les deux langues, et
 // c'est la galerie du site qui les affiche. Les dupliquer serait s'exposer à

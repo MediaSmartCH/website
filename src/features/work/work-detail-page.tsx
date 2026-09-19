@@ -1,5 +1,5 @@
 /**
- * /realisations/<projet> — one project.
+ * /projects/<projet> — one project.
  *
  * What is here is what the project file actually records: the title, the
  * description written when the project shipped, the screenshots captured from

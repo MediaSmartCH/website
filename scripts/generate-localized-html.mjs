@@ -36,7 +36,7 @@ const portfolio = JSON.parse(fs.readFileSync(portfolioPath, "utf8"));
 
 /** Longest description Google will show before cutting it off, near enough. */
 const DESCRIPTION_MAX_LENGTH = 155;
-const WORK_BASE_PATH = "/realisations";
+const WORK_BASE_PATH = "/projects";
 
 /**
  * Client projects each get a page, so each needs a shell to be built into.

@@ -74,8 +74,8 @@ registerLocale("en", enMessages as never);
 const PAGE_BY_PATH: Record<string, React.ComponentType> = {
   "/": Homepage,
   "/web-development": ITServicesPage,
-  "/agence-web-suisse-romande": SuisseRomandePage,
-  "/agence-web-valais": ValaisPage,
+  "/web-agency-switzerland": SuisseRomandePage,
+  "/web-agency-valais": ValaisPage,
   [WORK_BASE_PATH]: WorkIndexPage,
   "/privacy-policy": PrivacyPolicyPage,
   "/legal-notice": LegalNoticePage,
@@ -106,8 +106,8 @@ export const PRERENDERED_PATHS = Object.keys(PAGE_BY_PATH);
 export const PAGE_MODULE_BY_PATH: Record<string, string> = {
   "/": "src/features/home/home-page.tsx",
   "/web-development": "src/features/it-services/it-services-page.tsx",
-  "/agence-web-suisse-romande": "src/features/agency/suisse-romande-page.tsx",
-  "/agence-web-valais": "src/features/agency/valais-page.tsx",
+  "/web-agency-switzerland": "src/features/agency/suisse-romande-page.tsx",
+  "/web-agency-valais": "src/features/agency/valais-page.tsx",
   [WORK_BASE_PATH]: "src/features/work/work-index-page.tsx",
   "/privacy-policy": "src/features/privacy-policy/privacy-policy-page.tsx",
   "/legal-notice": "src/features/legal/legal-notice-page.tsx",

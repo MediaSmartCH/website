@@ -5,7 +5,7 @@
  * website and an application here — rather than describing services in the
  * abstract. Everything on it is checkable somewhere else on the site: the
  * services against /web-development, the method against the process section,
- * the area against the FAQ, the work against /realisations.
+ * the area against the FAQ, the work against /projects.
  *
  * The contact form closes the page, as it does on the services page, so a
  * visitor who has read this far does not have to navigate to write.
@@ -117,7 +117,7 @@ export default function SuisseRomandePage() {
           html={t.text("agency.romandieAreaDescription")}
         />
         <div className="w-full flex justify-center lg:justify-start mt-[20px]">
-          <LandingLink to="/agence-web-valais" inline>
+          <LandingLink to="/web-agency-valais" inline>
             {t.text("agency.valaisTitle")}
           </LandingLink>
         </div>

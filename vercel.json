@@ -134,6 +134,46 @@
       "statusCode": 301
     },
     {
+      "source": "/fr/agence-web-suisse-romande",
+      "destination": "/fr/web-agency-switzerland",
+      "statusCode": 301
+    },
+    {
+      "source": "/fr/agence-web-valais",
+      "destination": "/fr/web-agency-valais",
+      "statusCode": 301
+    },
+    {
+      "source": "/fr/realisations/:slug",
+      "destination": "/fr/projects/:slug",
+      "statusCode": 301
+    },
+    {
+      "source": "/fr/realisations",
+      "destination": "/fr/projects",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agence-web-suisse-romande",
+      "destination": "/en/web-agency-switzerland",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agence-web-valais",
+      "destination": "/en/web-agency-valais",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realisations/:slug",
+      "destination": "/en/projects/:slug",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realisations",
+      "destination": "/en/projects",
+      "statusCode": 301
+    },
+    {
       "source": "/",
       "destination": "/fr",
       "permanent": true
@@ -157,84 +197,84 @@
       "destination": "/generated-pages/en-web-development.html"
     },
     {
-      "source": "/fr/agence-web-suisse-romande",
-      "destination": "/generated-pages/fr-agence-web-suisse-romande.html"
+      "source": "/fr/web-agency-switzerland",
+      "destination": "/generated-pages/fr-web-agency-switzerland.html"
     },
     {
-      "source": "/fr/agence-web-valais",
-      "destination": "/generated-pages/fr-agence-web-valais.html"
+      "source": "/fr/web-agency-valais",
+      "destination": "/generated-pages/fr-web-agency-valais.html"
     },
     {
-      "source": "/fr/realisations",
-      "destination": "/generated-pages/fr-realisations.html"
+      "source": "/fr/projects",
+      "destination": "/generated-pages/fr-projects.html"
     },
     {
-      "source": "/fr/realisations/cc-wk",
-      "destination": "/generated-pages/fr-realisations-cc-wk.html"
+      "source": "/fr/projects/cc-wk",
+      "destination": "/generated-pages/fr-projects-cc-wk.html"
     },
     {
-      "source": "/fr/realisations/jocolor",
-      "destination": "/generated-pages/fr-realisations-jocolor.html"
+      "source": "/fr/projects/jocolor",
+      "destination": "/generated-pages/fr-projects-jocolor.html"
     },
     {
-      "source": "/fr/realisations/lechoixdesmots",
-      "destination": "/generated-pages/fr-realisations-lechoixdesmots.html"
+      "source": "/fr/projects/lechoixdesmots",
+      "destination": "/generated-pages/fr-projects-lechoixdesmots.html"
     },
     {
-      "source": "/fr/realisations/soclean4u",
-      "destination": "/generated-pages/fr-realisations-soclean4u.html"
+      "source": "/fr/projects/soclean4u",
+      "destination": "/generated-pages/fr-projects-soclean4u.html"
     },
     {
-      "source": "/fr/realisations/actions-suisse",
-      "destination": "/generated-pages/fr-realisations-actions-suisse.html"
+      "source": "/fr/projects/actions-suisse",
+      "destination": "/generated-pages/fr-projects-actions-suisse.html"
     },
     {
-      "source": "/fr/realisations/chateau-castalia",
-      "destination": "/generated-pages/fr-realisations-chateau-castalia.html"
+      "source": "/fr/projects/chateau-castalia",
+      "destination": "/generated-pages/fr-projects-chateau-castalia.html"
     },
     {
-      "source": "/fr/realisations/arml",
-      "destination": "/generated-pages/fr-realisations-arml.html"
+      "source": "/fr/projects/arml",
+      "destination": "/generated-pages/fr-projects-arml.html"
     },
     {
-      "source": "/en/agence-web-suisse-romande",
-      "destination": "/generated-pages/en-agence-web-suisse-romande.html"
+      "source": "/en/web-agency-switzerland",
+      "destination": "/generated-pages/en-web-agency-switzerland.html"
     },
     {
-      "source": "/en/agence-web-valais",
-      "destination": "/generated-pages/en-agence-web-valais.html"
+      "source": "/en/web-agency-valais",
+      "destination": "/generated-pages/en-web-agency-valais.html"
     },
     {
-      "source": "/en/realisations",
-      "destination": "/generated-pages/en-realisations.html"
+      "source": "/en/projects",
+      "destination": "/generated-pages/en-projects.html"
     },
     {
-      "source": "/en/realisations/cc-wk",
-      "destination": "/generated-pages/en-realisations-cc-wk.html"
+      "source": "/en/projects/cc-wk",
+      "destination": "/generated-pages/en-projects-cc-wk.html"
     },
     {
-      "source": "/en/realisations/jocolor",
-      "destination": "/generated-pages/en-realisations-jocolor.html"
+      "source": "/en/projects/jocolor",
+      "destination": "/generated-pages/en-projects-jocolor.html"
     },
     {
-      "source": "/en/realisations/lechoixdesmots",
-      "destination": "/generated-pages/en-realisations-lechoixdesmots.html"
+      "source": "/en/projects/lechoixdesmots",
+      "destination": "/generated-pages/en-projects-lechoixdesmots.html"
     },
     {
-      "source": "/en/realisations/soclean4u",
-      "destination": "/generated-pages/en-realisations-soclean4u.html"
+      "source": "/en/projects/soclean4u",
+      "destination": "/generated-pages/en-projects-soclean4u.html"
     },
     {
-      "source": "/en/realisations/actions-suisse",
-      "destination": "/generated-pages/en-realisations-actions-suisse.html"
+      "source": "/en/projects/actions-suisse",
+      "destination": "/generated-pages/en-projects-actions-suisse.html"
     },
     {
-      "source": "/en/realisations/chateau-castalia",
-      "destination": "/generated-pages/en-realisations-chateau-castalia.html"
+      "source": "/en/projects/chateau-castalia",
+      "destination": "/generated-pages/en-projects-chateau-castalia.html"
     },
     {
-      "source": "/en/realisations/arml",
-      "destination": "/generated-pages/en-realisations-arml.html"
+      "source": "/en/projects/arml",
+      "destination": "/generated-pages/en-projects-arml.html"
     },
     {
       "source": "/fr/privacy-policy",

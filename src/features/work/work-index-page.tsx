@@ -1,5 +1,5 @@
 /**
- * /realisations — the work, at a URL.
+ * /projects — the work, at a URL.
  *
  * The same projects the services page shows in a modal. A modal has no address:
  * it cannot be linked to, indexed, or cited by anything. These are the strongest

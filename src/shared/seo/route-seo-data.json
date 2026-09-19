@@ -30,9 +30,9 @@
   "routeKeyByPath": {
     "/": "home",
     "/web-development": "web-development",
-    "/agence-web-suisse-romande": "agency-romandie",
-    "/agence-web-valais": "agency-valais",
-    "/realisations": "work",
+    "/web-agency-switzerland": "agency-romandie",
+    "/web-agency-valais": "agency-valais",
+    "/projects": "work",
     "/privacy-policy": "privacy-policy",
     "/legal-notice": "legal-notice",
     "/terms": "terms",

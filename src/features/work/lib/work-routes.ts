@@ -21,7 +21,7 @@ import {
 const data = portfolioData as PortfolioData;
 
 /** Base path of the index, under the language prefix. */
-export const WORK_BASE_PATH = "/realisations";
+export const WORK_BASE_PATH = "/projects";
 
 /** Client projects, in the order the JSON lists them. */
 export const CASE_STUDY_ITEMS: PortfolioItem[] = data.items.filter(

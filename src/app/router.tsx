@@ -100,6 +100,31 @@ const RedirectToWebDevelopment: React.FC = () => {
   );
 };
 
+/* ============================================================================
+ * ANCIENS SLUGS FRANÇAIS — NE PAS SUPPRIMER SANS VÉRIFIER LES LIENS ENTRANTS
+ * /agence-web-suisse-romande, /agence-web-valais et /realisations ont été
+ * renommés en anglais pour suivre la convention du site (/web-development,
+ * /privacy-policy…). Vercel répond une 301 en production (voir "redirects"
+ * dans vercel.json), mais elle ne s'applique ni en dev, ni en preview, ni lors
+ * d'une navigation interne : sans ces redirections côté routeur, les anciennes
+ * adresses tomberaient sur la 404 partout ailleurs qu'en production.
+ * ========================================================================== */
+const RedirectToPath: React.FC<{ to: string }> = ({ to }) => {
+  const { lang } = useParams<{ lang?: string }>();
+  return <Navigate to={buildLocalizedPath(normalizeLanguage(lang), to)} replace />;
+};
+
+/** Same, for a project page: the slug travels with the redirect. */
+const RedirectToProject: React.FC = () => {
+  const { lang, slug } = useParams<{ lang?: string; slug?: string }>();
+  return (
+    <Navigate
+      to={buildLocalizedPath(normalizeLanguage(lang), `/projects/${slug ?? ""}`)}
+      replace
+    />
+  );
+};
+
 const routes: RouteObject[] = [
   // Bare "/" immediately redirects to the default locale prefix.
   { path: "/", element: <Navigate to={`/${DEFAULT_LANGUAGE}`} replace /> },
@@ -125,13 +150,21 @@ const routes: RouteObject[] = [
              comme toutes les autres routes du site : `routeKeyByPath` associe un
              chemin unique aux deux locales, et les hreflang relient les deux
              adresses. */
-          { path: "agence-web-suisse-romande", element: Wrap(<SuisseRomandePage />) },
-          { path: "agence-web-valais", element: Wrap(<ValaisPage />) },
+          { path: "web-agency-switzerland", element: Wrap(<SuisseRomandePage />) },
+          { path: "web-agency-valais", element: Wrap(<ValaisPage />) },
           /* Réalisations : l'index, puis une page par projet client. Un slug
              inconnu rend la 404 depuis la page elle-même, pour ne pas répondre
              200 sur une adresse qui n'existe pas. */
-          { path: "realisations", element: Wrap(<WorkIndexPage />) },
-          { path: "realisations/:slug", element: Wrap(<WorkDetailPage />) },
+          { path: "projects", element: Wrap(<WorkIndexPage />) },
+          { path: "projects/:slug", element: Wrap(<WorkDetailPage />) },
+          /* ANCIENS SLUGS FRANÇAIS — voir la bannière plus haut. */
+          {
+            path: "agence-web-suisse-romande",
+            element: <RedirectToPath to="/web-agency-switzerland" />,
+          },
+          { path: "agence-web-valais", element: <RedirectToPath to="/web-agency-valais" /> },
+          { path: "realisations", element: <RedirectToPath to="/projects" /> },
+          { path: "realisations/:slug", element: <RedirectToProject /> },
           /* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
              La page vidéo n'est plus rendue : l'URL renvoie vers l'accueil.
              Vercel répond déjà une 301 (voir "redirects" dans vercel.json), mais

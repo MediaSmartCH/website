@@ -3,7 +3,7 @@
  *
  * Three rather than all seven: this is a proof point in the middle of a page,
  * not the gallery, and the link underneath takes a reader who wants the rest
- * to /realisations.
+ * to /projects.
  */
 
 import React from "react";

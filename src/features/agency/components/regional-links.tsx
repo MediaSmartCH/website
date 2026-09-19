@@ -19,7 +19,7 @@ import { useTranslations } from "@shared/i18n/translator";
 type RegionalLink = { title: string; description: string; label: string };
 
 /** Same order as `agency.regionalLinks`. */
-const PATHS = ["/agence-web-suisse-romande", "/agence-web-valais"];
+const PATHS = ["/web-agency-switzerland", "/web-agency-valais"];
 
 export default function RegionalLinks() {
   const language = useAppSelector((state) => state.language.currentLanguage);

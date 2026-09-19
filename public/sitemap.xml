@@ -45,37 +45,37 @@
 
   <!-- Pages régionales -->
   <url>
-    <loc>https://mediasmart.ch/fr/agence-web-suisse-romande</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/agence-web-suisse-romande"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/agence-web-suisse-romande"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/agence-web-suisse-romande"/>
+    <loc>https://mediasmart.ch/fr/web-agency-switzerland</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/web-agency-switzerland"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/web-agency-switzerland"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/web-agency-switzerland"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/agence-web-suisse-romande</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/agence-web-suisse-romande"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/agence-web-suisse-romande"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/agence-web-suisse-romande"/>
+    <loc>https://mediasmart.ch/en/web-agency-switzerland</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/web-agency-switzerland"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/web-agency-switzerland"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/web-agency-switzerland"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/agence-web-valais</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/agence-web-valais"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/agence-web-valais"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/agence-web-valais"/>
+    <loc>https://mediasmart.ch/fr/web-agency-valais</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/web-agency-valais"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/web-agency-valais"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/web-agency-valais"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/agence-web-valais</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/agence-web-valais"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/agence-web-valais"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/agence-web-valais"/>
+    <loc>https://mediasmart.ch/en/web-agency-valais</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/web-agency-valais"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/web-agency-valais"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/web-agency-valais"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -83,145 +83,145 @@
 
   <!-- Réalisations -->
   <url>
-    <loc>https://mediasmart.ch/fr/realisations</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations"/>
+    <loc>https://mediasmart.ch/fr/projects</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations"/>
+    <loc>https://mediasmart.ch/en/projects</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/realisations/cc-wk</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/cc-wk"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/cc-wk"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/cc-wk"/>
+    <loc>https://mediasmart.ch/fr/projects/cc-wk</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/cc-wk"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/cc-wk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/cc-wk"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations/cc-wk</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/cc-wk"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/cc-wk"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/cc-wk"/>
+    <loc>https://mediasmart.ch/en/projects/cc-wk</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/cc-wk"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/cc-wk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/cc-wk"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/realisations/jocolor</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/jocolor"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/jocolor"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/jocolor"/>
+    <loc>https://mediasmart.ch/fr/projects/jocolor</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/jocolor"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/jocolor"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/jocolor"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations/jocolor</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/jocolor"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/jocolor"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/jocolor"/>
+    <loc>https://mediasmart.ch/en/projects/jocolor</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/jocolor"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/jocolor"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/jocolor"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/realisations/lechoixdesmots</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/lechoixdesmots"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/lechoixdesmots"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/lechoixdesmots"/>
+    <loc>https://mediasmart.ch/fr/projects/lechoixdesmots</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/lechoixdesmots"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/lechoixdesmots"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/lechoixdesmots"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations/lechoixdesmots</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/lechoixdesmots"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/lechoixdesmots"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/lechoixdesmots"/>
+    <loc>https://mediasmart.ch/en/projects/lechoixdesmots</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/lechoixdesmots"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/lechoixdesmots"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/lechoixdesmots"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/realisations/soclean4u</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/soclean4u"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/soclean4u"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/soclean4u"/>
+    <loc>https://mediasmart.ch/fr/projects/soclean4u</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/soclean4u"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/soclean4u"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/soclean4u"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations/soclean4u</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/soclean4u"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/soclean4u"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/soclean4u"/>
+    <loc>https://mediasmart.ch/en/projects/soclean4u</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/soclean4u"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/soclean4u"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/soclean4u"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/realisations/actions-suisse</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/actions-suisse"/>
+    <loc>https://mediasmart.ch/fr/projects/actions-suisse</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/actions-suisse"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations/actions-suisse</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/actions-suisse"/>
+    <loc>https://mediasmart.ch/en/projects/actions-suisse</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/actions-suisse"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/realisations/chateau-castalia</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/chateau-castalia"/>
+    <loc>https://mediasmart.ch/fr/projects/chateau-castalia</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/chateau-castalia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations/chateau-castalia</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/chateau-castalia"/>
+    <loc>https://mediasmart.ch/en/projects/chateau-castalia</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/chateau-castalia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/fr/realisations/arml</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/arml"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/arml"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/arml"/>
+    <loc>https://mediasmart.ch/fr/projects/arml</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/arml"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/arml"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/arml"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mediasmart.ch/en/realisations/arml</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/realisations/arml"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/realisations/arml"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/realisations/arml"/>
+    <loc>https://mediasmart.ch/en/projects/arml</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/arml"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/arml"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/arml"/>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

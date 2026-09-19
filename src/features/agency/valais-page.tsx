@@ -1,5 +1,5 @@
 /**
- * /agence-web-valais.
+ * /web-agency-valais.
  *
  * Not the Suisse romande page with the place name swapped. What is on it is
  * what is only true here: where the office actually is, which clients in the
@@ -124,7 +124,7 @@ export default function ValaisPage() {
       />
 
       <LandingSection id="area" title={t.text("agency.areaTitle")}>
-        <LandingLink to="/agence-web-suisse-romande">
+        <LandingLink to="/web-agency-switzerland">
           {t.text("agency.romandieTitle")}
         </LandingLink>
       </LandingSection>
