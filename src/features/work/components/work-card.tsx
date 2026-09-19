@@ -28,19 +28,12 @@ export default function WorkCard({
   item,
   linkToDetail,
   index = 0,
-  status,
 }: {
   item: PortfolioItem;
   /** Our own products and the free tools have no page of their own. */
   linkToDetail: boolean;
   /** Position in its grid, used to stagger the entrance by row. */
   index?: number;
-  /**
-   * A state to show instead of the "view the project" action — "En cours" for
-   * work under way. It is a statement of fact, not a progress bar: nothing
-   * here claims a stage or a date.
-   */
-  status?: string;
 }) {
   const language = useAppSelector((state) => state.language.currentLanguage);
   const theme = useAppSelector((state) => state.theme.currentTheme);
@@ -114,28 +107,14 @@ export default function WorkCard({
             </span>
           </span>
         </Link>
-      ) : status ? (
-        /*
-          A project under way has no screenshot to show — there is nothing
-          finished to photograph — so the card leads with the badge instead of
-          an empty frame. It carried a straight gradient rule across the top
-          until that motif turned out to be a stranger to the site; the wave
-          above the pair does that work now, in the site's own language.
-        */
-        <div className={shell}>
-          <span className="mb-[14px] inline-flex items-center gap-[7px] rounded-[999px] border border-current/20 px-[12px] py-[6px] font-poppins text-[12px] xl:text-[13px] text-body">
-            <span
-              className="h-[7px] w-[7px] rounded-full"
-              style={{
-                background: "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)",
-              }}
-              aria-hidden="true"
-            />
-            {status}
-          </span>
-          {body}
-        </div>
       ) : (
+        /*
+          A project with no page of its own: our own products, the free tools,
+          and the sites still being built. Those last ones used to repeat an
+          "En cours" badge on every card, under a heading that already read
+          "Projets en cours" — the section says it once, and the bar above the
+          pair says it again in pictures.
+        */
         <div className={shell}>{body}</div>
       )}
     </div>

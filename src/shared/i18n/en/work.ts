@@ -21,7 +21,10 @@ const work = {
 
     indexProgressTitle: "Work in progress",
     indexProgressDescription: "Sites we are building right now. They will join our work once they are live.",
-    statusInProgress: "In progress",
+    // The line under the progress bar of the "Work in progress" section.
+    // It says exactly what the animation shows and nothing more: no
+    // stage, no percentage, no date.
+    progressCaption: "Work in progress…",
     countProjects: "projects delivered",
     countProject: "project delivered",
     countInProgress: "projects in progress",

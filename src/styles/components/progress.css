@@ -1,0 +1,66 @@
+/**
+ * Indeterminate progress bar — "work in progress", drawn rather than written.
+ *
+ * Taken from the MediaSmart holding page (site-en-construction,
+ * `.construct-progress-track` / `.construct-progress-bar` in its index.css):
+ * the same 8px track, the same 30% block, the same 1.9s ease-in-out sweep.
+ * Only the colours are re-sourced, and only because that project carries its
+ * own copy of the palette — here the block is the site's own gradient,
+ * `#b514fd → #5f75f5`, the one the buttons and the list bullets already use.
+ *
+ * It is decorative, and it says so: no value, no percentage, no
+ * `role="progressbar"`. The markup hides it from assistive technology and puts
+ * the meaning in the sentence underneath, in words.
+ */
+
+@keyframes wip-progress-sweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(360%);
+  }
+}
+
+.wip-progress-track {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: rgba(84, 104, 201, 0.16);
+}
+
+.AppDark .wip-progress-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.wip-progress-bar {
+  position: absolute;
+  inset: 0;
+  width: 30%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%);
+  animation: wip-progress-sweep 1.9s ease-in-out infinite;
+}
+
+/**
+ * Animations off, by the site's own switch.
+ *
+ * The block stops and fills the track. A still 30% block parked at the left
+ * would read as a third of the way through — the one thing this section must
+ * never appear to say.
+ */
+.wip-progress-bar[data-still="true"] {
+  animation: none;
+  width: 100%;
+  transform: none;
+}
+
+/* Same resting state, decided by the operating system instead. */
+@media (prefers-reduced-motion: reduce) {
+  .wip-progress-bar {
+    animation: none;
+    width: 100%;
+    transform: none;
+  }
+}

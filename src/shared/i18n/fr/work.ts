@@ -23,7 +23,10 @@ const work = {
 
     indexProgressTitle: "Projets en cours",
     indexProgressDescription: "Des sites que nous développons actuellement. Ils seront présentés parmi nos réalisations une fois en ligne.",
-    statusInProgress: "En cours",
+    // Le texte sous la barre de progression de la section « Projets en
+    // cours ». Il dit exactement ce que montre l'animation, et rien de
+    // plus : pas d'étape, pas de pourcentage, pas de date.
+    progressCaption: "Travaux en cours…",
     countProjects: "réalisations",
     countProject: "réalisation",
     countInProgress: "projets en cours",

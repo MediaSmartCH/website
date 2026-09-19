@@ -15,6 +15,7 @@
 import React from "react";
 
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
+import addonStats from "@features/it-services/data/addon-stats.json";
 import BookingButton from "@features/booking/components/booking-button";
 import LaunchCountdown from "@features/it-services/components/launch-countdown";
 import {
@@ -42,7 +43,47 @@ type SaasProductCopy = {
 };
 
 /** Free tools: name and pitch only, no feature list and no sales CTA. */
-type SaasFreeToolCopy = Pick<SaasProductCopy, "id" | "name" | "tagline">;
+type SaasFreeToolCopy = Pick<SaasProductCopy, "id" | "name" | "tagline"> & {
+  /**
+   * What the button says. "Voir sur Firefox Add-ons" names the shop the link
+   * opens; "Ouvrir l'outil", three times in a row, named nothing.
+   */
+  cta?: string;
+  /** Keyboard shortcuts, where the tool has any worth leading with. */
+  shortcuts?: { platform: string; keys: string }[];
+};
+
+/**
+ * Figures published by the store, refreshed at build time.
+ *
+ * `scripts/fetch-addon-stats.mjs` writes this file from the public AMO API
+ * before every build, and leaves the previous values in place if Mozilla does
+ * not answer. A missing entry, or a null field inside one, means the figure is
+ * simply not shown — never that a zero is.
+ */
+type AddonFigures = {
+  rating: number | null;
+  ratingCount: number | null;
+  users: number | null;
+};
+
+const ADDON_FIGURES: Record<string, AddonFigures | undefined> =
+  (addonStats as { addons?: Record<string, AddonFigures> }).addons ?? {};
+
+/** A star, for the rating. Decorative: the score is written next to it. */
+function StarGlyph() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-[13px] w-[13px] shrink-0"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.45 6.19 20.5l1.11-6.47-4.7-4.58 6.5-.95L12 2.6z" />
+    </svg>
+  );
+}
 
 /**
  * Trailing arrow on the card CTAs, marking them as a way out of the page.
@@ -61,6 +102,19 @@ export default function SaasProducts() {
   const portfolioItems = (portfolioContent as PortfolioData).items ?? [];
   const products = t.array<SaasProductCopy>("it.saasProducts");
   const freeTools = t.array<SaasFreeToolCopy>("it.saasFreeTools");
+
+  // Swiss conventions in both languages: "5,0" and "27'000" in French,
+  // "5.0" and "27,000" in English.
+  const locale = languageReducer === "fr" ? "fr-CH" : "en-GB";
+  const counts = React.useMemo(() => new Intl.NumberFormat(locale), [locale]);
+  const scores = React.useMemo(
+    () =>
+      new Intl.NumberFormat(locale, {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
+    [locale]
+  );
 
   if (products.length === 0) return null;
 
@@ -219,6 +273,36 @@ export default function SaasProducts() {
                 ? resolveLocalizedField(source.accessNote, languageReducer)
                 : null;
 
+              // The pill the access note already wore, now also worn by the
+              // shortcut keys and the store figures: one small label style on
+              // this card, not three.
+              const pill = `rounded-full border px-3 py-1 text-[11px] font-medium leading-tight ${
+                classes.isLight
+                  ? "border-[#D9DCF2] bg-[#EEF0FF] text-[#2C3A87]"
+                  : "border-white/10 bg-white/5 text-[#DAD7FF]"
+              }`;
+
+              // Each figure stands or falls on its own: a store that publishes
+              // a user count but no rating yet gets a line with the user count
+              // on it, not a placeholder where the rating would go.
+              const figures = ADDON_FIGURES[tool.id];
+              const rating =
+                figures?.rating != null && figures.ratingCount
+                  ? scores.format(figures.rating)
+                  : null;
+              const reviews = figures?.ratingCount
+                ? `${counts.format(figures.ratingCount)} ${t.text(
+                    figures.ratingCount > 1 ? "it.saasStatReviews" : "it.saasStatReviewsOne"
+                  )}`
+                : null;
+              const users =
+                figures?.users != null
+                  ? `${counts.format(figures.users)} ${t.text(
+                      figures.users > 1 ? "it.saasStatUsers" : "it.saasStatUsersOne"
+                    )}`
+                  : null;
+              const hasFigures = Boolean(rating || reviews || users);
+
               const inner = (
                 <>
                   {toolImage && (
@@ -238,13 +322,15 @@ export default function SaasProducts() {
                   )}
 
                   <div className="flex flex-1 flex-col p-6">
-                    {toolBadge && (
-                      <span
-                        className={`mb-3 inline-block w-fit rounded-full border px-3 py-1 text-[11px] font-medium leading-tight ${classes.isLight ? "border-[#D9DCF2] bg-[#EEF0FF] text-[#2C3A87]" : "border-white/10 bg-white/5 text-[#DAD7FF]"}`}
-                      >
-                        {toolBadge}
-                      </span>
-                    )}
+                    {/* The row is reserved whether or not this tool carries an
+                        access note. At three cards across — 1920 and up — the
+                        one without a badge started its title 24px above its
+                        neighbours. */}
+                    <div className="mb-3 flex min-h-[24px] items-start">
+                      {toolBadge && (
+                        <span className={`inline-block w-fit ${pill}`}>{toolBadge}</span>
+                      )}
+                    </div>
 
                     <h4
                       className={`${classes.strongText} font-redDisplay text-[20px] font-bold leading-6`}
@@ -256,6 +342,57 @@ export default function SaasProducts() {
                     >
                       {tool.tagline}
                     </p>
+
+                    {/* The fastest way to use the tool, spelled out. The
+                        context menu is in the pitch; the keys are here,
+                        because they are what the pitch is about. */}
+                    {tool.shortcuts && tool.shortcuts.length > 0 && (
+                      <ul className="mt-3 flex flex-wrap gap-2">
+                        {tool.shortcuts.map((shortcut) => (
+                          <li
+                            key={shortcut.platform}
+                            className={`inline-flex items-center gap-[6px] ${pill}`}
+                          >
+                            <span className="opacity-70">{shortcut.platform}</span>
+                            {/* Tailwind's preflight sets kbd in mono; the card
+                                is in Poppins, and a keyboard shortcut is not a
+                                code sample. */}
+                            <kbd className="font-poppins font-semibold not-italic">
+                              {shortcut.keys}
+                            </kbd>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {/* What the store says about the tool, in the store's own
+                        numbers, refreshed at build time. It sits here rather
+                        than beside the access badge because at some card
+                        widths the two together wrap to a second line, and the
+                        titles of a row stop lining up. Small, and never the
+                        subject of the card. */}
+                    {hasFigures && (
+                      <p
+                        className={`${classes.mutedText} mt-3 flex flex-wrap items-center gap-x-[6px] gap-y-1 font-poppins text-[12px] leading-tight`}
+                      >
+                        {rating && (
+                          <span className="inline-flex items-center gap-[4px]">
+                            <StarGlyph />
+                            {/* The glyph is decoration; "5,0/5" is the score,
+                                and a screen reader is told which score it
+                                is. */}
+                            <span aria-hidden="true">{rating}/5</span>
+                            <span className="sr-only">
+                              {`${t.text("it.saasStatRatingSr")} ${rating}`}
+                            </span>
+                          </span>
+                        )}
+                        {rating && reviews && <span aria-hidden="true">·</span>}
+                        {reviews && <span>{reviews}</span>}
+                        {(rating || reviews) && users && <span aria-hidden="true">·</span>}
+                        {users && <span>{users}</span>}
+                      </p>
+                    )}
 
                     {/* Only a tool that is not public yet carries a launchDate. */}
                     {source?.launchDate && (
@@ -276,7 +413,7 @@ export default function SaasProducts() {
                             come from the card hover (.custom-btn-in-card). */}
                         <span className="custom-btn custom-btn-in-card flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
                           <span className="custom-btn-inner flex items-center gap-2">
-                            {t.text("it.saasFreeCta")}
+                            {tool.cta || t.text("it.saasFreeCta")}
                             <ArrowIcon />
                           </span>
                         </span>

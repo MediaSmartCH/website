@@ -20,6 +20,7 @@ import {
 import portfolioData from "@features/it-services/data/it-portfolio.json";
 import SaasProducts from "@features/it-services/components/saas-products";
 import WorkCard from "@features/work/components/work-card";
+import WorkProgress from "@features/work/components/work-progress";
 
 import {
   LandingHero,
@@ -29,7 +30,6 @@ import {
 import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
 
-import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
@@ -44,7 +44,6 @@ export default function WorkIndexPage() {
   useScrollToHash();
 
   const language = useAppSelector((state) => state.language.currentLanguage);
-  const theme = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(language);
 
   React.useEffect(() => {
@@ -87,22 +86,20 @@ export default function WorkIndexPage() {
           id="in-progress"
           title={t.text("work.indexProgressTitle")}
           description={`${t.text("work.indexProgressDescription")} — ${inProgressCount}.`}
-          tinted
+          compact
         >
-          {/* The site's wave introduces the pair, where each card used to
-              carry a straight gradient rule of its own — a motif that belonged
-              to nothing else here. One curve for the section, not two. */}
-          <div
-            className="relative mb-[26px] h-[90px] overflow-hidden md:h-[110px]"
-            aria-hidden="true"
-          >
-            <WaveBackdrop theme={theme} className="top-0 h-[230px] md:h-[270px]" />
-          </div>
+          {/* The one graphic of the section, and the only thing that has to
+              carry it: the sweeping bar from the holding page we put in front
+              of sites still being built. It replaced, in turn, a gradient rule
+              on each card, then a wave — the first belonged to nothing on this
+              site, the second is the site's way of closing a page, not of
+              decorating a short list. */}
+          <WorkProgress />
 
           {/* Two cards in a three-column grid sat against the left edge of a
               wide empty band. Capped and centred, they read as a pair rather
               than as the start of a row nobody finished. */}
-          <div className="mx-auto grid w-full max-w-[860px] grid-cols-1 gap-[18px] sm:grid-cols-2 lg:gap-[24px]">
+          <div className="mx-auto mt-[24px] grid w-full max-w-[860px] grid-cols-1 gap-[18px] sm:grid-cols-2 lg:mt-[32px] lg:gap-[24px]">
             {inProgress.map((item, index) => (
               <WorkCard
                 key={item.id}
@@ -110,7 +107,6 @@ export default function WorkIndexPage() {
                 // No page of their own: there is nothing to put on one yet.
                 linkToDetail={false}
                 index={index}
-                status={t.text("work.statusInProgress")}
               />
             ))}
           </div>

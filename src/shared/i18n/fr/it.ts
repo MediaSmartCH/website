@@ -58,24 +58,42 @@ const it = {
     launchCountdownSeconds: "s",
     launchCountdownLive: "Ouvert au public",
     saasFreeTitle: `<span>En accès</span> libre`,
+    // Repli lorsqu'un outil ne nomme pas son propre bouton. Chaque outil le
+    // nomme, justement parce que « Ouvrir l'outil » trois fois de suite ne dit
+    // à personne où il atterrit.
     saasFreeCta: "Ouvrir l'outil",
     saasFreeDescription:
         "Des outils que nous mettons à disposition de tous, sans compte ni facturation.",
+    // Chiffres publiés par Mozilla, relevés au build (voir
+    // scripts/fetch-addon-stats.mjs). Rien n'est écrit ici en dur.
+    saasStatRatingSr: "Note moyenne sur 5 :",
+    saasStatReviewsOne: "avis",
+    saasStatReviews: "avis",
+    saasStatUsersOne: "utilisateur",
+    saasStatUsers: "utilisateurs",
     saasFreeTools: [
+        {
+            id: "url-copier",
+            name: "CopyLink Pro",
+            tagline: "Copiez instantanément l'URL de la page courante avec un raccourci clavier, ou depuis le menu contextuel. Aucune donnée collectée.",
+            cta: "Voir sur Firefox Add-ons",
+            // Les raccourcis publiés sur la fiche Mozilla, tels quels.
+            shortcuts: [
+                { platform: "macOS", keys: "Cmd + Shift + C" },
+                { platform: "Windows / Linux", keys: "Ctrl + Shift + C" },
+            ],
+        },
         {
             id: "cc-voice",
             name: "Voice Studio",
             tagline: "Clonage et synthèse vocale, calculés sur nos propres machines plutôt que dans le cloud. Ouverture publique en préparation.",
+            cta: "Ouvrir Voice Studio",
         },
         {
             id: "mediasmart-games",
             name: "MediaSmart Lab",
             tagline: "Nos mini-jeux et expérimentations web, librement accessibles.",
-        },
-        {
-            id: "url-copier",
-            name: "CopyLink Pro",
-            tagline: "Notre extension Firefox : copier l'URL de la page courante par raccourci clavier ou menu contextuel, sans collecte de données.",
+            cta: "Ouvrir MediaSmart Lab",
         },
     ],
 

@@ -144,20 +144,35 @@ export function LandingSection({
   description,
   children,
   tinted = false,
+  compact = false,
 }: {
   id: string;
   title: string;
   description?: string;
   children: React.ReactNode;
   tinted?: boolean;
+  /**
+   * Closes the gaps between the heading, the paragraph and what follows.
+   *
+   * For a short section — a two-line lead over a pair of cards — the default
+   * rhythm leaves it stretched down the page with the title floating alone at
+   * the top. The type scale does not change, only the air around it.
+   */
+  compact?: boolean;
 }) {
   const inner = (
     <section
       id={id}
-      className={`${CONTAINER} pt-[30px] md:pt-[40px] lg:pt-[56px] pb-[10px] md:pb-[20px]`}
+      className={`${CONTAINER} ${
+        compact
+          ? "pt-[24px] md:pt-[30px] lg:pt-[40px]"
+          : "pt-[30px] md:pt-[40px] lg:pt-[56px]"
+      } pb-[10px] md:pb-[20px]`}
     >
       <h2
-        className="text-heading w-full text-center font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[42px] 2xl:text-[46px] mb-[10px]"
+        className={`text-heading w-full text-center font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[42px] 2xl:text-[46px] ${
+          compact ? "mb-[8px]" : "mb-[10px]"
+        }`}
         data-aos="fade-up"
         data-aos-duration="900"
         data-aos-easing="ease-in-sine"
@@ -167,14 +182,22 @@ export function LandingSection({
       {description && (
         <RichText
           as="div"
-          className="text-body w-full lg:w-[70%] 2xl:w-[60%] mx-auto text-center font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] mb-[26px] lg:mb-[36px]"
+          className={`text-body w-full lg:w-[70%] 2xl:w-[60%] mx-auto text-center font-helvetica font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] ${
+            compact ? "mb-[18px] lg:mb-[24px]" : "mb-[26px] lg:mb-[36px]"
+          }`}
           html={description}
           data-aos="fade-up"
           data-aos-duration="1100"
           data-aos-easing="ease-in-sine"
         />
       )}
-      <div className={description ? "" : "mt-[26px] lg:mt-[36px]"}>{children}</div>
+      <div
+        className={
+          description ? "" : compact ? "mt-[18px] lg:mt-[24px]" : "mt-[26px] lg:mt-[36px]"
+        }
+      >
+        {children}
+      </div>
     </section>
   );
 

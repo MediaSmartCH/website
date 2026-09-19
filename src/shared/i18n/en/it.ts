@@ -58,24 +58,42 @@ const it = {
     launchCountdownSeconds: "s",
     launchCountdownLive: "Open to everyone",
     saasFreeTitle: `<span>Freely</span> available`,
+    // Fallback for a tool that does not name its own button. Every tool names
+    // it, precisely because "Open the tool" three times over tells nobody
+    // where they are about to land.
     saasFreeCta: "Open the tool",
     saasFreeDescription:
         "Tools we make available to everyone, with no account and no invoicing.",
+    // Figures published by Mozilla, read at build time (see
+    // scripts/fetch-addon-stats.mjs). Nothing here is hardcoded.
+    saasStatRatingSr: "Average rating out of 5:",
+    saasStatReviewsOne: "review",
+    saasStatReviews: "reviews",
+    saasStatUsersOne: "user",
+    saasStatUsers: "users",
     saasFreeTools: [
+        {
+            id: "url-copier",
+            name: "CopyLink Pro",
+            tagline: "Instantly copy the current page's URL with a keyboard shortcut, or from the context menu. No data collected.",
+            cta: "View on Firefox Add-ons",
+            // The shortcuts published on the Mozilla listing, verbatim.
+            shortcuts: [
+                { platform: "macOS", keys: "Cmd + Shift + C" },
+                { platform: "Windows / Linux", keys: "Ctrl + Shift + C" },
+            ],
+        },
         {
             id: "cc-voice",
             name: "Voice Studio",
             tagline: "Voice cloning and synthesis, computed on our own hardware rather than in the cloud. A public release is in preparation.",
+            cta: "Open Voice Studio",
         },
         {
             id: "mediasmart-games",
             name: "MediaSmart Lab",
             tagline: "Our mini-games and web experiments, freely accessible.",
-        },
-        {
-            id: "url-copier",
-            name: "CopyLink Pro",
-            tagline: "Our Firefox extension: copy the current page's URL with a keyboard shortcut or from the context menu, with no data collected.",
+            cta: "Open MediaSmart Lab",
         },
     ],
 
