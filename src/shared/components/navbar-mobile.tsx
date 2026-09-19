@@ -90,6 +90,13 @@ export default function NavbarMobile({
             >
               {t.text("navbar.navItem2")}
             </Link>
+            <Link
+              to={L("/realisations")}
+              onClick={onCloseMenu}
+              className={`text-heading-invert rounded-xl px-3 py-2.5 font-poppins text-[16px] font-medium`}
+            >
+              {t.text("navbar.navWork")}
+            </Link>
             {/* ================================================================
                 VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
                 Lien vidéo du menu mobile mis en pause (site 100% informatique).

@@ -157,6 +157,86 @@
       "destination": "/generated-pages/en-web-development.html"
     },
     {
+      "source": "/fr/agence-web-suisse-romande",
+      "destination": "/generated-pages/fr-agence-web-suisse-romande.html"
+    },
+    {
+      "source": "/fr/agence-web-valais",
+      "destination": "/generated-pages/fr-agence-web-valais.html"
+    },
+    {
+      "source": "/fr/realisations",
+      "destination": "/generated-pages/fr-realisations.html"
+    },
+    {
+      "source": "/fr/realisations/cc-wk",
+      "destination": "/generated-pages/fr-realisations-cc-wk.html"
+    },
+    {
+      "source": "/fr/realisations/jocolor",
+      "destination": "/generated-pages/fr-realisations-jocolor.html"
+    },
+    {
+      "source": "/fr/realisations/lechoixdesmots",
+      "destination": "/generated-pages/fr-realisations-lechoixdesmots.html"
+    },
+    {
+      "source": "/fr/realisations/soclean4u",
+      "destination": "/generated-pages/fr-realisations-soclean4u.html"
+    },
+    {
+      "source": "/fr/realisations/actions-suisse",
+      "destination": "/generated-pages/fr-realisations-actions-suisse.html"
+    },
+    {
+      "source": "/fr/realisations/chateau-castalia",
+      "destination": "/generated-pages/fr-realisations-chateau-castalia.html"
+    },
+    {
+      "source": "/fr/realisations/arml",
+      "destination": "/generated-pages/fr-realisations-arml.html"
+    },
+    {
+      "source": "/en/agence-web-suisse-romande",
+      "destination": "/generated-pages/en-agence-web-suisse-romande.html"
+    },
+    {
+      "source": "/en/agence-web-valais",
+      "destination": "/generated-pages/en-agence-web-valais.html"
+    },
+    {
+      "source": "/en/realisations",
+      "destination": "/generated-pages/en-realisations.html"
+    },
+    {
+      "source": "/en/realisations/cc-wk",
+      "destination": "/generated-pages/en-realisations-cc-wk.html"
+    },
+    {
+      "source": "/en/realisations/jocolor",
+      "destination": "/generated-pages/en-realisations-jocolor.html"
+    },
+    {
+      "source": "/en/realisations/lechoixdesmots",
+      "destination": "/generated-pages/en-realisations-lechoixdesmots.html"
+    },
+    {
+      "source": "/en/realisations/soclean4u",
+      "destination": "/generated-pages/en-realisations-soclean4u.html"
+    },
+    {
+      "source": "/en/realisations/actions-suisse",
+      "destination": "/generated-pages/en-realisations-actions-suisse.html"
+    },
+    {
+      "source": "/en/realisations/chateau-castalia",
+      "destination": "/generated-pages/en-realisations-chateau-castalia.html"
+    },
+    {
+      "source": "/en/realisations/arml",
+      "destination": "/generated-pages/en-realisations-arml.html"
+    },
+    {
       "source": "/fr/privacy-policy",
       "destination": "/generated-pages/fr-privacy-policy.html"
     },

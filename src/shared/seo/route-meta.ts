@@ -12,6 +12,14 @@ import {
 } from "@shared/constants/contact";
 import { dictionary } from "@shared/i18n/registry";
 import routeSeoData from "@shared/seo/route-seo-data.json";
+import {
+  findCaseStudy,
+  WORK_BASE_PATH,
+} from "@features/work/lib/work-routes";
+import {
+  resolveLocalizedField,
+  truncateText,
+} from "@features/it-services/lib/portfolio-helpers";
 
 export const SITE_NAME = "MediaSmart";
 export const SITE_URL = "https://mediasmart.ch";
@@ -35,6 +43,10 @@ type RouteSeoKey =
   | "legal-notice"
   | "terms"
   | "support-contract"
+  | "agency-romandie"
+  | "agency-valais"
+  | "work"
+  | "case-study"
   | "not-found";
 
 type RouteSeoDefinition = {
@@ -45,13 +57,18 @@ type RouteSeoDefinition = {
   shareImageAlt: string;
   serviceType?: string;
   /**
-   * Dictionary keys of the FAQ this page renders, in `it`. Present only on
-   * pages that actually show those questions.
+   * Dictionary keys of the FAQ this page renders. Each names either one
+   * question object or an array of them. Present only on pages that actually
+   * show those questions.
    */
   faqKeys?: string[];
+  /** Dictionary section the keys live in. Defaults to `it`. */
+  faqSection?: string;
 };
 
 type StructuredDataNode = Record<string, unknown>;
+
+type FaqEntry = { faqQuestion: string; faqAnswer: string };
 
 type ResolvedRouteSeo = RouteSeoDefinition & {
   canonicalUrl: string;
@@ -109,20 +126,28 @@ const buildAreaServed = (): StructuredDataNode[] => [
 const buildFaqPage = (
   language: AppLanguage,
   canonicalUrl: string,
-  faqKeys: string[]
+  faqKeys: string[],
+  faqSection: string
 ): StructuredDataNode | null => {
-  const section = dictionary.it?.[language] as
-    | Record<string, { faqQuestion?: string; faqAnswer?: string }>
+  const section = dictionary[faqSection]?.[language] as
+    | Record<string, unknown>
     | undefined;
 
   if (!section) return null;
 
-  const entries = faqKeys
-    .map((key) => section[key])
-    .filter(
-      (entry): entry is { faqQuestion: string; faqAnswer: string } =>
-        !!entry?.faqQuestion && !!entry?.faqAnswer
-    );
+  const isEntry = (value: unknown): value is FaqEntry =>
+    !!value &&
+    typeof value === "object" &&
+    typeof (value as FaqEntry).faqQuestion === "string" &&
+    typeof (value as FaqEntry).faqAnswer === "string";
+
+  // A key names either one question or a whole list of them, so both shapes
+  // flatten into the same array here.
+  const entries = faqKeys.flatMap((key) => {
+    const value = section[key];
+    if (Array.isArray(value)) return value.filter(isEntry);
+    return isEntry(value) ? [value] : [];
+  });
 
   if (!entries.length) return null;
 
@@ -270,7 +295,12 @@ const buildStructuredData = (
   }
 
   if (seo.faqKeys?.length) {
-    const faq = buildFaqPage(language, canonicalUrl, seo.faqKeys);
+    const faq = buildFaqPage(
+      language,
+      canonicalUrl,
+      seo.faqKeys,
+      seo.faqSection ?? "it"
+    );
     if (faq) graph.push(faq);
   }
 
@@ -281,6 +311,48 @@ const buildStructuredData = (
   return {
     "@context": "https://schema.org",
     "@graph": graph,
+  };
+};
+
+/** Longest description Google will show before cutting it off, near enough. */
+const DESCRIPTION_MAX_LENGTH = 155;
+
+/**
+ * The metadata of one project page, built from the project file.
+ *
+ * These pages are not listed in `routeKeyByPath`: there is one per client
+ * project, and writing a title and a description for each by hand would be
+ * seven more places to keep in step with the same JSON. The `case-study` entry
+ * holds the pattern, and the project supplies the words it already carries.
+ *
+ * Returns null for a slug no project matches, so an invented URL falls through
+ * to "not-found" exactly as any other unknown path does.
+ */
+const resolveCaseStudySeo = (
+  strippedPath: string,
+  language: AppLanguage
+): RouteSeoDefinition | null => {
+  if (!strippedPath.startsWith(`${WORK_BASE_PATH}/`)) return null;
+
+  const item = findCaseStudy(strippedPath.slice(WORK_BASE_PATH.length + 1));
+  if (!item) return null;
+
+  const pattern = typedRouteSeoData.routeSeoByLanguage[language]["case-study"];
+  const projectName = resolveLocalizedField(item.title, language);
+  const description = truncateText(
+    resolveLocalizedField(item.description, language),
+    DESCRIPTION_MAX_LENGTH
+  );
+
+  const fill = (value: string) =>
+    value.replace("{project}", projectName).replace("{description}", description);
+
+  return {
+    ...pattern,
+    pageName: projectName,
+    title: fill(pattern.title),
+    description: fill(pattern.description),
+    shareImageAlt: fill(pattern.shareImageAlt),
   };
 };
 
@@ -295,7 +367,9 @@ export const resolveRouteSeo = (
   const strippedPath = stripLanguageFromPath(pathname) || "/";
   // Unknown paths fall back to "not-found" so missing routes never throw.
   const routeKey = typedRouteSeoData.routeKeyByPath[strippedPath] ?? "not-found";
-  const seo = typedRouteSeoData.routeSeoByLanguage[language][routeKey];
+  const seo =
+    resolveCaseStudySeo(strippedPath, language) ??
+    typedRouteSeoData.routeSeoByLanguage[language][routeKey];
   const canonicalUrl = `${SITE_URL}${buildLocalizedPath(language, strippedPath)}`;
   const xDefaultUrl = `${SITE_URL}${buildLocalizedPath(
     DEFAULT_LANGUAGE,

@@ -259,6 +259,12 @@ export default defineConfig(async () => {
     assetsInclude: ["**/*.lottie"],
     build: {
       /**
+       * Needed by scripts/prerender.mjs, which reads it to find the chunk a
+       * route's page component ended up in and preloads it from that route's
+       * HTML. Written to dist/.vite/ and not served.
+       */
+      manifest: true,
+      /**
        * Country flags stay as files; everything else keeps the default rule.
        *
        * They are 2KB each and there are 218 of them, so inlining put every one

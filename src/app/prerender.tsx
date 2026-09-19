@@ -44,6 +44,11 @@ import PrivacyPolicyPage from "@features/privacy-policy/privacy-policy-page";
 import LegalNoticePage from "@features/legal/legal-notice-page";
 import TermsPage from "@features/legal/terms-page";
 import Error404Page from "@features/error/error-404-page";
+import SuisseRomandePage from "@features/agency/suisse-romande-page";
+import ValaisPage from "@features/agency/valais-page";
+import WorkIndexPage from "@features/work/work-index-page";
+import WorkDetailPage from "@features/work/work-detail-page";
+import { caseStudyPath, CASE_STUDY_SLUGS, WORK_BASE_PATH } from "@features/work/lib/work-routes";
 
 import { store } from "@store/store";
 import { setLanguage } from "@store/slices/common/languageSlice";
@@ -69,13 +74,52 @@ registerLocale("en", enMessages as never);
 const PAGE_BY_PATH: Record<string, React.ComponentType> = {
   "/": Homepage,
   "/web-development": ITServicesPage,
+  "/agence-web-suisse-romande": SuisseRomandePage,
+  "/agence-web-valais": ValaisPage,
+  [WORK_BASE_PATH]: WorkIndexPage,
   "/privacy-policy": PrivacyPolicyPage,
   "/legal-notice": LegalNoticePage,
   "/terms": TermsPage,
   "/404": Error404Page,
+  // One entry per client project. The same component renders them all; which
+  // project it shows comes from the URL, which the MemoryRouter below supplies.
+  ...Object.fromEntries(
+    CASE_STUDY_SLUGS.map((slug) => [caseStudyPath(slug), WorkDetailPage])
+  ),
 };
 
 export const PRERENDERED_PATHS = Object.keys(PAGE_BY_PATH);
+
+/**
+ * The source module behind each path, as Vite's build manifest keys it.
+ *
+ * The build uses this to preload the route's own chunk from the HTML. Without
+ * it the browser cannot discover that chunk until the entry has run and the
+ * router has asked for it — and until it arrives, the Suspense fallback
+ * replaces the pre-rendered page with a full-page loader. On a fast connection
+ * that window is a few milliseconds; on a slow one it is long enough to read
+ * as a flash of content, then a spinner, then the content again.
+ *
+ * Written out rather than derived: a bundler cannot tell us the source path of
+ * a component it has already compiled.
+ */
+export const PAGE_MODULE_BY_PATH: Record<string, string> = {
+  "/": "src/features/home/home-page.tsx",
+  "/web-development": "src/features/it-services/it-services-page.tsx",
+  "/agence-web-suisse-romande": "src/features/agency/suisse-romande-page.tsx",
+  "/agence-web-valais": "src/features/agency/valais-page.tsx",
+  [WORK_BASE_PATH]: "src/features/work/work-index-page.tsx",
+  "/privacy-policy": "src/features/privacy-policy/privacy-policy-page.tsx",
+  "/legal-notice": "src/features/legal/legal-notice-page.tsx",
+  "/terms": "src/features/legal/terms-page.tsx",
+  "/404": "src/features/error/error-404-page.tsx",
+  ...Object.fromEntries(
+    CASE_STUDY_SLUGS.map((slug) => [
+      caseStudyPath(slug),
+      "src/features/work/work-detail-page.tsx",
+    ])
+  ),
+};
 
 /**
  * The page's JSON-LD, as a ready-to-write `<script>` tag, or "" for a page that
@@ -142,6 +186,9 @@ export function createRouteElement(
     <Provider store={store}>
       <MemoryRouter initialEntries={[localizedPath]}>
         <Routes>
+          {/* The project pages read their slug from the URL, so the route has
+              to declare the parameter rather than swallow it in the splat. */}
+          <Route path={`/:lang${WORK_BASE_PATH}/:slug`} element={body} />
           <Route path="/:lang/*" element={body} />
         </Routes>
       </MemoryRouter>

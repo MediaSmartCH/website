@@ -8,6 +8,7 @@ import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
 import Process from "@features/it-services/components/process";
 import FaqIT from "@features/it-services/components/faq";
+import RegionalLinks from "@features/agency/components/regional-links";
 /* ============================================================================
  * INFORMATIONS PRATIQUES DÉSACTIVÉES — NE PAS SUPPRIMER
  * La section "Informations pratiques" (tarif horaire, conditions de paiement,
@@ -71,6 +72,7 @@ export default function ITServicesPage() {
           bannière en tête de fichier). */}
       {/* <ProjectEstimates /> */}
       <Process />
+      <RegionalLinks />
       <FaqIT />
       <div className="relative overflow-hidden pt-[40px] md:pt-[50px]">
         <WaveBackdrop

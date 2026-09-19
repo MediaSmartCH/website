@@ -7,6 +7,14 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const outputDir = path.join(rootDir, "generated-pages");
 const seoDataPath = path.join(rootDir, "src", "shared", "seo", "route-seo-data.json");
+const portfolioPath = path.join(
+  rootDir,
+  "src",
+  "features",
+  "it-services",
+  "data",
+  "it-portfolio.json"
+);
 
 const SITE_NAME = "MediaSmart";
 const SITE_URL = "https://mediasmart.ch";
@@ -24,6 +32,55 @@ const SHARE_IMAGE_URL = {
 };
 
 const seoData = JSON.parse(fs.readFileSync(seoDataPath, "utf8"));
+const portfolio = JSON.parse(fs.readFileSync(portfolioPath, "utf8"));
+
+/** Longest description Google will show before cutting it off, near enough. */
+const DESCRIPTION_MAX_LENGTH = 155;
+const WORK_BASE_PATH = "/realisations";
+
+/**
+ * Client projects each get a page, so each needs a shell to be built into.
+ *
+ * They are not in `routeKeyByPath` — there is one per project, and the words
+ * come from the project file rather than from a hand-written entry. The same
+ * derivation lives in `resolveCaseStudySeo` (src/shared/seo/route-meta.ts) for
+ * the browser; `src/test/case-study-routes.test.ts` checks the two agree.
+ */
+const caseStudyItems = portfolio.items.filter(
+  (item) => (item.category ?? "client") === "client"
+);
+
+const localized = (field, language) =>
+  typeof field === "string" ? field : field[language] ?? field.fr ?? field.en ?? "";
+
+const truncate = (value, maxLength) =>
+  value.length <= maxLength ? value : `${value.slice(0, maxLength).trim()}...`;
+
+const caseStudyPaths = caseStudyItems.map((item) => `${WORK_BASE_PATH}/${item.id}`);
+
+const resolveCaseStudySeo = (pathname, language) => {
+  const slug = pathname.slice(WORK_BASE_PATH.length + 1);
+  const item = caseStudyItems.find((entry) => entry.id === slug);
+
+  if (!item) return null;
+
+  const pattern = seoData.routeSeoByLanguage[language]["case-study"];
+  const project = localized(item.title, language);
+  const description = truncate(
+    localized(item.description, language),
+    DESCRIPTION_MAX_LENGTH
+  );
+  const fill = (value) =>
+    value.replace("{project}", project).replace("{description}", description);
+
+  return {
+    ...pattern,
+    pageName: project,
+    title: fill(pattern.title),
+    description: fill(pattern.description),
+    shareImageAlt: fill(pattern.shareImageAlt),
+  };
+};
 
 const escapeHtml = (value) =>
   String(value)
@@ -44,7 +101,10 @@ const buildOutputFilename = (language, pathname) => {
 
 const resolveSeo = (language, pathname) => {
   const routeKey = seoData.routeKeyByPath[pathname] ?? "not-found";
-  const seo = seoData.routeSeoByLanguage[language][routeKey];
+  const seo =
+    (pathname.startsWith(`${WORK_BASE_PATH}/`)
+      ? resolveCaseStudySeo(pathname, language)
+      : null) ?? seoData.routeSeoByLanguage[language][routeKey];
   const canonicalUrl = `${SITE_URL}${buildLocalizedPath(language, pathname)}`;
   const alternateLocales = SUPPORTED_LANGUAGES
     .map((supportedLanguage) => OPEN_GRAPH_LOCALE[supportedLanguage])
@@ -138,8 +198,10 @@ ${alternateLinks}${canonicalLink}  <link rel="icon" href="/favicon.ico" />
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(outputDir, { recursive: true });
 
+const pathnames = [...Object.keys(seoData.routeKeyByPath), ...caseStudyPaths];
+
 for (const language of SUPPORTED_LANGUAGES) {
-  for (const pathname of Object.keys(seoData.routeKeyByPath)) {
+  for (const pathname of pathnames) {
     const filename = buildOutputFilename(language, pathname);
     fs.writeFileSync(
       path.join(outputDir, filename),

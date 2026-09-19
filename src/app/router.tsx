@@ -45,6 +45,10 @@ const Error404Page = lazy(withChunkRecovery(() => import("@features/error/error-
  * ========================================================================= */
 // const SupportContractPage = lazy(withChunkRecovery(() => import("@features/support-contract/support-contract-page")));
 const BookingManagePage = lazy(withChunkRecovery(() => import("@features/booking/booking-manage-page")));
+const SuisseRomandePage = lazy(withChunkRecovery(() => import("@features/agency/suisse-romande-page")));
+const ValaisPage = lazy(withChunkRecovery(() => import("@features/agency/valais-page")));
+const WorkIndexPage = lazy(withChunkRecovery(() => import("@features/work/work-index-page")));
+const WorkDetailPage = lazy(withChunkRecovery(() => import("@features/work/work-detail-page")));
 
 // Wraps a page node in an ErrorBoundary and a Suspense with a full-page loader fallback.
 const Wrap = (node: React.ReactNode) => (
@@ -117,6 +121,17 @@ const routes: RouteObject[] = [
              À garder tant que d'anciens liens ou des résultats Google pointent
              dessus. */
           { path: "it-services", element: <RedirectToWebDevelopment /> },
+          /* Pages régionales. Les slugs sont en français dans les deux langues,
+             comme toutes les autres routes du site : `routeKeyByPath` associe un
+             chemin unique aux deux locales, et les hreflang relient les deux
+             adresses. */
+          { path: "agence-web-suisse-romande", element: Wrap(<SuisseRomandePage />) },
+          { path: "agence-web-valais", element: Wrap(<ValaisPage />) },
+          /* Réalisations : l'index, puis une page par projet client. Un slug
+             inconnu rend la 404 depuis la page elle-même, pour ne pas répondre
+             200 sur une adresse qui n'existe pas. */
+          { path: "realisations", element: Wrap(<WorkIndexPage />) },
+          { path: "realisations/:slug", element: Wrap(<WorkDetailPage />) },
           /* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
              La page vidéo n'est plus rendue : l'URL renvoie vers l'accueil.
              Vercel répond déjà une 301 (voir "redirects" dans vercel.json), mais

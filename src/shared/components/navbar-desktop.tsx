@@ -94,6 +94,25 @@ export default function NavbarDesktop({
             </Link>
           </div>
         </li>
+        <li
+          className=""
+          data-aos="fade-down"
+          data-aos-easing="ease-in-sine"
+          data-aos-duration="1200"
+        >
+          <div className="btn-test from-bottom">
+            <Link
+              to={L("/realisations")}
+              className={
+                themeReducer === "light"
+                  ? "text-[#14172D] hover:text-[#fff]"
+                  : "text-[#FFFFFF] hover:text-[#fff]"
+              }
+            >
+              {t.text("navbar.navWork")}
+            </Link>
+          </div>
+        </li>
         {/* ====================================================================
             VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
             Lien vers les services vidéo mis en pause (site 100% informatique).

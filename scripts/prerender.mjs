@@ -113,6 +113,41 @@ async function buildRenderer() {
 }
 
 /**
+ * Reads the client build manifest, which maps a source module to the chunk it
+ * was compiled into.
+ */
+function readManifest() {
+  const manifestPath = path.join(distDir, ".vite", "manifest.json");
+
+  if (!fs.existsSync(manifestPath)) {
+    throw new Error(
+      "dist/.vite/manifest.json is missing — is build.manifest still enabled in vite.config.mts?"
+    );
+  }
+
+  return JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+}
+
+/**
+ * `<link rel="modulepreload">` for a route's own page chunk, so the browser
+ * fetches it alongside the entry instead of discovering it only once the entry
+ * has run and the router has asked for it.
+ *
+ * Only that one chunk. Following the manifest's `imports` as well pulled in
+ * everything the page reaches, the 100KB contact-section chunk included, and
+ * preloading those is not free: they would compete for bandwidth with the
+ * render-blocking CSS to arrive earlier than anything needs them. They are
+ * fetched anyway as part of the page's own graph. The chunk this preloads is
+ * the one that decides whether the visitor keeps looking at the page or at a
+ * loading spinner.
+ */
+function buildPreloads(manifest, sourceModule) {
+  const file = manifest[sourceModule]?.file;
+
+  return file ? `<link rel="modulepreload" href="/${file}">` : "";
+}
+
+/**
  * Renders one route to HTML and returns it with its JSON-LD.
  *
  * Streamed rather than rendered to a string, and awaited to completion: the
@@ -156,7 +191,7 @@ function renderRoute(renderer, language, pathname) {
  * generate-localized-html.mjs from the same `route-seo-data.json`, and copying
  * Helmet's version on top of it would ship every tag twice.
  */
-function injectInto(filePath, { html, jsonLd }) {
+function injectInto(filePath, { html, jsonLd, preloads }) {
   const source = fs.readFileSync(filePath, "utf8");
 
   if (!source.includes(ROOT_PLACEHOLDER)) {
@@ -169,12 +204,17 @@ function injectInto(filePath, { html, jsonLd }) {
     output = output.replace("</head>", `  ${jsonLd}\n</head>`);
   }
 
+  if (preloads) {
+    output = output.replace("</head>", `  ${preloads}\n</head>`);
+  }
+
   return fs.writeFileSync(filePath, output, "utf8");
 }
 
 installDom();
 
 const renderer = await buildRenderer();
+const manifest = readManifest();
 let rendered = 0;
 
 for (const language of SUPPORTED_LANGUAGES) {
@@ -187,11 +227,17 @@ for (const language of SUPPORTED_LANGUAGES) {
       );
     }
 
-    injectInto(filePath, await renderRoute(renderer, language, pathname));
+    injectInto(filePath, {
+      ...(await renderRoute(renderer, language, pathname)),
+      preloads: buildPreloads(manifest, renderer.PAGE_MODULE_BY_PATH[pathname]),
+    });
     rendered += 1;
   }
 }
 
 fs.rmSync(ssrOutDir, { recursive: true, force: true });
+// The manifest exists for this script. Leaving it in dist would publish the
+// build's chunk map at /.vite/manifest.json for no one's benefit.
+fs.rmSync(path.join(distDir, ".vite"), { recursive: true, force: true });
 
 console.log(`Prerendered ${rendered} pages into dist/generated-pages/`);

@@ -4,6 +4,7 @@ import About from "@features/home/components/about";
 import Hero from "@features/home/components/hero";
 import ITOverview from "@features/home/components/it-overview";
 import SaasOverview from "@features/home/components/saas-overview";
+import RegionalLinks from "@features/agency/components/regional-links";
 /* ============================================================================
  * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
  * La section "Aperçu vidéo" de l'accueil est mise en pause : le site ne
@@ -140,6 +141,7 @@ const Homepage = () => {
       <About />
       <ITOverview />
       <SaasOverview />
+      <RegionalLinks />
       {/* VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : section vidéo de l'accueil en pause. */}
       {/* <VideoOverview /> */}
       <div ref={contactSentinelRef} aria-hidden="true" className="h-px w-full" />
