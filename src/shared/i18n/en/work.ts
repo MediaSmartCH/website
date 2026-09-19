@@ -19,6 +19,14 @@ const work = {
     indexFreeDescription:
         "The tools we publish openly, with no account and no invoicing.",
 
+    indexProgressTitle: "Work in progress",
+    indexProgressDescription: "Sites we are building right now. They will join our work once they are live.",
+    statusInProgress: "In progress",
+    countProjects: "projects delivered",
+    countProject: "project delivered",
+    countInProgress: "projects in progress",
+    countInProgressOne: "project in progress",
+
     cardCta: "View the project",
     visitSite: "Visit the site",
     backToIndex: "All our work",

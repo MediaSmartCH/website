@@ -11,17 +11,19 @@ const home = {
     // heroDescription:
     //     "From professional video production to tailored IT support, MediaSmart combines creativity and technical expertise to bring your ideas to life.",
     heroDescription:
-        "Showcase sites, business sites, redesigns and business applications: we design, build and maintain the web tool your organisation needs.",
+        "Website creation, web application development and bespoke digital tools: we design, build and maintain the tool your organisation needs.",
     itBtn: "Discover our web services",
     // VIDEO DISABLED — DO NOT DELETE: key kept, the button is no longer rendered.
     videoBtn: "Explore Video Services",
 
-    bookingTitle: "Want to take stock of your IT setup?",
+    // Former title, from when MediaSmart also did general IT support:
+    // "Want to take stock of your IT setup?"
+    bookingTitle: "A website or an application in mind?",
     // VIDEO DISABLED — DO NOT DELETE (former "visual narratives" wording):
     // bookingDescription:
     //     "Embark on your creative journey with MediaSmart through a complimentary, 30-minute consultation. Choose a convenient location for you – be it your home, a public space, or even a virtual meeting – and select a time that aligns with our schedule. Simply provide your preferred meeting details and contact information, and we'll set up the appointment. This session is your opportunity to discuss your ideas with us and discover how we can collaborate to turn your vision into compelling visual narratives.",
     bookingDescription:
-        "Book a free 30-minute consultation. Choose the setting that suits you – your office, your home or an online meeting – and a slot from our availability. Describe your needs in a few lines, leave your contact details, and we confirm the appointment. It is your chance to explain your situation and leave with concrete next steps.",
+        "Book a free 30-minute consultation to tell us about your website, application or digital tool. We go over your goals, the features you need, and the best way to build it.",
     bookingBtn: "Book a 30-min consultation",
 
     partnersTitle: "Our trusted partners",

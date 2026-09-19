@@ -21,8 +21,17 @@ import RegionalLinks from "@features/agency/components/regional-links";
  * Leurs composants et leurs clés i18n restent en place, comme pour la vidéo,
  * pour qu'un retour arrière soit une ligne à écrire.
  * ========================================================================== */
-import Services from "@features/it-services/components/services";
+/* La section "prestations" détaillée a été retirée : avec /projects, les deux
+ * pages régionales et un positionnement désormais clair, six blocs de
+ * prestations sur l'accueil faisaient brochure plutôt que vitrine. Le hero et
+ * la section À propos disent en deux phrases ce que nous créons ; le détail
+ * vit sur les pages régionales. Le composant Services et ses textes restent en
+ * place, comme la vidéo, et avec eux la galerie portfolio historique qu'il
+ * contenait — elle doublonnait /projects. */
 import SaasProducts from "@features/it-services/components/saas-products";
+import WorkPreview from "@features/work/components/work-preview";
+import { LandingLink, LandingSection } from "@features/agency/components/landing-blocks";
+import { WORK_BASE_PATH } from "@features/work/lib/work-routes";
 import Process from "@features/it-services/components/process";
 import FaqIT from "@features/it-services/components/faq";
 import Booking from "@features/booking/components/booking-cta";
@@ -36,6 +45,7 @@ import WaveBackdrop from "@shared/components/wave-backdrop";
 // import VideoOverview from "@features/home/components/video-overview";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
+import { useTranslations } from "@shared/i18n/translator";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
 
@@ -50,6 +60,8 @@ const Homepage = () => {
   useScrollToHash();
 
   const themeReducer = useAppSelector((state) => state.theme.currentTheme);
+  const languageReducer = useAppSelector((state) => state.language.currentLanguage);
+  const t = useTranslations(languageReducer);
   const [shouldDeferContact] = React.useState(() => {
     if (typeof window === "undefined") return false;
 
@@ -161,7 +173,11 @@ const Homepage = () => {
     <>
       <Hero />
       <About />
-      <Services />
+      {/* Un aperçu, pas la galerie : /projects est la page complète. */}
+      <LandingSection id="work" title={t.text("agency.proofTitle")}>
+        <WorkPreview />
+        <LandingLink to={WORK_BASE_PATH}>{t.text("work.otherProjects")}</LandingLink>
+      </LandingSection>
       <SaasProducts />
       <Process />
       <RegionalLinks />

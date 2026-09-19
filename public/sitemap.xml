@@ -153,60 +153,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://mediasmart.ch/fr/projects/actions-suisse</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mediasmart.ch/en/projects/actions-suisse</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/actions-suisse"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/actions-suisse"/>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mediasmart.ch/fr/projects/chateau-castalia</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mediasmart.ch/en/projects/chateau-castalia</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/chateau-castalia"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/chateau-castalia"/>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mediasmart.ch/fr/projects/arml</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/arml"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/arml"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/arml"/>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mediasmart.ch/en/projects/arml</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://mediasmart.ch/fr/projects/arml"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mediasmart.ch/en/projects/arml"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mediasmart.ch/fr/projects/arml"/>
-    <lastmod>2026-09-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
 
   <!-- ========================================================================
        VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER

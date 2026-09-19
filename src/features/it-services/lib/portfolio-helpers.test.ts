@@ -229,6 +229,7 @@ describe("groupItemsByCategory", () => {
       item("free-1", "free"),
       item("saas-1", "saas"),
       item("client-1", "client"),
+      item("wip-1", "in-progress"),
     ]);
 
     expect(groups.map((group) => group.category)).toEqual(PORTFOLIO_CATEGORY_ORDER);

@@ -363,7 +363,7 @@ const it = {
     ],
     supportPageCtaTitle: "A question about the support contract?",
     supportPageCtaDesc: "Write to us to work out which plan fits your activity, or to request a quote.",
-    supportPageBackLink: "← Back to IT services",
+    supportPageBackLink: "← Back to the homepage",
     supportPageMoreInfo: "More info",
     supportMostPopular: "Most popular",
 

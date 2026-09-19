@@ -177,18 +177,6 @@
       "destination": "/generated-pages/fr-projects-soclean4u.html"
     },
     {
-      "source": "/fr/projects/actions-suisse",
-      "destination": "/generated-pages/fr-projects-actions-suisse.html"
-    },
-    {
-      "source": "/fr/projects/chateau-castalia",
-      "destination": "/generated-pages/fr-projects-chateau-castalia.html"
-    },
-    {
-      "source": "/fr/projects/arml",
-      "destination": "/generated-pages/fr-projects-arml.html"
-    },
-    {
       "source": "/en/web-agency-switzerland",
       "destination": "/generated-pages/en-web-agency-switzerland.html"
     },
@@ -215,18 +203,6 @@
     {
       "source": "/en/projects/soclean4u",
       "destination": "/generated-pages/en-projects-soclean4u.html"
-    },
-    {
-      "source": "/en/projects/actions-suisse",
-      "destination": "/generated-pages/en-projects-actions-suisse.html"
-    },
-    {
-      "source": "/en/projects/chateau-castalia",
-      "destination": "/generated-pages/en-projects-chateau-castalia.html"
-    },
-    {
-      "source": "/en/projects/arml",
-      "destination": "/generated-pages/en-projects-arml.html"
     },
     {
       "source": "/fr/privacy-policy",

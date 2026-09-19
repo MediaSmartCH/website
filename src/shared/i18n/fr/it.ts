@@ -364,7 +364,7 @@ const it = {
     ],
     supportPageCtaTitle: "Une question sur le contrat de support ?",
     supportPageCtaDesc: "Écrivez-nous pour déterminer le niveau adapté à votre activité ou obtenir un devis.",
-    supportPageBackLink: "← Retour aux services informatiques",
+    supportPageBackLink: "← Retour à l'accueil",
     supportPageMoreInfo: "Plus d'info",
     supportMostPopular: "Le plus populaire",
 

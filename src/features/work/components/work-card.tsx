@@ -28,12 +28,19 @@ export default function WorkCard({
   item,
   linkToDetail,
   index = 0,
+  status,
 }: {
   item: PortfolioItem;
   /** Our own products and the free tools have no page of their own. */
   linkToDetail: boolean;
   /** Position in its grid, used to stagger the entrance by row. */
   index?: number;
+  /**
+   * A state to show instead of the "view the project" action — "En cours" for
+   * work under way. It is a statement of fact, not a progress bar: nothing
+   * here claims a stage or a date.
+   */
+  status?: string;
 }) {
   const language = useAppSelector((state) => state.language.currentLanguage);
   const theme = useAppSelector((state) => state.theme.currentTheme);
@@ -101,7 +108,22 @@ export default function WorkCard({
           </span>
         </Link>
       ) : (
-        <div className={shell}>{body}</div>
+        <div className={shell}>
+          {body}
+          {status && (
+            <span className="mt-[14px] inline-flex items-center gap-[7px] rounded-[999px] border border-current/20 px-[12px] py-[6px] font-poppins text-[12px] xl:text-[13px] text-body">
+              <span
+                className="h-[7px] w-[7px] rounded-full"
+                style={{
+                  background:
+                    "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)",
+                }}
+                aria-hidden="true"
+              />
+              {status}
+            </span>
+          )}
+        </div>
       )}
     </div>
   );
