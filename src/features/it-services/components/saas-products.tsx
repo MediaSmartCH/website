@@ -447,7 +447,13 @@ export default function SaasProducts() {
                           href={sourceUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${classes.mutedText} inline-flex items-center gap-[6px] font-poppins text-[12px] leading-tight underline-offset-2 hover:underline`}
+                          // 13px of text is below the 24px minimum for a
+                          // touch target, and Lighthouse is right to say so.
+                          // The ::after overlay raises the hit area to 25px
+                          // without moving anything — the same trick the
+                          // header controls use, and the reason this link can
+                          // stay as discreet as it is meant to be.
+                          className={`${classes.mutedText} relative inline-flex items-center gap-[6px] font-poppins text-[12px] leading-tight underline-offset-2 after:absolute after:inset-x-0 after:-inset-y-[6px] after:content-[''] hover:underline`}
                         >
                           <GithubGlyph />
                           <span>
