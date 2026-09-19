@@ -17,6 +17,8 @@ import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { getLottieAspectRatio, type LottieKey } from "@shared/config/lotties";
 
+import rightArrow from "@assets/icons/rightArrow.svg";
+
 // Hoisted to module scope: declaring lazy() inside a component body creates a
 // new component type on every render, which remounts the Lottie player. Same
 // reason the homepage and the services page do it this way.
@@ -52,6 +54,11 @@ export function LandingHero({
   return (
     <div className="pt-[73px] md:pt-[130px] lg:pt-[100px]">
       <div className={`${CONTAINER} pt-[24px] lg:pt-[36px] xl:pt-[40px] pb-[10px]`}>
+        {/* The copy and the call to action own the higher stacking context, as
+            they do on the homepage hero. Without it the animation below —
+            which needs a z-index of its own to sit above the wave — painted
+            over the bottom of the button on narrow screens. */}
+        <div className="relative" style={{ zIndex: 100 }}>
         <h1
           className="text-heading w-full lg:w-[80%] 2xl:w-[70%] mx-auto text-center mb-[18px] lg:mb-[26px] font-redDisplay font-bold text-[28px] md:text-[32px] lg:text-[40px] xl:text-[46px] 2xl:text-[54px] leading-[40px] lg:leading-[50px] xl:leading-[64px]"
           data-aos="fade-up"
@@ -79,7 +86,7 @@ export function LandingHero({
 
         {actions && (
           <div
-            className="w-full flex flex-wrap items-center justify-center gap-[14px] mt-[24px] lg:mt-[30px]"
+            className="w-full flex flex-wrap items-center justify-center gap-[14px] mt-[26px] lg:mt-[34px]"
             data-aos="fade-up"
             data-aos-duration="1400"
             data-aos-easing="ease-in-sine"
@@ -87,10 +94,13 @@ export function LandingHero({
             {actions}
           </div>
         )}
+        </div>
 
         {anim && (
+          // Capped at the width the homepage hero animation occupies, so a
+          // 2:1 illustration does not grow to fill a 1920 viewport.
           <div
-            className="w-full md:w-[80%] lg:w-[72%] xl:w-[68%] mx-auto mt-[24px] lg:mt-[30px]"
+            className="relative w-full md:w-[80%] lg:w-[72%] xl:w-[68%] max-w-[860px] mx-auto mt-[26px] lg:mt-[34px]"
             style={{ zIndex: 50 }}
           >
             <Suspense
@@ -195,8 +205,13 @@ export function LandingWave({ children }: { children: React.ReactNode }) {
         theme={theme}
         className="top-[52px] h-[460px] md:top-[18px] md:h-[500px] lg:top-[8px] lg:h-[540px] xl:top-[-8px] xl:h-[580px]"
       />
-      <div className="relative z-10 pt-[90px] md:pt-[120px] lg:pt-[150px] xl:pt-[170px]">
-        {children}
+      {/* The exact spacing the services page puts between this wave and its
+          booking block. It was shorter here, which pulled the call to action
+          up into the crest of the wave. */}
+      <div className="relative z-10 w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto">
+        <div className="pt-[130px] md:pt-[170px] lg:pt-[220px] xl:pt-[250px] 2xl:pt-[250px] pb-[40px]">
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -253,39 +268,17 @@ export function LandingCards({
   );
 }
 
-/** Numbered steps, for the "how a project runs" section. */
-export function LandingSteps({ steps }: { steps: LandingCard[] }) {
-  return (
-    <ol className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-[18px] lg:gap-[20px]">
-      {steps.map((step, index) => (
-        <li
-          key={step.title}
-          className="bg-surface rounded-[15px] xl:rounded-[20px] px-5 py-6 transition duration-300 hover:-translate-y-[3px]"
-          data-aos="fade-up"
-          data-aos-duration="1200"
-          data-aos-delay={index * 70}
-          data-aos-easing="ease-in-sine"
-        >
-          <span className="gradient-text font-redDisplay font-bold text-[22px] xl:text-[26px]">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <h3 className="text-heading-strong font-redDisplay font-bold text-[17px] xl:text-[19px] mt-[6px] mb-[8px]">
-            {step.title}
-          </h3>
-          <p className="text-body font-poppins font-light text-[13px] xl:text-[14px] leading-relaxed">
-            {step.description}
-          </p>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 /**
- * An internal link written as a sentence rather than "En savoir plus".
+ * A secondary way on to another page.
  *
- * The anchor text is the only thing telling a search engine what sits at the
- * other end, so every one of these names its destination.
+ * Written as a sentence naming its destination — "Découvrir notre activité en
+ * Valais" rather than "En savoir plus" — because the anchor text is the only
+ * description a search engine gets of what sits at the other end.
+ *
+ * Styled as a quiet button with an arrow rather than an underlined `<a>`: at
+ * the foot of a wide section a bare link reads as a loose end. The arrow is
+ * the site's own `rightArrow` icon, and it nudges on hover the way the rest of
+ * the site's affordances do.
  */
 export function LandingLink({
   to,
@@ -299,26 +292,27 @@ export function LandingLink({
 }) {
   const { L } = useLangLink();
 
-  if (inline) {
-    return (
-      <Link
-        to={L(to)}
-        className="gradient-text font-poppins font-medium text-[14px] xl:text-[15px] 2xl:text-[16px] underline underline-offset-4 py-[10px]"
-      >
-        {children}
-      </Link>
-    );
-  }
+  const link = (
+    <Link
+      to={L(to)}
+      className="group inline-flex items-center gap-[10px] rounded-[5px] border border-current/20 px-[20px] h-[44px] text-heading-strong font-poppins font-normal text-[13px] xl:text-[14px] 2xl:text-[15px] transition duration-300 hover:border-current/40"
+    >
+      <span>{children}</span>
+      <img
+        src={rightArrow}
+        alt=""
+        aria-hidden="true"
+        width="16"
+        height="16"
+        className="w-[14px] h-[14px] transition-transform duration-300 group-hover:translate-x-[3px]"
+      />
+    </Link>
+  );
+
+  if (inline) return link;
 
   return (
-    <div className="w-full flex justify-center mt-[26px] lg:mt-[34px]">
-      <Link
-        to={L(to)}
-        className="gradient-text font-poppins font-medium text-[14px] xl:text-[15px] 2xl:text-[16px] underline underline-offset-4 py-[10px]"
-      >
-        {children}
-      </Link>
-    </div>
+    <div className="w-full flex justify-center mt-[30px] lg:mt-[40px]">{link}</div>
   );
 }
 
@@ -387,6 +381,161 @@ export function LandingFeature({
           {children}
         </div>
       </div>
+    </div>
+  );
+}
+
+export interface LandingServiceRow extends LandingCard {
+  anim: LottieKey;
+}
+
+/**
+ * Services as alternating rows of copy and illustration.
+ *
+ * The composition the services page uses: the first row inside a `bg-surface`
+ * panel, the rest on the page itself, sides swapping as you go down. It
+ * replaced a grid of six identical cards, which said the same thing six times
+ * in the same rectangle and read as a specification rather than a page.
+ *
+ * Each row keeps its own `h3`, so the heading outline — and what a crawler
+ * reads — is exactly what it was.
+ */
+export function LandingServiceRows({ rows }: { rows: LandingServiceRow[] }) {
+  return (
+    <div className="w-full">
+      {rows.map((row, index) => {
+        const reverse = index % 2 === 1;
+
+        const body = (
+          <div
+            className={`flex flex-col-reverse ${
+              reverse ? "lg:flex-row-reverse" : "lg:flex-row"
+            } justify-center items-center lg:justify-between gap-y-[40px] py-[30px]`}
+          >
+            <div
+              className="w-full lg:w-[48%] lg:px-[20px] 2xl:px-[50px]"
+              data-aos="fade-up"
+              data-aos-duration="1200"
+              data-aos-easing="ease-in-sine"
+            >
+              <h3 className="text-heading w-full text-center lg:text-left font-redDisplay font-bold text-[22px] md:text-[26px] lg:text-[30px] xl:text-[36px] 2xl:text-[40px] mb-[10px] leading-[32px] lg:leading-[40px] xl:leading-[48px]">
+                {row.title}
+              </h3>
+              <p className="text-body text-justify lg:text-left font-helvetica font-light leading-8 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]">
+                {row.description}
+              </p>
+            </div>
+
+            <div
+              className="w-full lg:w-[44%] flex justify-center items-center"
+              data-aos={reverse ? "fade-right" : "fade-left"}
+              data-aos-duration="1200"
+              data-aos-easing="ease-in-sine"
+            >
+              {/* Capped rather than full-bleed: at 1440 an uncapped animation
+                  in a half-width column grew past the height of the copy
+                  beside it and became the subject of the row. */}
+              <div className="w-full max-w-[420px] xl:max-w-[460px]">
+                <Suspense
+                  fallback={
+                    <div
+                      className="w-full"
+                      style={{ aspectRatio: getLottieAspectRatio(row.anim) }}
+                      aria-hidden="true"
+                    />
+                  }
+                >
+                  <DotAnim
+                    anim={row.anim}
+                    style={{ width: "100%", height: "auto" }}
+                    crisp
+                    protect
+                  />
+                </Suspense>
+              </div>
+            </div>
+          </div>
+        );
+
+        // The first row sits on a panel, as the services page's first service
+        // does; the others sit on the page.
+        return index === 0 ? (
+          <div
+            key={row.title}
+            className="bg-surface my-[30px] rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[20px] px-[20px] md:px-[30px] lg:px-[40px] 2xl:px-[70px]"
+          >
+            {body}
+          </div>
+        ) : (
+          <div key={row.title} className="xl:px-[30px] 2xl:px-[60px]">
+            {body}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * Local facts, as a list rather than a wall of cards.
+ *
+ * This section used to be four large filled rectangles, one per fact, which
+ * gave four short sentences the weight of four services. They are now entries
+ * in a two-column list, each opening with a short gradient rule instead of a
+ * background — the same gradient the site uses for its numerals and its links.
+ * The band behind them does the separating a card was doing.
+ */
+export function LandingLocalFacts({
+  id,
+  title,
+  facts,
+  link,
+}: {
+  id: string;
+  title: string;
+  facts: LandingCard[];
+  link?: React.ReactNode;
+}) {
+  return (
+    <div className="relative w-full section-band py-[30px] md:py-[40px] lg:py-[56px] my-[30px] lg:my-[50px]">
+      <section id={id} className={CONTAINER}>
+        <h2
+          className="text-heading w-full text-center font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[42px] 2xl:text-[46px] mb-[34px] lg:mb-[48px]"
+          data-aos="fade-up"
+          data-aos-duration="900"
+          data-aos-easing="ease-in-sine"
+        >
+          {title}
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[40px] xl:gap-x-[70px] gap-y-[34px] lg:gap-y-[44px]">
+          {facts.map((fact, index) => (
+            <div
+              key={fact.title}
+              data-aos="fade-up"
+              data-aos-duration="1100"
+              data-aos-delay={(index % 2) * 80}
+              data-aos-easing="ease-in-sine"
+            >
+              <span
+                className="block h-[3px] w-[38px] rounded-full mb-[14px]"
+                style={{
+                  background: "linear-gradient(90deg, #b514fd 1.42%, #5f75f5 97.8%)",
+                }}
+                aria-hidden="true"
+              />
+              <h3 className="text-heading-strong font-redDisplay font-bold text-[18px] lg:text-[20px] xl:text-[22px] mb-[8px]">
+                {fact.title}
+              </h3>
+              <p className="text-body font-poppins font-light text-[13px] md:text-[14px] xl:text-[15px] leading-relaxed">
+                {fact.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {link && <div className="w-full flex justify-center mt-[38px] lg:mt-[48px]">{link}</div>}
+      </section>
     </div>
   );
 }

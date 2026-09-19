@@ -22,7 +22,7 @@ import {
   LandingSection,
   LandingWave,
 } from "@features/agency/components/landing-blocks";
-import LandingCta from "@features/agency/components/landing-cta";
+import Booking from "@features/booking/components/booking-cta";
 import Contact from "@features/contact/components/contact-section";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
@@ -90,12 +90,10 @@ export default function WorkIndexPage() {
       })}
 
       <LandingWave>
-        <LandingCta
+        <Booking
           title={t.text("work.ctaTitle")}
           description={t.text("work.ctaDescription")}
-          bookingLabel={t.text("work.ctaButton")}
-          secondaryLabel={t.text("agency.ctaSecondary")}
-          secondaryTo="#contact"
+          buttonLabel={t.text("work.ctaButton")}
         />
       </LandingWave>
 

@@ -4,32 +4,39 @@
  * Not the Suisse romande page with the place name swapped. What is on it is
  * what is only true here: where the office actually is, which clients in the
  * canton are online, and the working calendar — the Valais public holidays the
- * lead times are counted against. The services section is shorter on purpose:
- * the detail lives on /web-development and is linked rather than restated.
+ * lead times are counted against.
+ *
+ * There is no "where we work" section on this page. The hero says Dorénaz, the
+ * local section's last item says we also work beyond the canton, and the FAQ
+ * answers it in full — a fourth statement of the same fact was a section that
+ * existed to hold a link. That link now sits with the local section, where a
+ * reader has just been told what the canton means to us.
  */
 
 import React from "react";
 
 import Contact from "@features/contact/components/contact-section";
+import Booking from "@features/booking/components/booking-cta";
+import Process from "@features/it-services/components/process";
 
 import {
-  LandingCards,
-  LandingFeature,
   LandingHero,
   LandingLink,
+  LandingLocalFacts,
   LandingSection,
-  LandingSteps,
+  LandingServiceRows,
   LandingWave,
   type LandingCard,
+  type LandingServiceRow,
 } from "@features/agency/components/landing-blocks";
-import LandingCta from "@features/agency/components/landing-cta";
-import LandingFaq from "@features/agency/components/landing-faq";
 import WorkPreview from "@features/work/components/work-preview";
 import { WORK_BASE_PATH } from "@features/work/lib/work-routes";
 
 import BookingButton from "@features/booking/components/booking-button";
 
+import FaqSection from "@shared/components/faq-section";
 import type { FaqItem } from "@shared/components/faq-accordion";
+import type { LottieKey } from "@shared/config/lotties";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
@@ -37,6 +44,14 @@ import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 
 /** The two clients established in the canton, named on this page for that reason. */
 const VALAIS_CLIENT_IDS = ["jocolor", "soclean4u"];
+
+/** One illustration per service, in the order the dictionary lists them. */
+const SERVICE_ANIMS: LottieKey[] = [
+  "it.services.website",
+  "it.services.website",
+  "it.services.optimization",
+  "it.services.optimization",
+];
 
 export default function ValaisPage() {
   useScrollToHash();
@@ -47,6 +62,10 @@ export default function ValaisPage() {
   React.useEffect(() => {
     refreshAosAnimations();
   }, []);
+
+  const serviceRows: LandingServiceRow[] = t
+    .array<LandingCard>("agency.valaisServices")
+    .map((card, index) => ({ ...card, anim: SERVICE_ANIMS[index] }));
 
   return (
     <>
@@ -66,76 +85,46 @@ export default function ValaisPage() {
         }
       />
 
-      <LandingSection id="local" title={t.text("agency.valaisLocalTitle")} tinted>
-        <LandingCards cards={t.array<LandingCard>("agency.valaisLocal")} columns={2} />
-      </LandingSection>
+      <LandingLocalFacts
+        id="local"
+        title={t.text("agency.valaisLocalTitle")}
+        facts={t.array<LandingCard>("agency.valaisLocal")}
+        link={
+          <LandingLink to="/web-agency-switzerland" inline>
+            {t.text("agency.romandieLinkLabel")}
+          </LandingLink>
+        }
+      />
 
       {/* The Valais clients lead here, right after the section that names
-          them: the two cards above say JoColor and SoClean4U, and these are
-          those two sites. */}
+          them: the facts above say JoColor and SoClean4U, and these are those
+          two sites. */}
       <LandingSection id="work" title={t.text("agency.proofTitle")}>
         <WorkPreview ids={VALAIS_CLIENT_IDS} />
         <LandingLink to={WORK_BASE_PATH}>{t.text("agency.proofCta")}</LandingLink>
       </LandingSection>
 
-      <LandingFeature
-        anim="it.services.website"
-        title={t.text("agency.valaisServicesTitle")}
-        reverse
-      >
-        <ul className="flex flex-col gap-[18px]">
-          {t.array<LandingCard>("agency.valaisServices").map((item, index) => (
-            <li
-              key={item.title}
-              data-aos="fade-up"
-              data-aos-duration="1100"
-              data-aos-delay={index * 70}
-              data-aos-easing="ease-in-sine"
-            >
-              <h3 className="text-heading-strong font-redDisplay font-bold text-[17px] xl:text-[19px] mb-[4px]">
-                {item.title}
-              </h3>
-              <p className="text-body font-poppins font-light text-[13px] xl:text-[15px] leading-relaxed">
-                {item.description}
-              </p>
-            </li>
-          ))}
-        </ul>
-        <div className="w-full flex justify-center lg:justify-start mt-[22px]">
-          <LandingLink to="/web-development" inline>
-            {t.text("agency.servicesCta")}
-          </LandingLink>
-        </div>
-      </LandingFeature>
-
-      <LandingSection
-        id="method"
-        title={t.text("agency.methodTitle")}
-        description={t.text("agency.methodDescription")}
-        tinted
-      >
-        <LandingSteps steps={t.array<LandingCard>("it.processData")} />
+      <LandingSection id="services" title={t.text("agency.valaisServicesTitle")}>
+        <LandingServiceRows rows={serviceRows} />
+        <LandingLink to="/web-development">{t.text("agency.servicesCta")}</LandingLink>
       </LandingSection>
 
-      <LandingFaq
+      <Process
+        title={t.text("agency.methodTitle")}
+        description={t.text("agency.methodDescription")}
+      />
+
+      <FaqSection
         title={t.text("agency.faqTitle")}
         items={t.array<FaqItem>("agency.valaisFaq")}
         idPrefix="valais"
       />
 
-      <LandingSection id="area" title={t.text("agency.areaTitle")}>
-        <LandingLink to="/web-agency-switzerland">
-          {t.text("agency.romandieTitle")}
-        </LandingLink>
-      </LandingSection>
-
       <LandingWave>
-        <LandingCta
+        <Booking
           title={t.text("agency.ctaTitle")}
           description={t.text("agency.ctaDescription")}
-          bookingLabel={t.text("agency.ctaButton")}
-          secondaryLabel={t.text("agency.ctaSecondary")}
-          secondaryTo="#contact"
+          buttonLabel={t.text("agency.ctaButton")}
         />
       </LandingWave>
 

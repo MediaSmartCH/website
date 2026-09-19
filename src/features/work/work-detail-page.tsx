@@ -23,7 +23,7 @@ import {
 } from "@features/it-services/lib/portfolio-helpers";
 import { findCaseStudy, WORK_BASE_PATH } from "@features/work/lib/work-routes";
 
-import LandingCta from "@features/agency/components/landing-cta";
+import Booking from "@features/booking/components/booking-cta";
 import {
   LandingSection,
   LandingWave,
@@ -117,8 +117,10 @@ export default function WorkDetailPage() {
             </div>
 
             {firstPreview && (
+              // Capped: a 1440-wide screenshot in a half-width column ran
+              // taller than the copy beside it and took over the page.
               <div
-                className="w-full lg:w-[50%]"
+                className="w-full lg:w-[50%] max-w-[620px]"
                 data-aos="fade-left"
                 data-aos-duration="1200"
                 data-aos-easing="ease-in-sine"
@@ -180,12 +182,10 @@ export default function WorkDetailPage() {
       </LandingSection>
 
       <LandingWave>
-        <LandingCta
+        <Booking
           title={t.text("work.ctaTitle")}
           description={t.text("work.ctaDescription")}
-          bookingLabel={t.text("work.ctaButton")}
-          secondaryLabel={t.text("agency.ctaSecondary")}
-          secondaryTo="#contact"
+          buttonLabel={t.text("work.ctaButton")}
         />
       </LandingWave>
 

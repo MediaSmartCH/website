@@ -8,7 +8,22 @@ import { useTranslations } from "@shared/i18n/translator";
 // new component type on every render, which remounts the Lottie player.
 const DotAnim = lazy(() => import("@shared/components/dot-anim"));
 
-export default function Process() {
+export interface ProcessProps {
+    /** Overrides, for pages that introduce the same five steps differently.
+     *  The services page passes nothing. */
+    title?: string;
+    description?: string;
+}
+
+/**
+ * The five steps of an engagement: the animation, the dashed spine, the
+ * numbered badges.
+ *
+ * Rendered by the regional pages too — the steps are the same steps, read from
+ * the same `it.processData`, and a second presentation of them would be a
+ * second answer to the same question.
+ */
+export default function Process({ title, description }: ProcessProps = {}) {
     const languageReducer = useAppSelector(
         (state) => state.language.currentLanguage
     );
@@ -26,12 +41,12 @@ export default function Process() {
                     <RichText
                         as="h2"
                         className={`text-heading-strong w-full it-service-process-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-                        html={t.text("it.itServicesProcessTitle")}
+                        html={title ?? t.text("it.itServicesProcessTitle")}
                     />
                     <p
                         className={`text-body w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
                     >
-                        {t.text("it.itServicesProcessDescription")}
+                        {description ?? t.text("it.itServicesProcessDescription")}
                     </p>
                 </div>
 

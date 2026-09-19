@@ -24,6 +24,8 @@ const agency = {
     ctaSecondary: "Write to us directly",
 
     // ----------------------------------------------- pointers from the site
+    valaisLinkLabel: "What we do in Valais",
+    romandieLinkLabel: "What we do across French-speaking Switzerland",
     regionalLinksTitle: "Where we work",
     regionalLinks: [
         {

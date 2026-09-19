@@ -30,6 +30,8 @@ const agency = {
     ctaSecondary: "Écrire directement",
 
     // ---------------------------------------------- renvois depuis le site
+    valaisLinkLabel: "Notre activité en Valais",
+    romandieLinkLabel: "Notre activité en Suisse romande",
     regionalLinksTitle: "Où nous travaillons",
     regionalLinks: [
         {
