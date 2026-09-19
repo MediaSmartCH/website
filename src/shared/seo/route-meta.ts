@@ -4,7 +4,13 @@ import {
   stripLanguageFromPath,
   type AppLanguage,
 } from "@shared/config/languages";
-import { CONTACT_PHONE } from "@shared/constants/contact";
+import {
+  AREAS_SERVED,
+  CONTACT_PHONE,
+  OFFICE_ADDRESS,
+  SOCIAL_LINKS,
+} from "@shared/constants/contact";
+import { dictionary } from "@shared/i18n/registry";
 import routeSeoData from "@shared/seo/route-seo-data.json";
 
 export const SITE_NAME = "MediaSmart";
@@ -38,6 +44,11 @@ type RouteSeoDefinition = {
   robots: string;
   shareImageAlt: string;
   serviceType?: string;
+  /**
+   * Dictionary keys of the FAQ this page renders, in `it`. Present only on
+   * pages that actually show those questions.
+   */
+  faqKeys?: string[];
 };
 
 type StructuredDataNode = Record<string, unknown>;
@@ -64,6 +75,69 @@ const typedRouteSeoData = routeSeoData as RouteSeoDataFile;
 const OPEN_GRAPH_LOCALE: Record<AppLanguage, string> = {
   fr: "fr_CH",
   en: "en_CH",
+};
+
+/**
+ * The places MediaSmart works, for `areaServed`.
+ *
+ * The country and the four cantons both, rather than one or the other: the
+ * country alone told a search engine nothing a visitor searching "agence web
+ * Valais" would match on, and the cantons alone would contradict the FAQ,
+ * which says the work is done remotely for clients anywhere in Switzerland.
+ */
+const buildAreaServed = (): StructuredDataNode[] => [
+  { "@type": "Country", name: AREAS_SERVED.country },
+  ...AREAS_SERVED.cantons.map((canton) => ({
+    "@type": "AdministrativeArea",
+    name: canton,
+  })),
+];
+
+/**
+ * The FAQ of a page, as `Question`/`Answer` pairs, or null when it has none.
+ *
+ * Read from the live dictionary rather than copied here, so the markup cannot
+ * say something the page does not. That is not only good manners: structured
+ * data that does not match the visible content is a manual-action offence.
+ *
+ * A note on FAQPage itself. Google stopped showing FAQ rich results for most
+ * sites in 2023, so this buys no stars in the search listing and is not added
+ * hoping for any. It is here for the answer engines, which read the markup to
+ * find a question already answered in a citable, self-contained form — which
+ * is exactly what these six answers are.
+ */
+const buildFaqPage = (
+  language: AppLanguage,
+  canonicalUrl: string,
+  faqKeys: string[]
+): StructuredDataNode | null => {
+  const section = dictionary.it?.[language] as
+    | Record<string, { faqQuestion?: string; faqAnswer?: string }>
+    | undefined;
+
+  if (!section) return null;
+
+  const entries = faqKeys
+    .map((key) => section[key])
+    .filter(
+      (entry): entry is { faqQuestion: string; faqAnswer: string } =>
+        !!entry?.faqQuestion && !!entry?.faqAnswer
+    );
+
+  if (!entries.length) return null;
+
+  return {
+    "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    mainEntity: entries.map((entry) => ({
+      "@type": "Question",
+      name: entry.faqQuestion,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: entry.faqAnswer,
+      },
+    })),
+  };
 };
 
 const buildBreadcrumbList = (
@@ -116,10 +190,30 @@ const buildStructuredData = (
         url: LOGO_URL,
         contentUrl: LOGO_URL,
       },
-      areaServed: {
-        "@type": "Country",
-        name: "Switzerland",
+      // The same address the legal-notice page publishes. Without it the
+      // organisation had no place at all in the graph: a search engine reading
+      // this could tell what MediaSmart does, but not where it is — which is
+      // half of what someone searching for a local supplier is asking.
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: OFFICE_ADDRESS.street,
+        postalCode: OFFICE_ADDRESS.postalCode,
+        addressLocality: OFFICE_ADDRESS.locality,
+        addressRegion: OFFICE_ADDRESS.region,
+        addressCountry: OFFICE_ADDRESS.country,
       },
+      // Only profiles the site itself links to, from the footer.
+      sameAs: [
+        SOCIAL_LINKS.linkedin,
+        SOCIAL_LINKS.instagram,
+        SOCIAL_LINKS.telegram,
+      ],
+      founder: {
+        "@type": "Person",
+        "@id": `${SITE_URL}/#founder`,
+        name: "Raphael Rouiller",
+      },
+      areaServed: buildAreaServed(),
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
@@ -168,14 +262,16 @@ const buildStructuredData = (
       provider: {
         "@id": `${SITE_URL}/#organization`,
       },
-      areaServed: {
-        "@type": "Country",
-        name: "Switzerland",
-      },
+      areaServed: buildAreaServed(),
       availableLanguage: ["fr", "en"],
       url: canonicalUrl,
       description: seo.description,
     });
+  }
+
+  if (seo.faqKeys?.length) {
+    const faq = buildFaqPage(language, canonicalUrl, seo.faqKeys);
+    if (faq) graph.push(faq);
   }
 
   if (canonicalUrl !== `${SITE_URL}${buildLocalizedPath(language, "/")}`) {

@@ -69,6 +69,40 @@ export const CONTACT_PHONE = "+41796578612";
 /** Grouped for reading. */
 export const CONTACT_PHONE_DISPLAY = "+41 79 657 86 12";
 
+/**
+ * The registered address, in parts.
+ *
+ * Already published in full on the legal-notice page, which is where these
+ * values come from; splitting it into fields is what `PostalAddress` in the
+ * structured data needs, and keeps the two from drifting apart.
+ *
+ * Deliberately unlike the addresses above: an e-mail address is worth hiding
+ * from a harvester because it is a channel someone can abuse at no cost. A
+ * business address is a fact a prospective client — and a search engine — is
+ * meant to be able to check.
+ */
+export const OFFICE_ADDRESS = {
+  street: "Rue des Prumus 21",
+  postalCode: "1994",
+  locality: "Aproz (Nendaz)",
+  /** ISO 3166-2 code for Valais, which is what schema.org expects here. */
+  region: "CH-VS",
+  country: "CH",
+} as const;
+
+/**
+ * Where MediaSmart actually works, as named on the services page.
+ *
+ * The four cantons are the ones the FAQ says clients are met in; the country
+ * is there because the same answer says the work itself is done remotely and
+ * clients elsewhere in Switzerland are taken on. Nothing here is a claim the
+ * site does not already make in plain French.
+ */
+export const AREAS_SERVED = {
+  cantons: ["Valais", "Vaud", "Genève", "Fribourg"],
+  country: "Switzerland",
+} as const;
+
 /** Google Maps entry for the office. */
 export const OFFICE_MAP_URL = "https://maps.app.goo.gl/CthoJ9r99naTzbTA9";
 

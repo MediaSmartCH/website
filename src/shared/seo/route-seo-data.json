@@ -50,7 +50,8 @@
         "description": "Sites vitrines, sites business, refontes et migrations, applications web sur mesure : conception, développement et maintenance pour les PME, indépendants et associations de Suisse romande.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - services informatiques",
-        "serviceType": "Création de sites web, refonte et développement d'applications web"
+        "serviceType": "Création de sites web, refonte et développement d'applications web",
+        "faqKeys": ["itFaq1", "itFaq2", "itFaq3", "itFaq4", "itFaq5", "itFaq6"]
       },
       "video-services": {
         "pageName": "Services vidéo",
@@ -111,7 +112,8 @@
         "description": "Showcase sites, business websites, redesigns and migrations, custom web applications: design, development and maintenance for SMEs, freelancers and associations in French-speaking Switzerland.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart website and application development",
-        "serviceType": "Website creation, redesign and web application development"
+        "serviceType": "Website creation, redesign and web application development",
+        "faqKeys": ["itFaq1", "itFaq2", "itFaq3", "itFaq4", "itFaq5", "itFaq6"]
       },
       "video-services": {
         "pageName": "Video Services",
