@@ -3,8 +3,8 @@
 // English mirror of src/shared/i18n/fr/agency.ts. Same facts, same structure.
 //
 // The place names stay as they are written locally — Suisse romande is given
-// as "French-speaking Switzerland", Valais keeps its own name, and Aproz
-// (Nendaz) is not translated.
+// as "French-speaking Switzerland", Valais keeps its own name, and Dorénaz
+// is not translated.
 // ============================================================================
 const agency = {
     // ---------------------------------------------------------------- shared
@@ -35,7 +35,7 @@ const agency = {
         {
             title: "Web agency in Valais",
             description:
-                "Our footing in the canton: the office in Aproz (Nendaz), the Valais clients already online, and the working calendar.",
+                "Our footing in the canton: the office in Dorénaz, the Valais clients already online, and the working calendar.",
             label: "See what we do in Valais",
         },
     ],
@@ -43,7 +43,7 @@ const agency = {
     // ----------------------------------------- French-speaking Switzerland
     romandieTitle: "Website and web application development in French-speaking Switzerland",
     romandieLead:
-        "MediaSmart designs, builds and maintains websites and web applications for SMEs, freelancers and associations across French-speaking Switzerland. The company is a sole proprietorship based in Aproz, Valais, run by Raphael Rouiller: you talk to the person who analyses, designs and builds your project.",
+        "MediaSmart designs, builds and maintains websites and web applications for SMEs, freelancers and associations across French-speaking Switzerland. The company is a sole proprietorship based in Dorénaz, Valais, run by Raphael Rouiller: you talk to the person who analyses, designs and builds your project.",
     romandieIntro: `
         Choosing a web supplier comes down to three questions: who actually does the work, what the quote covers, and what happens once the site is live. This page answers them for MediaSmart, without going through a form first.
         `,
@@ -108,7 +108,7 @@ const agency = {
     romandieAreaDescription: `
         We are glad to meet clients in <b>Valais, Vaud, Geneva and Fribourg</b>. Because development and follow-up happen remotely, we also work with clients elsewhere in Switzerland and abroad.
         <br />
-        The office is in Aproz (Nendaz), Valais. We work in French or English, and business hours are Monday to Friday, 07:00 to 18:00.
+        The office is in Dorénaz, in Bas-Valais. We work in French or English, and business hours are Monday to Friday, 07:00 to 18:00.
         `,
 
     romandieFaq: [
@@ -147,7 +147,7 @@ const agency = {
     // ------------------------------------------------------------- Valais
     valaisTitle: "Web agency in Valais: websites and applications",
     valaisLead:
-        "MediaSmart is based in Aproz, in the municipality of Nendaz. We build websites and web applications for businesses, freelancers and associations across the canton — and we are near enough to come and talk about it.",
+        "MediaSmart is based in Dorénaz, Valais. We build websites and web applications for businesses, freelancers and associations across the canton — and we are near enough to come and talk about it.",
     valaisIntro: `
         Working with a supplier from the canton changes two practical things: a meeting does not require organising a journey, and the working calendar follows yours, Valais public holidays included.
         `,
@@ -155,9 +155,9 @@ const agency = {
     valaisLocalTitle: "Our footing in the canton",
     valaisLocal: [
         {
-            title: "Based in Aproz (Nendaz)",
+            title: "Based in Dorénaz",
             description:
-                "The office is in central Valais, about thirty minutes from Sion, Martigny and Sierre. A first meeting can take place at your premises rather than over video.",
+                "The office is in Dorénaz, in Bas-Valais, between Martigny and the Chablais. A first meeting can take place at your premises rather than over video.",
         },
         {
             title: "Valais clients online",
@@ -204,7 +204,7 @@ const agency = {
         {
             faqQuestion: "Does MediaSmart only work in Valais?",
             faqAnswer:
-                "No. The office is in Valais, in Aproz (Nendaz), and that is where on-site meetings are concentrated. We also meet clients in the cantons of Vaud, Geneva and Fribourg, and since development and follow-up are done remotely, we work with clients throughout Switzerland and abroad.",
+                "No. The office is in Valais, in Dorénaz, and on-site meetings are concentrated in the canton. We also meet clients in the cantons of Vaud, Geneva and Fribourg, and since development and follow-up are done remotely, we work with clients throughout Switzerland and abroad.",
         },
         {
             faqQuestion: "Can we meet before committing to anything?",

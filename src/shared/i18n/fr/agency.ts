@@ -41,7 +41,7 @@ const agency = {
         {
             title: "Agence web en Valais",
             description:
-                "Notre ancrage dans le canton : le siège à Aproz (Nendaz), les clients valaisans déjà en ligne et le calendrier de travail.",
+                "Notre ancrage dans le canton : le siège à Dorénaz, les clients valaisans déjà en ligne et le calendrier de travail.",
             label: "Découvrir notre activité en Valais",
         },
     ],
@@ -49,7 +49,7 @@ const agency = {
     // --------------------------------------------------- Suisse romande
     romandieTitle: "Création de sites web et d'applications en Suisse romande",
     romandieLead:
-        "MediaSmart conçoit, développe et maintient des sites internet et des applications web pour les PME, les indépendants et les associations de Suisse romande. L'entreprise est une raison individuelle basée à Aproz, en Valais, dirigée par Raphael Rouiller : vous parlez à la personne qui analyse, conçoit et développe votre projet.",
+        "MediaSmart conçoit, développe et maintient des sites internet et des applications web pour les PME, les indépendants et les associations de Suisse romande. L'entreprise est une raison individuelle basée à Dorénaz, en Valais, dirigée par Raphael Rouiller : vous parlez à la personne qui analyse, conçoit et développe votre projet.",
     romandieIntro: `
         Choisir un prestataire web revient à répondre à trois questions : qui fait réellement le travail, ce que le devis couvre, et ce qui se passe une fois le site en ligne. Cette page y répond pour MediaSmart, sans détour par un formulaire.
         `,
@@ -114,7 +114,7 @@ const agency = {
     romandieAreaDescription: `
         Nous rencontrons volontiers nos clients en <b>Valais, Vaud, Genève et Fribourg</b>. Le développement et le suivi se faisant à distance, nous travaillons aussi avec des clients partout en Suisse et à l'étranger.
         <br />
-        Le siège est à Aproz (Nendaz), en Valais. Les échanges se font en français ou en anglais, et les horaires ouvrés sont du lundi au vendredi, de 07h00 à 18h00.
+        Le siège est à Dorénaz, dans le Bas-Valais. Les échanges se font en français ou en anglais, et les horaires ouvrés sont du lundi au vendredi, de 07h00 à 18h00.
         `,
 
     romandieFaq: [
@@ -153,7 +153,7 @@ const agency = {
     // ------------------------------------------------------------- Valais
     valaisTitle: "Agence web en Valais : sites internet et applications",
     valaisLead:
-        "MediaSmart est établie à Aproz, sur la commune de Nendaz. Nous créons des sites internet et développons des applications web pour les entreprises, les indépendants et les associations du canton — et nous sommes sur place pour en parler.",
+        "MediaSmart est basée à Dorénaz, en Valais. Nous créons des sites internet et développons des applications web pour les entreprises, les indépendants et les associations du canton — et nous sommes sur place pour en parler.",
     valaisIntro: `
         Travailler avec un prestataire du canton change deux choses concrètes : un rendez-vous ne demande pas d'organiser un déplacement, et le calendrier de travail suit le vôtre, jours fériés valaisans compris.
         `,
@@ -161,9 +161,9 @@ const agency = {
     valaisLocalTitle: "Notre ancrage dans le canton",
     valaisLocal: [
         {
-            title: "Basés à Aproz (Nendaz)",
+            title: "Basés à Dorénaz",
             description:
-                "Le siège est en Valais central, à une trentaine de minutes de Sion, Martigny et Sierre. Un premier rendez-vous peut se tenir dans vos locaux plutôt qu'en visioconférence.",
+                "Le siège est à Dorénaz, dans le Bas-Valais, entre Martigny et le Chablais. Un premier rendez-vous peut se tenir dans vos locaux plutôt qu'en visioconférence.",
         },
         {
             title: "Des clients valaisans en ligne",
@@ -210,7 +210,7 @@ const agency = {
         {
             faqQuestion: "MediaSmart travaille-t-elle uniquement en Valais ?",
             faqAnswer:
-                "Non. Le siège est en Valais, à Aproz (Nendaz), et c'est là que se concentrent les rendez-vous sur place. Nous rencontrons aussi nos clients dans les cantons de Vaud, Genève et Fribourg, et le développement comme le suivi se faisant à distance, nous travaillons avec des clients partout en Suisse et à l'étranger.",
+                "Non. Le siège est en Valais, à Dorénaz, et c'est dans le canton que se concentrent les rendez-vous sur place. Nous rencontrons aussi nos clients dans les cantons de Vaud, Genève et Fribourg, et le développement comme le suivi se faisant à distance, nous travaillons avec des clients partout en Suisse et à l'étranger.",
         },
         {
             faqQuestion: "Peut-on se rencontrer avant de s'engager ?",

@@ -82,9 +82,9 @@ export const CONTACT_PHONE_DISPLAY = "+41 79 657 86 12";
  * meant to be able to check.
  */
 export const OFFICE_ADDRESS = {
-  street: "Rue des Prumus 21",
-  postalCode: "1994",
-  locality: "Aproz (Nendaz)",
+  street: "Rue des Cloubeaux 6C",
+  postalCode: "1905",
+  locality: "Dorénaz",
   /** ISO 3166-2 code for Valais, which is what schema.org expects here. */
   region: "CH-VS",
   country: "CH",
@@ -103,7 +103,15 @@ export const AREAS_SERVED = {
   country: "Switzerland",
 } as const;
 
-/** Google Maps entry for the office. */
+/**
+ * Google Maps entry for the office.
+ *
+ * TODO (Raphael): this short link still points at the previous address in
+ * Aproz. It has to be regenerated from Maps for Rue des Cloubeaux 6C, 1905
+ * Dorénaz — a short link cannot be composed by hand. Until then the contact
+ * panel links to the wrong place; everything else on the site (legal notice,
+ * privacy policy, terms, structured data) already says Dorénaz.
+ */
 export const OFFICE_MAP_URL = "https://maps.app.goo.gl/CthoJ9r99naTzbTA9";
 
 export const SOCIAL_LINKS = {
