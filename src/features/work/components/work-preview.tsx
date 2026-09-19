@@ -26,8 +26,8 @@ export default function WorkPreview({ ids }: { ids?: string[] }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[18px] lg:gap-[24px]">
-      {items.map((item) => (
-        <WorkCard key={item.id} item={item} linkToDetail />
+      {items.map((item, index) => (
+        <WorkCard key={item.id} item={item} linkToDetail index={index} />
       ))}
     </div>
   );

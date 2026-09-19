@@ -26,10 +26,13 @@ import { useTranslations } from "@shared/i18n/translator";
 export default function WorkCard({
   item,
   linkToDetail,
+  index = 0,
 }: {
   item: PortfolioItem;
   /** Our own products and the free tools have no page of their own. */
   linkToDetail: boolean;
+  /** Position in its grid, used to stagger the entrance by row. */
+  index?: number;
 }) {
   const language = useAppSelector((state) => state.language.currentLanguage);
   const theme = useAppSelector((state) => state.theme.currentTheme);
@@ -44,6 +47,8 @@ export default function WorkCard({
   const body = (
     <>
       {preview && (
+        // The frame keeps the scale-on-hover inside the card's rounded corners.
+        <div className="overflow-hidden rounded-[12px] mb-[16px]">
         <img
           src={preview}
           // The card's own title says what the project is, so a preview that
@@ -54,8 +59,9 @@ export default function WorkCard({
           height="900"
           loading="lazy"
           decoding="async"
-          className={`w-full aspect-[16/10] object-cover object-top rounded-[12px] mb-[16px] ${getPreviewDimClass(item, isLight)}`}
+          className={`w-full aspect-[16/10] object-cover object-top transition duration-500 group-hover:scale-[1.02] ${getPreviewDimClass(item, isLight)}`}
         />
+        </div>
       )}
       <h3 className="text-heading-strong font-redDisplay font-bold text-[17px] lg:text-[18px] xl:text-[20px] mb-[8px]">
         {title}
@@ -66,11 +72,19 @@ export default function WorkCard({
     </>
   );
 
+  // The lift on hover is the one the homepage overview cards use; the preview
+  // scaling under it is what makes a card of screenshots feel like a link to a
+  // site rather than a tile.
   const shell =
-    "bg-surface rounded-[15px] xl:rounded-[20px] p-4 md:p-5 h-full block transition hover:-translate-y-[2px]";
+    "group bg-surface rounded-[15px] xl:rounded-[20px] p-4 md:p-5 h-full block transition duration-300 hover:-translate-y-[3px]";
 
   return (
-    <div data-aos="fade-up" data-aos-duration="1200" data-aos-easing="ease-in-sine">
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1200"
+      data-aos-delay={(index % 3) * 90}
+      data-aos-easing="ease-in-sine"
+    >
       {linkToDetail ? (
         <Link to={L(caseStudyPath(item.id))} className={shell}>
           {body}

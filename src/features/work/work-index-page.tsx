@@ -20,6 +20,7 @@ import WorkCard from "@features/work/components/work-card";
 import {
   LandingHero,
   LandingSection,
+  LandingWave,
 } from "@features/agency/components/landing-blocks";
 import LandingCta from "@features/agency/components/landing-cta";
 import Contact from "@features/contact/components/contact-section";
@@ -31,10 +32,14 @@ import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
 
 const items = (portfolioData as PortfolioData).items;
 
+/**
+ * `tinted` alternates the background band down the page, so three grids of
+ * screenshots read as three sections rather than one long scroll.
+ */
 const SECTIONS = [
-  { category: "client", key: "Client", linkToDetail: true },
-  { category: "saas", key: "Saas", linkToDetail: false },
-  { category: "free", key: "Free", linkToDetail: false },
+  { category: "client", key: "Client", linkToDetail: true, tinted: false },
+  { category: "saas", key: "Saas", linkToDetail: false, tinted: true },
+  { category: "free", key: "Free", linkToDetail: false, tinted: false },
 ] as const;
 
 export default function WorkIndexPage() {
@@ -58,7 +63,7 @@ export default function WorkIndexPage() {
         intro=""
       />
 
-      {SECTIONS.map(({ category, key, linkToDetail }) => {
+      {SECTIONS.map(({ category, key, linkToDetail, tinted }) => {
         const sectionItems = byCategory(category);
         if (!sectionItems.length) return null;
 
@@ -68,23 +73,31 @@ export default function WorkIndexPage() {
             id={category}
             title={t.text(`work.index${key}Title`)}
             description={t.text(`work.index${key}Description`)}
+            tinted={tinted}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[18px] lg:gap-[24px]">
-              {sectionItems.map((item) => (
-                <WorkCard key={item.id} item={item} linkToDetail={linkToDetail} />
+              {sectionItems.map((item, index) => (
+                <WorkCard
+                  key={item.id}
+                  item={item}
+                  linkToDetail={linkToDetail}
+                  index={index}
+                />
               ))}
             </div>
           </LandingSection>
         );
       })}
 
-      <LandingCta
-        title={t.text("work.ctaTitle")}
-        description={t.text("work.ctaDescription")}
-        bookingLabel={t.text("work.ctaButton")}
-        secondaryLabel={t.text("agency.ctaSecondary")}
-        secondaryTo="#contact"
-      />
+      <LandingWave>
+        <LandingCta
+          title={t.text("work.ctaTitle")}
+          description={t.text("work.ctaDescription")}
+          bookingLabel={t.text("work.ctaButton")}
+          secondaryLabel={t.text("agency.ctaSecondary")}
+          secondaryTo="#contact"
+        />
+      </LandingWave>
 
       <Contact />
     </>

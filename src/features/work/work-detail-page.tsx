@@ -24,7 +24,10 @@ import {
 import { findCaseStudy, WORK_BASE_PATH } from "@features/work/lib/work-routes";
 
 import LandingCta from "@features/agency/components/landing-cta";
-import { LandingHero, LandingSection } from "@features/agency/components/landing-blocks";
+import {
+  LandingSection,
+  LandingWave,
+} from "@features/agency/components/landing-blocks";
 import Contact from "@features/contact/components/contact-section";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
@@ -62,51 +65,98 @@ export default function WorkDetailPage() {
   const liveUrl = getSafeExternalUrl(item.url);
   const previews = getItemImages(item, { dark: !isLight });
 
+  const [firstPreview, ...otherPreviews] = previews;
+
   return (
     <>
-      <LandingHero title={title} lead={description} intro="" />
-
-      <section className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[10px]">
-        <div className="flex flex-wrap items-center justify-center gap-[16px]">
-          {liveUrl && (
-            <a
-              href={liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="custom-btn2 middle-out px-[25px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] xl:text-[15px] flex items-center justify-center"
+      {/* Two columns rather than a centred block of text: the project's own
+          screenshot is the illustration this page has, and it belongs beside
+          the description rather than in a gallery further down. The copy comes
+          first in the DOM, so the pre-rendered HTML still opens with the h1. */}
+      <div className="pt-[73px] md:pt-[130px] lg:pt-[100px]">
+        <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[24px] lg:pt-[36px] pb-[20px]">
+          <div className="flex flex-col-reverse lg:flex-row items-center lg:items-start justify-between gap-y-[34px] lg:gap-x-[50px]">
+            <div
+              className="w-full lg:w-[46%]"
+              data-aos="fade-right"
+              data-aos-duration="1100"
+              data-aos-easing="ease-in-sine"
             >
-              {t.text("work.visitSite")}
-            </a>
-          )}
-          {accessNote && (
-            <span className="text-body font-poppins font-light text-[13px] xl:text-[14px] rounded-[999px] border border-current/20 px-[14px] py-[8px]">
-              {accessNote}
-            </span>
-          )}
-          <Link
-            to={L(WORK_BASE_PATH)}
-            className="gradient-text font-poppins font-medium text-[14px] xl:text-[15px] underline underline-offset-4 py-[10px]"
-          >
-            {t.text("work.backToIndex")}
-          </Link>
-        </div>
-      </section>
+              <Link
+                to={L(WORK_BASE_PATH)}
+                className="gradient-text font-poppins font-medium text-[13px] xl:text-[14px] underline underline-offset-4 inline-block mb-[14px]"
+              >
+                {t.text("work.backToIndex")}
+              </Link>
 
-      {previews.length > 0 && (
-        <LandingSection id="previews" title={t.text("work.previewsTitle")}>
+              <h1 className="text-heading w-full text-center lg:text-left font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[34px] xl:text-[40px] 2xl:text-[44px] mb-[16px] leading-[36px] lg:leading-[44px] xl:leading-[54px]">
+                {title}
+              </h1>
+
+              <p className="text-body w-full text-center lg:text-left font-helvetica font-light leading-7 text-[13px] xl:text-[15px] 2xl:text-[16px]">
+                {description}
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-[14px] mt-[24px]">
+                {liveUrl && (
+                  <a
+                    href={liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="custom-btn2 middle-out px-[25px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] xl:text-[15px] flex items-center justify-center"
+                  >
+                    {t.text("work.visitSite")}
+                  </a>
+                )}
+                {accessNote && (
+                  <span className="text-body font-poppins font-light text-[13px] xl:text-[14px] rounded-[999px] border border-current/20 px-[14px] py-[8px]">
+                    {accessNote}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {firstPreview && (
+              <div
+                className="w-full lg:w-[50%]"
+                data-aos="fade-left"
+                data-aos-duration="1200"
+                data-aos-easing="ease-in-sine"
+              >
+                <img
+                  src={firstPreview}
+                  alt={`${title} — ${t.text("work.previewAlt")}`}
+                  width="1440"
+                  height="900"
+                  // The one image above the fold on this page, so it loads
+                  // eagerly and at high priority; the rest stay lazy.
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className={`w-full rounded-[14px] xl:rounded-[18px] shadow-[0_18px_48px_rgba(20,23,45,0.16)] ${getPreviewDimClass(item, isLight)}`}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {otherPreviews.length > 0 && (
+        <LandingSection id="previews" title={t.text("work.previewsTitle")} tinted>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px] lg:gap-[24px]">
-            {previews.map((preview, index) => (
+            {otherPreviews.map((preview, index) => (
               <img
                 key={preview}
                 src={preview}
-                alt={`${title} — ${t.text("work.previewAlt")} ${index + 1}`}
+                alt={`${title} — ${t.text("work.previewAlt")} ${index + 2}`}
                 width="1440"
                 height="900"
-                loading={index === 0 ? "eager" : "lazy"}
+                loading="lazy"
                 decoding="async"
                 className={`w-full rounded-[14px] border border-current/10 ${getPreviewDimClass(item, isLight)}`}
                 data-aos="fade-up"
                 data-aos-duration="1200"
+                data-aos-delay={(index % 2) * 90}
                 data-aos-easing="ease-in-sine"
               />
             ))}
@@ -129,13 +179,15 @@ export default function WorkDetailPage() {
         </div>
       </LandingSection>
 
-      <LandingCta
-        title={t.text("work.ctaTitle")}
-        description={t.text("work.ctaDescription")}
-        bookingLabel={t.text("work.ctaButton")}
-        secondaryLabel={t.text("agency.ctaSecondary")}
-        secondaryTo="#contact"
-      />
+      <LandingWave>
+        <LandingCta
+          title={t.text("work.ctaTitle")}
+          description={t.text("work.ctaDescription")}
+          bookingLabel={t.text("work.ctaButton")}
+          secondaryLabel={t.text("agency.ctaSecondary")}
+          secondaryTo="#contact"
+        />
+      </LandingWave>
 
       <Contact />
     </>

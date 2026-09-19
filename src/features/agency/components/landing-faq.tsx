@@ -14,15 +14,18 @@ export default function LandingFaq({
   title,
   items,
   idPrefix,
+  tinted = false,
 }: {
   title: string;
   items: FaqItem[];
   idPrefix: string;
+  /** Paints the band behind the section, as LandingSection's own option does. */
+  tinted?: boolean;
 }) {
-  return (
+  const section = (
     <section
       id={`${idPrefix}-faq`}
-      className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[40px] lg:pt-[60px]"
+      className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[100px] 2xl:px-[160px] mx-auto pt-[40px] lg:pt-[56px] pb-[20px]"
     >
       <h2 className="text-heading w-full text-center font-redDisplay font-bold text-[26px] md:text-[30px] lg:text-[36px] xl:text-[42px] 2xl:text-[46px] mb-[26px] lg:mb-[36px]">
         {title}
@@ -31,5 +34,13 @@ export default function LandingFaq({
         <FaqAccordion items={items} idPrefix={idPrefix} />
       </div>
     </section>
+  );
+
+  if (!tinted) return section;
+
+  return (
+    <div className="relative w-full section-band py-[20px] md:py-[30px] lg:py-[40px] my-[30px] lg:my-[50px]">
+      {section}
+    </div>
   );
 }
