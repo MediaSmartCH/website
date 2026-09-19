@@ -44,21 +44,20 @@ const ProjectTypeDropdown = ({
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={`w-full flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] transition-all
-          ${isLight ? "bg-white" : "bg-[#685A9C]"}
-          ${isValid ? "border-[#C8CAE4]" : "border-red-500"}`}
+          ${isValid ? "contact-field" : "contact-field-surface border-red-500"}`}
       >
         <span className={`custom-contact-input !w-auto text-body-on-surface`}>
           {selectedLabel ?? placeholder}
         </span>
         <ChevronDown
           size={16}
-          className={`shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""} ${isLight ? "text-[#8B8FA8]" : "text-[#C8CADE]"}`}
+          className={`shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""} contact-segment-idle`}
         />
       </button>
 
       {open && (
         <div className={`absolute z-50 w-full mt-[6px] rounded-[11px] border-2 overflow-hidden shadow-lg
-          ${isLight ? "bg-white border-[#C8CAE4]" : "bg-[#3D2E6B] border-[#677DFF33]"}`}
+          contact-menu`}
         >
           {options.map((opt) => (
             <button
@@ -68,7 +67,7 @@ const ProjectTypeDropdown = ({
               className={`w-full flex items-center justify-between px-[24px] py-[13px] custom-contact-input transition-colors
                 ${isLight
                   ? "text-[#222222] hover:bg-[#F4F4FF]"
-                  : "text-[#E5E5E5] hover:bg-[#4D3D80]"
+                  : "text-[#F1EFFA] hover:bg-[#3E3873]"
                 }`}
             >
               {opt.label}
