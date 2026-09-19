@@ -154,20 +154,27 @@
   }
 }
 
+/*
+ * Phone widths. The accordion already sits inside the section's own 25px
+ * gutter, so a 30px inset on the question put its first character 55px from
+ * the edge of a 375px screen while the answer underneath started at 40px —
+ * a double gutter, and the two not even aligned with each other. 18px on both
+ * lines them up and gives the question back about 24px.
+ */
 @media screen and (max-width: 425px) {
   .ant-collapse-header {
     font-size: 16px;
-    padding: 15px 30px 15px 30px !important;
+    padding: 15px 18px 15px 18px !important;
     border-radius: 10px !important;
   }
   :where(.css-dev-only-do-not-override-amq5gd).ant-collapse
     .ant-collapse-content
     > .ant-collapse-content-box {
-    padding: 10px 15px 18px 15px;
+    padding: 10px 18px 18px 18px;
   }
   .ant-collapse-content {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
 

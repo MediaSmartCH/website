@@ -24,7 +24,7 @@ const agency = {
     areaTitle: "Où nous intervenons",
     proofTitle: "Des projets déjà en ligne",
     proofCta: "Voir nos réalisations en détail",
-    servicesCta: "Voir le détail de nos prestations web",
+    servicesCta: "Voir nos prestations web",
     faqTitle: "Questions fréquentes",
     ctaTitle: "Parlons de votre projet",
     ctaDescription:
@@ -47,13 +47,13 @@ const agency = {
             title: "Sites web et applications en Suisse romande",
             description:
                 "Ce que nous réalisons, comment se déroule un projet, où nous intervenons et ce que coûte un site : la page détaillée pour la Suisse romande.",
-            label: "Découvrir notre activité en Suisse romande",
+            label: "Activité en Suisse romande",
         },
         {
             title: "Agence web en Valais",
             description:
                 "Notre ancrage dans le canton : le siège à Dorénaz, les clients valaisans déjà en ligne et le calendrier de travail.",
-            label: "Découvrir notre activité en Valais",
+            label: "Activité en Valais",
         },
     ],
 

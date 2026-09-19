@@ -14,7 +14,7 @@ const error404 = {
     backDescription: "Return to the previous page",
     badge: "Error 404",
     saasTitle: "Our business applications",
-    saasDescription: "Supplier-invoice tracking and document management",
+    saasDescription: "Supplier-invoice analysis and document management",
     servicesTitle: "Our services",
     // VIDEO DISABLED — DO NOT DELETE: the 404 video card is no longer rendered.
     itServicesTitle: "Websites and applications",

@@ -30,12 +30,17 @@ const it = {
     saasProducts: [
         {
             id: "cc-factures-dashboard",
-            name: "Supplier invoices dashboard",
-            tagline: "Track your supplier spending, month by month and supplier by supplier",
+            // The English rendering of the name the product gives itself; its
+            // own English interface reads "Supplier spend analysis".
+            // SharePoint and Microsoft 365 were where one deployment's data
+            // happened to live, not something the product requires, so the
+            // site no longer presents them as features.
+            name: "Supplier spend dashboard",
+            tagline: "Analyse your supplier spending, month by month and supplier by supplier",
             highlights: [
-                "Monthly KPIs, top suppliers and period-over-period comparisons",
-                "Microsoft 365 sign-in and direct ingestion from SharePoint",
-                "Per-file drill-down and one-click CSV export",
+                "Key figures, monthly trend and top suppliers",
+                "Import of your data, multi-company and period comparison",
+                "Per-supplier and per-invoice detail, CSV export",
             ],
         },
         {
@@ -71,6 +76,12 @@ const it = {
     saasStatReviews: "reviews",
     saasStatUsersOne: "user",
     saasStatUsers: "users",
+    // Link to a tool's public repository. It only appears when the repository
+    // really is public: the star count comes from the GitHub API, read at
+    // build time like the Mozilla figures.
+    saasSourceLabel: "Source code",
+    saasStatStarsOne: "star",
+    saasStatStars: "stars",
     saasFreeTools: [
         {
             id: "url-copier",
@@ -134,7 +145,7 @@ const it = {
         <li> Database design and administration. </li>
         <li> API development, or integration with the tools you already use. </li>
         </ul>
-        Our own two applications, supplier-invoice tracking and document management, came out of that process.
+        Our own two applications, supplier-invoice analysis and document management, came out of that process.
         `,
     serviceRedesign: "Website redesign and migration",
     descriptionRedesign: `

@@ -41,6 +41,15 @@ export interface PortfolioItem {
   title: LocalizedField;
   description: LocalizedField;
   url?: string;
+  /**
+   * The tool's own public source repository, when it has one.
+   *
+   * Only set from a repository verified public — the value is what makes the
+   * "source code" link appear on a free-tool card, and it is what
+   * `scripts/fetch-tool-stats.mjs` reads to know whose stars to count. A tool
+   * whose code is not open simply has no `sourceUrl`.
+   */
+  sourceUrl?: string;
   images?: string[];
   screenshotUrls?: string[];
   /**

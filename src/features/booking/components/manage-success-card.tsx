@@ -34,7 +34,7 @@ const SuccessCard: React.FC<SuccessCardProps> = ({
   const subtle = isLight ? 'text-[#6B7280]' : 'text-[#CFCDE0]';
 
   return (
-    <div className={`rounded-3xl p-10 sm:p-12 ${surface} flex flex-col items-center text-center`}>
+    <div className={`rounded-3xl p-6 sm:p-12 ${surface} flex flex-col items-center text-center`}>
       <div
         className={`flex h-16 w-16 items-center justify-center rounded-full ${
           icon === 'success'

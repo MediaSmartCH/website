@@ -46,14 +46,17 @@ export default function NavbarMobile({
           <img
             src={themeReducer === "light" ? logo : logoDark}
             alt="MediaSmart"
-            className="w-[130px]"
+            // 130px left literally nothing between the logo and the language
+            // pill on a 375px screen — the two touched. Full size returns at
+            // 420px, which covers every phone from an iPhone Pro up.
+            className="w-[100px] min-[420px]:w-[130px] shrink-0"
             width="412"
             height="53"
             fetchPriority="high"
             decoding="async"
           />
         </Link>
-        <div className="flex justify-center items-center gap-x-[12px] sm:gap-x-[20px]">
+        <div className="flex justify-center items-center gap-x-[10px] min-[420px]:gap-x-[12px] sm:gap-x-[20px] shrink-0">
           <LocaleThemeControls {...localeControls}
                 size="xs" />
           <div className="">
@@ -62,9 +65,12 @@ export default function NavbarMobile({
               onClick={() => onToggleMenu()}
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? t.text("navbar.closeMenu") : t.text("navbar.openMenu")}
-              className="flex items-center justify-center"
+              // The icon stays 28x24; the ::after overlay gives it the 44x44
+              // hit area the primary navigation control of every phone should
+              // have, without changing a pixel of the layout.
+              className="relative flex items-center justify-center max-md:after:absolute max-md:after:-inset-x-2 max-md:after:-inset-y-[10px] max-md:after:content-['']"
             >
-              <img src={toggler} alt="Menu" className="w-[28px] h-[24px]" width="28" height="24" decoding="async" />
+              <img src={toggler} alt="Menu" className="w-[28px] h-[24px] shrink-0" width="28" height="24" decoding="async" />
             </button>
           </div>
         </div>
@@ -113,7 +119,7 @@ export default function NavbarMobile({
             </Link>
             <div className="pt-2">
               <BookingButton
-                className="navbar-btn w-full px-[16px] min-h-[42px] py-[8px] rounded-[8px] text-[#fff] font-poppins font-medium text-[16px]"
+                className="navbar-btn w-full px-[16px] min-h-[42px] max-md:min-h-[44px] py-[8px] rounded-[8px] text-[#fff] font-poppins font-medium text-[16px]"
                 text={t.text("navbar.navbarButton")}
               />
             </div>

@@ -61,7 +61,7 @@ export default function SuisseRomandePage() {
         actions={
           <>
             <BookingButton
-              className="hero-btn custom-btn w-[280px] h-[48px] flex items-center justify-center text-center rounded-[5px] text-white font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px]"
+              className="hero-btn custom-btn w-full sm:w-[280px] h-[48px] flex items-center justify-center text-center rounded-[5px] text-white font-helvetica font-light text-[14px] xl:text-[15px] 2xl:text-[16px]"
               text={t.text("agency.ctaButton")}
             />
             <LandingLink to="#services" inline size="hero">
@@ -79,7 +79,7 @@ export default function SuisseRomandePage() {
 
       <LandingSection id="work" title={t.text("agency.proofTitle")}>
         <WorkPreview ids={ROMANDIE_CLIENT_IDS} />
-        <div className="w-full flex flex-wrap justify-center gap-[14px] mt-[30px] lg:mt-[40px]">
+        <div className="w-full flex flex-col items-stretch gap-[14px] mx-auto max-w-[320px] sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center mt-[30px] lg:mt-[40px]">
           <LandingLink to={WORK_BASE_PATH} inline>
             {t.text("agency.proofCta")}
           </LandingLink>

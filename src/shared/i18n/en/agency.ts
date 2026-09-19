@@ -16,7 +16,7 @@ const agency = {
     areaTitle: "Where we work",
     proofTitle: "Projects already online",
     proofCta: "See our work in detail",
-    servicesCta: "See our web services in detail",
+    servicesCta: "See our web services",
     faqTitle: "Frequently asked questions",
     ctaTitle: "Let's talk about your project",
     ctaDescription:
@@ -26,7 +26,7 @@ const agency = {
 
     // ----------------------------------------------- pointers from the site
     valaisLinkLabel: "What we do in Valais",
-    romandieLinkLabel: "What we do across French-speaking Switzerland",
+    romandieLinkLabel: "French-speaking Switzerland",
     regionalLinksTitle: "Where we work",
     // Under the two regional cards: proximity is an argument, not a
     // condition. Two cards naming two regions and nothing else read as a
@@ -39,13 +39,13 @@ const agency = {
             title: "Websites and applications in French-speaking Switzerland",
             description:
                 "What we build, how a project runs, where we work and what a site costs: the detailed page for French-speaking Switzerland.",
-            label: "See what we do across French-speaking Switzerland",
+            label: "What we do in Romandie",
         },
         {
             title: "Web agency in Valais",
             description:
                 "Our footing in the canton: the office in Dorénaz, the Valais clients already online, and the working calendar.",
-            label: "See what we do in Valais",
+            label: "What we do in Valais",
         },
     ],
 

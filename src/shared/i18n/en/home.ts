@@ -76,7 +76,7 @@ const home = {
     // ITOverviewTitle: "IT Overview",
     saasTitle: `<span>Our business</span> applications`,
     saasDescription:
-        "Two applications we build and host ourselves: supplier-invoice tracking and document management.",
+        "Two applications we build and host ourselves: supplier-invoice analysis and document management.",
     saasCta: "Discover our applications",
 
     // ------------------------------------------------------------------

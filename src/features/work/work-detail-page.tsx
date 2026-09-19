@@ -209,25 +209,39 @@ export default function WorkDetailPage() {
           unrelated block. They stay quiet text links on purpose: four buttons
           of equal weight would make none of them the obvious next step.
 
-          On a phone the row becomes a column and the actions come first,
-          because that is the order of importance once nothing is side by side.
+          On a phone it becomes two rows rather than six lines: the pair of
+          actions across the top, then the previous and next projects side by
+          side underneath. `order-*` already places them, because grid
+          auto-placement follows order-modified document order, so no element
+          moves in the DOM and nothing is duplicated for a second layout.
         */}
-        <div className="flex flex-col gap-[22px] lg:flex-row lg:items-center lg:justify-between lg:gap-[24px]">
+        <div className="flex flex-col gap-[22px] lg:flex-row lg:items-center lg:justify-between lg:gap-[24px] max-md:grid max-md:grid-cols-2 max-md:gap-x-[12px] max-md:gap-y-[18px]">
           {previous ? (
             <Link
               to={L(caseStudyPath(previous.id))}
-              className="order-2 lg:order-1 lg:w-[24%] text-body font-poppins text-[13px] xl:text-[14px] transition-colors hover:text-heading-strong"
+              // The visible title is clipped on a phone, so the accessible
+              // name carries it in full. Crawlers still read the untruncated
+              // text: `truncate` hides it, it does not remove it.
+              aria-label={`${t.text("work.previousProject")} : ${resolveLocalizedField(previous.title, language)}`}
+              className="order-2 lg:order-1 lg:w-[24%] text-body font-poppins text-[13px] xl:text-[14px] transition-colors hover:text-heading-strong max-md:flex max-md:min-h-[44px] max-md:min-w-0 max-md:flex-wrap max-md:content-center max-md:items-baseline max-md:gap-x-[6px]"
             >
-              <span className="block text-[12px] opacity-70">
+              <span className="block text-[12px] opacity-70 max-md:order-2">
                 {t.text("work.previousProject")}
               </span>
-              ← {resolveLocalizedField(previous.title, language)}
+              {/* Below md the arrow joins the label on the first line and the
+                  project name drops underneath, clipped rather than wrapped to
+                  three lines. Above md these are the same inline nodes as
+                  before: "← Title" on the second line. */}
+              <span className="max-md:order-1">←</span>{" "}
+              <span className="max-md:order-3 max-md:w-full max-md:truncate">
+                {resolveLocalizedField(previous.title, language)}
+              </span>
             </Link>
           ) : (
             <span className="hidden lg:block lg:w-[24%]" />
           )}
 
-          <div className="order-1 lg:order-2 flex flex-wrap items-center justify-center gap-[14px]">
+          <div className="order-1 lg:order-2 flex flex-col items-stretch gap-[14px] mx-auto w-full max-w-[320px] sm:mx-0 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center max-md:col-span-2">
             <Link
               to={L(WORK_BASE_PATH)}
               className="custom-btn middle-out flex min-h-[44px] items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white"
@@ -247,12 +261,16 @@ export default function WorkDetailPage() {
           {next ? (
             <Link
               to={L(caseStudyPath(next.id))}
-              className="order-3 lg:w-[24%] text-body font-poppins text-[13px] xl:text-[14px] transition-colors hover:text-heading-strong lg:text-right"
+              aria-label={`${t.text("work.nextProject")} : ${resolveLocalizedField(next.title, language)}`}
+              className="order-3 lg:w-[24%] text-body font-poppins text-[13px] xl:text-[14px] transition-colors hover:text-heading-strong lg:text-right max-md:flex max-md:min-h-[44px] max-md:min-w-0 max-md:flex-wrap max-md:content-center max-md:items-baseline max-md:justify-end max-md:gap-x-[6px] max-md:text-right"
             >
-              <span className="block text-[12px] opacity-70">
+              <span className="block text-[12px] opacity-70 max-md:order-1">
                 {t.text("work.nextProject")}
               </span>
-              {resolveLocalizedField(next.title, language)} →
+              <span className="max-md:order-3 max-md:w-full max-md:truncate">
+                {resolveLocalizedField(next.title, language)}
+              </span>{" "}
+              <span className="max-md:order-2">→</span>
             </Link>
           ) : (
             <span className="hidden lg:block lg:w-[24%]" />

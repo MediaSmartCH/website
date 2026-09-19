@@ -1,10 +1,15 @@
 {
-  "fetchedAt": "2026-09-19T22:17:51.303Z",
+  "fetchedAt": "2026-09-19T22:55:41.687Z",
   "addons": {
     "url-copier": {
       "rating": 5,
       "ratingCount": 2,
       "users": 27
+    }
+  },
+  "repos": {
+    "url-copier": {
+      "stars": 4
     }
   }
 }

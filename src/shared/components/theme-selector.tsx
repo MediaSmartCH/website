@@ -226,7 +226,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                 onClick={() => handleButtonClick(value)}
                 aria-label={label}
                 aria-pressed={isCommitted}
-                className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${
+                className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 max-md:after:absolute max-md:after:inset-x-0 max-md:after:-inset-y-[11px] max-md:after:content-[''] ${
                   isActive ? activeButtonClasses : inactiveButtonClasses
                 }`}
                 style={{
@@ -264,7 +264,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
               // announce "Animations on, button" or "Animations off, button"
               // regardless of the label wording.
               aria-pressed={animationsEnabled}
-              className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 ${animButtonClasses}`}
+              className={`relative z-10 flex items-center justify-center rounded-full transition-colors duration-150 max-md:after:absolute max-md:after:inset-x-0 max-md:after:-inset-y-[11px] max-md:after:content-[''] ${animButtonClasses}`}
               style={{
                 width: `${sizeConfig.button}px`,
                 height: `${sizeConfig.button}px`,

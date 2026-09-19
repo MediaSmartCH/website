@@ -30,12 +30,17 @@ const it = {
     saasProducts: [
         {
             id: "cc-factures-dashboard",
-            name: "Dashboard Factures Fournisseurs",
-            tagline: "Suivez vos dépenses fournisseurs, mois par mois et fournisseur par fournisseur",
+            // Le nom que le produit se donne lui-même (titre de page et pied
+            // de page de dashboard-depenses.mediasmart.ch). SharePoint et
+            // Microsoft 365 étaient l'origine des données d'un déploiement,
+            // pas une exigence du produit : le site ne les présente plus
+            // comme telles.
+            name: "Tableau de bord de dépenses",
+            tagline: "Analysez vos dépenses fournisseurs, mois par mois et fournisseur par fournisseur",
             highlights: [
-                "KPIs mensuels, top fournisseurs et comparaison de périodes",
-                "Connexion Microsoft 365 et ingestion directe depuis SharePoint",
-                "Drill-down par dossier et export CSV en un clic",
+                "Indicateurs clés, évolution mensuelle et top fournisseurs",
+                "Import de vos données, multi-sociétés et comparaison de périodes",
+                "Détail par fournisseur et par facture, export CSV",
             ],
         },
         {
@@ -71,6 +76,12 @@ const it = {
     saasStatReviews: "avis",
     saasStatUsersOne: "utilisateur",
     saasStatUsers: "utilisateurs",
+    // Lien vers le dépôt public d'un outil. N'apparaît que si le dépôt est
+    // réellement public : le nombre d'étoiles vient de l'API GitHub, relevé
+    // au build comme les chiffres Mozilla.
+    saasSourceLabel: "Code source",
+    saasStatStarsOne: "étoile",
+    saasStatStars: "étoiles",
     saasFreeTools: [
         {
             id: "url-copier",
@@ -134,7 +145,7 @@ const it = {
         <li> Conception et administration de la base de données. </li>
         <li> Développement ou intégration d'API avec vos outils existants. </li>
         </ul>
-        Nos deux applications, le suivi des factures fournisseurs et la gestion documentaire, sont nées de cette démarche.
+        Nos deux applications, l'analyse des factures fournisseurs et la gestion documentaire, sont nées de cette démarche.
         `,
     serviceRedesign: "Refonte et migration de sites",
     descriptionRedesign: `

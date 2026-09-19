@@ -15,7 +15,7 @@
 import React from "react";
 
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
-import addonStats from "@features/it-services/data/addon-stats.json";
+import toolStats from "@features/it-services/data/tool-stats.json";
 import BookingButton from "@features/booking/components/booking-button";
 import LaunchCountdown from "@features/it-services/components/launch-countdown";
 import {
@@ -67,8 +67,37 @@ type AddonFigures = {
   users: number | null;
 };
 
+/** What the tool's own public repository says about it. */
+type RepoFigures = { stars: number | null };
+
 const ADDON_FIGURES: Record<string, AddonFigures | undefined> =
-  (addonStats as { addons?: Record<string, AddonFigures> }).addons ?? {};
+  (toolStats as { addons?: Record<string, AddonFigures> }).addons ?? {};
+
+const REPO_FIGURES: Record<string, RepoFigures | undefined> =
+  (toolStats as { repos?: Record<string, RepoFigures> }).repos ?? {};
+
+/**
+ * The GitHub mark.
+ *
+ * Inline rather than imported: `lucide-react` — the icon set this project
+ * already depends on — dropped its brand icons in v1, and `assets/icons/`
+ * holds flat-coloured files that cannot inherit the text colour this glyph
+ * has to sit in. One path, the same treatment `ArrowIcon` gets, and no new
+ * dependency for a logo.
+ */
+function GithubGlyph() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      className="h-[13px] w-[13px] shrink-0"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+  );
+}
 
 /** A star, for the rating. Decorative: the score is written next to it. */
 function StarGlyph() {
@@ -213,7 +242,7 @@ export default function SaasProducts() {
 
                 {/* Pinned to the bottom so the buttons line up across cards
                     even when one product has a longer pitch. */}
-                <div className="mt-auto flex flex-wrap items-center gap-3 pt-6">
+                <div className="mt-auto flex flex-col items-stretch gap-3 pt-6 sm:flex-row sm:flex-wrap sm:items-center">
                   {demoUrl && (
                     <a
                       href={demoUrl}
@@ -303,6 +332,19 @@ export default function SaasProducts() {
                   : null;
               const hasFigures = Boolean(rating || reviews || users);
 
+              // The source link exists only when the tool declares a public
+              // repository in the portfolio data, and the count only when
+              // GitHub actually answered for it at build time. Voice Studio
+              // and MediaSmart Lab declare none, so neither shows anything.
+              const sourceUrl = getSafeExternalUrl(source?.sourceUrl);
+              const stars = REPO_FIGURES[tool.id]?.stars ?? null;
+              const starLabel =
+                stars !== null
+                  ? `${counts.format(stars)} ${t.text(
+                      stars > 1 ? "it.saasStatStars" : "it.saasStatStarsOne"
+                    )}`
+                  : null;
+
               const inner = (
                 <>
                   {toolImage && (
@@ -326,7 +368,7 @@ export default function SaasProducts() {
                         access note. At three cards across — 1920 and up — the
                         one without a badge started its title 24px above its
                         neighbours. */}
-                    <div className="mb-3 flex min-h-[24px] items-start">
+                    <div className="mb-3 flex min-h-0 md:min-h-[24px] items-start">
                       {toolBadge && (
                         <span className={`inline-block w-fit ${pill}`}>{toolBadge}</span>
                       )}
@@ -394,6 +436,28 @@ export default function SaasProducts() {
                       </p>
                     )}
 
+                    {/* Secondary to everything above it: the code, for anyone
+                        who wants to read it. `relative z-10` lifts it above
+                        the card-wide overlay link, which is the only reason a
+                        second link can live inside a card that is itself
+                        clickable end to end. */}
+                    {sourceUrl && (
+                      <p className="relative z-20 mt-2 flex">
+                        <a
+                          href={sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${classes.mutedText} inline-flex items-center gap-[6px] font-poppins text-[12px] leading-tight underline-offset-2 hover:underline`}
+                        >
+                          <GithubGlyph />
+                          <span>
+                            {t.text("it.saasSourceLabel")}
+                            {starLabel ? ` · ${starLabel}` : ""}
+                          </span>
+                        </a>
+                      </p>
+                    )}
+
                     {/* Only a tool that is not public yet carries a launchDate. */}
                     {source?.launchDate && (
                       <LaunchCountdown
@@ -411,7 +475,7 @@ export default function SaasProducts() {
                             primary treatment the paid products use. It is a
                             span inside the card link: the lift and the arrow
                             come from the card hover (.custom-btn-in-card). */}
-                        <span className="custom-btn custom-btn-in-card flex min-h-[44px] w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
+                        <span className="custom-btn custom-btn-in-card flex min-h-[44px] w-full sm:w-fit items-center justify-center gap-2 rounded-[5px] px-[18px] font-poppins text-[14px] font-medium text-white">
                           <span className="custom-btn-inner flex items-center gap-2">
                             {tool.cta || t.text("it.saasFreeCta")}
                             <ArrowIcon />
@@ -423,28 +487,40 @@ export default function SaasProducts() {
                 </>
               );
 
-              // A tool without a public URL still earns its card — it just is
-              // not a link yet.
-              return toolUrl ? (
-                <a
-                  key={tool.id}
-                  href={toolUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group flex h-full flex-col overflow-hidden rounded-[24px] border transition duration-300 hover:-translate-y-1 ${classes.card}`}
-                  data-aos="fade-up"
-                  data-aos-delay={index * 120}
-                >
-                  {inner}
-                </a>
-              ) : (
+              // The card is a div with its link stretched across it, rather
+              // than a link wrapped around everything. It has to be: CopyLink
+              // Pro carries a second link, to its source, and an <a> inside an
+              // <a> is invalid — the browser closes the outer one early and
+              // the card comes apart. The overlay keeps "click anywhere on the
+              // card", keeps `group` where every hover effect expects it, and
+              // changes nothing about what is painted.
+              //
+              // It comes last in the DOM and carries z-10 so it sits above the
+              // button's own positioned innards (.custom-btn-inner is z-1);
+              // the source link answers with z-20. A tool without a public URL
+              // still earns its card — it just has no overlay.
+              return (
                 <div
                   key={tool.id}
-                  className={`group flex h-full flex-col overflow-hidden rounded-[24px] border ${classes.card}`}
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-[24px] border ${classes.card} ${
+                    toolUrl ? "transition duration-300 hover:-translate-y-1" : ""
+                  }`}
                   data-aos="fade-up"
                   data-aos-delay={index * 120}
                 >
                   {inner}
+                  {toolUrl && (
+                    <a
+                      href={toolUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute inset-0 z-10 rounded-[24px]"
+                      // The visible button names the destination; this overlay
+                      // is that same link made card-sized, so it takes the same
+                      // name rather than reading the whole card out loud.
+                      aria-label={`${tool.cta || t.text("it.saasFreeCta")} — ${tool.name}`}
+                    />
+                  )}
                 </div>
               );
             })}

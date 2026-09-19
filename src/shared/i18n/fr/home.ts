@@ -78,7 +78,7 @@ const home = {
     // ITOverviewTitle: "Aperçu informatique",
     saasTitle: `<span>Nos applications</span> métier`,
     saasDescription:
-        "Deux applications que nous développons et hébergeons nous-mêmes : le suivi des factures fournisseurs et la gestion documentaire.",
+        "Deux applications que nous développons et hébergeons nous-mêmes : l'analyse des factures fournisseurs et la gestion documentaire.",
     saasCta: "Découvrir nos applications",
 
     // ------------------------------------------------------------------

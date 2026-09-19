@@ -85,7 +85,10 @@ export function LandingHero({
 
         {actions && (
           <div
-            className="w-full flex flex-wrap items-center justify-center gap-[14px] mt-[26px] lg:mt-[34px]"
+            // Below sm the two hero actions stack, so they stack as a
+            // pair: one width, one height, centred. Released at sm, where
+            // the row has always sized each button to its own label.
+            className="w-full flex flex-col items-stretch gap-[14px] mx-auto max-w-[320px] sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center mt-[26px] lg:mt-[34px]"
             data-aos="fade-up"
             data-aos-duration="1400"
             data-aos-easing="ease-in-sine"

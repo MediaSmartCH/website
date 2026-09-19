@@ -43,7 +43,7 @@ const work = {
 
     moreTitle: "Continuer la visite",
     otherProjects: "Voir d'autres projets",
-    servicesCta: "Découvrir nos prestations web & apps",
+    servicesCta: "Nos prestations web & apps",
     previousProject: "Projet précédent",
     nextProject: "Projet suivant",
 
