@@ -367,6 +367,95 @@ To read or update the toggle from a component, use the `useInterfaceControls` ho
 const { animationsEnabled, flipAnimations } = useInterfaceControls();
 ```
 
+## Performance
+
+### Where we stand
+
+Measured on production with PageSpeed Insights, September 2026:
+
+| | Performance | Accessibility | Best Practices | SEO |
+|---|---:|---:|---:|---:|
+| Mobile | 93 | 100 | 100 | 100 |
+| Desktop | 90 | 100 | 100 | 100 |
+
+Lighthouse run locally against production (5 runs, median) puts mobile at 84 and
+desktop at 97; the gap with PSI is network distance, not a difference in the
+build. Treat either as a trend, never a single run — see the note on variance
+below.
+
+### What was done
+
+- **The hero poster is preloaded.** It is the page's LCP element, and its URL is
+  content-hashed inside `dot-anim`, four levels down the module graph, so the
+  browser could not discover it until late: Chrome attributed 1486ms of
+  "resource load delay" to it against 29ms of download. A build plugin
+  (`heroPosterPreloadPlugin` in `vite.config.mts`) writes the hashed URL into the
+  home pages' HTML.
+- **Posters are rendered at 700/1000/1400 and selected per screen.** Most slots
+  use `srcset`; the hero uses media queries in a `<picture>`, because the preload
+  scanner resolves `w` descriptors independently of layout and the two disagreed
+  under Lighthouse's 2.625 mobile density, fetching both files. The preloads sit
+  *after* the viewport meta on purpose — before it, the layout viewport is the
+  980px default and a phone matches `(min-width: 768px)`.
+- **Fonts are self-hosted** (`scripts/fetch-google-fonts.mjs`). The Google Fonts
+  stylesheet was a cross-origin round trip on the critical path, worth 800ms of
+  render blocking on mobile.
+- **The DotLottie player is its own chunk**, fetched only once a slot is both in
+  range and past a post-paint idle gate. It used to be a static import, so a slot
+  showing nothing but a poster still pulled ~334KB — 2847ms of the page's 2996ms
+  of script evaluation.
+- **Off-screen animations no longer all mount at once.** The homepage was
+  instantiating eight DotLottie players in one idle callback. This was the cause
+  of the wildly variable desktop scores (one PSI run reported TBT 1020ms and 20
+  long tasks while local runs reported 0): whether that burst landed inside the
+  measurement window depended on how fast the machine was. Under a 4x CPU
+  throttle the fix moved TBT from 85ms (range 73–108) to 20ms (range 13–21).
+
+### Tried and reverted — do not redo these without new evidence
+
+Both were measured, degraded the metrics, and were backed out.
+
+- **Inlining the entry stylesheet.** Removes the last render-blocking request.
+  Under packet-level throttling it helps (FCP −122ms); under Lantern, which is
+  what PSI scores with, it costs FCP +149ms and LCP +152ms, because the 15KB
+  moves into the document and is charged before the parse.
+- **Lazy-loading the below-the-fold homepage sections** to keep DOMPurify
+  (13.5KB brotli, pulled in by `RichText`) off the boot path. Main-thread work
+  dropped, but FCP rose 74ms and LCP 230ms across five extra round trips.
+
+Note also that there is no size lever left in the CSS: the entry stylesheet is
+127KB raw but **15.4KB brotli**, and the 20% of it that is AOS accounts for
+1.3KB of that. Tailwind is already purged to what the codebase uses.
+
+### Backlog — worth doing for users, not for the score
+
+Neither moves a Lighthouse metric. Both remove real bytes.
+
+1. **Responsive variants for the portfolio screenshots.** Two JPEGs
+   (`cc-factures-dashboard-0.jpg`, `ged-mediasmart-0.jpg`) ship at 1440x897 and
+   display at 418x261 — 203KiB of the 236KiB the desktop image audit reports, and
+   the same two files behind the 88KiB cache warning. `portfolio-modal.tsx` shows
+   them full size, so the 1440px originals must stay; the cards need a smaller
+   variant. Touches `scripts/capture-screenshots.mjs`, `portfolio-helpers.ts`, and
+   three components.
+2. **Defer reCAPTCHA until the form is touched.** It transfers ~354KB on desktop.
+   Blocking time is already 0ms and main-thread cost 52ms, so this buys bandwidth
+   rather than score. The v3 token is generated at submit, so loading on first
+   interaction preserves the behaviour — but the form's protection must be
+   verified end to end before shipping it.
+
+### Why we stopped
+
+Everything Lighthouse still reports has been traced to its source. The remaining
+unused JavaScript is library bulk that is inherently partly used — DotLottie
+(92% unused), react-router plus Redux (70%), React itself (34%) — and none of it
+shrinks without changing the architecture. The floor is client-side rendering:
+135KB brotli of entry JavaScript has to arrive and run before anything paints.
+Closing that would mean prerendering or SSR, which was explicitly ruled out.
+
+A stable 95 with a site that kept its animations, its sharpness and its
+consent flow was judged worth more than a 100 reached through hacks.
+
 ## Troubleshooting
 
 - If the contact form fails in production, confirm that either `VITE_RECAPTCHA_SITE_KEY` or `REACT_APP_RECAPTCHA_SITE_KEY` exists in Vercel project env vars.
