@@ -50,6 +50,19 @@ export interface PortfolioItem {
    * still in early access; the UI shows a countdown until then.
    */
   launchDate?: string;
+  /**
+   * Set when the site honours `prefers-color-scheme: dark` and a dark twin of
+   * every preview has been captured next to the light one (`…-0-dark.jpg`).
+   * Only then does the gallery swap the preview with the site theme.
+   */
+  hasDarkPreview?: boolean;
+  /**
+   * Capture viewport for scripts/capture-screenshots, when the default
+   * 1440×900 desktop shot is not what this preview should show. The Lab, for
+   * instance, is captured at phone width and 2× so the card frames the
+   * wordmark and the first games rather than a wall of tiles.
+   */
+  previewViewport?: { width: number; height: number; deviceScaleFactor?: number };
 }
 
 /** A gallery section: one category and the entries that belong to it. */
@@ -109,13 +122,30 @@ export function sortItemsForPreview(items: PortfolioItem[]): PortfolioItem[] {
 export const PREVIEW_LIMIT = 4;
 export const SCROLLABLE_GALLERY_THRESHOLD = 3;
 
-// Returns the resolved image paths for a portfolio item, preferring generated screenshot paths
-export function getItemImages(item: PortfolioItem): string[] {
-  if (item.screenshotUrls && item.screenshotUrls.length > 0) {
-    return item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`);
-  }
+/** Inserts the `-dark` marker before the extension: `/a/b-0.jpg` -> `/a/b-0-dark.jpg`. */
+function toDarkVariant(path: string): string {
+  return path.replace(/(\.[a-z0-9]+)$/i, "-dark$1");
+}
 
-  return item.images ?? [];
+/**
+ * Returns the resolved image paths for a portfolio item, preferring generated
+ * screenshot paths.
+ *
+ * With `{ dark: true }`, an item that declares `hasDarkPreview` resolves to the
+ * dark twin captured next to each light asset. Items without the flag keep
+ * their light paths: most of the sites shown here have no dark theme of their
+ * own, and a fabricated dark preview would not be what the visitor lands on.
+ */
+export function getItemImages(
+  item: PortfolioItem,
+  options: { dark?: boolean } = {}
+): string[] {
+  const paths =
+    item.screenshotUrls && item.screenshotUrls.length > 0
+      ? item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`)
+      : item.images ?? [];
+
+  return options.dark && item.hasDarkPreview ? paths.map(toDarkVariant) : paths;
 }
 
 /** Accepts a URL only when it is http(s), so a javascript: entry cannot reach an href. */

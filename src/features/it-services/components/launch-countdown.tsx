@@ -1,9 +1,19 @@
 /**
- * "Opens in 3 months" badge for a product that is not public yet.
+ * "Opens in 3 months" counter for a product that is not public yet.
  *
  * Reads its target from the portfolio data (`launchDate`), ticks once a second
  * and swaps itself for the "available" label as soon as the date is reached, so
  * a launch that happens while nobody redeploys still reads correctly.
+ *
+ * The tiles carry the site's own signature rather than the neutral boxes they
+ * started as: the brand gradient as a hairline border and on the digits, the
+ * display face used by every heading, and tabular figures so the row does not
+ * twitch on each tick. Styling lives in styles/components/countdown.css —
+ * a gradient border needs two stacked backgrounds, which Tailwind classes
+ * cannot express.
+ *
+ * Screen readers get one sentence through `role="timer"` instead of four
+ * unlabelled numbers re-announced every second.
  */
 
 import React from "react";
@@ -46,13 +56,10 @@ export default function LaunchCountdown({
     return () => window.clearInterval(interval);
   }, [launchDate]);
 
-  const unitClass = `${classes.isLight ? "border-[#D9DCF2] bg-[#EEF0FF] text-[#2C3A87]" : "border-white/10 bg-white/5 text-[#DAD7FF]"} flex min-w-[46px] flex-col items-center rounded-[10px] border px-2 py-1.5`;
-
   if (parts.launched) {
     return (
-      <span
-        className={`${classes.strongText} mt-3 inline-block font-poppins text-[12px] font-semibold`}
-      >
+      <span className="launch-countdown-live mt-4 inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 font-poppins text-[12px] font-semibold">
+        <span aria-hidden="true" className="launch-countdown-live-dot" />
         {t.text("it.launchCountdownLive")}
       </span>
     );
@@ -65,22 +72,30 @@ export default function LaunchCountdown({
     { value: parts.seconds, label: t.text("it.launchCountdownSeconds") },
   ];
 
+  const spokenLabel = `${t.text("it.launchCountdownLabel")}: ${units
+    .map(({ value, label }) => `${value} ${label}`)
+    .join(", ")}`;
+
   return (
-    <div className="mt-3">
+    <div
+      className={`launch-countdown mt-4 ${classes.isLight ? "" : "launch-countdown-dark"}`}
+      role="timer"
+      aria-label={spokenLabel}
+    >
       <span
-        className={`${classes.mutedText} block font-poppins text-[11px] font-medium uppercase tracking-[0.14em]`}
+        className={`${classes.mutedText} flex items-center gap-2 font-poppins text-[10px] font-semibold uppercase tracking-[0.18em]`}
+        aria-hidden="true"
       >
+        <span className="launch-countdown-rule" />
         {t.text("it.launchCountdownLabel")}
       </span>
-      <div className="mt-1.5 flex flex-wrap gap-1.5">
+      <div className="mt-2 flex flex-wrap gap-2" aria-hidden="true">
         {units.map(({ value, label }) => (
-          <span key={label} className={unitClass}>
-            <span className="font-redDisplay text-[16px] font-bold leading-5">
+          <span key={label} className="launch-countdown-unit">
+            <span className="launch-countdown-value">
               {String(value).padStart(2, "0")}
             </span>
-            <span className="font-poppins text-[10px] uppercase tracking-[0.1em] opacity-75">
-              {label}
-            </span>
+            <span className={`${classes.mutedText} launch-countdown-label`}>{label}</span>
           </span>
         ))}
       </div>

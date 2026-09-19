@@ -146,6 +146,8 @@
         "en": "A free mini-games platform playable directly in the browser or as a Telegram mini-app. Scores are synced via a dedicated Telegram bot, with live leaderboards and a mobile-first experience."
       },
       "url": "https://apps.mediasmart.ch",
+      "hasDarkPreview": true,
+      "previewViewport": { "width": 412, "height": 820, "deviceScaleFactor": 2 },
       "images": ["/portfolio/mediasmart-games-0.jpg"]
     },
     {
@@ -181,6 +183,7 @@
         "fr": "Démo gratuite en ligne",
         "en": "Free live demo"
       },
+      "hasDarkPreview": true,
       "screenshotUrls": [
         "https://dashboard-depenses.mediasmart.ch/mock",
         "https://dashboard-depenses.mediasmart.ch/factures",
