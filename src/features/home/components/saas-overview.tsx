@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import {
   getItemImages,
+  getPreviewDimClass,
   resolveLocalizedField,
   type PortfolioData,
 } from "@features/it-services/lib/portfolio-helpers";
@@ -93,14 +94,7 @@ export default function SaasOverview() {
                   <img
                     src={image}
                     alt={product.name}
-                    // A light-only screenshot glares against the dark card;
-                    // dimming it keeps the card readable without pretending
-                    // the site has a dark theme it does not have.
-                    className={`h-full w-full object-cover object-top transition duration-500 group-hover:scale-105 ${
-                      !classes.isLight && !source?.hasDarkPreview
-                        ? "brightness-90"
-                        : ""
-                    }`}
+                    className={`h-full w-full object-cover object-top transition duration-500 group-hover:scale-105 ${getPreviewDimClass(source, classes.isLight)}`}
                     loading="lazy"
                   />
                 </div>

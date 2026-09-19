@@ -19,6 +19,7 @@ import BookingButton from "@features/booking/components/booking-button";
 import LaunchCountdown from "@features/it-services/components/launch-countdown";
 import {
   getItemImages,
+  getPreviewDimClass,
   getSafeExternalUrl,
   resolveLocalizedField,
   type PortfolioData,
@@ -132,14 +133,7 @@ export default function SaasProducts() {
                   <img
                     src={image}
                     alt={product.name}
-                    // A light-only screenshot glares against the dark card;
-                    // dimming it keeps the card readable without pretending
-                    // the site has a dark theme it does not have.
-                    className={`h-full w-full object-cover object-top ${
-                      !classes.isLight && !source?.hasDarkPreview
-                        ? "brightness-90"
-                        : ""
-                    }`}
+                    className={`h-full w-full object-cover object-top ${getPreviewDimClass(source, classes.isLight)}`}
                     loading="lazy"
                   />
                 </div>
@@ -252,11 +246,7 @@ export default function SaasProducts() {
                         // Centre-cropped, like the portfolio tiles: anchoring to
                         // the top of these screenshots frames a sign-in dialog
                         // rather than the tool itself.
-                        className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${
-                          !classes.isLight && !source?.hasDarkPreview
-                            ? "brightness-90"
-                            : ""
-                        }`}
+                        className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${getPreviewDimClass(source, classes.isLight)}`}
                         loading="lazy"
                       />
                     </div>
