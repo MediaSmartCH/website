@@ -7,9 +7,9 @@ Marketing website built with React, TypeScript, and Vite, deployed on Vercel wit
 
 ## Stack
 
-- React 18
+- React 19
 - TypeScript
-- Vite 7
+- Vite 8
 - pnpm 10
 - Vercel Functions (`api/`)
 - `@lottiefiles/dotlottie-react` for Lottie animations (replaces the legacy `dotlottie-player` web component)
@@ -17,11 +17,11 @@ Marketing website built with React, TypeScript, and Vite, deployed on Vercel wit
 
 ## Prerequisites
 
-- Node.js 20.x
+- Node.js 24.x
 - pnpm 10.x
 - Vercel CLI for local project sync
 
-`mise.toml` pins Node 20 for this directory — `mise trust && mise install` sets it
+`mise.toml` pins Node 24 for this directory — `mise trust && mise install` sets it
 up. The version is not cosmetic: `engines.node` in package.json is what Vercel
 reads to pick the runtime for the functions in `api/`, so anything else means
 developing against a different runtime than production (and pnpm warns about it
