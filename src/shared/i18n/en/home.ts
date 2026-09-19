@@ -110,8 +110,8 @@ const home = {
             description: "A 14-day corrective warranty after go-live, then fixes and changes handled on request."
         },
         {
-            title: "SEO and performance",
-            description: "Technical work on search visibility and load times, so you get found and stay fast."
+            title: "Search, AI answers and performance",
+            description: "Technical structure, structured data, clear content and loading times: to be found on Google and in the answers AI assistants give."
         }
     ],
 

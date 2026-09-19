@@ -43,21 +43,21 @@ import useScrollToHash from "@shared/hooks/use-scroll-to-hash";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 
 /**
- * One visual per service, in the order the dictionary lists them, and no two
- * the same.
+ * One animation per service, in the order the dictionary lists them, and no
+ * two the same.
  *
- * Three rows get an animation that genuinely means what they say. The other
- * three get an inline drawing: the catalogue has nothing for a custom
- * application, for technical SEO or for a hosted business tool, and the first
- * draft papered over that by repeating the nearest animation — so the page
- * showed the same picture twice, two rows apart, three times over.
+ * The pairing is the homepage's own: its six service cards attach these same
+ * six animations to these same six subjects, so a reader meeting "application
+ * web sur mesure" here sees what they saw there. An earlier version drew four
+ * of these as flat SVGs; the animations exist, and they are what gives the
+ * site its character.
  */
 const SERVICE_VISUALS: LandingServiceRow["visual"][] = [
   { anim: "it.services.website" },
-  { illustration: "app" },
+  { anim: "it.services.backup" },
+  { anim: "it.services.maintenance" },
   { anim: "it.services.optimization" },
-  { illustration: "seo" },
-  { illustration: "hosting" },
+  { anim: "it.services.security" },
   { anim: "it.services.support" },
 ];
 

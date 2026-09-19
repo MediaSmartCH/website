@@ -399,5 +399,9 @@ const it = {
         faqQuestion: "Comment se déroule le premier contact ?",
         faqAnswer: "Réservez une consultation gratuite de 30 minutes via notre outil en ligne. Nous faisons le point sur votre situation, puis vous recevez un devis détaillé sous 48 heures, sans engagement.",
     },
+    itFaq7: {
+        faqQuestion: "Optimisez-vous les sites pour ChatGPT et les moteurs de réponse IA\u00a0?",
+        faqAnswer: "Oui, pour ce qui dépend du site. Au-delà du SEO technique — structure, indexabilité, temps de chargement — nous rendons les contenus faciles à interpréter et à citer : hiérarchie de titres claire, réponses autonomes, données structurées, informations d'entreprise cohérentes d'une page à l'autre. C'est ce qu'on appelle le GEO et l'AEO. Personne ne peut garantir qu'un assistant citera un site en particulier : l'objectif est qu'il soit découvrable et compréhensible, pas de promettre une recommandation.",
+    },
 };
 export default it;

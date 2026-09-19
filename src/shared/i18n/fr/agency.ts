@@ -77,9 +77,9 @@ const agency = {
                 "Un site vieillissant n'a pas besoin d'être repris de zéro. Un état des lieux chiffre ce qui doit être refait et ce qui peut être conservé : refonte visuelle, reprise des contenus, temps de chargement, mise à niveau mobile.",
         },
         {
-            title: "Référencement technique et performances",
+            title: "Référencement, moteurs de réponse IA et performances",
             description:
-                "Optimisation technique du référencement et du temps de chargement, incluse par défaut dans une création de site. Le référencement éditorial avancé fait l'objet d'une prestation distincte.",
+                "Optimisation technique du référencement et du temps de chargement, incluse par défaut dans une création de site. Nous préparons aussi les pages pour les moteurs de réponse : titres explicites, réponses autonomes, données structurées — ce qu'on appelle le GEO et l'AEO. Le référencement éditorial avancé fait l'objet d'une prestation distincte.",
         },
         {
             title: "Applications métier hébergées",
@@ -188,7 +188,7 @@ const agency = {
         {
             title: "Site vitrine",
             description:
-                "Jusqu'à cinq pages pour présenter votre activité et vos prestations, avec formulaire de contact, version mobile et optimisation technique du référencement. Environ deux semaines.",
+                "Jusqu'à cinq pages pour présenter votre activité et vos prestations, avec formulaire de contact, version mobile, et une base technique pensée pour les moteurs de recherche comme pour les moteurs de réponse IA. Environ deux semaines.",
         },
         {
             title: "Site business",

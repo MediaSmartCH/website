@@ -17,9 +17,6 @@ import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { getLottieAspectRatio, type LottieKey } from "@shared/config/lotties";
 import ArrowIcon from "@shared/components/arrow-icon";
-import SectionIllustration, {
-  type IllustrationName,
-} from "@shared/components/illustrations/section-illustration";
 
 // Hoisted to module scope: declaring lazy() inside a component body creates a
 // new component type on every render, which remounts the Lottie player. Same
@@ -383,14 +380,10 @@ export function LandingFeature({
 
 export interface LandingServiceRow extends LandingCard {
   /**
-   * The row's visual: an animation from the catalogue when one actually means
-   * what the row says, an inline drawing when none does.
-   *
-   * No page uses the same value twice — an illustration repeated two rows
-   * apart reads as an oversight, and that is what filling the gaps with the
-   * nearest animation produced.
+   * The row's animation. No page uses the same one twice — a picture repeated
+   * two rows apart reads as an oversight.
    */
-  visual: { anim: LottieKey } | { illustration: IllustrationName };
+  visual: { anim: LottieKey };
 }
 
 /**
@@ -440,26 +433,22 @@ export function LandingServiceRows({ rows }: { rows: LandingServiceRow[] }) {
                   in a half-width column grew past the height of the copy
                   beside it and became the subject of the row. */}
               <div className="w-full max-w-[420px] xl:max-w-[460px] text-heading">
-                {"anim" in row.visual ? (
-                  <Suspense
-                    fallback={
-                      <div
-                        className="w-full"
-                        style={{ aspectRatio: getLottieAspectRatio(row.visual.anim) }}
-                        aria-hidden="true"
-                      />
-                    }
-                  >
-                    <DotAnim
-                      anim={row.visual.anim}
-                      style={{ width: "100%", height: "auto" }}
-                      crisp
-                      protect
+                <Suspense
+                  fallback={
+                    <div
+                      className="w-full"
+                      style={{ aspectRatio: getLottieAspectRatio(row.visual.anim) }}
+                      aria-hidden="true"
                     />
-                  </Suspense>
-                ) : (
-                  <SectionIllustration name={row.visual.illustration} />
-                )}
+                  }
+                >
+                  <DotAnim
+                    anim={row.visual.anim}
+                    style={{ width: "100%", height: "auto" }}
+                    crisp
+                    protect
+                  />
+                </Suspense>
               </div>
             </div>
           </div>

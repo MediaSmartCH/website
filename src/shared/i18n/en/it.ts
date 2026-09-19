@@ -398,5 +398,9 @@ const it = {
         faqQuestion: "How does the initial contact work?",
         faqAnswer: "Book a free 30-minute consultation through our online tool. We review your situation together, then you receive a detailed quote within 48 hours, with no commitment.",
     },
+    itFaq7: {
+        faqQuestion: "Do you optimise sites for ChatGPT and AI answer engines?",
+        faqAnswer: "Yes, as far as the site itself allows. Beyond technical SEO — structure, indexability, loading times — we make the content easy to read and to quote: a clear heading hierarchy, self-contained answers, structured data, and company details that match from one page to the next. That is what GEO and AEO mean. Nobody can guarantee that an assistant will cite a particular site: the aim is to be discoverable and understandable, not to promise a recommendation.",
+    },
 };
 export default it;

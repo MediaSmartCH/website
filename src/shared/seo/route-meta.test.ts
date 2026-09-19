@@ -55,7 +55,7 @@ describe("faq node", () => {
       (entry) => entry.name
     );
 
-    expect(questions).toHaveLength(6);
+    expect(questions).toHaveLength(7);
     expect(questions[0]).toBe(frMessages.it.itFaq1.faqQuestion);
   });
 

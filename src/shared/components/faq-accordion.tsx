@@ -42,6 +42,18 @@ export default function FaqAccordion({ items, idPrefix }: FaqAccordionProps) {
     label: item.faqQuestion,
     children: <div className={answerClass}>{item.faqAnswer}</div>,
     className: itemClass,
+    // Render every answer, not just the open one.
+    //
+    // Ant Design only mounts a panel's content the first time it is expanded,
+    // so the served HTML carried seven questions and one answer. Two things
+    // depend on those answers actually being in the page: the FAQPage
+    // structured data, which must quote what the page shows and not more, and
+    // the answer engines the FAQ is largely written for, which read the HTML
+    // and do not click anything.
+    //
+    // They stay collapsed for a visitor exactly as before — this is what an
+    // accordion is, not content hidden from readers and shown to crawlers.
+    forceRender: true,
   }));
 
   return (

@@ -112,8 +112,8 @@ const home = {
             description: "Garantie corrective de 14 jours après la mise en ligne, puis corrections et évolutions à la demande."
         },
         {
-            title: "Référencement et performances",
-            description: "Optimisation technique du référencement et du temps de chargement, pour être trouvé et rester rapide."
+            title: "Référencement, moteurs IA et performances",
+            description: "Structure technique, données structurées, contenu clair et temps de chargement : pour être trouvé sur Google comme dans les réponses des assistants IA."
         }
     ],
 

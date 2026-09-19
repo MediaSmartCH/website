@@ -19,10 +19,14 @@ export interface OverviewSectionProps {
   translationPrefix: string;
   /** Animation per card, ordered to match the translation array index. */
   animations: LottieKey[];
-  /** Route the explore button links to, relative to the current locale. */
-  exploreHref: string;
+  /**
+   * Route the explore button links to. Omitted on the homepage: this section
+   * is the services, so a button reading "voir nos prestations web" would
+   * scroll to itself.
+   */
+  exploreHref?: string;
   /** Warms the destination route chunk on hover. */
-  preloadRoute: () => void;
+  preloadRoute?: () => void;
   textAnimation: "fade-up" | "zoom-in";
   /** Vertical padding, which differs between the two homepage sections. */
   spacingClassName: string;
@@ -81,6 +85,7 @@ export default function OverviewSection({
         ))}
       </div>
 
+      {exploreHref && (
       <div className="flex justify-center w-full">
         <Link to={exploreHref} onMouseEnter={preloadRoute}>
           <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] flex items-center justify-center rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
@@ -90,6 +95,7 @@ export default function OverviewSection({
           </button>
         </Link>
       </div>
+      )}
     </div>
   );
 }

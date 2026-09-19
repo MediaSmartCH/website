@@ -69,9 +69,9 @@ const agency = {
                 "An ageing site rarely needs to be rebuilt from scratch. A review prices what has to be redone and what can be kept: visual redesign, content migration, loading times, mobile layout.",
         },
         {
-            title: "Technical SEO and performance",
+            title: "Search, AI answer engines and performance",
             description:
-                "Technical search-engine and loading-time optimisation, included by default when we build a site. Advanced editorial SEO is a separate engagement.",
+                "Technical search-engine and loading-time optimisation, included by default when we build a site. We also prepare pages for answer engines: explicit headings, self-contained answers, structured data — what is called GEO and AEO. Advanced editorial SEO is a separate engagement.",
         },
         {
             title: "Hosted business applications",
@@ -180,7 +180,7 @@ const agency = {
         {
             title: "Showcase site",
             description:
-                "Up to five pages presenting your business and your services, with a contact form, mobile layout and technical search-engine optimisation. About two weeks.",
+                "Up to five pages presenting your business and your services, with a contact form, mobile layout, and a technical base built for search engines and AI answer engines alike. About two weeks.",
         },
         {
             title: "Business website",

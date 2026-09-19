@@ -44,12 +44,12 @@ import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 /** The two clients established in the canton, named on this page for that reason. */
 const VALAIS_CLIENT_IDS = ["jocolor", "soclean4u"];
 
-/** One visual per service, in the order the dictionary lists them, no repeats. */
+/** The homepage's own pairing for these same four subjects, no repeats. */
 const SERVICE_VISUALS: LandingServiceRow["visual"][] = [
   { anim: "it.services.website" },
-  { illustration: "business" },
-  { illustration: "app" },
-  { anim: "it.services.optimization" },
+  { anim: "it.services.security" },
+  { anim: "it.services.backup" },
+  { anim: "it.services.maintenance" },
 ];
 
 export default function ValaisPage() {
