@@ -1,6 +1,85 @@
 /**
- * Contact form controls: text inputs and the consent checkbox.
+ * Contact form controls: the field surfaces, the text inputs and the consent
+ * checkbox.
+ *
+ * The surfaces used to be a light/dark pair retyped at each of the eleven call
+ * sites. They are custom properties here instead, for the reason the portfolio
+ * keeps its own pairs in a module: they describe one feature's chrome, and
+ * promoting them to global tokens would grow the palette for one section.
+ *
+ * The light values are lifted verbatim from what the components carried. The
+ * dark ones are new: the fields were #685A9C, a pale lavender *lighter* than
+ * the #2B284C section behind them, so they read as washed-out blocks floating
+ * on the page. They now sit just below the section, with the border carrying
+ * the edge — the same anatomy the light theme already had, where white fields
+ * on a #F7F7FF section are also separated by their border alone.
  */
+
+.App {
+  --contact-surface: #ffffff;
+  --contact-surface-raised: #f4f4ff;
+  --contact-border: #c8cae4;
+  --contact-border-strong: #677dff33;
+  --contact-text: #222222;
+  --contact-text-muted: #8b8fa8;
+  /* The placeholder is the field's only label, so it stays at full strength
+     rather than taking the muted tone. */
+  --contact-placeholder: #222222;
+}
+
+.AppDark {
+  --contact-surface: #241f42;
+  /* The selected tab and the open dropdown, a step above the field surface. */
+  --contact-surface-raised: #362f63;
+  /* 3:1 against both the field and the section, so the field boundary is
+     visible without a fill doing the work (WCAG 1.4.11). */
+  --contact-border: #77748a;
+  --contact-border-strong: #8f8bff66;
+  --contact-text: #f1effa;
+  --contact-text-muted: #c4bede;
+  --contact-placeholder: #c4bede;
+}
+
+/* Field shell: background plus the resting border. A field in error keeps
+   .contact-field-surface and takes Tailwind's border-red-500 instead. */
+.contact-field {
+  background: var(--contact-surface);
+  border-color: var(--contact-border);
+}
+
+.contact-field-surface {
+  background: var(--contact-surface);
+}
+
+.contact-field-text {
+  color: var(--contact-text);
+}
+
+.contact-field-text::placeholder {
+  color: var(--contact-placeholder);
+  opacity: 1;
+}
+
+/* Dropdown menu panel: sits above the field it belongs to. */
+.contact-menu {
+  background: var(--contact-surface-raised);
+  border-color: var(--contact-border-strong);
+}
+
+/* Segmented control: question / quote. */
+.contact-segment-active {
+  background: var(--contact-surface-raised);
+  border: 1px solid var(--contact-border-strong);
+  color: var(--contact-text);
+}
+
+.contact-segment-idle {
+  color: var(--contact-text-muted);
+}
+
+.contact-segment-idle:hover {
+  color: var(--contact-text);
+}
 
 .custom-contact-input {
   font-family: "Poppins", sans-serif;
