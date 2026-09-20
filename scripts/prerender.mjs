@@ -191,7 +191,7 @@ function renderRoute(renderer, language, pathname) {
  * generate-localized-html.mjs from the same `route-seo-data.json`, and copying
  * Helmet's version on top of it would ship every tag twice.
  */
-function injectInto(filePath, { html, jsonLd, preloads }) {
+function injectInto(filePath, pathname, { html, jsonLd, preloads }) {
   const source = fs.readFileSync(filePath, "utf8");
 
   if (!source.includes(ROOT_PLACEHOLDER)) {
@@ -208,7 +208,49 @@ function injectInto(filePath, { html, jsonLd, preloads }) {
     output = output.replace("</head>", `  ${preloads}\n</head>`);
   }
 
+  assertContent(filePath, pathname, output);
+
   return fs.writeFileSync(filePath, output, "utf8");
+}
+
+/**
+ * Markup every prerendered page has to carry.
+ *
+ * A component that gates itself on the viewport — the contact section waits
+ * until the reader is near it — sees the JSDOM window installed above and can
+ * decide it is not needed, which silently drops its content from every served
+ * page. The build still succeeds; the loss only shows up as missing text in
+ * the HTML a crawler reads. These are the pieces whose absence would be a
+ * content regression rather than a rendering one, so the build fails instead.
+ */
+const isErrorPage = (pathname) => /404/.test(pathname);
+const isLegalPage = (pathname) =>
+  /privacy-policy|legal-notice|terms/.test(pathname);
+
+const REQUIRED_MARKUP = [
+  { what: "a heading", pattern: /<h1[\s>]/, on: () => true },
+  // The 404 is deliberately a bare page with a way back, and nothing else.
+  { what: "the site footer", pattern: /<footer/, on: (p) => !isErrorPage(p) },
+  {
+    what: "the contact section",
+    pattern: /id="contact"/,
+    on: (p) => !isErrorPage(p) && !isLegalPage(p),
+  },
+];
+
+function assertContent(filePath, pathname, html) {
+  const missing = REQUIRED_MARKUP.filter(
+    (rule) => rule.on(pathname) && !rule.pattern.test(html)
+  );
+
+  if (missing.length) {
+    throw new Error(
+      `${path.relative(rootDir, filePath)} was prerendered without ${missing
+        .map((rule) => rule.what)
+        .join(", ")}. Something rendered it away at build time — check anything ` +
+        `gated on window, matchMedia or IntersectionObserver.`
+    );
+  }
 }
 
 installDom();
@@ -227,7 +269,7 @@ for (const language of SUPPORTED_LANGUAGES) {
       );
     }
 
-    injectInto(filePath, {
+    injectInto(filePath, pathname, {
       ...(await renderRoute(renderer, language, pathname)),
       preloads: buildPreloads(manifest, renderer.PAGE_MODULE_BY_PATH[pathname]),
     });

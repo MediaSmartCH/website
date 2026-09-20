@@ -22,15 +22,21 @@ const Contact = lazy(() => import("@features/contact/components/contact-section"
  *   - the URL already carries #contact,
  *   - the hash changes to #contact while the page is open.
  *
- * At build time there is no viewport, so the prerenderer renders it straight
- * away and the served HTML still carries the address, the form and the rest
- * for anything reading the page without running it.
+ * At build time it renders straight away, so the served HTML still carries the
+ * address, the phone number, the form and the rest for anything reading the
+ * page without running it. That test is `import.meta.env.SSR` and not the
+ * absence of `window`: the prerenderer installs a JSDOM one before it imports
+ * the bundle, so a `typeof window` check answers as if there were a viewport
+ * and quietly drops the whole section out of every page.
  */
 export default function DeferredContact() {
   const sentinelRef = React.useRef<HTMLDivElement | null>(null);
 
   const [show, setShow] = React.useState(
-    () => typeof window === "undefined" || window.location.hash === "#contact"
+    () =>
+      import.meta.env.SSR ||
+      typeof window === "undefined" ||
+      window.location.hash === "#contact"
   );
 
   React.useEffect(() => {
