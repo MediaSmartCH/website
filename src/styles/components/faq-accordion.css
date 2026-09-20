@@ -1,189 +1,131 @@
-.ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
-  border-radius: 10px;
+/*
+ * FAQ accordion.
+ *
+ * Every value here was measured on the production page before the accordion
+ * moved off Ant Design's Collapse, so what a reader sees is unchanged.
+ *
+ * The stylesheet this replaces looked responsive — six media queries stepping
+ * the question from 24px down to 16px, and the answer's gutter with it. None
+ * of them ever applied. `.light .ant-collapse-header` and its dark twin carry
+ * more specificity than the bare `.ant-collapse-header` inside the queries,
+ * and they set both font-size and an `!important` padding, so the header
+ * rendered at 24px / 22px 40px at every width from 390px up. A second block
+ * was written against `:where(.css-dev-only-do-not-override-<hash>)`, a class
+ * Ant Design only emits in its development build, so it never reached a
+ * visitor either. Both are gone; the single set of values below is what the
+ * site has actually been showing.
+ */
+
+.faq-accordion {
+  min-width: 100%;
+  width: 100%;
 }
 
-.light .ant-collapse-header {
+.faq-accordion__heading {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.faq-accordion__trigger {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 22px 40px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   background: transparent;
-  color: #21233a !important;
+  text-align: start;
+  cursor: pointer;
+  font-family: "Helvetica", sans-serif;
   font-size: 24px;
-  font-family: "Helvetica";
   font-weight: bold;
   font-style: normal;
-  padding: 22px 40px 22px 40px !important;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  line-height: 1.5714;
 }
 
-.dark .ant-collapse-header {
-  background: transparent;
-  color: #f6f6f6 !important;
-  font-size: 24px;
-  font-family: "Helvetica";
-  font-weight: bold;
-  font-style: normal;
-  padding: 22px 40px 22px 40px !important;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.light .faq-accordion__trigger {
+  color: #21233a;
 }
 
-.ant-collapse-content {
-  padding-left: 40px !important;
-  padding-right: 40px !important;
+.dark .faq-accordion__trigger {
+  color: #f6f6f6;
 }
 
-.ant-collapse-item > .ant-collapse-header:focus {
-  border: 1px solid transparent;
-  background: transparent;
+.faq-accordion__question {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-.ant-collapse-item > .ant-collapse-header:active {
-  border: 1px solid transparent;
-  background: transparent;
+/*
+ * The questions are buttons now, so they take keyboard focus — which the old
+ * stylesheet went out of its way to hide on the Collapse headers. A visible
+ * focus ring is what makes the accordion usable without a mouse, and it only
+ * ever shows for keyboard navigation.
+ */
+.faq-accordion__trigger:focus {
+  outline: none;
 }
 
-.ant-collapse-header {
-  border: 1px solid transparent;
+.faq-accordion__trigger:focus-visible {
+  outline: 2px solid #5f75f5;
+  outline-offset: -2px;
 }
 
-.ant-collapse-item-active .ant-collapse-header {
-  border: 1px solid transparent;
-  background: transparent;
-}
-:where(.css-dev-only-do-not-override-amq5gd).ant-collapse-ghost
-  > .ant-collapse-item
-  > .ant-collapse-content
-  > .ant-collapse-content-box {
-  padding-block: 0px;
-}
-
-:where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-  .ant-collapse-content
-  > .ant-collapse-content-box {
-  padding: 10px 40px 18px 30px;
-}
-
-:where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-  > .ant-collapse-item
-  > .ant-collapse-header {
+/*
+ * 22px tall against a 32px glyph on wide screens, which is what Ant Design's
+ * expand-icon box measured: the icon overflows its box by 5px either side and
+ * therefore sits slightly above the centre of the question's line. Keeping the
+ * box at 22px keeps the icon where it has always been.
+ */
+.faq-accordion__icon {
+  flex: none;
   display: flex;
   align-items: center;
+  height: 22px;
+  margin-left: 12px;
 }
 
-@media screen and (max-width: 1535px) and (min-width: 1280px) {
-  .ant-collapse-header {
-    font-size: 20px;
-    padding: 22px 40px 22px 40px !important;
-    border-radius: 10px !important;
-  }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-    .ant-collapse-content
-    > .ant-collapse-content-box {
-    padding: 10px 25px 18px 25px;
-  }
+.faq-accordion__icon-svg {
+  width: 22px;
+  height: 22px;
 }
 
-@media screen and (max-width: 1279px) and (min-width: 1024px) {
-  .ant-collapse-header {
-    font-size: 18px;
-    padding: 22px 40px 22px 40px !important;
-    border-radius: 10px !important;
-  }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-    .ant-collapse-content
-    > .ant-collapse-content-box {
-    padding: 10px 25px 18px 25px;
-  }
-  .ant-collapse-content {
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-  }
-}
-
-@media screen and (max-width: 1023px) and (min-width: 900px) {
-  .ant-collapse-header {
-    font-size: 17px;
-    padding: 20px 35px 20px 35px !important;
-    border-radius: 10px !important;
-  }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-    .ant-collapse-content
-    > .ant-collapse-content-box {
-    padding: 10px 15px 18px 15px;
-  }
-  .ant-collapse-content {
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-  }
-}
-
-@media screen and (max-width: 899px) and (min-width: 769px) {
-  .ant-collapse-header {
-    font-size: 17px;
-    padding: 20px 35px 20px 35px !important;
-    border-radius: 10px !important;
-  }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-    .ant-collapse-content
-    > .ant-collapse-content-box {
-    padding: 10px 15px 18px 15px;
-  }
-  .ant-collapse-content {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-}
-
-@media screen and (max-width: 768px) and (min-width: 426px) {
-  .ant-collapse-header {
-    font-size: 16px;
-    padding: 20px 35px 20px 35px !important;
-    border-radius: 10px !important;
-  }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-    .ant-collapse-content
-    > .ant-collapse-content-box {
-    padding: 10px 15px 18px 15px;
-  }
-  .ant-collapse-content {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
+@media screen and (min-width: 1024px) {
+  .faq-accordion__icon-svg {
+    width: 32px;
+    height: 32px;
   }
 }
 
 /*
- * Phone widths. The accordion already sits inside the section's own 25px
- * gutter, so a 30px inset on the question put its first character 55px from
- * the edge of a 375px screen while the answer underneath started at 40px —
- * a double gutter, and the two not even aligned with each other. 18px on both
- * lines them up and gives the question back about 24px.
+ * Height animation without measuring anything in JavaScript: the row goes from
+ * 0fr to 1fr and the browser interpolates against the content's own height.
+ * Ant Design did this with a JS height transition, which reads layout on every
+ * frame of every open and close.
  */
-@media screen and (max-width: 425px) {
-  .ant-collapse-header {
-    font-size: 16px;
-    padding: 15px 18px 15px 18px !important;
-    border-radius: 10px !important;
-  }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-collapse
-    .ant-collapse-content
-    > .ant-collapse-content-box {
-    padding: 10px 18px 18px 18px;
-  }
-  .ant-collapse-content {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
+.faq-accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
 }
 
-/* Moved here from app.css when the global stylesheet was split. */
+.faq-accordion__panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
 
-.ant-collapse
-  > .ant-collapse-item
-  > .ant-collapse-header
-  .ant-collapse-header-text {
-  font-size: 24px !important;
-  font-family: "Helvetica", sans-serif !important;
+.faq-accordion__panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.faq-accordion__body {
+  padding: 12px 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-accordion__panel {
+    transition: none;
+  }
 }

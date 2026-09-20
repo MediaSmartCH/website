@@ -27,6 +27,8 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { useModalScrollLock } from "@features/it-services/hooks/use-modal-scroll-lock";
 import type { LightboxImage } from "@features/it-services/lib/portfolio-helpers";
+import ResponsiveImage from "@shared/components/responsive-image";
+import { LIGHTBOX_SIZES } from "@shared/config/image-sizes";
 
 export interface ImageLightboxProps {
   images: LightboxImage[];
@@ -171,9 +173,10 @@ export default function ImageLightbox({
         </>
       )}
 
-      <img
+      <ResponsiveImage
         src={image.src}
         alt={image.alt}
+        sizes={LIGHTBOX_SIZES}
         className="max-h-full max-w-full rounded-2xl object-contain shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]"
       />
 

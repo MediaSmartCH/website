@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowLeft, Clock, Loader2 } from 'lucide-react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import {
   BookingSlot,
@@ -17,7 +16,7 @@ import { HORIZON_DAYS, dateKeyInBookingTz, formatHumanDate } from '@features/boo
 import ModalShell from '@shared/components/modal-shell';
 import { useAppSelector } from '@shared/hooks/store-hooks';
 import { useTranslations } from '@shared/i18n/translator';
-import { getRecaptchaToken } from '@shared/lib/recaptcha';
+import { getRecaptchaToken, warmRecaptcha } from '@shared/lib/recaptcha';
 import { logger } from '@shared/lib/logger';
 
 interface BookingModalProps {
@@ -34,9 +33,14 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
   const language = useAppSelector((state) => state.language.currentLanguage);
   const theme = useAppSelector((state) => state.theme.currentTheme);
   const t = useTranslations(language);
-  const { executeRecaptcha } = useGoogleReCaptcha();
 
   useBookingScrollLock(open);
+
+  // Opening the flow is the intent signal: three steps stand between here and
+  // the submit button, so the script is ready long before a token is needed.
+  React.useEffect(() => {
+    if (open) warmRecaptcha();
+  }, [open]);
 
   // Availability state ------------------------------------------------------
   const [slots, setSlots] = React.useState<BookingSlot[]>([]);
@@ -158,7 +162,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ open, onClose }) => {
     try {
       // reCAPTCHA v3 token — the create endpoint requires it. null means the
       // widget failed/was not ready; "" is the intentional local bypass.
-      const recaptchaToken = await getRecaptchaToken(executeRecaptcha, 'booking_create');
+      const recaptchaToken = await getRecaptchaToken('booking_create');
       if (recaptchaToken === null) {
         setSubmitError(t.text('booking.error'));
         return;

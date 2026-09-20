@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { type DotLottie, DotLottieReact, setWasmUrl } from "@lottiefiles/dotlottie-react";
+import {
+  DotLottieReact,
+  DotLottieWorkerReact,
+  setWasmUrl,
+} from "@lottiefiles/dotlottie-react";
 import dotLottieWasmUrl from "virtual:dotlottie-wasm-url";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
@@ -17,6 +21,7 @@ import {
   selectSrc,
 } from "@shared/components/dot-anim-shared";
 import {
+  type LottiePlayer,
   pruneDetached,
   registerPlayer,
   setPlaybackEnabled,
@@ -24,7 +29,69 @@ import {
 
 // Point the WASM runtime to the locally-bundled file so DotLottie never
 // fetches from an external CDN, which the production CSP would block.
-setWasmUrl(dotLottieWasmUrl);
+//
+// Absolute, not the root-relative path the bundler emits. The renderer runs in
+// a worker created from a blob: URL, and a blob has no path for a relative URL
+// to resolve against — `fetch("/assets/…")` there throws "Failed to parse URL".
+// DotLottie then falls back to unpkg, which the CSP refuses, and every
+// animation fails to initialise. Resolving against the document first gives
+// the worker a URL it can use.
+setWasmUrl(
+  typeof document === "undefined"
+    ? dotLottieWasmUrl
+    : new URL(dotLottieWasmUrl, document.baseURI).href
+);
+
+/**
+ * One worker for every animation on the page.
+ *
+ * The renderer used to run on the main thread, and it was by a wide margin the
+ * most expensive thing on the site: measured on a throttled mobile CPU, the
+ * three animations visible at the top of the homepage cost about 3.1 seconds
+ * of scripting for every 10 seconds the page stayed open — a third of the main
+ * thread, continuously, for decoration. Nothing else on the page came close,
+ * and because the thread never went quiet, Lighthouse's interactive estimate
+ * kept sliding out and total blocking time climbed with it.
+ *
+ * The work itself is not wasted — the animations are part of what the site is
+ * — it simply does not belong on the thread that has to answer the reader.
+ * DotLottie can drive an OffscreenCanvas from a worker, which renders exactly
+ * the same frames somewhere else.
+ *
+ * A single shared id keeps that to one worker rather than one per animation:
+ * three workers competing for the same cores would cost more than they save on
+ * the two-core machines this matters on.
+ */
+const WORKER_ID = "mediasmart-lottie";
+
+/**
+ * Whether the canvas can be handed to a worker at all.
+ *
+ * `transferControlToOffscreen` arrived in Safari 16.4, so a visitor on an
+ * older iPhone cannot have the worker renderer. They get the main-thread one,
+ * exactly as before — the same animation at the same cost, rather than a still
+ * frame and a console error.
+ */
+const canRenderOffThread =
+  typeof HTMLCanvasElement !== "undefined" &&
+  typeof HTMLCanvasElement.prototype.transferControlToOffscreen === "function";
+
+/**
+ * Absolute form of a bundled asset URL.
+ *
+ * The worker fetches the animation itself, and it has no document to resolve a
+ * root-relative path against — see the note on setWasmUrl above. Everything
+ * handed across the worker boundary has to be absolute.
+ */
+function toAbsoluteUrl(url: string | undefined): string | undefined {
+  if (!url || typeof document === "undefined") return url;
+
+  try {
+    return new URL(url, document.baseURI).href;
+  } catch {
+    return url;
+  }
+}
 
 function DotAnimPlayer(props: DotAnimProps) {
   const theme = useAppSelector((state) => state.theme.currentTheme);
@@ -40,7 +107,7 @@ function DotAnimPlayer(props: DotAnimProps) {
   // player keeps rendering the current file instead of flashing a fallback.
   const [stableTheme, setStableTheme] = useState(theme);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [dotLottieInstance, setDotLottieInstance] = useState<DotLottie | null>(null);
+  const [dotLottieInstance, setDotLottieInstance] = useState<LottiePlayer | null>(null);
   // The poster stays up until the canvas has actually drawn something. "load"
   // is too early: it only means the file was parsed, and the canvas is still
   // blank at that point.
@@ -143,7 +210,7 @@ function DotAnimPlayer(props: DotAnimProps) {
   // Register on creation, release on teardown. The registry puts each instance
   // into the state the preference calls for straight away, so one created
   // while animations are off never gets a chance to autoplay.
-  const handleInstance = useCallback((instance: DotLottie | null) => {
+  const handleInstance = useCallback((instance: LottiePlayer | null) => {
     // A replaced instance is deliberately left registered. The library hands a
     // second one over without first reporting a teardown for the first — which
     // is what StrictMode's double attach produces — and that first one is
@@ -168,11 +235,13 @@ function DotAnimPlayer(props: DotAnimProps) {
     registerPlayer(dotLottieInstance, autoplayProp);
   }, [autoplayProp, dotLottieInstance]);
 
-  const src = animKey
-    ? readLottieSrc(animKey, stableTheme)
-    : staticPair
-      ? selectSrc(stableTheme, staticPair)
-      : undefined;
+  const src = toAbsoluteUrl(
+    animKey
+      ? readLottieSrc(animKey, stableTheme)
+      : staticPair
+        ? selectSrc(stableTheme, staticPair)
+        : undefined
+  );
 
   // Only keyed animations have a poster; raw-src callers pass their own markup.
   const poster = animKey ? getLottiePoster(animKey, stableTheme) : undefined;
@@ -213,6 +282,21 @@ function DotAnimPlayer(props: DotAnimProps) {
     event.stopPropagation();
   };
 
+  // Identical either way; only where the frames are drawn differs.
+  const playerProps = {
+    src,
+    autoplay,
+    loop,
+    useFrameInterpolation: false,
+    renderConfig,
+    layout: {
+      fit: presentation?.fit ?? "contain",
+      align: presentation?.align ?? [0.5, 0.5],
+    },
+    style: playerStyle,
+    dotLottieRefCallback: handleInstance,
+  } as const;
+
   return (
     <div
       className={`relative ${className || ""}`}
@@ -231,21 +315,17 @@ function DotAnimPlayer(props: DotAnimProps) {
     >
       {/* dotLottie-react is the maintained React integration from LottieFiles.
           We keep interpolation disabled and cap DPR a bit on mobile to reduce
-          raster cost without noticeably degrading the animation. */}
-      <DotLottieReact
-        key={`${src}-${stableTheme}`}
-        src={src}
-        autoplay={autoplay}
-        loop={loop}
-        useFrameInterpolation={false}
-        renderConfig={renderConfig}
-        layout={{
-          fit: presentation?.fit ?? "contain",
-          align: presentation?.align ?? [0.5, 0.5],
-        }}
-        style={playerStyle}
-        dotLottieRefCallback={handleInstance}
-      />
+          raster cost without noticeably degrading the animation. The Worker
+          variant draws the same frames from a worker thread. */}
+      {canRenderOffThread ? (
+        <DotLottieWorkerReact
+          key={`${src}-${stableTheme}`}
+          workerId={WORKER_ID}
+          {...playerProps}
+        />
+      ) : (
+        <DotLottieReact key={`${src}-${stableTheme}`} {...playerProps} />
+      )}
 
       {/* Sits above the canvas, not below it: until the first frame is drawn the
           canvas is fully transparent, so anything behind it would show through. */}

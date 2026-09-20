@@ -12,7 +12,7 @@
 
 import React from "react";
 
-import Contact from "@features/contact/components/contact-section";
+import Contact from "@features/contact/components/deferred-contact";
 import Booking from "@features/booking/components/booking-cta";
 
 import {
