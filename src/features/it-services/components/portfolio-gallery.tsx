@@ -9,6 +9,8 @@ import { formatPreviewCount, formatProjectsCount, formatRemainingProjects, forma
 import { useTranslations } from "@shared/i18n/translator";
 import ImageLightbox from "@shared/components/image-lightbox";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
+import ResponsiveImage from "@shared/components/responsive-image";
+import { WORK_CARD_SIZES } from "@shared/config/image-sizes";
 
 const PortfolioGallery = () => {
   const dialogTitleId = useId();
@@ -127,9 +129,10 @@ const PortfolioGallery = () => {
             const previewCard = (
               <>
                 <div className={`aspect-[16/11] w-full overflow-hidden ${classes.imageShell}`}>
-                  <img
+                  <ResponsiveImage
                     src={previewImages[0]}
                     alt={title}
+                    sizes={WORK_CARD_SIZES}
                     className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${getPreviewDimClass(item, classes.isLight)}`}
                     loading="lazy"
                   />

@@ -32,6 +32,8 @@ import WaveBackdrop from "@shared/components/wave-backdrop";
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import ArrowIcon from "@shared/components/arrow-icon";
+import ResponsiveImage from "@shared/components/responsive-image";
+import { PRODUCT_PREVIEW_SIZES, TOOL_CARD_SIZES } from "@shared/config/image-sizes";
 
 /** Shape of one entry in the `it.saasProducts` translation array. */
 type SaasProductCopy = {
@@ -194,9 +196,10 @@ export default function SaasProducts() {
             >
               {image && (
                 <div className={`aspect-[16/10] w-full overflow-hidden border-b ${classes.imageShell}`}>
-                  <img
+                  <ResponsiveImage
                     src={image}
                     alt={product.name}
+                    sizes={PRODUCT_PREVIEW_SIZES}
                     width="1440"
                     height="900"
                     className={`h-full w-full object-cover object-top ${getPreviewDimClass(source, classes.isLight)}`}
@@ -349,9 +352,10 @@ export default function SaasProducts() {
                 <>
                   {toolImage && (
                     <div className={`aspect-[16/10] w-full overflow-hidden border-b ${classes.imageShell}`}>
-                      <img
+                      <ResponsiveImage
                         src={toolImage}
                         alt={tool.name}
+                        sizes={TOOL_CARD_SIZES}
                         width="1440"
                         height="900"
                         // Centre-cropped, like the portfolio tiles: anchoring to

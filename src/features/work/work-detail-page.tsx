@@ -42,6 +42,8 @@ import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 import ArrowIcon from "@shared/components/arrow-icon";
 import ImageLightbox from "@shared/components/image-lightbox";
 import Error404Page from "@features/error/error-404-page";
+import ResponsiveImage from "@shared/components/responsive-image";
+import { WORK_DETAIL_SIZES } from "@shared/config/image-sizes";
 
 export default function WorkDetailPage() {
   const { slug } = useParams<{ slug?: string }>();
@@ -141,9 +143,10 @@ export default function WorkDetailPage() {
                   aria-label={`${title} — ${t.text("work.previewAlt")} 1`}
                   className="group block w-full overflow-hidden rounded-[14px] xl:rounded-[18px] shadow-[0_18px_48px_rgba(20,23,45,0.16)]"
                 >
-                  <img
+                  <ResponsiveImage
                     src={firstPreview}
                     alt={`${title} — ${t.text("work.previewAlt")}`}
+                    sizes={WORK_DETAIL_SIZES}
                     width="1440"
                     height="900"
                     // The one image above the fold on this page, so it loads
@@ -176,9 +179,10 @@ export default function WorkDetailPage() {
                 data-aos-delay={(index % 2) * 90}
                 data-aos-easing="ease-in-sine"
               >
-                <img
+                <ResponsiveImage
                   src={preview}
                   alt={`${title} — ${t.text("work.previewAlt")} ${index + 2}`}
+                  sizes={WORK_DETAIL_SIZES}
                   width="1440"
                   height="900"
                   loading="lazy"

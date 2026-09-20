@@ -23,6 +23,8 @@ import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 import { useTranslations } from "@shared/i18n/translator";
 import ArrowIcon from "@shared/components/arrow-icon";
+import ResponsiveImage from "@shared/components/responsive-image";
+import { WORK_CARD_SIZES } from "@shared/config/image-sizes";
 
 export default function WorkCard({
   item,
@@ -50,12 +52,13 @@ export default function WorkCard({
       {preview && (
         // The frame keeps the scale-on-hover inside the card's rounded corners.
         <div className="overflow-hidden rounded-[12px] mb-[16px]">
-        <img
+        <ResponsiveImage
           src={preview}
           // The card's own title says what the project is, so a preview that
           // repeated it would be read out twice. What the image adds is what it
           // looks like, which is what this describes.
           alt={`${t.text("work.previewAlt")} — ${title}`}
+          sizes={WORK_CARD_SIZES}
           width="1440"
           height="900"
           loading="lazy"

@@ -241,3 +241,8 @@ SECURITY-AUDIT.md
 .claude/
 
 .prerender/
+
+# Responsive copies of the project screenshots, rendered by
+# scripts/generate-image-variants.mjs on every build.
+public/screenshots/responsive/
+public/portfolio/responsive/
