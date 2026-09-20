@@ -7,8 +7,7 @@ import { COUNTRY_FLAGS } from "@features/contact/lib/country-flags";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { getRecaptchaToken } from "@shared/lib/recaptcha";
+import { getRecaptchaToken, warmRecaptcha } from "@shared/lib/recaptcha";
 import {
   getSubmissionLanguage,
   submitContactForm,
@@ -31,15 +30,13 @@ import arrow from "@assets/icons/rightArrow.svg";
 
 import { Link } from "react-router-dom";
 import { useLangLink } from "@shared/hooks/use-localized-path";
-import ScopedRecaptchaProvider from "@shared/components/scoped-recaptcha-provider";
 import ProjectTypeDropdown from "@features/contact/components/project-type-dropdown";
 import ContactInfoPanel from "@features/contact/components/contact-info-panel";
 import ContactSuccess from "@features/contact/components/contact-success";
 import { logger } from "@shared/lib/logger";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 
-const ContactInner = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
+const Contact = () => {
   const { L } = useLangLink();
 
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
@@ -193,6 +190,13 @@ const ContactInner = () => {
             <form
               noValidate
               className="w-full"
+              // reCAPTCHA is fetched the first time someone touches the form
+              // rather than when the page renders it. Both events fire well
+              // before anyone reaches the submit button, so the token is
+              // ready when it is asked for; `capture` catches them on the
+              // fields rather than on the form element itself.
+              onFocusCapture={warmRecaptcha}
+              onPointerDownCapture={warmRecaptcha}
               onSubmit={async (e) => {
                 e.preventDefault();
                 if (loading) return;
@@ -247,7 +251,7 @@ const ContactInner = () => {
                 setLoading(true);
 
                 try {
-                  const recaptchaToken = await getRecaptchaToken(executeRecaptcha, "contact_form");
+                  const recaptchaToken = await getRecaptchaToken("contact_form");
 
                   if (recaptchaToken === null) {
                     setError(t.text("home.contactSecurityError"));
@@ -516,11 +520,5 @@ const ContactInner = () => {
     </div>
   );
 };
-
-const Contact = () => (
-  <ScopedRecaptchaProvider>
-    <ContactInner />
-  </ScopedRecaptchaProvider>
-);
 
 export default Contact;

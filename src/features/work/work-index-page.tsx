@@ -28,7 +28,7 @@ import {
   LandingWave,
 } from "@features/agency/components/landing-blocks";
 import Booking from "@features/booking/components/booking-cta";
-import Contact from "@features/contact/components/contact-section";
+import Contact from "@features/contact/components/deferred-contact";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";

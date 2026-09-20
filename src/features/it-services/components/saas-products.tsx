@@ -447,13 +447,18 @@ export default function SaasProducts() {
                           href={sourceUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          // 13px of text is below the 24px minimum for a
-                          // touch target, and Lighthouse is right to say so.
-                          // The ::after overlay raises the hit area to 25px
-                          // without moving anything — the same trick the
-                          // header controls use, and the reason this link can
-                          // stay as discreet as it is meant to be.
-                          className={`${classes.mutedText} relative inline-flex items-center gap-[6px] font-poppins text-[12px] leading-tight underline-offset-2 after:absolute after:inset-x-0 after:-inset-y-[6px] after:content-[''] hover:underline`}
+                          // 12px of text on one line is a 15px-tall target,
+                          // below the 24px minimum, and Lighthouse is right to
+                          // say so. An ::after overlay does widen the hit area
+                          // for a finger, which is what this used to do, but a
+                          // checker measures the element's own box and sees
+                          // 15px either way — and so does anything else
+                          // reasoning about the page. The padding raises the
+                          // box itself to 25px and the matching negative
+                          // margin gives the space straight back, so nothing
+                          // around it moves and the link stays as discreet as
+                          // it is meant to be.
+                          className={`${classes.mutedText} relative inline-flex items-center gap-[6px] py-[5px] -my-[5px] font-poppins text-[12px] leading-tight underline-offset-2 hover:underline`}
                         >
                           <GithubGlyph />
                           <span>

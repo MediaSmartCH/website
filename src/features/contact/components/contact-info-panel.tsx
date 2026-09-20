@@ -73,7 +73,7 @@ export default function ContactInfoPanel() {
           rel="noopener noreferrer"
         >
           <span>
-            <img src={insta} alt="insta" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
+            <img src={insta} alt="" aria-hidden="true" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
           </span>
           <span>Instagram</span>
         </a>
@@ -88,7 +88,7 @@ export default function ContactInfoPanel() {
           rel="noopener noreferrer"
         >
           <span>
-            <img src={linkedin} alt="linkedin" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
+            <img src={linkedin} alt="" aria-hidden="true" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
           </span>
           <span>LinkedIn</span>
         </a>
@@ -103,7 +103,7 @@ export default function ContactInfoPanel() {
           rel="noopener noreferrer"
         >
           <span>
-            <img src={telegram} alt="telegram" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
+            <img src={telegram} alt="" aria-hidden="true" className="w-[23px] h-[23px] lg:w-[27px] lg:h-[27px]"  loading="lazy" decoding="async" />
           </span>
           <span>Telegram</span>
         </a>

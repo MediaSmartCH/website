@@ -33,7 +33,7 @@ import {
   LandingSection,
   LandingWave,
 } from "@features/agency/components/landing-blocks";
-import Contact from "@features/contact/components/contact-section";
+import Contact from "@features/contact/components/deferred-contact";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useLangLink } from "@shared/hooks/use-localized-path";
