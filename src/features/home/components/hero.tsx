@@ -1,11 +1,11 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 
-const DotAnim = lazy(() => import("@shared/components/dot-anim"));
+import DotAnim from "@shared/components/dot-anim";
 
 type NetworkInformationLike = {
   effectiveType?: string;
@@ -183,20 +183,12 @@ const Hero = () => {
                 </div>
               </div>
             ) : (
-              <Suspense
-                fallback={
-                  <div className="h-[220px] flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
-                  </div>
-                }
-              >
-                <DotAnim
-                  anim="home.hero"
-                  style={{ width: "100%", height: "auto" }}
-                  crisp
-                  protect
-                />
-              </Suspense>
+              <DotAnim
+                anim="home.hero"
+                style={{ width: "100%", height: "auto" }}
+                crisp
+                protect
+              />
             )}
           </div>
         </div>
