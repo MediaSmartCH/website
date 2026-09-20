@@ -184,6 +184,58 @@ function heroPosterPreloadPlugin(): Plugin {
   };
 }
 
+/**
+ * Puts the stylesheet ahead of the entry's module scripts.
+ *
+ * The bundler emits sixteen `<script type="module">` tags and only then the
+ * `<link rel="stylesheet">`. The preload scanner reads the head in order, so it
+ * discovers 73KB of JavaScript before it discovers the one file the first paint
+ * actually waits on. Measured on a throttled mobile connection: the 22KB
+ * stylesheet took 1167ms to arrive — starved by fifteen scripts sharing the
+ * same 200KB/s — and the first paint landed 95ms after it.
+ *
+ * Moving the link above the scripts is enough; the browser already gives a
+ * render-blocking stylesheet the highest priority, it simply has to be told
+ * about it first. Nothing else changes: same files, same count, same execution
+ * order for the modules themselves.
+ */
+function stylesheetFirstPlugin(): Plugin {
+  const MODULE_SCRIPT = /<script type="module"[^>]*><\/script>\s*/g;
+  const STYLESHEET = /<link rel="stylesheet"[^>]*>\s*/g;
+
+  return {
+    name: "stylesheet-before-scripts",
+    enforce: "post",
+    transformIndexHtml: {
+      order: "post",
+      handler(html) {
+        const links = html.match(STYLESHEET);
+        if (!links) return html;
+
+        const firstScript = html.search(MODULE_SCRIPT);
+        MODULE_SCRIPT.lastIndex = 0;
+        if (firstScript === -1) return html;
+
+        // Only worth doing when a stylesheet actually sits after a script.
+        const lastLinkAt = html.lastIndexOf(links[links.length - 1]);
+        if (lastLinkAt < firstScript) return html;
+
+        const withoutLinks = html.replace(STYLESHEET, "");
+        const insertAt = withoutLinks.search(MODULE_SCRIPT);
+        MODULE_SCRIPT.lastIndex = 0;
+        if (insertAt === -1) return html;
+
+        return (
+          withoutLinks.slice(0, insertAt) +
+          links.map((link) => link.trim()).join("\n  ") +
+          "\n  " +
+          withoutLinks.slice(insertAt)
+        );
+      },
+    },
+  };
+}
+
 const generatedPagesDir = path.resolve(__dirname, "generated-pages");
 const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
   ? (() => {
@@ -214,6 +266,7 @@ export default defineConfig(async () => {
     dotLottieWasmPlugin(),
     react(),
     heroPosterPreloadPlugin(),
+    stylesheetFirstPlugin(),
   ];
 
   // Load the bundle analyzer lazily so normal builds never try to require

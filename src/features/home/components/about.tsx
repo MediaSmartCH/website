@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 // BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
 // Briefcase, CheckCircle2, MapPin et User n'illustraient que les trois vignettes
 // de statistiques et le panneau des bénéfices, tous deux commentés plus bas.
@@ -11,9 +11,7 @@ import { useTranslations } from "@shared/i18n/translator";
 
 import raphaelPhoto from "@assets/images/raphael-rouiller.webp";
 
-// Hoisted to module scope: declaring lazy() inside the component body creates a
-// new component type on every render, which remounts the Lottie player.
-const DotAnim = lazy(() => import("@shared/components/dot-anim"));
+import DotAnim from "@shared/components/dot-anim";
 
 const About = () => {
   const languageReducer = useAppSelector(
@@ -152,20 +150,12 @@ const About = () => {
               data-aos="fade-left"
               data-aos-duration="1200"
             >
-              <Suspense
-                fallback={
-                  <div className="h-[220px] flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
-                  </div>
-                }
-              >
-                <DotAnim
-                  anim="home.about"
-                  style={{ width: "100%", height: "auto" }}
-                  crisp
-                  protect
-                />
-              </Suspense>
+              <DotAnim
+                anim="home.about"
+                style={{ width: "100%", height: "auto" }}
+                crisp
+                protect
+              />
             </div>
           </div>
 

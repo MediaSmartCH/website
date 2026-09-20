@@ -34,16 +34,25 @@ export const CARD_SIZES = "(max-width: 767px) 72vw, (max-width: 1279px) 34vw, 23
  * way in the scanner and in layout, so exactly one file is ever fetched. The
  * buckets follow the measurements in this file:
  *
- *   phones            need  950–1030 device px -> 1000
+ *   phone up to 1.9x  need   634–724 device px ->  700
+ *   phone 2x and over need  930–1030 device px -> 1000
  *   wide, 1x          need       863 device px -> 1000
  *   wide, high-density need      2400 device px -> 1400 (the widest rendered)
+ *
+ * The phone band is split by density because the two halves genuinely differ:
+ * the hero renders 362 CSS px wide at 412, so a 1.75x screen asks for 634
+ * device px and a 3x screen for 930. Serving every phone the 1000 to satisfy
+ * the 3x ones sent 26KB where 18KB would have been pixel-for-pixel identical —
+ * on the one resource the largest paint waits for. A 2x screen still gets the
+ * 1000: 724 is above what the 700 can cover.
  *
  * The conditions must stay mutually exclusive, or a preload fires for a file
  * the image will not use. Everything else on the page keeps plain srcset, where
  * having no preload means the browser picks once, on its own, and is right.
  */
 export const HERO_POSTER_BUCKETS = [
-  { media: "(max-width: 767px)", width: 1000 },
+  { media: "(max-width: 767px) and (max-resolution: 1.9dppx)", width: 700 },
+  { media: "(max-width: 767px) and (min-resolution: 1.9001dppx)", width: 1000 },
   { media: "(min-width: 768px) and (max-resolution: 1.5dppx)", width: 1000 },
   { media: "(min-width: 768px) and (min-resolution: 1.5001dppx)", width: 1400 },
 ] as const;
