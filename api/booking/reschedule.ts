@@ -1,5 +1,9 @@
 import type { ApiRequest, ApiResponse } from '../_shared/http-types.js';
 import {
+  BOOKING_MAIL_POLICY,
+  reserveOutboundMail,
+} from '../_shared/outbound-mail-guard.js';
+import {
   applyRateLimitHeaders,
   enforceRateLimit,
   getRateLimitIdentifier,
@@ -180,21 +184,43 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   const manageUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(rescheduleToken)}`;
   const cancelUrl = `${env.siteOrigin}/${langPrefix}/booking/manage?id=${encodeURIComponent(id)}&token=${encodeURIComponent(cancelToken)}&action=cancel`;
 
+  // The attendee copy is budgeted here for the same reason `create` budgets
+  // its own: the recipient was chosen by whoever created the booking, and this
+  // endpoint hands a fresh manage token back in its own response. Without a
+  // ceiling, one reCAPTCHA-gated create yields an unbounded mail loop aimed at
+  // that address — reschedule, read the new token from the reply, reschedule
+  // again. The owner's notification goes to a fixed address and stays
+  // unbudgeted, and the move itself is never refused over a limit that exists
+  // to protect someone else's inbox.
+  const mailBudget = await reserveOutboundMail(BOOKING_MAIL_POLICY, row.attendee_email);
+
+  if (!mailBudget.allowed) {
+    console.warn(
+      `booking/reschedule attendee copy suppressed by the ${mailBudget.refusedBy} mail budget`,
+    );
+  }
+
   try {
-    await sendBookingConfirmation({
-      bookingId: id,
-      attendeeName: row.attendee_name,
-      attendeeEmail: row.attendee_email,
-      message: row.attendee_message,
-      start: newStart,
-      end: newEnd,
-      language: row.attendee_language,
-      meetLink: null,
-      manageUrl,
-      cancelUrl,
-    });
+    await sendBookingConfirmation(
+      {
+        bookingId: id,
+        attendeeName: row.attendee_name,
+        attendeeEmail: row.attendee_email,
+        message: row.attendee_message,
+        start: newStart,
+        end: newEnd,
+        language: row.attendee_language,
+        meetLink: null,
+        manageUrl,
+        cancelUrl,
+      },
+      { sendAttendeeCopy: mailBudget.allowed },
+    );
   } catch (err) {
     console.error('booking/reschedule email failed', err);
+    // Nothing left: hand the allowance back rather than charging the visitor
+    // for a mail they never received.
+    await mailBudget.release();
   }
 
   return res.status(200).json({
