@@ -208,6 +208,16 @@ export function isSlotValid(startUtc: Date, busy: BusyInterval[], nowMs = Date.n
   if (startMs < nowMs + MIN_NOTICE_MS) return false;
   if (startMs > nowMs + MAX_HORIZON_DAYS * 24 * 60 * 60 * 1000) return false;
 
+  // Must land exactly on a grid instant, seconds included. Checking only the
+  // minute left a whole minute of play: `…T09:00:30Z` and `…T09:00:00Z` are
+  // both "minute 0" but are two different `start_at` values once stored, and
+  // the partial unique index that arbitrates concurrent bookings is on
+  // `start_at`. Two requests a second apart could therefore both claim the
+  // same half-hour without the index ever seeing a conflict.
+  if (startUtc.getUTCSeconds() !== 0 || startUtc.getUTCMilliseconds() !== 0) {
+    return false;
+  }
+
   const parts = partsInBookingTz(startUtc);
   // Must align to the slot grid.
   if (parts.minute % SLOT_GRANULARITY_MIN !== 0) return false;

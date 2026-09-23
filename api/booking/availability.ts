@@ -9,9 +9,32 @@ import {
   guardRequest,
 } from '../_shared/request-guard.js';
 
+import { MAX_HORIZON_DAYS } from './_lib/config.js';
 import { getBusyIntervals } from './_lib/google-calendar.js';
 import { buildAvailableSlots } from './_lib/slots.js';
 import { parseAvailabilityRange } from './_lib/validators.js';
+
+/** The widest range that can ever yield a slot, so the widest worth asking about. */
+const MAX_RANGE_MS = MAX_HORIZON_DAYS * 24 * 60 * 60 * 1000;
+
+/**
+ * Caps how wide a range reaches Google.
+ *
+ * `buildAvailableSlots` already discards anything past the horizon, but the
+ * freeBusy call was made with the caller's raw bounds — so
+ * `?from=1000-01-01&to=9999-12-31` asked Google about a millennium to produce
+ * at most 28 days of slots. Google refuses a range that wide, which turned a
+ * well-formed request into a 502 from us; narrower-but-still-huge ranges just
+ * bought the caller a large upstream query for free.
+ *
+ * The cap is on the span rather than on "now + horizon" so the decision does
+ * not depend on the clock: a caller asking about the bookable window sees no
+ * change, and nobody else gets to choose how much work the upstream call is.
+ */
+function capRangeWidth(from: Date, to: Date) {
+  const end = Math.min(to.getTime(), from.getTime() + MAX_RANGE_MS);
+  return { from, to: new Date(end) };
+}
 
 const AVAILABILITY_RATE_LIMIT = {
   limit: 60,
@@ -51,11 +74,13 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return res.status(400).json({ success: false, error: parsed.error });
   }
 
+  const range = capRangeWidth(parsed.value.from, parsed.value.to);
+
   try {
-    const busy = await getBusyIntervals(parsed.value.from, parsed.value.to);
+    const busy = await getBusyIntervals(range.from, range.to);
     const slots = buildAvailableSlots({
-      from: parsed.value.from,
-      to: parsed.value.to,
+      from: range.from,
+      to: range.to,
       busy,
     });
 
