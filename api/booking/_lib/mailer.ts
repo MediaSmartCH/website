@@ -167,7 +167,24 @@ function buildOwnerHtml(input: SendInputs): string {
   </body></html>`;
 }
 
-export async function sendBookingConfirmation(input: SendInputs): Promise<void> {
+export interface SendConfirmationOptions {
+  /**
+   * Send the copy addressed to the attendee.
+   *
+   * The two mails have different risk profiles. The owner's goes to a fixed
+   * address we own and must always be attempted — it is the notification that
+   * something changed. The attendee copy goes wherever the booking says, which
+   * is what makes it worth budgeting; `false` drops it while the booking change
+   * itself still stands. Defaults to true.
+   */
+  sendAttendeeCopy?: boolean;
+}
+
+export async function sendBookingConfirmation(
+  input: SendInputs,
+  options: SendConfirmationOptions = {},
+): Promise<void> {
+  const sendAttendeeCopy = options.sendAttendeeCopy !== false;
   const when = formatHuman(input.start, input.language);
   const { attendee, owner } = subjects[input.language](when);
   const ics = buildIcs(input);
@@ -179,14 +196,16 @@ export async function sendBookingConfirmation(input: SendInputs): Promise<void> 
 
   const resend = getResend();
   await Promise.all([
-    resend.emails.send({
-      from: MAIL_FROM,
-      to: [input.attendeeEmail],
-      subject: attendee,
-      html: buildAttendeeHtml(input),
-      attachments: [icsAttachment],
-      replyTo: NOTIFICATION_EMAIL,
-    }),
+    sendAttendeeCopy
+      ? resend.emails.send({
+          from: MAIL_FROM,
+          to: [input.attendeeEmail],
+          subject: attendee,
+          html: buildAttendeeHtml(input),
+          attachments: [icsAttachment],
+          replyTo: NOTIFICATION_EMAIL,
+        })
+      : Promise.resolve(),
     resend.emails.send({
       from: MAIL_FROM,
       to: [NOTIFICATION_EMAIL],

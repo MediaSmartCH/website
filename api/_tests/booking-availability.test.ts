@@ -77,6 +77,28 @@ describe('booking/availability — query handling', () => {
     expect((range[0] as Date).toISOString()).toBe('2027-02-15T00:00:00.000Z');
   });
 
+  // Regression: the caller's raw bounds used to reach Google untouched, so a
+  // range far wider than the bookable horizon became an upstream query nobody
+  // could ever use — and one wide enough for Google to refuse came back as a
+  // 502 from us.
+  it('caps how wide a range reaches the calendar', async () => {
+    const res = createResponse();
+    await handler(getAvailability({ from: '1000-01-01', to: '9999-12-31' }), res.res);
+
+    expect(res.statusCode()).toBe(200);
+    const [from, to] = getBusyIntervals.mock.calls[0] as [Date, Date];
+    const spanDays = (to.getTime() - from.getTime()) / (24 * 60 * 60 * 1000);
+    expect(spanDays).toBeLessThanOrEqual(28);
+  });
+
+  it('leaves a range inside the horizon untouched', async () => {
+    await handler(getAvailability({ from: '2027-02-15', to: '2027-02-16' }), createResponse().res);
+
+    const [from, to] = getBusyIntervals.mock.calls[0] as [Date, Date];
+    expect(from.toISOString()).toBe('2027-02-15T00:00:00.000Z');
+    expect(to.toISOString()).toBe('2027-02-16T23:59:59.999Z');
+  });
+
   it('returns the structured error when the range is missing', async () => {
     const res = createResponse();
     await handler(

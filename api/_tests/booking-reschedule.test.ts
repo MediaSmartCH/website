@@ -20,6 +20,8 @@ const getBusyIntervals = vi.fn();
 const updateEventTime = vi.fn();
 const sendBookingConfirmation = vi.fn();
 const isSlotValid = vi.fn();
+const reserveOutboundMail = vi.fn();
+const releaseMailBudget = vi.fn();
 
 vi.mock('../booking/_lib/d1.js', () => ({
   exec: (...args: unknown[]) => exec(...args),
@@ -38,6 +40,11 @@ vi.mock('../booking/_lib/mailer.js', () => ({
   sendBookingConfirmation: (...args: unknown[]) => sendBookingConfirmation(...args),
   sendBookingCancellation: vi.fn(),
 }));
+
+vi.mock('../_shared/outbound-mail-guard.js', async () => {
+  const actual = await vi.importActual<any>('../_shared/outbound-mail-guard.js');
+  return { ...actual, reserveOutboundMail: (...args: unknown[]) => reserveOutboundMail(...args) };
+});
 
 vi.mock('../booking/_lib/slots.js', async () => {
   const actual = await vi.importActual<any>('../booking/_lib/slots.js');
@@ -83,6 +90,12 @@ beforeEach(() => {
   isUniqueConstraintError.mockReturnValue(false);
   updateEventTime.mockResolvedValue(undefined);
   sendBookingConfirmation.mockResolvedValue(undefined);
+  releaseMailBudget.mockResolvedValue(undefined);
+  reserveOutboundMail.mockResolvedValue({
+    allowed: true,
+    enforced: true,
+    release: releaseMailBudget,
+  });
 });
 
 describe('booking/reschedule — input guards', () => {
@@ -328,5 +341,52 @@ describe('booking/reschedule — success', () => {
     await handler(postReschedule(), res.res);
 
     expect(res.statusCode()).toBe(200);
+  });
+});
+
+// Regression: the attendee copy used to go out unbudgeted. The recipient is
+// whoever created the booking chose, and this endpoint hands a fresh manage
+// token back in its own reply — so one reCAPTCHA-gated create yielded an
+// unbounded mail loop aimed at that address: reschedule, read the new token
+// from the response, reschedule again.
+describe('booking/reschedule — outbound mail budget', () => {
+  it('claims the attendee copy against the booking mail budget', async () => {
+    await handler(postReschedule(), createResponse().res);
+
+    expect(reserveOutboundMail).toHaveBeenCalledTimes(1);
+    expect(reserveOutboundMail.mock.calls[0][1]).toBe(ROW.attendee_email);
+    expect(sendBookingConfirmation.mock.calls[0][1]).toMatchObject({
+      sendAttendeeCopy: true,
+    });
+  });
+
+  it('drops the attendee copy over budget but still performs the move', async () => {
+    reserveOutboundMail.mockResolvedValue({
+      allowed: false,
+      refusedBy: 'recipient',
+      enforced: true,
+      release: releaseMailBudget,
+    });
+
+    const res = createResponse();
+    await handler(postReschedule(), res.res);
+
+    // The move is never refused over a limit that protects someone else.
+    expect(res.statusCode()).toBe(200);
+    expect(updateEventTime).toHaveBeenCalledTimes(1);
+    // The owner still gets told; only the attendee copy is suppressed.
+    expect(sendBookingConfirmation.mock.calls[0][1]).toMatchObject({
+      sendAttendeeCopy: false,
+    });
+  });
+
+  it('hands the allowance back when the send fails', async () => {
+    sendBookingConfirmation.mockRejectedValue(new Error('resend down'));
+
+    const res = createResponse();
+    await handler(postReschedule(), res.res);
+
+    expect(res.statusCode()).toBe(200);
+    expect(releaseMailBudget).toHaveBeenCalledTimes(1);
   });
 });
