@@ -6,16 +6,51 @@ changes that must be applied to that database, in order.
 
 ## Applying a migration
 
-With Wrangler pointed at the booking database:
+`scripts/d1-migrate.mjs` applies the pending files and records each one in a
+`schema_migrations` table, so the database itself answers "which migrations are
+live?". It talks to the same D1 HTTP API as the deployed code and reads the
+same three variables (`CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`,
+`CLOUDFLARE_D1_DATABASE_ID`), from `.env.local` or from the environment.
 
 ```bash
-# Preview
-wrangler d1 execute <DB_NAME> --file=migrations/0001_add_token_version_and_slot_uniqueness.sql --local
-wrangler d1 execute <DB_NAME> --file=migrations/0002_add_security_counters.sql --local
+pnpm d1:status             # read-only: what is applied, what is pending
+pnpm d1:migrate:dry-run    # what --apply would run, without writing
+pnpm d1:migrate            # apply everything pending, in order
+```
 
-# Production (the same DB id as CLOUDFLARE_D1_DATABASE_ID)
-wrangler d1 execute <DB_NAME> --file=migrations/0001_add_token_version_and_slot_uniqueness.sql --remote
-wrangler d1 execute <DB_NAME> --file=migrations/0002_add_security_counters.sql --remote
+A bare `pnpm d1:status` never writes, which is why it is the default: this
+points at the production database.
+
+`d1:status` exits non-zero when the record and the files have parted ways —
+a file edited after it was applied, or a row with no file left on disk — so CI
+can fail on it.
+
+### Adopting this on a database that is already up to date
+
+A database migrated by hand before this script existed has no rows to show for
+it, and `d1:migrate` would try to replay those files. `0001` would fail on
+`duplicate column name: token_version`, because `ALTER TABLE ... ADD COLUMN`
+cannot run twice.
+
+Record them as applied instead, without running them — once, per database:
+
+```bash
+node scripts/d1-migrate.mjs --baseline 0002_add_security_counters
+```
+
+That marks every migration up to and including the named one as applied. Check
+first that the schema really does match those files; `--dry-run` shows what
+would be recorded.
+
+### Applying by hand
+
+Still possible, and still the fallback when the script cannot reach D1 — but
+nothing gets recorded, so `d1:status` will keep reporting the migration as
+pending until it is baselined:
+
+```bash
+npx wrangler d1 execute mediasmart-website-bookings --remote \
+  --file=migrations/0002_add_security_counters.sql
 ```
 
 Or paste the SQL into the D1 console for the database in the Cloudflare
@@ -74,3 +109,20 @@ and the daily cron at `/api/booking/health` deletes the closed ones.
 | reset_at | INTEGER | unix **milliseconds**; in the past means "empty"    |
 
 `key` never contains a plaintext IP or e-mail address.
+
+## Reference: expected `schema_migrations` shape
+
+Created and maintained by `scripts/d1-migrate.mjs`. It has no `.sql` file of
+its own on purpose: a migration that creates the table recording migrations
+could not be recorded before it had run.
+
+| column     | type    | notes                                              |
+|------------|---------|----------------------------------------------------|
+| id         | TEXT    | primary key, the filename without `.sql`            |
+| applied_at | INTEGER | unix **seconds**                                    |
+| checksum   | TEXT    | sha256 of the file's text when it was applied       |
+
+`checksum` is what lets `d1:status` tell "applied" from "applied, then the file
+was edited" — the second is a migration the database does not actually match,
+and editing an applied migration instead of adding a new one is the usual way
+an environment drifts without anyone noticing.
