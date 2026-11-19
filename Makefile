@@ -4,8 +4,9 @@ SHELL := /bin/sh
 
 VERCEL_SYNC_SCRIPT := scripts/sync-vercel-project-settings.mjs
 VERCEL_DOMAIN_SYNC_SCRIPT := scripts/sync-vercel-domain-settings.mjs
+D1_MIGRATE_SCRIPT := scripts/d1-migrate.mjs
 
-.PHONY: help install update dev api start build preview analyze clean env check-env typecheck test test-watch test-coverage vercel-sync vercel-sync-dry-run vercel-sync-project vercel-sync-project-dry-run vercel-sync-domains vercel-sync-domains-dry-run
+.PHONY: help install update dev api start build preview analyze clean env check-env typecheck test test-watch test-coverage vercel-sync vercel-sync-dry-run vercel-sync-project vercel-sync-project-dry-run vercel-sync-domains vercel-sync-domains-dry-run d1-status d1-migrate d1-migrate-dry-run
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-22s %s\n", $$1, $$2}'
@@ -72,3 +73,12 @@ vercel-sync-domains: ## Apply tracked Vercel domain settings
 vercel-sync-dry-run: vercel-sync-project-dry-run vercel-sync-domains-dry-run ## Show all tracked Vercel changes without applying them
 
 vercel-sync: vercel-sync-project vercel-sync-domains ## Apply all tracked Vercel settings
+
+d1-status: ## Show which D1 migrations are applied and which are pending
+	node $(D1_MIGRATE_SCRIPT)
+
+d1-migrate-dry-run: ## Show the D1 migrations that would be applied, without writing
+	node $(D1_MIGRATE_SCRIPT) --apply --dry-run
+
+d1-migrate: ## Apply the pending D1 migrations and record them
+	node $(D1_MIGRATE_SCRIPT) --apply
