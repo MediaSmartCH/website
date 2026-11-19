@@ -7,8 +7,7 @@ import { COUNTRY_FLAGS } from "@features/contact/lib/country-flags";
 import "react-international-phone/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { getRecaptchaToken } from "@shared/lib/recaptcha";
+import { getRecaptchaToken, warmRecaptcha } from "@shared/lib/recaptcha";
 import {
   getSubmissionLanguage,
   submitContactForm,
@@ -31,15 +30,13 @@ import arrow from "@assets/icons/rightArrow.svg";
 
 import { Link } from "react-router-dom";
 import { useLangLink } from "@shared/hooks/use-localized-path";
-import ScopedRecaptchaProvider from "@shared/components/scoped-recaptcha-provider";
 import ProjectTypeDropdown from "@features/contact/components/project-type-dropdown";
 import ContactInfoPanel from "@features/contact/components/contact-info-panel";
 import ContactSuccess from "@features/contact/components/contact-success";
 import { logger } from "@shared/lib/logger";
 import { refreshAosAnimations } from "@shared/lib/scroll-animations";
 
-const ContactInner = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
+const Contact = () => {
   const { L } = useLangLink();
 
   const languageReducer = useAppSelector((state) => state.language.currentLanguage);
@@ -181,7 +178,7 @@ const ContactInner = () => {
           <div
             className={`text-body-on-surface flex flex-col-reverse lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-y-[35px] `}
           >
-            <ContactInfoPanel theme={themeReducer} />
+            <ContactInfoPanel />
 
             {done ? (
               <ContactSuccess
@@ -193,6 +190,13 @@ const ContactInner = () => {
             <form
               noValidate
               className="w-full"
+              // reCAPTCHA is fetched the first time someone touches the form
+              // rather than when the page renders it. Both events fire well
+              // before anyone reaches the submit button, so the token is
+              // ready when it is asked for; `capture` catches them on the
+              // fields rather than on the form element itself.
+              onFocusCapture={warmRecaptcha}
+              onPointerDownCapture={warmRecaptcha}
               onSubmit={async (e) => {
                 e.preventDefault();
                 if (loading) return;
@@ -247,7 +251,7 @@ const ContactInner = () => {
                 setLoading(true);
 
                 try {
-                  const recaptchaToken = await getRecaptchaToken(executeRecaptcha, "contact_form");
+                  const recaptchaToken = await getRecaptchaToken("contact_form");
 
                   if (recaptchaToken === null) {
                     setError(t.text("home.contactSecurityError"));
@@ -299,7 +303,7 @@ const ContactInner = () => {
               {/* Draggable intent toggle — supports both click and horizontal drag. */}
               <div
                 ref={toggleRef}
-                className={`${themeReducer === "light" ? "bg-white border-[#C8CAE4]" : "bg-[#685A9C] border-[#C8CAE4]"} flex border-2 rounded-[11px] p-[5px] gap-[5px] mb-[16px] lg:mb-[22px] cursor-grab active:cursor-grabbing select-none`}
+                className={`contact-field flex border-2 rounded-[11px] p-[5px] gap-[5px] mb-[16px] lg:mb-[22px] cursor-grab active:cursor-grabbing select-none`}
                 style={{ touchAction: "none" }}
                 onPointerDown={toggleHandlers.onPointerDown}
                 onPointerMove={toggleHandlers.onPointerMove}
@@ -317,12 +321,8 @@ const ContactInner = () => {
                     }}
                     className={`flex-1 py-[10px] lg:py-[13px] rounded-[8px] font-poppins font-medium text-[14px] transition-all
                       ${(dragIntent ?? intent) === v
-                        ? themeReducer === "light"
-                          ? "bg-[#F4F4FF] border border-[#677DFF33] text-[#14172D] shadow-sm"
-                          : "bg-[#3D2E6B] border border-[#677DFF55] text-white shadow-sm"
-                        : themeReducer === "light"
-                          ? "text-[#8B8FA8] hover:text-[#14172D]"
-                          : "text-[#B0A8CC] hover:text-[#E5E5E5]"
+                        ? "contact-segment-active shadow-sm"
+                        : "contact-segment-idle"
                       }`}
                   >
                     {v === "question" ? t.text("home.contactIntentQuestion") : t.text("home.contactIntentQuote")}
@@ -331,14 +331,13 @@ const ContactInner = () => {
               </div>
 
               <div
-                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
-                  relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
-                  ${nameValid ? "border-[#C8CAE4]" : "border-red-500"}`}
+                className={`relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
+                  ${nameValid ? "contact-field" : "contact-field-surface border-red-500"}`}
               >
                 <input
                   placeholder={t.text("home.contactName")}
                   className={`custom-contact-input ${nameValid ? "" : "text-red-500"}
-                    ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"}`}
+                    contact-field-text`}
                   type="text"
                   name="name"
                   onChange={(e) => { setNameValid(true); handleChange(e); }}
@@ -349,14 +348,13 @@ const ContactInner = () => {
               </div>
 
               <div
-                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
-                relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
-                ${emailValid ? "border-[#C8CAE4]" : "border-red-500"}`}
+                className={`relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
+                ${emailValid ? "contact-field" : "contact-field-surface border-red-500"}`}
               >
                 <input
                   placeholder={t.text("home.contactEmail")}
                   className={`custom-contact-input ${emailValid ? "" : "text-red-500"
-                    } ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"}`}
+                    } contact-field-text`}
                   type="email"
                   name="email"
                   onChange={handleChange}
@@ -369,12 +367,13 @@ const ContactInner = () => {
               </div>
 
               <div
-                className={`font-poppins
-                  ${themeReducer === "light" ? "text-[#222222] rip-light" : "text-[#E5E5E5] rip-dark"}
-                  ${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
+                className={`font-poppins contact-field-text
+                  ${themeReducer === "light" ? "rip-light" : "rip-dark"}
                   relative flex items-center border-2 rounded-[11px]
                   px-[16px] lg:px-[18px] py-[12px] lg:py-[16px] mb-[16px]
-                  ${!dialOnly && !phoneValid ? "border-red-500 invalid-phone" : "border-[#C8CAE4]"}
+                  ${!dialOnly && !phoneValid
+                    ? "contact-field-surface border-red-500 invalid-phone"
+                    : "contact-field"}
                 `}
               >
                 <PhoneInput
@@ -418,7 +417,7 @@ const ContactInner = () => {
                   {dialOnly && (
                     <span
                       className={`whitespace-nowrap leading-none
-                        ${themeReducer === "light" ? "text-[#6B6E80]" : "text-[#C8CADE]"}
+                        ${themeReducer === "light" ? "text-[#6B6E80]" : "text-[#C4BEDE]"}
                         text-[14px] md:text-[15px] lg:text-[16px]
                       `}
                     >
@@ -453,14 +452,13 @@ const ContactInner = () => {
               })()}
 
               <div
-                className={`${themeReducer === "light" ? "bg-white" : "bg-[#685A9C]"}
-                  relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
-                  ${messageValid ? "border-[#C8CAE4]" : "border-red-500"}`}
+                className={`relative flex justify-between items-center border-2 rounded-[11px] px-[24px] lg:px-[28px] py-[15px] lg:py-[20px] mb-[16px] lg:mb-[22px]
+                  ${messageValid ? "contact-field" : "contact-field-surface border-red-500"}`}
               >
                 <textarea
                   placeholder={t.text("home.contactMsg")}
                   className={`custom-contact-input ${messageValid ? "" : "text-red-500"}
-                    ${themeReducer === "light" ? "text-[#222222] placeholder:text-[#222222]" : "text-[#E5E5E5] placeholder:text-[#E5E5E5]"}`}
+                    contact-field-text`}
                   rows={4}
                   style={{ resize: "none" }}
                   name="message"
@@ -522,11 +520,5 @@ const ContactInner = () => {
     </div>
   );
 };
-
-const Contact = () => (
-  <ScopedRecaptchaProvider>
-    <ContactInner />
-  </ScopedRecaptchaProvider>
-);
 
 export default Contact;

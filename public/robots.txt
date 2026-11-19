@@ -13,15 +13,35 @@ Allow: /
 
 # AI assistants fetching a page because someone asked about it.
 # These are the retrieval agents, not the training crawlers: they fetch on a
-# user's request so the assistant can cite the page in an answer. Allowing them
-# is what makes the site quotable in ChatGPT, Perplexity and Claude; the crawlers
-# that collect pages to train a model stay blocked below.
+# user's request, or index for an assistant's own search, so the assistant can
+# cite the page in an answer. Allowing them is what makes the site quotable in
+# ChatGPT, Perplexity and Claude; the crawlers that collect pages to train a
+# model stay blocked below.
+#
+# The names matter and they change. Claude-Web was Anthropic's old agent and no
+# longer fetches anything; the two that do are Claude-User (a fetch on someone's
+# request) and Claude-SearchBot (the index behind Claude's own search). Allowing
+# only Claude-Web meant allowing nobody. Same for OpenAI: ChatGPT-User fetches on
+# request, OAI-SearchBot builds the index ChatGPT search reads.
 User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Retired, kept so an old crawler still honouring it is not newly blocked.
 User-agent: Claude-Web
 Allow: /
 
@@ -29,12 +49,18 @@ Allow: /
 User-agent: GPTBot
 Disallow: /
 
+# Google-Extended is not a search crawler: blocking it costs nothing in Google
+# Search or in AI Overviews, which read the Search index. What it does gate is
+# whether Gemini may ground an answer in this site. Left blocked, because the
+# same rule also governs training use and that is a decision to take on purpose
+# rather than in passing.
 User-agent: Google-Extended
 Disallow: /
 
 User-agent: anthropic-ai
 Disallow: /
 
+# The training crawler, distinct from Claude-User and Claude-SearchBot above.
 User-agent: ClaudeBot
 Disallow: /
 

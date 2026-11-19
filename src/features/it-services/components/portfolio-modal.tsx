@@ -6,7 +6,7 @@
 
 import React from "react";
 
-import { formatImageCount, getInlineGalleryClassName, getItemImages, getSafeExternalUrl, groupItemsByCategory, portfolioCategoryKey, resolveLocalizedField, type LightboxImage, type PortfolioItem } from "@features/it-services/lib/portfolio-helpers";
+import { formatImageCount, getInlineGalleryClassName, getItemImages, getPreviewDimClass, getSafeExternalUrl, groupItemsByCategory, portfolioCategoryKey, resolveLocalizedField, type LightboxImage, type PortfolioItem } from "@features/it-services/lib/portfolio-helpers";
 import { SCROLLABLE_GALLERY_THRESHOLD } from "@features/it-services/lib/portfolio-helpers";
 import type { PortfolioThemeClasses } from "@features/it-services/lib/portfolio-theme-classes";
 
@@ -86,7 +86,7 @@ export default function PortfolioModal({
                     item.description,
                     languageReducer
                   );
-                  const images = getItemImages(item);
+                  const images = getItemImages(item, { dark: !isLightTheme });
                   const safeItemUrl = getSafeExternalUrl(item.url);
                   const accessNote = item.accessNote
                     ? resolveLocalizedField(item.accessNote, languageReducer)
@@ -169,7 +169,7 @@ export default function PortfolioModal({
                                 <img
                                   src={image}
                                   alt={`${title} ${index + 1}`}
-                                  className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                                  className={`aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105 ${getPreviewDimClass(item, isLightTheme)}`}
                                   loading="lazy"
                                 />
                               </button>
@@ -188,7 +188,7 @@ export default function PortfolioModal({
                                 <img
                                   src={image}
                                   alt={`${title} ${index + 1}`}
-                                  className="aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105"
+                                  className={`aspect-[16/11] min-h-[140px] w-full object-cover transition duration-300 group-hover/img:scale-105 ${getPreviewDimClass(item, isLightTheme)}`}
                                   loading="lazy"
                                 />
                               </button>

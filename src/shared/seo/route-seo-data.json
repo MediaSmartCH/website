@@ -29,7 +29,9 @@
   },
   "routeKeyByPath": {
     "/": "home",
-    "/web-development": "web-development",
+    "/web-agency-switzerland": "agency-romandie",
+    "/web-agency-valais": "agency-valais",
+    "/projects": "work",
     "/privacy-policy": "privacy-policy",
     "/legal-notice": "legal-notice",
     "/terms": "terms",
@@ -42,14 +44,17 @@
         "title": "MediaSmart | Création de sites web et d'applications en Suisse romande",
         "description": "MediaSmart conçoit et développe des sites vitrines, des sites business et des applications web sur mesure pour les PME, indépendants et associations de Suisse romande.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - création de sites web et d'applications"
-      },
-      "web-development": {
-        "pageName": "Création de sites web et d'applications",
-        "title": "Création de sites web et d'applications en Suisse romande | MediaSmart",
-        "description": "Sites vitrines, sites business, refontes et migrations, applications web sur mesure : conception, développement et maintenance pour les PME, indépendants et associations de Suisse romande.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - services informatiques",
+        "shareImageAlt": "MediaSmart - création de sites web et d'applications",
+        "faqKeys": [
+          "itFaq1",
+          "itFaq2",
+          "itFaq3",
+          "itFaq4",
+          "itFaq5",
+          "itFaq6",
+          "itFaq7"
+        ],
+        "faqSection": "it",
         "serviceType": "Création de sites web, refonte et développement d'applications web"
       },
       "video-services": {
@@ -70,7 +75,7 @@
       "legal-notice": {
         "pageName": "Mentions légales",
         "title": "Mentions légales | MediaSmart",
-        "description": "Éditeur du site, hébergement, propriété intellectuelle et contact: les mentions légales de MediaSmart, Raphael Rouiller, Aproz (Nendaz).",
+        "description": "Éditeur du site, hébergement, propriété intellectuelle et contact: les mentions légales de MediaSmart, Raphael Rouiller, Dorénaz (Valais).",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart - mentions légales"
       },
@@ -89,6 +94,44 @@
         "shareImageAlt": "MediaSmart - contrat de support IT",
         "serviceType": "Contrats de support IT avec SLA"
       },
+      "agency-romandie": {
+        "pageName": "Agence web en Suisse romande",
+        "title": "Agence web en Suisse romande : sites internet et applications | MediaSmart",
+        "description": "MediaSmart conçoit, développe et maintient des sites internet et des applications web pour les PME, indépendants et associations de Suisse romande. Basée en Valais, un interlocuteur unique.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - agence web en Suisse romande",
+        "serviceType": "Création de sites web et développement d'applications web en Suisse romande",
+        "faqKeys": [
+          "romandieFaq"
+        ],
+        "faqSection": "agency"
+      },
+      "agency-valais": {
+        "pageName": "Agence web en Valais",
+        "title": "Agence web en Valais : création de site internet et d'application | MediaSmart",
+        "description": "Création de sites internet et développement d'applications web en Valais. MediaSmart est établie à Dorénaz, dans le Bas-Valais, et intervient dans tout le canton.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - agence web en Valais",
+        "serviceType": "Création de sites web et développement d'applications web en Valais",
+        "faqKeys": [
+          "valaisFaq"
+        ],
+        "faqSection": "agency"
+      },
+      "work": {
+        "pageName": "Nos réalisations",
+        "title": "Nos réalisations : sites web et applications | MediaSmart",
+        "description": "Les sites internet et les applications que MediaSmart a conçus, développés et mis en ligne pour ses clients en Suisse romande, avec le lien vers chaque site.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - nos réalisations"
+      },
+      "case-study": {
+        "pageName": "Réalisation",
+        "title": "{project} | Réalisation MediaSmart",
+        "description": "{description}",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - réalisation {project}"
+      },
       "not-found": {
         "pageName": "Page introuvable",
         "title": "Page introuvable | MediaSmart",
@@ -103,14 +146,17 @@
         "title": "MediaSmart | Website and web application development in Switzerland",
         "description": "MediaSmart designs and builds showcase sites, business websites and custom web applications for SMEs, freelancers and associations in French-speaking Switzerland.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart - IT services"
-      },
-      "web-development": {
-        "pageName": "Website and application development",
-        "title": "Website and Web Application Development in Switzerland | MediaSmart",
-        "description": "Showcase sites, business websites, redesigns and migrations, custom web applications: design, development and maintenance for SMEs, freelancers and associations in French-speaking Switzerland.",
-        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-        "shareImageAlt": "MediaSmart website and application development",
+        "shareImageAlt": "MediaSmart - IT services",
+        "faqKeys": [
+          "itFaq1",
+          "itFaq2",
+          "itFaq3",
+          "itFaq4",
+          "itFaq5",
+          "itFaq6",
+          "itFaq7"
+        ],
+        "faqSection": "it",
         "serviceType": "Website creation, redesign and web application development"
       },
       "video-services": {
@@ -131,7 +177,7 @@
       "legal-notice": {
         "pageName": "Legal notice",
         "title": "Legal notice | MediaSmart",
-        "description": "Site publisher, hosting, intellectual property and contact details: the legal notice for MediaSmart, Raphael Rouiller, Aproz (Nendaz), Switzerland.",
+        "description": "Site publisher, hosting, intellectual property and contact details: the legal notice for MediaSmart, Raphael Rouiller, Dorénaz, Valais, Switzerland.",
         "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart legal notice"
       },
@@ -149,6 +195,44 @@
         "robots": "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
         "shareImageAlt": "MediaSmart IT support contract",
         "serviceType": "Managed IT support contracts with SLA"
+      },
+      "agency-romandie": {
+        "pageName": "Web agency in French-speaking Switzerland",
+        "title": "Web agency in French-speaking Switzerland: websites and applications | MediaSmart",
+        "description": "MediaSmart designs, builds and maintains websites and web applications for SMEs, freelancers and associations across French-speaking Switzerland. Based in Valais, one point of contact.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - web agency in French-speaking Switzerland",
+        "serviceType": "Website creation and web application development in French-speaking Switzerland",
+        "faqKeys": [
+          "romandieFaq"
+        ],
+        "faqSection": "agency"
+      },
+      "agency-valais": {
+        "pageName": "Web agency in Valais",
+        "title": "Web agency in Valais: website and web application development | MediaSmart",
+        "description": "Website creation and web application development in Valais. MediaSmart is based in Dorénaz, in Bas-Valais, and works across the canton.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - web agency in Valais",
+        "serviceType": "Website creation and web application development in Valais",
+        "faqKeys": [
+          "valaisFaq"
+        ],
+        "faqSection": "agency"
+      },
+      "work": {
+        "pageName": "Our work",
+        "title": "Our work: websites and applications | MediaSmart",
+        "description": "The websites and applications MediaSmart has designed, built and launched for clients across French-speaking Switzerland, each with a link to the live site.",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - our work"
+      },
+      "case-study": {
+        "pageName": "Project",
+        "title": "{project} | MediaSmart project",
+        "description": "{description}",
+        "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "shareImageAlt": "MediaSmart - {project} project"
       },
       "not-found": {
         "pageName": "Page not found",

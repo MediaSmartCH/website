@@ -12,19 +12,26 @@
 export type SupportedLanguage = "fr" | "en";
 
 /**
- * How a portfolio entry is grouped in the gallery.
+ * How a portfolio entry is grouped.
  *
- * - "client"  — sites and applications built for a client
- * - "saas"    — MediaSmart's own products, sold and hosted by us
- * - "free"    — tools we publish freely (no account, no invoicing)
+ * - "client"      — sites and applications delivered for a client
+ * - "in-progress" — a client project we are building right now, shown as such
+ *                   rather than alongside finished work
+ * - "saas"        — MediaSmart's own products, sold and hosted by us
+ * - "free"        — tools we publish freely (no account, no invoicing)
  *
  * Entries without an explicit category fall back to "client", which keeps
  * older JSON rows valid.
  */
-export type PortfolioCategory = "client" | "saas" | "free";
+export type PortfolioCategory = "client" | "in-progress" | "saas" | "free";
 
 /** Display order of the gallery sections. */
-export const PORTFOLIO_CATEGORY_ORDER: PortfolioCategory[] = ["saas", "free", "client"];
+export const PORTFOLIO_CATEGORY_ORDER: PortfolioCategory[] = [
+  "saas",
+  "free",
+  "client",
+  "in-progress",
+];
 
 const KNOWN_CATEGORIES = new Set<string>(PORTFOLIO_CATEGORY_ORDER);
 export type LocalizedField = string | Partial<Record<SupportedLanguage, string>>;
@@ -34,6 +41,15 @@ export interface PortfolioItem {
   title: LocalizedField;
   description: LocalizedField;
   url?: string;
+  /**
+   * The tool's own public source repository, when it has one.
+   *
+   * Only set from a repository verified public — the value is what makes the
+   * "source code" link appear on a free-tool card, and it is what
+   * `scripts/fetch-tool-stats.mjs` reads to know whose stars to count. A tool
+   * whose code is not open simply has no `sourceUrl`.
+   */
+  sourceUrl?: string;
   images?: string[];
   screenshotUrls?: string[];
   /**
@@ -50,6 +66,19 @@ export interface PortfolioItem {
    * still in early access; the UI shows a countdown until then.
    */
   launchDate?: string;
+  /**
+   * Set when the site honours `prefers-color-scheme: dark` and a dark twin of
+   * every preview has been captured next to the light one (`…-0-dark.jpg`).
+   * Only then does the gallery swap the preview with the site theme.
+   */
+  hasDarkPreview?: boolean;
+  /**
+   * Capture viewport for scripts/capture-screenshots, when the default
+   * 1440×900 desktop shot is not what this preview should show. The Lab, for
+   * instance, is captured at phone width and 2× so the card frames the
+   * wordmark and the first games rather than a wall of tiles.
+   */
+  previewViewport?: { width: number; height: number; deviceScaleFactor?: number };
 }
 
 /** A gallery section: one category and the entries that belong to it. */
@@ -109,13 +138,42 @@ export function sortItemsForPreview(items: PortfolioItem[]): PortfolioItem[] {
 export const PREVIEW_LIMIT = 4;
 export const SCROLLABLE_GALLERY_THRESHOLD = 3;
 
-// Returns the resolved image paths for a portfolio item, preferring generated screenshot paths
-export function getItemImages(item: PortfolioItem): string[] {
-  if (item.screenshotUrls && item.screenshotUrls.length > 0) {
-    return item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`);
-  }
+/** Inserts the `-dark` marker before the extension: `/a/b-0.jpg` -> `/a/b-0-dark.jpg`. */
+function toDarkVariant(path: string): string {
+  return path.replace(/(\.[a-z0-9]+)$/i, "-dark$1");
+}
 
-  return item.images ?? [];
+/**
+ * Returns the resolved image paths for a portfolio item, preferring generated
+ * screenshot paths.
+ *
+ * With `{ dark: true }`, an item that declares `hasDarkPreview` resolves to the
+ * dark twin captured next to each light asset. Items without the flag keep
+ * their light paths: most of the sites shown here have no dark theme of their
+ * own, and a fabricated dark preview would not be what the visitor lands on.
+ */
+export function getItemImages(
+  item: PortfolioItem,
+  options: { dark?: boolean } = {}
+): string[] {
+  const paths =
+    item.screenshotUrls && item.screenshotUrls.length > 0
+      ? item.screenshotUrls.map((_, i) => `/screenshots/${item.id}-${i}.jpg`)
+      : item.images ?? [];
+
+  return options.dark && item.hasDarkPreview ? paths.map(toDarkVariant) : paths;
+}
+
+/**
+ * Class dimming a preview that has no dark twin, so a bright screenshot does
+ * not glare out of a dark card. Empty in the light theme, and empty for an
+ * item whose preview already follows the theme.
+ */
+export function getPreviewDimClass(
+  item: PortfolioItem | undefined,
+  isLight: boolean
+): string {
+  return !isLight && !item?.hasDarkPreview ? "brightness-90" : "";
 }
 
 /** Accepts a URL only when it is http(s), so a javascript: entry cannot reach an href. */

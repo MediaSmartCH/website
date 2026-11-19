@@ -165,6 +165,21 @@ describe('isSlotValid', () => {
     expect(isSlotValid(utc(2027, 2, 15, 8, 15), busy, nowMs)).toBe(false);
   });
 
+  // Regression: the grid check used to look only at the minute, so a start a
+  // few seconds off the grid passed. Stored as `start_at` those are distinct
+  // integers, and the partial unique index that arbitrates concurrent bookings
+  // is on `start_at` — two requests a second apart could claim the same slot
+  // without the index ever seeing a conflict.
+  it('rejects a slot shifted off the grid by seconds', () => {
+    const offGrid = new Date(utc(2027, 2, 15, 9, 0).getTime() + 30_000);
+    expect(isSlotValid(offGrid, busy, nowMs)).toBe(false);
+  });
+
+  it('rejects a slot shifted off the grid by a single millisecond', () => {
+    const offGrid = new Date(utc(2027, 2, 15, 9, 0).getTime() + 1);
+    expect(isSlotValid(offGrid, busy, nowMs)).toBe(false);
+  });
+
   it('rejects a slot that overlaps a busy interval', () => {
     const busyMid: BusyInterval[] = [
       { start: utc(2027, 2, 15, 9, 0), end: utc(2027, 2, 15, 10, 0) },

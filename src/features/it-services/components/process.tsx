@@ -8,7 +8,22 @@ import { useTranslations } from "@shared/i18n/translator";
 // new component type on every render, which remounts the Lottie player.
 const DotAnim = lazy(() => import("@shared/components/dot-anim"));
 
-export default function Process() {
+export interface ProcessProps {
+    /** Overrides, for pages that introduce the same five steps differently.
+     *  The services page passes nothing. */
+    title?: string;
+    description?: string;
+}
+
+/**
+ * The five steps of an engagement: the animation, the dashed spine, the
+ * numbered badges.
+ *
+ * Rendered by the regional pages too — the steps are the same steps, read from
+ * the same `it.processData`, and a second presentation of them would be a
+ * second answer to the same question.
+ */
+export default function Process({ title, description }: ProcessProps = {}) {
     const languageReducer = useAppSelector(
         (state) => state.language.currentLanguage
     );
@@ -20,23 +35,32 @@ export default function Process() {
     return (
         <div className="w-full homepage-container px-[25px] md:px-[50px] lg:px-[50px] xl:px-[70px] 2xl:px-[100px] pt-[40px] pb-[50px] mx-auto">
             <div
-                className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px] px-[30px] md:px-[100px] lg:px-[50px] 2xl:px-[100px]`}
+                className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] py-[30px] px-[18px] md:px-[100px] lg:px-[50px] 2xl:px-[100px]`}
             >
                 <div>
                     <RichText
                         as="h2"
                         className={`text-heading-strong w-full it-service-process-title text-center mx-auto mb-[0px] lg:mb-[0px] font-redDisplay font-bold text-[26px] md:text-[32px] lg:text-[32px] xl:text-[36px] 2xl:text-[48px]`}
-                        html={t.text("it.itServicesProcessTitle")}
+                        html={title ?? t.text("it.itServicesProcessTitle")}
                     />
                     <p
                         className={`text-body w-full mx-auto text-center font-poppins font-light text-[14px] md:text-[15px] xl:text-[15px] 2xl:text-[16px] `}
                     >
-                        {t.text("it.itServicesProcessDescription")}
+                        {description ?? t.text("it.itServicesProcessDescription")}
                     </p>
                 </div>
 
                 <div className="mt-10 flex flex-col-reverse lg:flex-row lg:items-center lg:justify-between gap-x-8 gap-y-12">
-                    <div className="w-full lg:w-[50%] flex items-center justify-center">
+                    {/* Hidden below md. `flex-col-reverse` on the row above puts
+                        this first in the DOM and last on screen, so on a phone a
+                        420px-tall illustration landed under step 5, at the bottom
+                        of the card, introducing nothing. The toggle sits on this
+                        wrapper rather than on DotAnim so the aspect-ratio box and
+                        both Suspense fallbacks go with it — and so the player is
+                        never mounted: a display:none ancestor gives the
+                        IntersectionObserver a zero rect, which DotAnim reads as
+                        "not in view". */}
+                    <div className="hidden md:flex w-full lg:w-[50%] items-center justify-center">
                         <div className="w-[80%] md:w-[80%] lg:w-[75%] xl:w-[70%] 2xl:w-[65%] aspect-[3/5]">
                             <Suspense
                                 fallback={
@@ -56,7 +80,7 @@ export default function Process() {
                     </div>
                     <div className="w-full lg:w-[50%] relative">
                         {/* Dashed vertical line running behind all step number badges */}
-                        <div className="absolute left-[34px] 2xl:left-[44px] top-0 bottom-0 w-0.5 opacity-40 z-20">
+                        <div className="absolute left-[26px] md:left-[34px] 2xl:left-[44px] top-0 bottom-0 w-0.5 opacity-40 z-20">
                             <svg className="w-full h-full" viewBox="0 0 2 100" preserveAspectRatio="none" fill="none">
                                 <line
                                     x1="1"
@@ -71,10 +95,10 @@ export default function Process() {
                         </div>
                         {t.array<ProcessItem>("it.processData").map((step, i) => {
                             return (
-                                <div key={i} className={`flex items-start space-x-8 text-heading-strong`}
+                                <div key={i} className={`flex items-start space-x-4 md:space-x-8 text-heading-strong`}
                                 >
                                     {/* Step number badge sits above the dashed line (z-50) */}
-                                    <div className={`relative z-50 flex-shrink-0 w-[68px] h-[52px] md:w-[68px] md:h-[52px] 2xl:w-[88px] 2xl:h-[72px] rounded-[48px] flex items-center justify-center font-poppins font-normal text-[20px] md:text-[24px] 2xl:text-[28px] ${themeReducer === "light" ? "process-bg-light" : "process-bg-dark"
+                                    <div className={`relative z-50 flex-shrink-0 w-[52px] h-[44px] md:w-[68px] md:h-[52px] 2xl:w-[88px] 2xl:h-[72px] rounded-[48px] flex items-center justify-center font-poppins font-normal text-[18px] md:text-[24px] 2xl:text-[28px] ${themeReducer === "light" ? "process-bg-light" : "process-bg-dark"
                                         }`}>
                                         {i + 1}
                                     </div>

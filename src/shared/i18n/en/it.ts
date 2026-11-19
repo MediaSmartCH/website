@@ -30,12 +30,17 @@ const it = {
     saasProducts: [
         {
             id: "cc-factures-dashboard",
-            name: "Supplier invoices dashboard",
-            tagline: "Track your supplier spending, month by month and supplier by supplier",
+            // The English rendering of the name the product gives itself; its
+            // own English interface reads "Supplier spend analysis".
+            // SharePoint and Microsoft 365 were where one deployment's data
+            // happened to live, not something the product requires, so the
+            // site no longer presents them as features.
+            name: "Supplier spend dashboard",
+            tagline: "Analyse your supplier spending, month by month and supplier by supplier",
             highlights: [
-                "Monthly KPIs, top suppliers and period-over-period comparisons",
-                "Microsoft 365 sign-in and direct ingestion from SharePoint",
-                "Per-file drill-down and one-click CSV export",
+                "Key figures, monthly trend and top suppliers",
+                "Import of your data, multi-company and period comparison",
+                "Per-supplier and per-invoice detail, CSV export",
             ],
         },
         {
@@ -58,19 +63,48 @@ const it = {
     launchCountdownSeconds: "s",
     launchCountdownLive: "Open to everyone",
     saasFreeTitle: `<span>Freely</span> available`,
+    // Fallback for a tool that does not name its own button. Every tool names
+    // it, precisely because "Open the tool" three times over tells nobody
+    // where they are about to land.
     saasFreeCta: "Open the tool",
     saasFreeDescription:
         "Tools we make available to everyone, with no account and no invoicing.",
+    // Figures published by Mozilla, read at build time (see
+    // scripts/fetch-addon-stats.mjs). Nothing here is hardcoded.
+    saasStatRatingSr: "Average rating out of 5:",
+    saasStatReviewsOne: "review",
+    saasStatReviews: "reviews",
+    saasStatUsersOne: "user",
+    saasStatUsers: "users",
+    // Link to a tool's public repository. It only appears when the repository
+    // really is public: the star count comes from the GitHub API, read at
+    // build time like the Mozilla figures.
+    saasSourceLabel: "Source code",
+    saasStatStarsOne: "star",
+    saasStatStars: "stars",
     saasFreeTools: [
+        {
+            id: "url-copier",
+            name: "CopyLink Pro",
+            tagline: "Instantly copy the current page's URL with a keyboard shortcut, or from the context menu. No data collected.",
+            cta: "View on Firefox Add-ons",
+            // The shortcuts published on the Mozilla listing, verbatim.
+            shortcuts: [
+                { platform: "macOS", keys: "Cmd + Shift + C" },
+                { platform: "Windows / Linux", keys: "Ctrl + Shift + C" },
+            ],
+        },
         {
             id: "cc-voice",
             name: "Voice Studio",
             tagline: "Voice cloning and synthesis, computed on our own hardware rather than in the cloud. A public release is in preparation.",
+            cta: "Open Voice Studio",
         },
         {
             id: "mediasmart-games",
             name: "MediaSmart Lab",
             tagline: "Our mini-games and web experiments, freely accessible.",
+            cta: "Open MediaSmart Lab",
         },
     ],
 
@@ -99,7 +133,7 @@ const it = {
         <li> Technical SEO work. </li>
         </ul>
         `,
-    // Active web services, rendered on /web-development right after "service1".
+    // Active web services, rendered in the homepage services section, right after "service1".
     // They cover the same scope already described in the estimates section
     // (custom application, redesign / migration).
     serviceApp: "Custom web applications",
@@ -111,7 +145,7 @@ const it = {
         <li> Database design and administration. </li>
         <li> API development, or integration with the tools you already use. </li>
         </ul>
-        Our own two applications, supplier-invoice tracking and document management, came out of that process.
+        Our own two applications, supplier-invoice analysis and document management, came out of that process.
         `,
     serviceRedesign: "Website redesign and migration",
     descriptionRedesign: `
@@ -363,7 +397,7 @@ const it = {
     ],
     supportPageCtaTitle: "A question about the support contract?",
     supportPageCtaDesc: "Write to us to work out which plan fits your activity, or to request a quote.",
-    supportPageBackLink: "← Back to IT services",
+    supportPageBackLink: "← Back to the homepage",
     supportPageMoreInfo: "More info",
     supportMostPopular: "Most popular",
 
@@ -397,6 +431,10 @@ const it = {
     itFaq6: {
         faqQuestion: "How does the initial contact work?",
         faqAnswer: "Book a free 30-minute consultation through our online tool. We review your situation together, then you receive a detailed quote within 48 hours, with no commitment.",
+    },
+    itFaq7: {
+        faqQuestion: "Are your sites built to be understood and cited by AI?",
+        faqAnswer: "Yes, as far as the site itself can influence it. Alongside technical SEO, we structure the content so that answer engines and AI assistants can read, interpret and quote it: a clear hierarchy, self-contained answers, structured data, and company details that stay consistent from one page to the next. That is what GEO and AEO refer to. No agency can guarantee that an AI will cite a particular site; the aim is to make it as discoverable and as easy to understand as possible.",
     },
 };
 export default it;

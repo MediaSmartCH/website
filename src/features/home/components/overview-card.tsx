@@ -28,7 +28,10 @@ export default function OverviewCard({
   textAnimation,
 }: OverviewCardProps) {
   return (
-    <div className="bg-surface rounded-[15px] lg:rounded-[15px] xl:rounded-[20px] 2xl:rounded-[25px] px-5 py-6 md:py-8 2xl:py-10">
+    // h-full + flex so six cards in two rows end level with each other: the
+    // animation box is already a fixed ratio, so the titles line up and only
+    // the descriptions differ in length.
+    <div className="bg-surface rounded-[15px] lg:rounded-[15px] xl:rounded-[20px] 2xl:rounded-[25px] px-5 py-6 md:py-8 2xl:py-10 h-full flex flex-col">
       {/* Fixed aspect ratio container keeps animation size consistent across card widths */}
       <div className="relative w-full aspect-[4/3] lg:aspect-[16/11] xl:aspect-[5/4]">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -44,7 +47,7 @@ export default function OverviewCard({
         </div>
       </div>
 
-      <div className="mt-4 text-heading-strong">
+      <div className="mt-4 text-heading-strong flex flex-1 flex-col">
         <p
           className="w-full xl:w-[90%] 2xl:w-[75%] mx-auto text-center font-redDisplay font-bold text-[20px] md:text-[20px] lg:text-[20px] xl:text-[22px] 2xl:text-[24px] mb-3"
           data-aos={textAnimation}

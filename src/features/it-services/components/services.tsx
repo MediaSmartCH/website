@@ -82,7 +82,14 @@ const Services = () => {
         </div>
 
         {/* Service — Custom web applications (image left, text right) */}
-        <div className="xl:px-[30px] 2xl:px-[60px] flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
+        {/* `max-md:flex-col` is the odd row out being brought into line. The
+            other two service rows put their animation above the copy on a
+            phone; this one has [animation, copy] in the DOM, so
+            flex-col-reverse dropped its art below its own paragraph — and
+            straight on top of the next row's art. Flipping the direction below
+            md fixes the order without taking the illustration away, and leaves
+            the 768px-and-up composition exactly as it was. */}
+        <div className="xl:px-[30px] 2xl:px-[60px] flex flex-col-reverse max-md:flex-col lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px] py-[30px]">
           <div className="w-full lg:w-[48%] flex justify-center items-center"
             data-aos="fade-left"
             data-aos-easing="ease-in-sine"

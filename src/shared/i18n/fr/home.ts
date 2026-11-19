@@ -13,17 +13,19 @@ const home = {
     // heroDescription:
     //     "Que ce soit en production vidéo ou en solutions informatiques, MediaSmart vous accompagne avec expertise et flexibilité. Choisissez un service ou combinez-les selon vos besoins.",
     heroDescription:
-        "Sites vitrines, sites business, refontes et applications métier : nous concevons, développons et maintenons l'outil web dont votre activité a besoin.",
+        "Création de sites web, développement d'applications web et solutions numériques sur mesure : nous concevons, développons et maintenons l'outil dont votre activité a besoin.",
     itBtn: "Découvrir nos prestations web",
     // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : clé conservée, le bouton n'est plus affiché.
     videoBtn: "Explorer les services vidéo",
 
-    bookingTitle: "Envie de faire le point sur votre informatique ?",
+    // Ancien titre, de l'époque où MediaSmart faisait aussi du support
+    // informatique généraliste : "Envie de faire le point sur votre informatique ?"
+    bookingTitle: "Un projet de site ou d'application ?",
     // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER (ancien texte orienté récits visuels) :
     // bookingDescription:
     //     "Lancez-vous dans votre aventure créative avec MediaSmart grâce à une consultation gratuite de 30 minutes. Choisissez un lieu qui vous convient – que ce soit chez vous, dans un espace public, ou même en ligne – et sélectionnez un horaire qui correspond à notre disponibilité. Fournissez simplement les détails de la réunion souhaitée et vos coordonnées, et nous organiserons le rendez-vous. Cette session est votre chance de discuter de vos idées avec nous et de découvrir comment nous pouvons collaborer pour transformer votre vision en récits visuels captivants.",
     bookingDescription:
-        "Réservez une consultation gratuite de 30 minutes. Choisissez le lieu qui vous arrange – vos locaux, votre domicile ou une réunion en ligne – et un créneau parmi nos disponibilités. Décrivez votre besoin en quelques lignes, laissez vos coordonnées, et nous confirmons le rendez-vous. C'est l'occasion d'exposer votre situation et de repartir avec des pistes concrètes.",
+        "Réservez une consultation gratuite de 30 minutes pour nous présenter votre projet de site web, d'application ou de solution numérique. Nous faisons le point sur vos objectifs, les fonctionnalités nécessaires et la meilleure manière de le concrétiser.",
     bookingBtn: "Réserver une consultation de 30 min",
 
     partnersTitle: "Nos partenaires de confiance",
@@ -76,7 +78,7 @@ const home = {
     // ITOverviewTitle: "Aperçu informatique",
     saasTitle: `<span>Nos applications</span> métier`,
     saasDescription:
-        "Deux applications que nous développons et hébergeons nous-mêmes : le suivi des factures fournisseurs et la gestion documentaire.",
+        "Deux applications que nous développons et hébergeons nous-mêmes : l'analyse des factures fournisseurs et la gestion documentaire.",
     saasCta: "Découvrir nos applications",
 
     // ------------------------------------------------------------------
@@ -110,8 +112,8 @@ const home = {
             description: "Garantie corrective de 14 jours après la mise en ligne, puis corrections et évolutions à la demande."
         },
         {
-            title: "Référencement et performances",
-            description: "Optimisation technique du référencement et du temps de chargement, pour être trouvé et rester rapide."
+            title: "Référencement, moteurs IA et performances",
+            description: "Structure technique, données structurées, contenu clair et temps de chargement : pour être trouvé sur Google comme dans les réponses des assistants IA."
         }
     ],
 

@@ -74,13 +74,13 @@ const Error404Page: React.FC = () => {
   // one at the top, one straight on the products section.
   const destinations = [
     {
-      to: L("/web-development"),
+      to: L("#services"),
       Icon: Wrench,
       title: t.text("error404.itServicesTitle"),
       description: t.text("error404.itServicesDescription"),
     },
     {
-      to: `${L("/web-development")}#saas`,
+      to: L("#saas"),
       Icon: Boxes,
       title: t.text("error404.saasTitle"),
       description: t.text("error404.saasDescription"),
@@ -167,9 +167,9 @@ const Error404Page: React.FC = () => {
             {t.text("error404.description")}
           </p>
 
-          <div className="mt-[28px] flex flex-wrap justify-center gap-3">
+          <div className="mt-[28px] flex flex-col items-stretch gap-3 mx-auto w-full max-w-[320px] sm:mx-0 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center">
             <Link to={L("/")}>
-              <button className="custom-btn middle-out flex min-h-[45px] items-center justify-center rounded-[5px] px-[22px] font-poppins text-[14px] font-light text-white">
+              <button className="custom-btn middle-out flex min-h-[45px] w-full items-center justify-center rounded-[5px] px-[22px] font-poppins text-[14px] font-light text-white sm:w-auto">
                 {t.text("error404.homeButton")}
               </button>
             </Link>

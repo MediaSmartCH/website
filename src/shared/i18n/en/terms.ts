@@ -26,7 +26,7 @@ const terms = {
     // 1. Scope
     s1Title: "1. Scope",
     s1Desc:
-        "These terms govern the design, development and deployment of websites and web applications carried out by MediaSmart – Raphael Rouiller, a sole proprietorship based in Aproz (Nendaz), Valais, Switzerland.",
+        "These terms govern the design, development and deployment of websites and web applications carried out by MediaSmart – Raphael Rouiller, a sole proprietorship based in Dorénaz, Valais, Switzerland.",
     s1Quote:
         "They are made available to the client before the quote is accepted and form part of the contract.",
 

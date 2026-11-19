@@ -17,6 +17,21 @@
   background-position: top center;
 }
 
+/**
+ * Full-width tinted band.
+ *
+ * Breaks up the long regional and work pages the way the services page's
+ * process block breaks up that one. Deliberately faint: it is there to mark
+ * where one part of the page ends, not to be noticed as a colour.
+ */
+.section-band {
+  background: linear-gradient(180deg, rgba(244, 241, 255, 0) 0%, #f7f5ff 18%, #f7f5ff 82%, rgba(244, 241, 255, 0) 100%);
+}
+
+.AppDark .section-band {
+  background: linear-gradient(180deg, rgba(43, 40, 76, 0) 0%, #1c1a33 18%, #1c1a33 82%, rgba(43, 40, 76, 0) 100%);
+}
+
 .process-bg-light {
   background:
     linear-gradient(0deg, #dcdcfd, #dcdcfd),

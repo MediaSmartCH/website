@@ -23,7 +23,9 @@ const About = () => {
     >
       {/* Animation is placed first in DOM order (flex-col-reverse flips it visually on mobile) */}
       <div className="flex flex-col-reverse lg:flex-row justify-center items-center lg:justify-between lg:items-center gap-y-[50px]">
-        <div className="w-full lg:w-[48%] flex justify-center items-center"
+        {/* Below md this closes the section with an illustration nobody
+            scrolled for — same reason as the process block. */}
+        <div className="hidden md:flex w-full lg:w-[48%] justify-center items-center"
           data-aos="fade-left"
           data-aos-easing="ease-in-sine"
           data-aos-duration="1200">

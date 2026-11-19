@@ -14,7 +14,7 @@ const ManageShell: React.FC<ShellProps> = ({ children, theme }) => {
   const isLight = theme === 'light';
   return (
     <div
-      className={`min-h-[calc(100vh-200px)] py-12 px-5 sm:px-8 ${isLight ? 'bg-[#F6F6F6]' : 'bg-[#0F0E22]'}`}
+      className={`min-h-[calc(100vh-200px)] py-12 px-[25px] sm:px-8 ${isLight ? 'bg-[#F6F6F6]' : 'bg-[#0F0E22]'}`}
     >
       {/*
         The manage link carries the booking id + token in the URL. Suppress the

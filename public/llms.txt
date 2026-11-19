@@ -1,0 +1,68 @@
+# MediaSmart
+
+> Conception, développement et maintenance de sites et d'applications web sur mesure pour les PME, les indépendants et les associations de Suisse romande.
+
+MediaSmart est une raison individuelle basée à Dorénaz, en Valais, dirigée par Raphael Rouiller, interlocuteur unique de la conception à la mise en ligne.
+
+Le site est publié en français (langue par défaut, préfixe `/fr`) et en anglais (`/en`) : chaque page existe aux deux emplacements et la racine redirige vers `/fr`. La liste complète et à jour des URLs est dans https://mediasmart.ch/sitemap.xml
+
+Prestations :
+
+- Sites vitrines — jusqu'à cinq pages, formulaire de contact, version mobile, base SEO.
+- Sites business — blog, boutique en ligne, système de réservation, formulaires avancés, intégrations tierces.
+- Applications web sur mesure — interface et logique métier spécifiques, authentification, base de données, API.
+- Refonte et migration de sites existants.
+- Maintenance et évolutions après la mise en ligne.
+- Référencement technique, structuration des contenus pour les moteurs de réponse IA, et performances.
+
+Déroulement d'une mission, en cinq étapes : consultation, analyse, proposition, mise en œuvre, suivi. Le premier contact est une consultation gratuite de 30 minutes, suivie d'un devis détaillé sous 48 heures, sans engagement. Comptez 2 à 4 semaines pour un site vitrine, et généralement 6 à 16 semaines pour une application sur mesure ou une refonte importante, selon le périmètre. Le paiement se fait en deux fois, à la commande puis avant la mise en ligne. Toute anomalie technique imputable aux développements de MediaSmart est corrigée sans frais pendant 14 jours après la mise en ligne ; ensuite, les corrections et les évolutions se font sur devis ou au tarif horaire.
+
+Les rendez-vous sur place ont lieu en Valais, Vaud, Genève et Fribourg. La conception, le développement et le suivi se faisant à distance, MediaSmart travaille aussi avec des clients ailleurs en Suisse et à l'étranger. Les échanges se font en français ou en anglais, du lundi au vendredi de 07h00 à 18h00, hors jours fériés officiels du canton du Valais.
+
+MediaSmart développe et exploite également ses propres applications : un tableau de bord d'analyse des dépenses fournisseurs, MediaSmart GED (gestion documentaire avec OCR extrayant fournisseur, montant et échéance, stockage chiffré sur le réseau interne du client, interface web protégée — solution sur mesure sur devis, sans URL publique, démo sur demande) et Voice Studio (clonage et synthèse vocale calculés sur les machines de MediaSmart), qui n'est pas encore ouvert au public.
+
+Les pages principales listées ci-dessous se terminent chacune par une FAQ.
+
+Contact : Rue des Cloubeaux 6C, 1905 Dorénaz, Valais, Suisse — +41 79 657 86 12. Aucune adresse e-mail n'est écrite en clair dans le HTML servi ; le formulaire de contact est la voie écrite.
+
+## Pages principales
+
+- [Accueil](https://mediasmart.ch/fr) — prestations, applications maison, déroulement d'une mission et prise de contact.
+- [Contact](https://mediasmart.ch/fr#contact) — formulaire de contact et réservation de la consultation gratuite de 30 minutes.
+- [Agence web en Suisse romande](https://mediasmart.ch/fr/web-agency-switzerland) — prestations, déroulement d'un projet et cantons couverts.
+- [Agence web en Valais](https://mediasmart.ch/fr/web-agency-valais) — le siège de Dorénaz, les clients valaisans et le calendrier de travail.
+- [Réalisations](https://mediasmart.ch/fr/projects) — index des projets clients, des applications MediaSmart, des outils en accès libre et des projets en cours.
+
+## Réalisations clients
+
+- [C.C. & W.K. SA](https://mediasmart.ch/fr/projects/cc-wk) — site corporate d'un cabinet d'architecture suisse : espaces techniques, résidentiels et de laboratoires. Site client : [cc-wk.ch](https://cc-wk.ch)
+- [JoColor](https://mediasmart.ch/fr/projects/jocolor) — site vitrine d'une entreprise de peinture en bâtiment établie en Valais. Site client : [jocolor.ch](https://www.jocolor.ch)
+- [Le Choix des Mots](https://mediasmart.ch/fr/projects/lechoixdesmots) — site de présentation d'une officiante laïque proposant des cérémonies personnalisées. Site client : [lechoixdesmots.ch](https://lechoixdesmots.ch)
+- [SoClean4U](https://mediasmart.ch/fr/projects/soclean4u) — site vitrine d'une entreprise de nettoyage active dans le Chablais VS/VD. Site client : [soclean4u.ch](https://www.soclean4u.ch)
+
+## Applications et outils accessibles
+
+- [Tableau de bord de dépenses (démo)](https://dashboard-depenses.mediasmart.ch/mock) — analyse des dépenses fournisseurs, multi-sociétés, export CSV. Démo gratuite sur données fictives.
+- [CopyLink Pro](https://addons.mozilla.org/fr/firefox/addon/url-copier/) — extension Firefox gratuite qui copie l'URL de la page courante au clavier ou par le menu contextuel, sans collecte de données. Code source sous licence MIT : [github.com/rphlr/url-copier](https://github.com/rphlr/url-copier)
+- [MediaSmart Lab](https://apps.mediasmart.ch) — mini-jeux et expérimentations web en accès libre, dans le navigateur ou en mini-app Telegram.
+
+## Informations légales
+
+- [Mentions légales](https://mediasmart.ch/fr/legal-notice) — éditeur MediaSmart / Raphael Rouiller, raison individuelle, hébergement Vercel Inc.
+- [Politique de confidentialité](https://mediasmart.ch/fr/privacy-policy)
+- [Conditions générales](https://mediasmart.ch/fr/terms)
+
+## English
+
+- [Home](https://mediasmart.ch/en)
+- [Contact](https://mediasmart.ch/en#contact)
+- [Web agency in French-speaking Switzerland](https://mediasmart.ch/en/web-agency-switzerland)
+- [Web agency in Valais](https://mediasmart.ch/en/web-agency-valais)
+- [Work](https://mediasmart.ch/en/projects)
+- [C.C. & W.K. SA](https://mediasmart.ch/en/projects/cc-wk)
+- [JoColor](https://mediasmart.ch/en/projects/jocolor)
+- [Le Choix des Mots](https://mediasmart.ch/en/projects/lechoixdesmots)
+- [SoClean4U](https://mediasmart.ch/en/projects/soclean4u)
+- [Legal notice](https://mediasmart.ch/en/legal-notice)
+- [Privacy policy](https://mediasmart.ch/en/privacy-policy)
+- [Terms](https://mediasmart.ch/en/terms)

@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import portfolioContent from "@features/it-services/data/it-portfolio.json";
 import {
   getItemImages,
+  getPreviewDimClass,
   resolveLocalizedField,
   type PortfolioData,
 } from "@features/it-services/lib/portfolio-helpers";
@@ -26,9 +27,6 @@ import { useTranslations } from "@shared/i18n/translator";
 type SaasProductCopy = { id: string; name: string; tagline: string };
 
 /** Prefetches the services route so the jump to the full section is instant. */
-const preloadITServices = () => {
-  import("@features/it-services/it-services-page");
-};
 
 export default function SaasOverview() {
   const languageReducer = useAppSelector(
@@ -72,7 +70,9 @@ export default function SaasOverview() {
       >
         {products.map((product, index) => {
           const source = portfolioItems.find((item) => item.id === product.id);
-          const image = source ? getItemImages(source)[0] : undefined;
+          const image = source
+            ? getItemImages(source, { dark: !classes.isLight })[0]
+            : undefined;
           const badge = source?.accessNote
             ? resolveLocalizedField(source.accessNote, languageReducer)
             : null;
@@ -80,8 +80,8 @@ export default function SaasOverview() {
           return (
             <Link
               key={product.id}
-              to={`${L("/web-development")}#saas`}
-              onMouseEnter={preloadITServices}
+              to={L("#saas")}
+              
               className={`group flex h-full flex-col overflow-hidden rounded-[24px] border transition duration-300 hover:-translate-y-1 ${classes.card}`}
               data-aos="fade-up"
               data-aos-delay={index * 120}
@@ -91,7 +91,7 @@ export default function SaasOverview() {
                   <img
                     src={image}
                     alt={product.name}
-                    className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
+                    className={`h-full w-full object-cover object-top transition duration-500 group-hover:scale-105 ${getPreviewDimClass(source, classes.isLight)}`}
                     loading="lazy"
                   />
                 </div>
@@ -118,7 +118,7 @@ export default function SaasOverview() {
       </div>
 
       <div className="mt-[34px] flex justify-center w-full">
-        <Link to={`${L("/web-development")}#saas`} onMouseEnter={preloadITServices}>
+        <Link to={L("#saas")} >
           <button className="hero-btn custom-btn w-full sm:w-auto min-w-[180px] h-[38px] lg:min-w-[200px] lg:h-[45px] xl:min-w-[212px] xl:h-[49px] flex items-center justify-center rounded-[5px] text-[#fff] font-helvetica font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] px-2 md:px-4">
             <span className="custom-btn-inner">{t.text("home.saasCta")}</span>
           </button>

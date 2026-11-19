@@ -58,6 +58,17 @@
 }
 
 @media screen and (max-width: 767px) and (min-width: 426px) {
+  /*
+   * The mobile bar's content row is 72px (navbar-mobile). This band kept
+   * base.css's 100px, so a sticky header covered 28px of page for nothing —
+   * and `.shrink` set 80px past 100px of scroll, which made the bar GROW on
+   * the way down. Both pinned to the row's own height.
+   */
+  header,
+  header.shrink {
+    height: 72px;
+  }
+
   .testimonail-card-vh {
     min-height: 210px;
   }
@@ -85,6 +96,15 @@
   }
   .custom-contact-input::placeholder {
     font-size: 14px;
+  }
+
+  /*
+   * `.shrink` is added to <header> past 100px of scroll and sets height: 80px
+   * (base.css). On a phone the bar is 72px to begin with, so the "shrink on
+   * scroll" behaviour made it 8px TALLER on the way down. Pin it.
+   */
+  header.shrink {
+    height: 72px;
   }
 
   header {

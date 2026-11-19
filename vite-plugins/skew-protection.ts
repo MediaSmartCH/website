@@ -28,6 +28,14 @@ import type { Plugin } from "vite";
  * import fails — which is the case `withChunkRecovery` already catches with a
  * single reload.
  *
+ * A step that writes script or stylesheet URLs into the documents *after* the
+ * build has to mark them the same way, because this plugin cannot see what it
+ * will add: `scripts/prerender.mjs` preloads each route's page chunk, which is
+ * lazily loaded and therefore marked here, so its link carries `?dpl=` too.
+ * Get that wrong and the file sits under two URLs and is fetched twice. The
+ * invariant to check after any such change is that no emitted file is
+ * referenced both with and without the marker.
+ *
  * The cookie Vercel documents for this is deliberately not used. Measured
  * against production: a request carrying `__vdpl` is served the *document* from
  * that deployment, not just its assets. A browser that set the cookie itself

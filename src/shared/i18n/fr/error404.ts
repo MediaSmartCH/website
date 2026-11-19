@@ -15,7 +15,7 @@ const error404 = {
     backDescription: "Revenir à la page précédente",
     badge: "Erreur 404",
     saasTitle: "Nos applications métier",
-    saasDescription: "Suivi des factures fournisseurs et gestion documentaire",
+    saasDescription: "Analyse des factures fournisseurs et gestion documentaire",
     servicesTitle: "Nos services",
     // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : la carte vidéo de la 404 n'est plus affichée.
     itServicesTitle: "Sites web et applications",

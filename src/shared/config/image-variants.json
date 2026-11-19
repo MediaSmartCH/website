@@ -1,0 +1,382 @@
+{
+  "/portfolio/cc-voice-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/portfolio/responsive/cc-voice-0-480-971389b1c2fc.webp"
+      },
+      {
+        "width": 960,
+        "url": "/portfolio/responsive/cc-voice-0-960-971389b1c2fc.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/portfolio/responsive/cc-voice-0-1440-971389b1c2fc.webp"
+      }
+    ]
+  },
+  "/portfolio/ged-mediasmart-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/portfolio/responsive/ged-mediasmart-0-480-55e5ee369301.webp"
+      },
+      {
+        "width": 960,
+        "url": "/portfolio/responsive/ged-mediasmart-0-960-55e5ee369301.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/portfolio/responsive/ged-mediasmart-0-1440-55e5ee369301.webp"
+      }
+    ]
+  },
+  "/portfolio/mediasmart-games-0-dark.jpg": {
+    "width": 824,
+    "height": 1640,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/portfolio/responsive/mediasmart-games-0-dark-480-5c743aa1bf10.webp"
+      }
+    ]
+  },
+  "/portfolio/mediasmart-games-0.jpg": {
+    "width": 824,
+    "height": 1640,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/portfolio/responsive/mediasmart-games-0-480-c24a0ead5535.webp"
+      }
+    ]
+  },
+  "/portfolio/url-copier-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/portfolio/responsive/url-copier-0-480-e741ff97d13f.webp"
+      },
+      {
+        "width": 960,
+        "url": "/portfolio/responsive/url-copier-0-960-e741ff97d13f.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/portfolio/responsive/url-copier-0-1440-e741ff97d13f.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-factures-dashboard-0-dark.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-factures-dashboard-0-dark-480-1c228829fa44.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-factures-dashboard-0-dark-960-1c228829fa44.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-factures-dashboard-0-dark-1440-1c228829fa44.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-factures-dashboard-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-factures-dashboard-0-480-424c3e936443.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-factures-dashboard-0-960-424c3e936443.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-factures-dashboard-0-1440-424c3e936443.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-factures-dashboard-1-dark.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-factures-dashboard-1-dark-480-9c4059cfc7b5.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-factures-dashboard-1-dark-960-9c4059cfc7b5.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-factures-dashboard-1-dark-1440-9c4059cfc7b5.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-factures-dashboard-1.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-factures-dashboard-1-480-cc2f385a2f28.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-factures-dashboard-1-960-cc2f385a2f28.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-factures-dashboard-1-1440-cc2f385a2f28.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-factures-dashboard-2-dark.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-factures-dashboard-2-dark-480-78e8fbfee123.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-factures-dashboard-2-dark-960-78e8fbfee123.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-factures-dashboard-2-dark-1440-78e8fbfee123.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-factures-dashboard-2.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-factures-dashboard-2-480-643904d1e829.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-factures-dashboard-2-960-643904d1e829.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-factures-dashboard-2-1440-643904d1e829.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-wk-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-wk-0-480-388080c35e13.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-wk-0-960-388080c35e13.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-wk-0-1440-388080c35e13.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-wk-1.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-wk-1-480-82c0f9d95e77.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-wk-1-960-82c0f9d95e77.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-wk-1-1440-82c0f9d95e77.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-wk-2.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-wk-2-480-2a04935493b6.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-wk-2-960-2a04935493b6.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-wk-2-1440-2a04935493b6.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-wk-3.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-wk-3-480-63743e4089e2.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-wk-3-960-63743e4089e2.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-wk-3-1440-63743e4089e2.webp"
+      }
+    ]
+  },
+  "/screenshots/cc-wk-4.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/cc-wk-4-480-aba0db6123e8.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/cc-wk-4-960-aba0db6123e8.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/cc-wk-4-1440-aba0db6123e8.webp"
+      }
+    ]
+  },
+  "/screenshots/jocolor-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/jocolor-0-480-0e3fb67b1127.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/jocolor-0-960-0e3fb67b1127.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/jocolor-0-1440-0e3fb67b1127.webp"
+      }
+    ]
+  },
+  "/screenshots/jocolor-1.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/jocolor-1-480-1b099415d86c.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/jocolor-1-960-1b099415d86c.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/jocolor-1-1440-1b099415d86c.webp"
+      }
+    ]
+  },
+  "/screenshots/jocolor-2.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/jocolor-2-480-92566b39ca62.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/jocolor-2-960-92566b39ca62.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/jocolor-2-1440-92566b39ca62.webp"
+      }
+    ]
+  },
+  "/screenshots/jocolor-3.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/jocolor-3-480-4dd33cb8bc93.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/jocolor-3-960-4dd33cb8bc93.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/jocolor-3-1440-4dd33cb8bc93.webp"
+      }
+    ]
+  },
+  "/screenshots/lechoixdesmots-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/lechoixdesmots-0-480-39db432fea66.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/lechoixdesmots-0-960-39db432fea66.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/lechoixdesmots-0-1440-39db432fea66.webp"
+      }
+    ]
+  },
+  "/screenshots/soclean4u-0.jpg": {
+    "width": 1440,
+    "height": 900,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/screenshots/responsive/soclean4u-0-480-187fee8c711b.webp"
+      },
+      {
+        "width": 960,
+        "url": "/screenshots/responsive/soclean4u-0-960-187fee8c711b.webp"
+      },
+      {
+        "width": 1440,
+        "url": "/screenshots/responsive/soclean4u-0-1440-187fee8c711b.webp"
+      }
+    ]
+  }
+}

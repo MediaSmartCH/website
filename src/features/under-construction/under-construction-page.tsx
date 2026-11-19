@@ -1,7 +1,6 @@
 import React, { useState, lazy, Suspense } from "react";
 import { Calendar } from "lucide-react";
 
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { getRecaptchaToken } from "@shared/lib/recaptcha";
 import { fetchWithDeployment } from "@shared/lib/fetch-with-deployment";
 
@@ -15,7 +14,6 @@ import { CONSTRUCTION_CONFIG } from "@shared/config/construction";
 import { useTranslations } from "@shared/i18n/translator";
 import LocaleThemeControls from "@shared/components/locale-theme-controls";
 import BookingButton from "@features/booking/components/booking-button";
-import ScopedRecaptchaProvider from "@shared/components/scoped-recaptcha-provider";
 import { useInterfaceControls } from "@shared/hooks/use-interface-controls";
 
 import "@features/under-construction/under-construction.css";
@@ -25,7 +23,6 @@ import "@features/under-construction/under-construction.css";
 const DotAnim = lazy(() => import("@shared/components/dot-anim"));
 
 const UnderConstructionInner: React.FC = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
   const {
     currentLanguage: languageReducer,
     currentTheme: themeReducer,
@@ -72,7 +69,7 @@ const UnderConstructionInner: React.FC = () => {
     setError("");
 
     try {
-      const recaptchaToken = await getRecaptchaToken(executeRecaptcha, "uc_newsletter");
+      const recaptchaToken = await getRecaptchaToken("uc_newsletter");
       if (recaptchaToken === null) {
         setError(t.text("UnderConstruction.sendErrorGeneric"));
         return;
@@ -383,10 +380,4 @@ const UnderConstructionInner: React.FC = () => {
   );
 };
 
-const UnderConstruction: React.FC = () => (
-  <ScopedRecaptchaProvider>
-    <UnderConstructionInner />
-  </ScopedRecaptchaProvider>
-);
-
-export default UnderConstruction;
+export default UnderConstructionInner;

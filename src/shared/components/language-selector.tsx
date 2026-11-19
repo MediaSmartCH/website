@@ -33,13 +33,19 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const [isOpen, setIsOpen] = React.useState(false);
 
   const activeLanguage = getLanguageConfig(currentLanguage);
+
+  // The trigger shows the language code ("FR"), so the accessible name has to
+  // contain it: a speech-recognition user says what they see, and a name that
+  // omits the visible label leaves the control unreachable by voice. This is
+  // WCAG 2.5.3 Label in Name, which axe reports as label-content-name-mismatch.
+  const triggerAriaLabel = `${ariaLabel} : ${activeLanguage.shortLabel}`;
   const isLightTheme = currentTheme === "light";
 
   // Size-variant token sets — keeps inline style logic out of JSX.
   const sizeConfig =
     size === "xs"
       ? {
-          triggerPadding: "px-2 py-1.5",
+          triggerPadding: "px-2 py-1.5 max-[419px]:px-1.5",
           flag: "h-3.5 w-3.5",
           code: "text-[11px]",
           chevron: 12,
@@ -139,16 +145,18 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         onClick={openPicker}
         onPointerEnter={warmLanguages}
         onFocus={warmLanguages}
-        aria-label={ariaLabel}
+        aria-label={triggerAriaLabel}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        className={`inline-flex items-center gap-2 rounded-full border backdrop-blur-md transition-colors duration-200 ${sizeConfig.triggerPadding} ${triggerClasses}`}
+        // `relative` + the ::after overlay take the 28px-tall pill to a 44px
+        // touch target without moving a pixel of it.
+        className={`relative inline-flex items-center gap-2 max-[419px]:gap-1.5 rounded-full border backdrop-blur-md transition-colors duration-200 max-md:after:absolute max-md:after:inset-x-0 max-md:after:-inset-y-2 max-md:after:content-[''] ${sizeConfig.triggerPadding} ${triggerClasses}`}
       >
         <img
           src={activeLanguage.flagSrc}
           alt={activeLanguage.nativeLabel}
           decoding="async"
-          className={`${sizeConfig.flag} rounded-full object-cover`}
+          className={`${sizeConfig.flag} shrink-0 rounded-full object-cover`}
         />
         <span
           className={`font-poppins font-semibold uppercase leading-none tracking-[0.04em] ${sizeConfig.code}`}
@@ -157,7 +165,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         </span>
         <ChevronDown
           strokeWidth={2}
-          className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          // Without shrink-0 the flex squeeze at 375px took the chevron to 0px wide.
+          className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
           style={{
             width: `${sizeConfig.chevron}px`,
             height: `${sizeConfig.chevron}px`,

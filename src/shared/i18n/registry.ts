@@ -19,6 +19,8 @@ const SECTION_EXPORTS: Record<string, string> = {
   privacy: "privacy",
   legal: "legal",
   terms: "terms",
+  agency: "agency",
+  work: "work",
 };
 
 /**

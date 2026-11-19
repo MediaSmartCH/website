@@ -8,7 +8,7 @@ const privacy = {
     s1Title: "1. Responsable du traitement",
     s1Name: "MediaSmart – Raphael Rouiller",
     s1LegalForm: "Forme juridique : raison individuelle (non inscrite au Registre du commerce)",
-    s1Address: "Adresse : Rue des Prumus 21, 1994 Aproz (Nendaz), Suisse",
+    s1Address: "Adresse : Rue des Cloubeaux 6C, 1905 Dorénaz, Valais, Suisse",
     s1Email: "Email :",
     s1Phone: "Téléphone :",
 

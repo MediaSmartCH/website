@@ -30,18 +30,11 @@ const WEB_OVERVIEW_ANIMATIONS: LottieKey[] = [
   "it.services.optimization",
 ];
 
-/** Prefetches the IT services route chunk so hovering the button hides the load. */
-const preloadITServices = () => {
-  import("@features/it-services/it-services-page");
-};
-
 export default function ITOverview() {
   return (
     <OverviewSection
       translationPrefix="WebOverview"
       animations={WEB_OVERVIEW_ANIMATIONS}
-      exploreHref="web-development"
-      preloadRoute={preloadITServices}
       textAnimation="fade-up"
       spacingClassName="pt-[50px] lg:pt-[50px] xl:pt-[50px] pb-[40px]"
     />

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 // BLOC "CE QUE CELA CHANGE POUR VOUS" DÉSACTIVÉ — NE PAS SUPPRIMER
 // Briefcase, CheckCircle2, MapPin et User n'illustraient que les trois vignettes
 // de statistiques et le panneau des bénéfices, tous deux commentés plus bas.
@@ -11,9 +11,7 @@ import { useTranslations } from "@shared/i18n/translator";
 
 import raphaelPhoto from "@assets/images/raphael-rouiller.webp";
 
-// Hoisted to module scope: declaring lazy() inside the component body creates a
-// new component type on every render, which remounts the Lottie player.
-const DotAnim = lazy(() => import("@shared/components/dot-anim"));
+import DotAnim from "@shared/components/dot-anim";
 
 const About = () => {
   const languageReducer = useAppSelector(
@@ -60,13 +58,13 @@ const About = () => {
     <div id="about" className="scroll-mt-[120px]">
       <div className="w-full homepage-container px-[25px] md:px-[40px] lg:px-[50px] xl:px-[60px] 2xl:px-[70px] py-[40px] mx-auto">
         <div
-          className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] px-[28px] md:px-[40px] lg:px-[64px] xl:px-[80px] 2xl:px-[100px] py-[44px] lg:py-[64px] xl:py-[76px]`}
+          className={`bg-surface rounded-[15px] lg:rounded-[20px] xl:rounded-[25px] 2xl:rounded-[30px] px-[20px] md:px-[40px] lg:px-[64px] xl:px-[80px] 2xl:px-[100px] py-[28px] md:py-[44px] lg:py-[64px] xl:py-[76px]`}
         >
           {/* One text column, one illustration. Heading, intro and the person
               share a single left edge so the eye follows one axis down the
               card; the illustration balances the column rather than competing
               with it for the reader's attention. */}
-          <div className="grid w-full items-center gap-[40px] xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:gap-[80px] 2xl:gap-[100px]">
+          <div className="grid w-full items-center gap-[24px] md:gap-[40px] xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:gap-[80px] 2xl:gap-[100px]">
             <div
               // Centred while the section is a single column, and only pinned to the
               // left once the illustration sits beside it at xl. The text itself
@@ -83,19 +81,19 @@ const About = () => {
                 <span className="gradient-text">{t.text("home.aboutSubtitle")}</span>
               </h2>
               <RichText
-                className={`text-body about-description font-poppins font-light leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]`}
+                className={`text-body about-description font-poppins font-light leading-[22px] md:leading-7 text-[12px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px]`}
                 html={t.text("home.aboutDescription")}
               />
 
               <div
-                className={`${isLight ? "bg-[#E1E0F5]" : "bg-white/12"} my-[34px] h-px w-full`}
+                className={`${isLight ? "bg-[#E1E0F5]" : "bg-white/12"} my-[20px] md:my-[34px] h-px w-full`}
                 aria-hidden="true"
               />
 
               {/* Portrait to the left of the name, the way a byline reads.
                   Stacked only on a phone, where there is no room beside it. */}
-              <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
-                <div className="w-[130px] shrink-0 sm:w-[140px] xl:w-[160px]">
+              <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
+                <div className="w-[104px] shrink-0 sm:w-[140px] xl:w-[160px]">
                   <div className="relative aspect-square w-full rounded-[26px] bg-[linear-gradient(135deg,#14172D_0%,#304C89_55%,#60B6FF_100%)] p-[2px] shadow-[0_25px_60px_-25px_rgba(20,23,45,0.55)]">
                     <img
                       src={raphaelPhoto}
@@ -121,7 +119,7 @@ const About = () => {
                     {t.text("home.soloName")}
                   </h3>
                   <p
-                    className={`${isLight ? "text-[#6B7A99]" : "text-[#A8B4D0]"} mt-1 font-poppins text-[11px] font-medium uppercase tracking-[0.12em]`}
+                    className={`${isLight ? "text-[#5F6E8C]" : "text-[#A8B4D0]"} mt-1 font-poppins text-[11px] font-medium uppercase tracking-[0.12em]`}
                   >
                     {t.text("home.soloJobTitle")}
                   </p>
@@ -144,24 +142,20 @@ const About = () => {
             </div>
 
             <div
-              className="w-full max-w-[420px] mx-auto lg:max-w-[560px] xl:mx-0 xl:ml-auto xl:max-w-none"
+              // Capped rather than hidden: unlike the orphaned illustrations
+              // elsewhere, this one belongs to the card it closes. 220px is
+              // enough for it to read as a picture and 200px shorter than it
+              // was.
+              className="w-full max-w-[220px] md:max-w-[420px] mx-auto lg:max-w-[560px] xl:mx-0 xl:ml-auto xl:max-w-none"
               data-aos="fade-left"
               data-aos-duration="1200"
             >
-              <Suspense
-                fallback={
-                  <div className="h-[220px] flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
-                  </div>
-                }
-              >
-                <DotAnim
-                  anim="home.about"
-                  style={{ width: "100%", height: "auto" }}
-                  crisp
-                  protect
-                />
-              </Suspense>
+              <DotAnim
+                anim="home.about"
+                style={{ width: "100%", height: "auto" }}
+                crisp
+                protect
+              />
             </div>
           </div>
 

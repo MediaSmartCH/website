@@ -7,7 +7,30 @@ import { useTranslations } from "@shared/i18n/translator";
 
 import bookLine from "@assets/icons/bookLine.svg";
 
-const Booking = () => {
+export interface BookingProps {
+  /** Overrides, for pages that ask the question in their own words. The
+   *  homepage and the services page pass nothing and keep their copy. */
+  title?: string;
+  description?: string;
+  buttonLabel?: string;
+  /** A second, quieter way out — a link to the contact form, say. */
+  secondary?: React.ReactNode;
+}
+
+/**
+ * The closing call to action: heading, the hand-drawn underline, a short
+ * paragraph, the booking button.
+ *
+ * The regional and project pages render this same component rather than a
+ * card of their own, so the bottom of every page on the site is the bottom of
+ * the same site.
+ */
+const Booking: React.FC<BookingProps> = ({
+  title,
+  description,
+  buttonLabel,
+  secondary,
+}) => {
   const languageReducer = useAppSelector(
     (state) => state.language.currentLanguage
   );
@@ -24,7 +47,7 @@ const Booking = () => {
             data-aos-duration="1100"
             data-aos-easing="ease-in-sine"
           >
-            {t.text("home.bookingTitle")}
+            {title ?? t.text("home.bookingTitle")}
           </p>
           <img
             src={bookLine}
@@ -42,7 +65,7 @@ const Booking = () => {
             data-aos-duration="1300"
             data-aos-easing="ease-in-sine"
           >
-            {t.text("home.bookingDescription")}
+            {description ?? t.text("home.bookingDescription")}
           </p>
           <div
             data-aos="zoom-out"
@@ -51,9 +74,20 @@ const Booking = () => {
           >
             <BookingButton
               className="custom-btn2 middle-out px-[25px] lg:px-[22px] h-[43px] lg:h-[46px] rounded-[5px] text-[#fff] font-poppins font-light text-[14px] md:text-[14px] xl:text-[15px] 2xl:text-[16px] flex items-center justify-center"
-              text={t.text("home.bookingBtn")}
+              text={buttonLabel ?? t.text("home.bookingBtn")}
             />
           </div>
+
+          {secondary && (
+            <div
+              className="mt-[16px]"
+              data-aos="zoom-out"
+              data-aos-duration="1600"
+              data-aos-easing="ease-in-sine"
+            >
+              {secondary}
+            </div>
+          )}
         </div>
       </div>
     </div>

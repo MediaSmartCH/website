@@ -12,5 +12,7 @@
 @import "./components/phone-input.css";
 @import "./components/rich-text.css";
 @import "./components/faq-accordion.css";
+@import "./components/countdown.css";
+@import "./components/progress.css";
 @import "./sections.css";
 @import "./responsive.css";

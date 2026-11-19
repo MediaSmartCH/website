@@ -8,6 +8,7 @@ import {
   getInlineGalleryClassName,
   getItemCategory,
   getItemImages,
+  getPreviewDimClass,
   groupItemsByCategory,
   portfolioCategoryKey,
   sortItemsForPreview,
@@ -84,6 +85,61 @@ describe("getItemImages", () => {
     const base = { id: "x", title: "t", description: "d" };
     expect(getItemImages({ ...base, images: ["/a.png"] })).toEqual(["/a.png"]);
     expect(getItemImages(base)).toEqual([]);
+  });
+
+  it("resolves the dark twin only for items that declare one", () => {
+    const withDark = {
+      id: "demo",
+      title: "t",
+      description: "d",
+      hasDarkPreview: true,
+      screenshotUrls: ["https://a"],
+    };
+    expect(getItemImages(withDark, { dark: true })).toEqual([
+      "/screenshots/demo-0-dark.jpg",
+    ]);
+    expect(getItemImages(withDark)).toEqual(["/screenshots/demo-0.jpg"]);
+
+    // No dark twin captured: the light preview is what the visitor lands on.
+    expect(
+      getItemImages(
+        { id: "x", title: "t", description: "d", images: ["/a.png"] },
+        { dark: true }
+      )
+    ).toEqual(["/a.png"]);
+  });
+
+  it("marks the dark twin before the extension for declared images", () => {
+    expect(
+      getItemImages(
+        {
+          id: "x",
+          title: "t",
+          description: "d",
+          hasDarkPreview: true,
+          images: ["/portfolio/x-0.jpg"],
+        },
+        { dark: true }
+      )
+    ).toEqual(["/portfolio/x-0-dark.jpg"]);
+  });
+});
+
+describe("getPreviewDimClass", () => {
+  const base = { id: "x", title: "t", description: "d" };
+
+  it("dims a light-only preview in the dark theme only", () => {
+    expect(getPreviewDimClass(base, false)).toBe("brightness-90");
+    expect(getPreviewDimClass(base, true)).toBe("");
+  });
+
+  it("leaves a preview that follows the theme alone", () => {
+    expect(getPreviewDimClass({ ...base, hasDarkPreview: true }, false)).toBe("");
+  });
+
+  it("treats a missing item as light-only", () => {
+    expect(getPreviewDimClass(undefined, false)).toBe("brightness-90");
+    expect(getPreviewDimClass(undefined, true)).toBe("");
   });
 });
 
@@ -173,6 +229,7 @@ describe("groupItemsByCategory", () => {
       item("free-1", "free"),
       item("saas-1", "saas"),
       item("client-1", "client"),
+      item("wip-1", "in-progress"),
     ]);
 
     expect(groups.map((group) => group.category)).toEqual(PORTFOLIO_CATEGORY_ORDER);

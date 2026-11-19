@@ -1,11 +1,11 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppSelector } from "@shared/hooks/store-hooks";
 import { useTranslations } from "@shared/i18n/translator";
 import { useLangLink } from "@shared/hooks/use-localized-path";
 
-const DotAnim = lazy(() => import("@shared/components/dot-anim"));
+import DotAnim from "@shared/components/dot-anim";
 
 type NetworkInformationLike = {
   effectiveType?: string;
@@ -15,13 +15,8 @@ type NetworkInformationLike = {
 };
 
 const Hero = () => {
-  const { L } = useLangLink();
+  const { Lhash } = useLangLink();
   const [useLightweightVisual, setUseLightweightVisual] = React.useState(false);
-
-  // Prefetch route chunks on hover to reduce navigation latency
-  const preloadITServices = () => {
-    import("@features/it-services/it-services-page");
-  };
 
   /* ==========================================================================
    * VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER
@@ -91,7 +86,10 @@ const Hero = () => {
           </p>
           <div className="w-full justify-center flex items-center gap-3 md:gap-5 flex-wrap px-[20px]"
           >
-            <Link to={L("/web-development")} onMouseEnter={preloadITServices}>
+            {/* The services section now lives on this page, so this is an
+                in-page anchor rather than a route: useScrollToHash does the
+                smooth scroll and accounts for the fixed header. */}
+            <Link to={Lhash("#services")}>
               <button
                 className="
                   hero-btn custom-btn
@@ -185,20 +183,12 @@ const Hero = () => {
                 </div>
               </div>
             ) : (
-              <Suspense
-                fallback={
-                  <div className="h-[220px] flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent" />
-                  </div>
-                }
-              >
-                <DotAnim
-                  anim="home.hero"
-                  style={{ width: "100%", height: "auto" }}
-                  crisp
-                  protect
-                />
-              </Suspense>
+              <DotAnim
+                anim="home.hero"
+                style={{ width: "100%", height: "auto" }}
+                crisp
+                protect
+              />
             )}
           </div>
         </div>

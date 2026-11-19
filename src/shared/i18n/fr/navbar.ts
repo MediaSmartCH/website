@@ -10,6 +10,8 @@ const navbar = {
   // VIDÉO DÉSACTIVÉ — NE PAS SUPPRIMER : clé conservée, lien retiré du menu.
   navItem3: "Solutions vidéo",
   navItem4: "À propos",
+  // Lien vers /projects, ajouté quand les projets ont eu leur propre URL.
+  navWork: "Réalisations",
   navItem5: "Témoignages",
   navbarButton: "Prendre rendez-vous",
   openMenu: "Ouvrir le menu",
