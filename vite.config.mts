@@ -6,6 +6,7 @@ import { defineConfig, Plugin, PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+import { skewProtection } from "./vite-plugins/skew-protection";
 import { HERO_POSTER_BUCKETS } from "./src/shared/config/poster-sizes";
 
 const _require = createRequire(import.meta.url);
@@ -261,10 +262,17 @@ const generatedHtmlInputs = fs.existsSync(generatedPagesDir)
     })()
   : {};
 
+/**
+ * Set by Vercel at build time. Empty everywhere else, which leaves both the
+ * runtime constant below and the URL pinning inert.
+ */
+const deploymentId = process.env.VERCEL_DEPLOYMENT_ID ?? "";
+
 export default defineConfig(async () => {
   const plugins: PluginOption[] = [
     dotLottieWasmPlugin(),
     react(),
+    skewProtection(deploymentId),
     heroPosterPreloadPlugin(),
     stylesheetFirstPlugin(),
   ];
@@ -287,7 +295,7 @@ export default defineConfig(async () => {
   return {
     envPrefix: ["VITE_", "REACT_APP_"],
     define: {
-      __VERCEL_DEPLOYMENT_ID__: JSON.stringify(process.env.VERCEL_DEPLOYMENT_ID ?? ""),
+      __VERCEL_DEPLOYMENT_ID__: JSON.stringify(deploymentId),
     },
     plugins,
     server: {

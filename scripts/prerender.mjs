@@ -140,11 +140,21 @@ function readManifest() {
  * fetched anyway as part of the page's own graph. The chunk this preloads is
  * the one that decides whether the visitor keeps looking at the page or at a
  * loading spinner.
+ * The URL must match the one the router will ask for, down to the query. The
+ * build pins lazily-loaded chunks to their deployment with `?dpl=`
+ * (vite-plugins/skew-protection.ts), and a route's page chunk is one of them,
+ * so the preload has to carry the same marker — otherwise the browser holds
+ * one file under two URLs and fetches it twice, which is the opposite of what
+ * a preload is for.
  */
 function buildPreloads(manifest, sourceModule) {
   const file = manifest[sourceModule]?.file;
+  if (!file) return "";
 
-  return file ? `<link rel="modulepreload" href="/${file}">` : "";
+  const deploymentId = process.env.VERCEL_DEPLOYMENT_ID ?? "";
+  const pin = deploymentId ? `?dpl=${deploymentId}` : "";
+
+  return `<link rel="modulepreload" href="/${file}${pin}">`;
 }
 
 /**
